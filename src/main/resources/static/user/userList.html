@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!-- saved from url=(0072)https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html# -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 -羅氏博客</title>
+    <link rel="stylesheet" href="../common/semantic-ui/dist/semantic.min.css">
+    <link rel="stylesheet" href="../common/layui/css/layui.css">
+</head>
+<body>
+<div class="ui secondary pointing menu">
+    <a class="item active" data-tab="tab-name">用户列表</a>
+</div>
+<div class="ui tab active" data-tab="tab-name">
+    <table class="layui-hide" id="roleList" lay-filter="roleList"></table>
+
+    <script type="text/html" id="toolbar">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm" lay-event="addRole">设置角色</button>
+        </div>
+    </script>
+
+    <script type="text/html" id="bar">
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+</div>
+</body>
+<script src="../common/util.js"></script>
+<script src="../common/layui/layui.all.js"></script>
+<script src="../user/js/userList.js"></script>
+</html>

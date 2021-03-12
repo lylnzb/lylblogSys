@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>复杂表头的表格测试</title>
+<!--  <link rel="stylesheet" href="layui/src/css/layui.css?v2.5.4" media="all">-->
+  <link rel="stylesheet" href="layui-v2.5.0/layui/css/layui.css?v2.5.4" media="all">
+</head>
+
+<body>
+<div style="padding: 10px 15px;">
+  <table class="layui-hide" id="mytable"></table>
+</div>
+<!--<script src="layui/src/layui.js"></script>-->
+<script src="layui-v2.5.0/layui/layui.js"></script>
+<script>
+  layui.config({base: 'layui/plug/'})
+    .extend({tablePlug: 'tablePlug/tablePlug'})
+    .use(['table'], function () {
+      var table = layui.table;
+      var layer = layui.layer;
+      var $ = layui.$;
+      //动态表中的数字列宽度变量值
+
+      table.render({
+        elem: '#mytable'
+        , loading: true
+        , size: 'sm' //小尺寸的表格
+        , toolbar: true
+        , data: [{
+          daytablename: '2020',
+          day_da1: 1,
+          day_da2: 2,
+          day_da3: 3,
+          day_da4: 4,
+          day_da5: 5,
+          day_da6: 6,
+          day_da7: 7,
+          day_da8: 8,
+          day_da9: 9,
+          day_da10: 10,
+          day_da11: 11,
+          day_da12: 12,
+          day_da13: 13,
+          day_da14: 14,
+          day_da15: 15,
+          day_da16: 16,
+          day_da17: 17,
+          day_da18: 18,
+          day_da19: 19,
+          day_da20: 20,
+          day_da21: 21,
+          day_da22: 22,
+          day_da23: 23,
+          day_da24: 24,
+          day_da25: 25,
+          day_da26: 26,
+          day_da27: 27,
+          day_da28: 28,
+          day_da29: 29,
+          day_da30: 30
+        }]
+        , cols: [[
+          {type: 'numbers', title: '序号', align: 'center', fixed: 'left', rowspan: 5}
+          , {field: 'daytablename', title: '日期', align: 'center', rowspan: 5}
+          , {title: '0_2', align: 'center'}
+          , {title: '0_3', align: 'center', colspan: 5}
+          , {title: '0_4', align: 'center', colspan: 5}
+          , {type: 'space', title: '0_5', align: 'center', colspan: 32}
+        ], [
+          {title: '1_0', align: 'center', rowspan: 3}
+          , {title: '1_1', align: 'center', rowspan: 3}
+          , {title: '1_2', align: 'center', rowspan: 3}
+          , {title: '1_3', align: 'center', rowspan: 2, colspan: 3}
+          , {title: '1_4', align: 'center', rowspan: 3}
+          , {title: '1_5', align: 'center', rowspan: 3}
+          , {title: '1_6', align: 'center', colspan: 3}
+          , {title: '1_7', align: 'center', colspan: 21}
+          , {title: '1_8', align: 'center', colspan: 10}
+          , {title: '1_9', align: 'center', rowspan: 3}
+        ], [
+          {title: '2_0', align: 'center', rowspan: 2}
+          , {title: '2_1', align: 'center', colspan: 2}
+          , {title: '2_2', align: 'center', rowspan: 2}
+          , {title: '2_3', align: 'center', colspan: 20}
+          , {title: '2_4', align: 'center', rowspan: 2}
+          , {title: '2_5', align: 'center', colspan: 9}
+        ], [
+          {title: '3_0', align: 'center'}
+          , {title: '3_1', align: 'center'}
+          , {title: '3_2', align: 'center'}
+          , {title: '3_3', align: 'center'}
+          , {title: '3_4', align: 'center'}
+          , {title: '3_5', align: 'center'}
+          , {title: '3_6', align: 'center'}
+          , {title: '3_7', align: 'center'}
+          , {title: '3_8', align: 'center'}
+          , {title: '3_9', align: 'center'}
+          , {title: '3_10', align: 'center'}
+          , {title: '3_11', align: 'center'}
+          , {title: '3_12', align: 'center'}
+          , {title: '3_13', align: 'center'}
+          , {title: '3_14', align: 'center'}
+          , {title: '3_15', align: 'center'}
+          , {title: '3_16', align: 'center'}
+          , {title: '3_17', align: 'center'}
+          , {title: '3_18', align: 'center'}
+          , {title: '3_19', align: 'center'}
+          , {title: '3_20', align: 'center'}
+          , {title: '3_21', align: 'center'}
+          , {title: '3_22', align: 'center'}
+          , {title: '3_23', align: 'center'}
+          , {title: '3_24', align: 'center'}
+          , {title: '3_25', align: 'center'}
+          , {title: '3_26', align: 'center'}
+          , {title: '3_27', align: 'center'}
+          , {title: '3_28', align: 'center'}
+          , {title: '3_29', align: 'center'}
+          , {title: '3_30', align: 'center'}
+          , {title: '3_31', align: 'center'}
+          , {title: '3_32', align: 'center'}
+          , {title: '3_33', align: 'center'}
+        ], [
+          {field: 'day_da1', title: '1', align: 'center'}
+          , {field: 'day_da2', title: '2', align: 'center'}
+          , {field: 'day_da3', title: '3', align: 'center'}
+          , {field: 'day_da4', title: '4', align: 'center'}
+          , {field: 'day_da5', title: '5', align: 'center'}
+          , {field: 'day_da6', title: '6', align: 'center'}
+          , {field: 'day_da7', title: '7', align: 'center'}
+          , {field: 'day_da8', title: '8', align: 'center'}
+          , {field: 'day_da9', title: '9', align: 'center'}
+          , {field: 'day_da10', title: '10', align: 'center'}
+          , {field: 'day_da11', title: '11', align: 'center'}
+          , {field: 'day_da12', title: '12', align: 'center'}
+          , {field: 'day_da13', title: '13', align: 'center'}
+          , {field: 'day_da14', title: '14', align: 'center'}
+          , {field: 'day_da15', title: '15', align: 'center'}
+          , {field: 'day_da16', title: '16', align: 'center'}
+          , {field: 'day_da17', title: '17', align: 'center'}
+          , {field: 'day_da18', title: '18', align: 'center'}
+          , {field: 'day_da19', title: '19', align: 'center'}
+          , {field: 'day_da20', title: '20', align: 'center'}
+          , {field: 'day_da21', title: '21', align: 'center'}
+          , {field: 'day_da22', title: '22', align: 'center'}
+          , {field: 'day_da23', title: '23', align: 'center'}
+          , {field: 'day_da24', title: '24', align: 'center'}
+          , {field: 'day_da25', title: '25', align: 'center'}
+          , {field: 'day_da26', title: '26', align: 'center'}
+          , {field: 'day_da27', title: '27', align: 'center'}
+          , {field: 'day_da28', title: '28', align: 'center'}
+          , {field: 'day_da29', title: '29', align: 'center'}
+          , {field: 'day_da30', title: '30', align: 'center'}
+          , {field: 'day_da31', title: '31', align: 'center'}
+          , {field: 'day_da32', title: '32', align: 'center'}
+          , {field: 'day_da33', title: '33', align: 'center'}
+          , {field: 'day_da34', title: '34', align: 'center'}
+          , {field: 'day_da35', title: '35', align: 'center'}
+          , {field: 'day_da36', title: '36', align: 'center'}
+          , {field: 'day_da37', title: '37', align: 'center'}
+          , {field: 'day_da38', title: '38', align: 'center'}
+          , {field: 'day_da39', title: '39', align: 'center'}
+          , {field: 'day_da40', title: '40', align: 'center'}
+          , {field: 'day_da41', title: '41', align: 'center'}
+          , {field: 'day_da42', title: '42', align: 'center'}
+          , {field: 'day_da43', title: '43', align: 'center'}
+        ]
+        ]
+      });
+
+      table.eachCols('mytable', function (index, item) {
+        console.log(index, item);
+      });
+
+      setInterval(function () {
+        table.reload('mytable', {page: {curr: 1}}, 'data');
+      }, 1000);
+    });
+</script>
+</body>
+</html>

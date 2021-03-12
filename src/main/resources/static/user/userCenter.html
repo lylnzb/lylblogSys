@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<!-- saved from url=(0072)https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html# -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+                xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 -羅氏博客</title>
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../common/semantic-ui/dist/semantic.min.css">
+    <link rel="stylesheet" href="../common/qqFace/css/reset.css">
+    <link rel="stylesheet" href="../common/css/style.css">
+    <link rel="stylesheet" href="../common/css/tx.css">
+    <link rel="stylesheet" href="../common/css/index.css">
+    <link rel="stylesheet" href="../common/layui/css/layui.css">
+    <style>
+        .leave_position a {
+            font-size: 12px;
+        }
+        a {
+            cursor:pointer;
+            text-decoration: none;
+            color: #333;
+        }
+        #header {
+            position: fixed;
+            top: 0;
+            z-index: 901;
+            width: 100%;
+            background: #fff;
+            box-shadow: 0 2px 6px 0 rgba(0,0,0,.17);
+        }
+        #main {
+            width: 885pt;
+            margin: 0 auto 20px;
+            padding-top: 65px;
+        }
+        .separated p {
+            margin: 16px 0px;
+            color: #8c8c8c;
+            text-align: center;
+            font-size: 14px;
+            font-size: .9em;
+            overflow: hidden;
+            line-height: 180%;
+        }
+        .wzbqsm-p span, p.wzbqsm-p a {
+            color: #e53935;
+        }
+        .shareUrl img {
+            width: 20px;
+        }
+        .shareUrl a {
+            margin-top: 10px;
+        }
+        a.widget_avatar_header1 {
+            display: block;
+            position: absolute;
+            top: 4px;
+            margin-left: -18px;
+            padding: 6px;
+            background-color: transparent;
+            border-radius: 100%;
+        }
+        a.widget_avatar_header1 img {
+            width: 130px;
+            height: 130px;
+            border-radius: 100%;
+            margin-left: 10px;
+        }
+        .userInfo p {
+            line-height: 23px;
+        }
+        .editInfo {
+            width: 60px;
+            background: #8c8c8c;
+            text-align: center;
+            border-radius: 3px;
+            cursor:pointer;
+        }
+        .flow-default li {
+            position: relative;
+            border-bottom: 1px solid #ccc;
+            padding: 5px 0;
+        }
+        .flow-default .imgbox {
+            position: absolute;
+            left: 0;
+        }
+        .flow-default .contentbox {
+            display: inline-block;
+            padding-left: 45px;
+            width: 90%;
+        }
+        .flow-default .contentbox p {
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 22px;
+        }
+        .flow-default .contentbox span {
+            position: absolute;
+            right: 0;
+            top: 5px;
+            font-size: 12px;
+            color: #aaa;
+        }
+        .flow-default .contentbox .text {
+            font-size: 12px;
+        }
+        .flow-default .imgbox img {
+            border-radius: 4px;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            -ms-border-radius: 4px;
+            -o-border-radius: 4px;
+            width: 40px;
+            height: 40px;
+        }
+        #uplodeFile {
+            float: right;
+            width: 200px;
+            top: 197px;
+            height: 195px;
+        }
+        #uplodeFile img{
+            max-width: 166px;
+            max-height: 110px;
+            text-align: center;
+            margin: -15px -15px -15px -15px;
+        }
+
+        .image img{
+            display: inline-block;
+            height: 100%;
+            width: 100%;
+            max-width: 100%;
+        }
+        a.widget_avatar_header {
+            display: block;
+            position: absolute;
+            top: -18px;
+            /* left: 50%; */
+            margin-left: -20px;
+            padding: 6px;
+            background-color: transparent;
+            border-radius: 100%;
+        }
+        a.widget_avatar_header img {
+            width: 50px;
+            height: 50px;
+            border-radius: 100%;
+        }
+
+        .layui-side {
+            position: unset;
+            left: 400px;
+            top: 97px;
+            width: 270px;
+        }
+
+        .ui.styled.accordion, .ui.styled.accordion .accordion {
+            border-radius: .28571429rem;
+            /* background: #fff; */
+            box-shadow: 0 0 1px 0 rgba(96,36,38,.15);
+        }
+
+        .title {
+
+        }
+
+        .tree {
+            border-top: 1px solid #ccc;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<!--导航-->
+<div id="header">
+    <div th:replace="include/header :: myHeader"></div>
+</div>
+
+<!--中间-->
+<div id="main">
+    <div class="m-padded-tb-max">
+        <div class="ui container">
+            <div class="ui stackable grid">
+                <!--右边-->
+                <div class="four wide column">
+                    <div class="ui vertical pointing menu" style="width: 100%">
+                        <a class="teal item active" href="../user/user.html" target="menuFrame">
+                            <span><i class="home icon" style="font-size: 18px;"></i>个人中心</span>
+                            <!--<div class="ui teal left pointing label">1</div>-->
+                        </a>
+                        <div class="ui styled accordion">
+                            <div class="title" style="font-weight: 500;color: #0C0C0C;border-top: 1px solid #ccc;">
+                                <i class="user icon" style="font-size: 18px;"></i>
+                                用户管理
+                                <i class="dropdown icon" style="float: right;"></i>
+                            </div>
+                            <div class="tree">
+                                <a class="teal item" href="../permission/permissionList.html" target="menuFrame">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<span><i class="unlock alternate icon" style="font-size: 18px;"></i>权限维护</span>
+                                </a>
+                                <a class="teal item" href="../user/userList.html" target="menuFrame">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<span><i class="home icon" style="font-size: 18px;"></i>用户信息</span>
+                                </a>
+                                <a class="teal item" href="../role/roleList.html" target="menuFrame">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<span><i class="home icon" style="font-size: 18px;"></i>角色信息</span>
+                                    <!--<div class="ui teal left pointing label">1</div>-->
+                                </a>
+                            </div>
+                        </div>
+                        <a class="teal item" href="../user/releaseArticle.html" target="menuFrame">
+                            <span><i class="edit icon" style="font-size: 18px;"></i>发布文章</span>
+                            <!--<div class="ui label">51</div>-->
+                        </a>
+                        <a class="teal item">
+                            <span><i class="pencil alternate icon" style="font-size: 18px;"></i>发布书籍</span>
+                            <!--<div class="ui label">51</div>-->
+                        </a>
+                        <a class="teal item">
+                            <span><i class="book icon" style="font-size: 18px;"></i>我的文章</span>
+                            <!--<div class="ui label">1</div>-->
+                        </a>
+                        <a class="teal item">
+                            <span><i class="file icon" style="font-size: 18px;"></i>我的书籍</span>
+                            <!--<div class="ui label">1</div>-->
+                        </a>
+                        <a class="teal item">
+                            <span><i class="comment alternate icon" style="font-size: 18px;"></i>我的评论</span>
+                            <!--<div class="ui label">1</div>-->
+                        </a>
+                        <a class="teal item">
+                            <span><i class="download icon" style="font-size: 18px;"></i>我的下载</span>
+                            <!--<div class="ui label">1</div>-->
+                        </a>
+                        <a class="teal item">
+                            <span><i class="comments icon" style="font-size: 18px;"></i>评论管理</span>
+                            <!--<div class="ui label">1</div>-->
+                        </a>
+                    </div>
+                </div>
+                <!--左边-->
+                <div class="twelve wide column">
+                    <div class="ui top segment" style="width: 820px;min-height: 600px">
+                        <iframe id="menuFrame"
+                            name="menuFrame"
+                            src="../user/user.html"
+                            scrolling="yes"
+                            frameborder="no"
+                            allowtransparency="true"
+                            onload="iFrameHeight()"
+                            style="width: 100%;background-color: white"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--底部-->
+<div id="footer">
+    <!--<iframe src="../include/footer.html"width="100%" height="250px"></iframe>-->
+    <footer class="ui inverted vertical segment m-padded-tb-max">
+        <div class="ui center aligned container">
+            <div class="ui inverted divided stackable grid">
+                <div class="three wide column">
+                    <div class="ui inverted link list">
+                        <div class="item">
+                            <img src="img/wechat.jpg" class="ui rounded image" alt="" style="width: 100px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="four wide column">
+                    <h5 class="ui inverted header m-text-thin m-text-spaced ">最新博客</h5>
+                    <div class="ui inverted link list">
+                        <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#" class="item">人生导师(my story)</a>
+                        <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#" class="item">心灵鸡汤(my video)</a>
+                        <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#" class="item">自我认知(my feel)</a>
+                    </div>
+                </div>
+                <div class="four wide column">
+                    <h5 class="ui inverted header m-text-thin m-text-spaced ">个人信息</h5>
+                    <div class="ui inverted link list">
+                        <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#" class="item">WeChat:Yi-0802</a>
+                        <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#" class="item">QQ:1692774581</a>
+                    </div>
+                </div>
+                <div class="five wide column">
+                    <h5 class="ui inverted header m-text-thin m-text-spaced ">博客</h5>
+                    <p class="m-text-thin m-text-spaced m-opacity-tiny">这是我的个人博客，会定期分享我的故事,我对于自身的认识，希望可以给看我博客的人带来快乐</p>
+                </div>
+            </div>
+            <div class="ui inverted section divider"></div>
+            <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2020 - 2020 Rownn Designed by Rownn</p>
+        </div>
+    </footer>
+</div>
+</body>
+<script th:src="@{../common/qqFace/js/jquery.min.js}"></script>
+<script th:src="@{../common/qqFace/js/jquery.qqFace.js}"></script>
+<script th:src="@{../common/semantic-ui/dist/semantic.min.js}"></script>
+<script th:src="@{../common/layui/layui.all.js}"></script>
+<script th:src="@{../common/ueditor1_4_3_3/ueditor.config.js}" type="text/javascript" charset="utf-8"></script> <!--ueditor的配置文件-->
+<script th:src="@{../common/ueditor1_4_3_3/ueditor.all.js}" type="text/javascript" charset="utf-8"></script> <!--ueditor核心文件-->
+<script th:src="@{../common/ueditor1_4_3_3/lang/zh-cn/zh-cn.js}" type="text/javascript" charset="utf-8"></script> <!--ueditor语言文件-->
+<script>
+    var config = {};
+
+    $(function(){
+        $('.pointing.menu .item').tab();
+
+        $('.ui.dropdown').dropdown();
+
+        $('#hybrid select').dropdown({on: 'hover'});
+
+        $(".teal.item").click(function(){
+            $(".teal.item.active").removeClass("active");
+            $(this).addClass("active");
+        });
+    });
+    layui.use(['laypage', 'layer', 'upload'], function() {
+        var $ = layui.jquery
+            , upload = layui.upload
+            , laypage = layui.laypage
+            , layer = layui.layer;
+
+        $(".title").click(function(){
+            if($(this).hasClass("active")){
+                $(this).removeClass("active");
+            }else{
+                $(this).addClass("active");
+            }
+            $(this).siblings(".tree").fadeToggle("slow");
+        });
+    });
+
+    function iFrameHeight(){
+        var ifm= document.getElementById("menuFrame");
+        var subWeb = document.frames?document.frames["menuFrame"].document:ifm.contentDocument;
+        if(ifm != null && subWeb != null) {
+            $("#menuFrame").height(0);//此处关键处 莫忘  清除上一个子页面高度的影响
+            $("#menuFrame").height(subWeb.body.scrollHeight);
+            console.log("为什么===="+subWeb.body.scrollHeight);
+        }
+    }
+</script>
+<!--
+<script src='../js/snowflakes.min.js'></script>
+<script src="../js/index.js"></script>-->
+</html>
+

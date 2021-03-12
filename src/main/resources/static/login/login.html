@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="dialog dialog--400" id="loginPage" th:fragment="loginBox">
+    <div class="dialog-body dialog-body-class">
+        <div class="login-wrap-box userLogin">
+            <h2 class="title" id="title1" style="font-weight: bold">
+                登录到羅氏博客
+                <i class="close icon"></i>
+            </h2>
+            <div class="content-box">
+                <form class="from-box" id="loginForm" autocomplete="off">
+                    <label class="username-label">
+                            <span class="label">
+                                <span class="tip">*</span>电子邮箱：
+                            </span>
+                    </label>
+                    <div class="emailLabel">
+                        <div class="field">
+                            <div class="ui left icon input" style="width: 100%">
+                                <input type="text" class="userEmail required" id="userEmail" placeholder="请输入电子邮箱">
+                                <i class="envelope outline icon"></i>
+                            </div>
+                        </div>
+                        <div id="userEmailError" class="error">
+                            <div class="ui basic red pointing prompt label transition">电子邮箱不能为空</div>
+                        </div>
+                    </div>
+                    <label class="password-label">
+                            <span class="label">
+                                <span class="tip">*</span>密码：
+                            </span>
+                    </label>
+                    <div class="pwdLabel">
+                        <div class="field">
+                            <div class="ui left icon input" style="width: 100%">
+                                <input type="password" class="userPwd required" id="userPwd" placeholder="请输入密码">
+                                <i class="lock icon"></i>
+                            </div>
+                        </div>
+                        <div id="userPwdError" class="error">
+                            <div class="ui basic red pointing prompt label transition">密码不能为空</div>
+                        </div>
+                    </div>
+                </form>
+                <div class="btn-box">
+                    <button type="button" class="ui primary button" style="width: 100%" id="login">登录</button>
+                    <div class="info clearfix">
+                        <p class="info-item fl" style="line-height: 30px">没有账号？<span class="registerBtn">注册</span></p>
+                        <p class="forgotPasBtn fr" style="line-height: 30px">忘记密码？</p>
+                    </div>
+                </div>
+                <div class="separated">
+                    <div class="ui horizontal divider">第三方登录</div>
+                </div>
+                <ul class="list clearfix" style="text-align: center">
+                    <li title="QQ登录" class="list-item">
+                        <a href="/api/user/oauth/signin/qq?redirect_uri=https://www.duanliang920.com/" target="_blank">
+                            <i class="qq icon"></i>
+                        </a>
+                    </li>
+                    <li class="list-item" title="微博登录">
+                        <a href="/api/user/oauth/signin/qq?redirect_uri=https://www.duanliang920.com/" target="_blank">
+                            <i class="wechat icon"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="login-wrap-box userRegister">
+            <h2 class="title" id="title2" style="font-weight: bold">
+                注册到羅氏博客
+                <i class="close icon"></i>
+            </h2>
+            <div class="content-box">
+                <form class="from-box" autocomplete="off">
+                    <label class="username-label">
+                            <span class="label">
+                                <span class="tip">*</span>电子邮箱：
+                            </span>
+                    </label>
+                    <div class="ui left icon input" style="width: 100%">
+                        <input type="text" class="email" placeholder="请输入电子邮箱">
+                        <i class="envelope outline icon"></i>
+                    </div>
+                    <label class="username-label">
+                            <span class="label">
+                                <span class="tip">*</span>邮箱验证码：
+                            </span>
+                    </label>
+                    <div class="ui right labeled left icon input" style="width: 100%">
+                        <i class="calendar check icon"></i>
+                        <input id="code" type="text" placeholder="请输入邮箱验证码">
+                        <a class="ui tag blue label" id="btn" onclick="sendemail()" style="width: 100px; text-align: center">点击发送</a>
+                    </div>
+                    <label class="password-label">
+                            <span class="label">
+                                <span class="tip">*</span>密码：
+                            </span>
+                    </label>
+                    <div class="ui left icon input" style="width: 100%">
+                        <input type="password" id="password" placeholder="请输入密码">
+                        <i class="lock icon"></i>
+                    </div>
+                </form>
+                <div class="btn-box">
+                    <button type="button" class="ui primary button" id="register" style="width: 100%">注册</button>
+                    <div class="info clearfix">
+                        <p class="info-item fl" style="line-height: 30px">已有账号？<span class="loginBtn">登录</span></p>
+                    </div>
+                </div>
+                <div class="separated">
+                    <div class="ui horizontal divider">第三方登录</div>
+                </div>
+
+                <!--                    <div class="ui horizontal divider header">第三方登录</div>-->
+                <ul class="list clearfix" style="text-align: center">
+                    <li title="QQ登录" class="list-item">
+                        <a href="/api/user/oauth/signin/qq?redirect_uri=https://www.duanliang920.com/" target="_blank">
+                            <i class="qq icon"></i>
+                        </a>
+                    </li>
+                    <li class="list-item" title="微博登录">
+                        <a href="/api/user/oauth/signin/qq?redirect_uri=https://www.duanliang920.com/" target="_blank">
+                            <i class="wechat icon"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="login-wrap-box userRetrievePas">
+            <h2 class="title" id="title3" style="font-weight: bold">
+                找回密码
+                <i class="close icon"></i>
+            </h2>
+            <div class="content-box">
+                <form class="from-box" autocomplete="off">
+                    <label class="username-label">
+                            <span class="label">
+                                <span class="tip">*</span>电子邮箱：
+                            </span>
+                    </label>
+                    <div class="ui left icon input" style="width: 100%">
+                        <input type="text" placeholder="请输入电子邮箱">
+                        <i class="envelope outline icon"></i>
+                    </div>
+                    <label class="username-label">
+                            <span class="label">
+                                <span class="tip">*</span>邮箱验证码：
+                            </span>
+                    </label>
+                    <div class="ui right labeled left icon input" style="width: 100%">
+                        <i class="calendar check icon"></i>
+                        <input type="text" placeholder="请输入邮箱验证码">
+                        <a class="ui tag label">
+                            点击发送
+                        </a>
+                    </div>
+                    <label class="password-label">
+                            <span class="label">
+                                <span class="tip">*</span>密码：
+                            </span>
+                    </label>
+                    <div class="ui left icon input" style="width: 100%">
+                        <input type="password" placeholder="请输入密码">
+                        <i class="lock icon"></i>
+                    </div>
+                </form>
+                <div class="btn-box">
+                    <button type="button" class="ui primary button" style="width: 100%">提交</button>
+                    <div class="info clearfix">
+                        <p class="info-item fl" style="line-height: 30px">已有账号？<span class="loginBtn">登录</span></p>
+                    </div>
+                </div>
+                <div class="separated">
+                    <div class="ui horizontal divider">第三方登录</div>
+                </div>
+                <ul class="list clearfix" style="text-align: center">
+                    <li title="QQ登录" class="list-item">
+                        <a href="/api/user/oauth/signin/qq?redirect_uri=https://www.duanliang920.com/" target="_blank">
+                            <i class="qq icon"></i>
+                        </a>
+                    </li>
+                    <li class="list-item" title="微博登录">
+                        <a href="/api/user/oauth/signin/qq?redirect_uri=https://www.duanliang920.com/" target="_blank">
+                            <i class="wechat icon"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lylblog.project.system.banner.mapper.BannerMapper">
+
+    <!-- 查询所有轮播图信息 -->
+    <select id="queryBannerInfo" parameterType="com.lylblog.project.system.banner.bean.BannerBean" resultType="com.lylblog.project.system.banner.bean.BannerBean">
+        select t.* from sys_banner t order by orderBy desc
+    </select>
+
+    <!-- 查询所有轮播图信息总数 -->
+    <select id="queryBannerInfoCount" parameterType="com.lylblog.project.system.banner.bean.BannerBean" resultType="int">
+        select count(1) from sys_banner t order by orderBy desc
+    </select>
+
+    <!-- 新增轮播图信息 -->
+    <insert id="addBannerInfo" parameterType="com.lylblog.project.system.banner.bean.BannerBean">
+        insert into sys_banner(
+            <if test="bannerId != null and bannerId != ''">bannerId,</if>
+            <if test="bannerTitle != null and bannerTitle != ''">bannerTitle,</if>
+            <if test="bannerImg != null and bannerImg != ''">bannerImg,</if>
+            <if test="bannerUrl != null and bannerUrl != ''">bannerUrl,</if>
+            <if test="valid != null and valid != ''">valid,</if>
+            <if test="orderBy != null and orderBy != ''">orderBy,</if>
+            <if test="createBy != null and createBy != ''">createBy,</if>
+            createTime
+        )values(
+            <if test="bannerId != null and bannerId != ''">#{bannerId},</if>
+            <if test="bannerTitle != null and bannerTitle != ''">#{bannerTitle},</if>
+            <if test="bannerImg != null and bannerImg != ''">#{bannerImg},</if>
+            <if test="bannerUrl != null and bannerUrl != ''">#{bannerUrl},</if>
+            <if test="valid != null and valid != ''">#{valid},</if>
+            <if test="orderBy != null and orderBy != ''">#{orderBy},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            SYSDATE()
+        )
+    </insert>
+
+    <!-- 修改轮播图信息 -->
+    <update id="updateBannerInfo" parameterType="com.lylblog.project.system.banner.bean.BannerBean">
+        UPDATE sys_banner SET
+            <if test="bannerTitle != null and bannerTitle != ''">bannerTitle = #{bannerTitle},</if>
+            <if test="bannerImg != null and bannerImg != ''">bannerImg = #{bannerImg},</if>
+            <if test="bannerUrl != null and bannerUrl != ''">bannerUrl = #{bannerUrl},</if>
+            <if test="valid != null and valid != ''">valid = #{valid},</if>
+            <if test="orderBy != null and orderBy != ''">orderBy = #{orderBy},</if>
+            <if test="updateBy != null and updateBy != ''">updateBy =#{updateBy},</if>
+            updateTime = SYSDATE()
+        WHERE bannerId = #{bannerId}
+    </update>
+
+    <!-- 删除轮播图信息 -->
+    <delete id="deleteBannerInfo">
+        delete from sys_banner where bannerId in
+        <foreach collection="deleteIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

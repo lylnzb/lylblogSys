@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lylblog.project.system.blogSet.mapper.BlogSetMapper">
+    <!-- 字段映射 -->
+    <resultMap type="com.lylblog.project.system.blogSet.bean.BlogSetBean" id="BlogSetResult">
+        <id     property="blogSetId"     column="blog_set_id"     />
+
+        <result property="basicsetTitle"   column="basicset_title"   />
+        <result property="basicsetWebsiteIco"   column="basicset_website_ico"   />
+        <result property="basicsetDes"     column="basicset_des"      />
+        <result property="basicsetGlobalAllowComment"   column="basicset_global_allow_comment"   />
+        <result property="basicsetGlobalShowComment" column="basicset_global_show_comment" />
+        <result property="basicsetGlobalAllowReprint"   column="basicset_global_allow_reprint"   />
+        <result property="basicsetCommentNotice" column="basicset_comment_notice" />
+        <result property="basicsetOpenAppreciate" column="basicset_open_appreciate" />
+        <result property="basicsetShowArticleSource" column="basicset_show_article_source" />
+        <result property="basicsetCommentAutoReview" column="basicset_comment_auto_review" />
+        <result property="basicsetAddCopyrightNotice" column="basicset_add_copyright_notice" />
+        <result property="basicsetCopyrightNoticeInfo" column="basicset_copyright_notice_info" />
+        <result property="basicsetWebNoticeInfo" column="basicset_web_notice_info" />
+        <result property="basicsetBottomsiteInfo" column="basicset_bottomsite_info" />
+
+        <result property="bloggersetBloggerName" column="bloggerset_blogger_name" />
+        <result property="bloggersetBloggerDes" column="bloggerset_blogger_des" />
+        <result property="bloggersetBloggerProfile" column="bloggerset_blogger_profile" />
+        <result property="bloggersetBloggerQqNumber" column="bloggerset_blogger_qq_number" />
+        <result property="bloggersetBloggerWechatOrcode" column="bloggerset_blogger_wechat_orcode" />
+        <result property="bloggersetBloggerBackroundImg" column="bloggerset_blogger_backround_img" />
+
+        <result property="blogsetPerpageShowNum" column="blogset_perpage_show_num" />
+        <result property="blogsetLatestShowNum" column="blogset_latest_show_num" />
+        <result property="blogsetScrollRecommendedShowNum" column="blogset_scroll_recommended_show_num" />
+        <result property="blogsetRecommendedShowNum" column="blogset_recommended_show_num" />
+        <result property="blogsetRankingShowNum" column="blogset_ranking_show_num" />
+        <result property="blogsetSpecialRecdShowNum" column="blogset_special_recd_show_num" />
+        <result property="blogsetNoPicUseDefault" column="blogset_no_pic_use_default" />
+        <result property="blogsetNoCoverpicUseContentpic" column="blogset_no_coverpic_use_contentpic" />
+        <result property="blogsetDefaultPic" column="blogset_default_pic" />
+        <result property="blogsetFriendLinks" column="blogset_friend_links" />
+
+        <result property="eamilsetUsername" column="eamilset_username" />
+        <result property="eamilsetPassword" column="eamilset_password" />
+        <result property="eamilsetHost" column="eamilset_host" />
+        <result property="eamilsetProtocol" column="eamilset_protocol" />
+        <result property="eamilsetDefaultEncoding" column="eamilset_defaultEncoding" />
+        <result property="eamilsetVerificationCode" column="eamilset_verificationCode" />
+
+        <result property="createBy" column="createBy" />
+        <result property="createTime" column="createTime" />
+        <result property="updateBy" column="updateBy" />
+        <result property="updateTime" column="updateTime" />
+    </resultMap>
+
+    <!-- 查看博客设置 -->
+    <select id="viewBlogSetInfo" resultMap="BlogSetResult">
+        select * from sys_blogset
+    </select>
+
+    <!-- 新增博客设置 -->
+    <insert id="addBlogSetInfo" parameterType="com.lylblog.project.system.blogSet.bean.BlogSetBean">
+        insert into sys_blogset(
+            <if test="basicsetTitle != null and basicsetTitle != ''">basicset_title,</if>
+            <if test="basicsetWebsiteIco != null and basicsetWebsiteIco != ''">basicset_website_ico,</if>
+            <if test="basicsetDes != null and basicsetDes != ''">basicset_des,</if>
+            <if test="basicsetGlobalAllowComment != null and basicsetGlobalAllowComment != ''">basicset_global_allow_comment,</if>
+            <if test="basicsetGlobalShowComment != null and basicsetGlobalShowComment != ''">basicset_global_show_comment,</if>
+            <if test="basicsetGlobalAllowReprint != null and basicsetGlobalAllowReprint != ''">basicset_global_allow_reprint,</if>
+            <if test="basicsetCommentNotice != null and basicsetCommentNotice != ''">basicset_comment_notice,</if>
+            <if test="basicsetOpenAppreciate != null and basicsetOpenAppreciate != ''">basicset_open_appreciate,</if>
+            <if test="basicsetShowArticleSource != null and basicsetShowArticleSource != ''">basicset_show_article_source,</if>
+            <if test="basicsetCommentAutoReview != null and basicsetCommentAutoReview != ''">basicset_comment_auto_review,</if>
+            <if test="basicsetAddCopyrightNotice != null and basicsetAddCopyrightNotice != ''">basicset_add_copyright_notice,</if>
+            <if test="basicsetCopyrightNoticeInfo != null and basicsetCopyrightNoticeInfo != ''">basicset_copyright_notice_info,</if>
+            <if test="basicsetWebNoticeInfo != null and basicsetWebNoticeInfo != ''">basicset_web_notice_info,</if>
+            <if test="basicsetBottomsiteInfo != null and basicsetBottomsiteInfo != ''">basicset_bottomsite_info,</if>
+            <if test="bloggersetBloggerName != null and bloggersetBloggerName != ''">bloggerset_blogger_name,</if>
+            <if test="bloggersetBloggerDes != null and bloggersetBloggerDes != ''">bloggerset_blogger_des,</if>
+            <if test="bloggersetBloggerProfile != null and bloggersetBloggerProfile != ''">bloggerset_blogger_profile,</if>
+            <if test="bloggersetBloggerQqNumber != null and bloggersetBloggerQqNumber != ''">bloggerset_blogger_qq_number,</if>
+            <if test="bloggersetBloggerWechatOrcode != null and bloggersetBloggerWechatOrcode != ''">bloggerset_blogger_wechat_orcode,</if>
+            <if test="bloggersetBloggerBackroundImg != null and bloggersetBloggerBackroundImg != ''">bloggerset_blogger_backround_img,</if>
+            <if test="blogsetPerpageShowNum != null and blogsetPerpageShowNum != ''">blogset_perpage_show_num,</if>
+            <if test="blogsetLatestShowNum != null and blogsetLatestShowNum != ''">blogset_latest_show_num,</if>
+            <if test="blogsetScrollRecommendedShowNum != null and blogsetScrollRecommendedShowNum != ''">blogset_scroll_recommended_show_num,</if>
+            <if test="blogsetRecommendedShowNum != null and blogsetRecommendedShowNum != ''">blogset_recommended_show_num,</if>
+            <if test="blogsetRankingShowNum != null and blogsetRankingShowNum != ''">blogset_ranking_show_num,</if>
+            <if test="blogsetSpecialRecdShowNum != null and blogsetSpecialRecdShowNum != ''">blogset_special_recd_show_num,</if>
+            <if test="blogsetNoPicUseDefault != null and blogsetNoPicUseDefault != ''">blogset_no_pic_use_default,</if>
+            <if test="blogsetNoCoverpicUseContentpic != null and blogsetNoCoverpicUseContentpic != ''">blogset_no_coverpic_use_contentpic,</if>
+            <if test="blogsetDefaultPic != null and blogsetDefaultPic != ''">blogset_default_pic,</if>
+            <if test="blogsetFriendLinks != null and blogsetFriendLinks != ''">blogset_friend_links,</if>
+            <if test="eamilsetUsername != null and eamilsetUsername != ''">eamilset_username,</if>
+            <if test="eamilsetPassword != null and eamilsetPassword != ''">eamilset_password,</if>
+            <if test="eamilsetHost != null and eamilsetHost != ''">eamilset_host,</if>
+            <if test="eamilsetProtocol != null and eamilsetProtocol != ''">eamilset_protocol,</if>
+            <if test="eamilsetDefaultEncoding != null and eamilsetDefaultEncoding != ''">eamilset_defaultEncoding,</if>
+            <if test="eamilsetVerificationCode != null and eamilsetVerificationCode != ''">eamilset_verificationCode,</if>
+            <if test="createBy != null and createBy != ''">createBy,</if>
+            createTime
+        )value(
+            <if test="basicsetTitle != null and basicsetTitle != ''">#{basicsetTitle},</if>
+            <if test="basicsetWebsiteIco != null and basicsetWebsiteIco != ''">#{basicsetWebsiteIco},</if>
+            <if test="basicsetDes != null and basicsetDes != ''">#{basicsetDes},</if>
+            <if test="basicsetGlobalAllowComment != null and basicsetGlobalAllowComment != ''">#{basicsetGlobalAllowComment},</if>
+            <if test="basicsetGlobalShowComment != null and basicsetGlobalShowComment != ''">#{basicsetGlobalShowComment},</if>
+            <if test="basicsetGlobalAllowReprint != null and basicsetGlobalAllowReprint != ''">#{basicsetGlobalAllowReprint},</if>
+            <if test="basicsetCommentNotice != null and basicsetCommentNotice != ''">#{basicsetCommentNotice},</if>
+            <if test="basicsetOpenAppreciate != null and basicsetOpenAppreciate != ''">#{basicsetOpenAppreciate},</if>
+            <if test="basicsetShowArticleSource != null and basicsetShowArticleSource != ''">#{basicsetShowArticleSource},</if>
+            <if test="basicsetCommentAutoReview != null and basicsetCommentAutoReview != ''">#{basicsetCommentAutoReview},</if>
+            <if test="basicsetAddCopyrightNotice != null and basicsetAddCopyrightNotice != ''">#{basicsetAddCopyrightNotice},</if>
+            <if test="basicsetCopyrightNoticeInfo != null and basicsetCopyrightNoticeInfo != ''">#{basicsetCopyrightNoticeInfo},</if>
+            <if test="basicsetWebNoticeInfo != null and basicsetWebNoticeInfo != ''">#{basicsetWebNoticeInfo},</if>
+            <if test="basicsetBottomsiteInfo != null and basicsetBottomsiteInfo != ''">#{basicsetBottomsiteInfo},</if>
+            <if test="bloggersetBloggerName != null and bloggersetBloggerName != ''">#{bloggersetBloggerName},</if>
+            <if test="bloggersetBloggerDes != null and bloggersetBloggerDes != ''">#{bloggersetBloggerDes},</if>
+            <if test="bloggersetBloggerProfile != null and bloggersetBloggerProfile != ''">#{bloggersetBloggerProfile},</if>
+            <if test="bloggersetBloggerQqNumber != null and bloggersetBloggerQqNumber != ''">#{bloggersetBloggerQqNumber},</if>
+            <if test="bloggersetBloggerWechatOrcode != null and bloggersetBloggerWechatOrcode != ''">#{bloggersetBloggerWechatOrcode},</if>
+            <if test="bloggersetBloggerBackroundImg != null and bloggersetBloggerBackroundImg != ''">#{bloggersetBloggerBackroundImg},</if>
+            <if test="blogsetPerpageShowNum != null and blogsetPerpageShowNum != ''">#{blogsetPerpageShowNum},</if>
+            <if test="blogsetLatestShowNum != null and blogsetLatestShowNum != ''">#{blogsetLatestShowNum},</if>
+            <if test="blogsetScrollRecommendedShowNum != null and blogsetScrollRecommendedShowNum != ''">#{blogsetScrollRecommendedShowNum},</if>
+            <if test="blogsetRecommendedShowNum != null and blogsetRecommendedShowNum != ''">#{blogsetRecommendedShowNum},</if>
+            <if test="blogsetRankingShowNum != null and blogsetRankingShowNum != ''">#{blogsetRankingShowNum},</if>
+            <if test="blogsetSpecialRecdShowNum != null and blogsetSpecialRecdShowNum != ''">#{blogsetSpecialRecdShowNum},</if>
+            <if test="blogsetNoPicUseDefault != null and blogsetNoPicUseDefault != ''">#{blogsetNoPicUseDefault},</if>
+            <if test="blogsetNoCoverpicUseContentpic != null and blogsetNoCoverpicUseContentpic != ''">#{blogsetNoCoverpicUseContentpic},</if>
+            <if test="blogsetDefaultPic != null and blogsetDefaultPic != ''">#{blogsetDefaultPic},</if>
+            <if test="blogsetFriendLinks != null and blogsetFriendLinks != ''">#{blogsetFriendLinks},</if>
+            <if test="eamilsetUsername != null and eamilsetUsername != ''">#{eamilsetUsername},</if>
+            <if test="eamilsetPassword != null and eamilsetPassword != ''">#{eamilsetPassword},</if>
+            <if test="eamilsetHost != null and eamilsetHost != ''">#{eamilsetHost},</if>
+            <if test="eamilsetProtocol != null and eamilsetProtocol != ''">#{eamilsetProtocol},</if>
+            <if test="eamilsetDefaultEncoding != null and eamilsetDefaultEncoding != ''">#{eamilsetDefaultEncoding},</if>
+            <if test="eamilsetVerificationCode != null and eamilsetVerificationCode != ''">#{eamilsetVerificationCode},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <!-- 修改博客设置 -->
+    <update id="updateBlogSetInfo" parameterType="com.lylblog.project.system.blogSet.bean.BlogSetBean">
+        update sys_blogset set
+            <if test="basicsetTitle != null and basicsetTitle != ''">basicset_title = #{basicsetTitle},</if>
+            <if test="basicsetWebsiteIco != null and basicsetWebsiteIco != ''">basicset_website_ico = #{basicsetWebsiteIco},</if>
+            <if test="basicsetDes != null and basicsetDes != ''">basicset_des = #{basicsetDes},</if>
+            <if test="basicsetGlobalAllowComment != null and basicsetGlobalAllowComment != ''">basicset_global_allow_comment = #{basicsetGlobalAllowComment},</if>
+            <if test="basicsetGlobalShowComment != null and basicsetGlobalShowComment != ''">basicset_global_show_comment = #{basicsetGlobalShowComment},</if>
+            <if test="basicsetGlobalAllowReprint != null and basicsetGlobalAllowReprint != ''">basicset_global_allow_reprint = #{basicsetGlobalAllowReprint},</if>
+            <if test="basicsetCommentNotice != null and basicsetCommentNotice != ''">basicset_comment_notice = #{basicsetCommentNotice},</if>
+            <if test="basicsetOpenAppreciate != null and basicsetOpenAppreciate != ''">basicset_open_appreciate = #{basicsetOpenAppreciate},</if>
+            <if test="basicsetShowArticleSource != null and basicsetShowArticleSource != ''">basicset_show_article_source = #{basicsetShowArticleSource},</if>
+            <if test="basicsetCommentAutoReview != null and basicsetCommentAutoReview != ''">basicset_comment_auto_review = #{basicsetCommentAutoReview},</if>
+            <if test="basicsetAddCopyrightNotice != null and basicsetAddCopyrightNotice != ''">basicset_add_copyright_notice = #{basicsetAddCopyrightNotice},</if>
+            <if test="basicsetCopyrightNoticeInfo != null and basicsetCopyrightNoticeInfo != ''">basicset_copyright_notice_info = #{basicsetCopyrightNoticeInfo},</if>
+            <if test="basicsetWebNoticeInfo != null and basicsetWebNoticeInfo != ''">basicset_web_notice_info = #{basicsetWebNoticeInfo},</if>
+            <if test="basicsetBottomsiteInfo != null and basicsetBottomsiteInfo != ''">basicset_bottomsite_info = #{basicsetBottomsiteInfo},</if>
+            <if test="bloggersetBloggerName != null and bloggersetBloggerName != ''">bloggerset_blogger_name = #{bloggersetBloggerName},</if>
+            <if test="bloggersetBloggerDes != null and bloggersetBloggerDes != ''">bloggerset_blogger_des = #{bloggersetBloggerDes},</if>
+            <if test="bloggersetBloggerProfile != null and bloggersetBloggerProfile != ''">bloggerset_blogger_profile = #{bloggersetBloggerProfile},</if>
+            <if test="bloggersetBloggerQqNumber != null and bloggersetBloggerQqNumber != ''">bloggerset_blogger_qq_number = #{bloggersetBloggerQqNumber},</if>
+            <if test="bloggersetBloggerWechatOrcode != null and bloggersetBloggerWechatOrcode != ''">bloggerset_blogger_wechat_orcode = #{bloggersetBloggerWechatOrcode},</if>
+            <if test="bloggersetBloggerBackroundImg != null and bloggersetBloggerBackroundImg != ''">bloggerset_blogger_backround_img = #{bloggersetBloggerBackroundImg},</if>
+            <if test="blogsetPerpageShowNum != null and blogsetPerpageShowNum != ''">blogset_perpage_show_num = #{blogsetPerpageShowNum},</if>
+            <if test="blogsetLatestShowNum != null and blogsetLatestShowNum != ''">blogset_latest_show_num = #{blogsetLatestShowNum},</if>
+            <if test="blogsetScrollRecommendedShowNum != null and blogsetScrollRecommendedShowNum != ''">blogset_scroll_recommended_show_num = #{blogsetScrollRecommendedShowNum},</if>
+            <if test="blogsetRecommendedShowNum != null and blogsetRecommendedShowNum != ''">blogset_recommended_show_num = #{blogsetRecommendedShowNum},</if>
+            <if test="blogsetRankingShowNum != null and blogsetRankingShowNum != ''">blogset_ranking_show_num = #{blogsetRankingShowNum},</if>
+            <if test="blogsetSpecialRecdShowNum != null and blogsetSpecialRecdShowNum != ''">blogset_special_recd_show_num = #{blogsetSpecialRecdShowNum},</if>
+            <if test="blogsetNoPicUseDefault != null and blogsetNoPicUseDefault != ''">blogset_no_pic_use_default = #{blogsetNoPicUseDefault},</if>
+            <if test="blogsetNoCoverpicUseContentpic != null and blogsetNoCoverpicUseContentpic != ''">blogset_no_coverpic_use_contentpic = #{blogsetNoCoverpicUseContentpic},</if>
+            <if test="blogsetDefaultPic != null and blogsetDefaultPic != ''">blogset_default_pic = #{blogsetDefaultPic},</if>
+            <if test="blogsetFriendLinks != null and blogsetFriendLinks != ''">blogset_friend_links = #{blogsetFriendLinks},</if>
+            <if test="eamilsetUsername != null and eamilsetUsername != ''">eamilset_username = #{eamilsetUsername},</if>
+            <if test="eamilsetPassword != null and eamilsetPassword != ''">eamilset_password = #{eamilsetPassword},</if>
+            <if test="eamilsetHost != null and eamilsetHost != ''">eamilset_host = #{eamilsetHost},</if>
+            <if test="eamilsetProtocol != null and eamilsetProtocol != ''">eamilset_protocol = #{eamilsetProtocol},</if>
+            <if test="eamilsetDefaultEncoding != null and eamilsetDefaultEncoding != ''">eamilset_defaultEncoding = #{eamilsetDefaultEncoding},</if>
+            <if test="eamilsetVerificationCode != null and eamilsetVerificationCode != ''">eamilset_verificationCode = #{eamilsetVerificationCode},</if>
+            <if test="updateBy != null and updateBy != ''">updateBy = #{updateBy},</if>
+            updateTime = sysdate()
+    </update>
+</mapper>

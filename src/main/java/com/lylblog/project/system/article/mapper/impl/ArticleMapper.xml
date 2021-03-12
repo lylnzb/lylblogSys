@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lylblog.project.system.article.mapper.ArticleMapper">
+
+    <!-- 查询文章列表信息 -->
+    <select id="queryArticleInfo" parameterType="com.lylblog.project.system.article.bean.ArticleBean" resultType="com.lylblog.project.system.article.bean.ArticleBean">
+        SELECT
+            *
+        FROM
+            (
+        SELECT
+            ( @i := @i + 1 ) rk,
+            t.*,
+            ( SELECT columnName FROM sys_column WHERE columnId = t.columnId ) AS columnName,
+            (SELECT nickname FROM m_user WHERE yhnm = t.createBy AND valid = '1') as nickName,
+            ( SELECT dict_label FROM sys_dict_data WHERE dict_type = 'sys_article_status' AND dict_value = t.articleStatus ) AS articleStatusName,
+            ( SELECT dict_label FROM sys_dict_data WHERE dict_type = 'sys_article_form' AND dict_value = t.fromWay ) AS fromWayName
+        FROM
+            sys_article t,
+            ( SELECT @i := 0 ) rk
+        WHERE
+            1 = 1
+            <if test="articleId != null and articleId != ''"> and articleId = #{articleId}</if>
+            <if test="wznm != null and wznm != ''"> and wznm = #{wznm}</if>
+            ) AS article
+        WHERE rk BETWEEN (#{page}-1)*#{limit} + 1 AND #{page}*#{limit} ORDER BY rk
+    </select>
+
+    <!-- 查询文章列表信息 -->
+    <select id="queryArticleInfoCount" parameterType="com.lylblog.project.system.article.bean.ArticleBean" resultType="int">
+        SELECT count(1) FROM sys_article WHERE 1 = 1
+        <if test="articleId != null and articleId != ''"> and articleId = #{articleId}</if>
+        <if test="wznm != null and wznm != ''"> and wznm = #{wznm}</if>
+    </select>
+
+    <!-- 新增文章信息 -->
+    <insert id="addArticleInfo" parameterType="com.lylblog.project.system.article.bean.ArticleBean">
+        insert into sys_article(
+            <if test="wznm != null and wznm != ''">wznm,</if>
+            <if test="columnId != null and columnId != ''">columnId,</if>
+            <if test="articleTitle != null and articleTitle != ''">articleTitle,</if>
+            <if test="abstracts != null and abstracts != ''">abstracts,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="copyFrom != null and copyFrom != ''">copyFrom,</if>
+            <if test="fromWay != null and fromWay != ''">fromWay,</if>
+            <if test="fromUrl != null and fromUrl != ''">fromUrl,</if>
+            <if test="articleLabel != null and articleLabel != ''">articleLabel,</if>
+            <if test="hits != null and hits != ''">hits,</if>
+            <if test="postNum != null and postNum != ''">postNum,</if>
+            <if test="onTop != null and onTop != ''">onTop,</if>
+            <if test="iselite != null and iselite != ''">iselite,</if>
+            <if test="openIntroduce != null and openIntroduce != ''">openIntroduce,</if>
+            <if test="allowComment != null and allowComment != ''">allowComment,</if>
+            <if test="allowReprinted != null and allowReprinted != ''">allowReprinted,</if>
+            <if test="thumb != null and thumb != ''">thumb,</if>
+            <if test="articleStatus != null and articleStatus != ''">articleStatus,</if>
+            <if test="createBy != null and createBy != ''">createBy,</if>
+            createTime
+        )values(
+            <if test="wznm != null and wznm != ''">#{wznm},</if>
+            <if test="columnId != null and columnId != ''">#{columnId},</if>
+            <if test="articleTitle != null and articleTitle != ''">#{articleTitle},</if>
+            <if test="abstracts != null and abstracts != ''">#{abstracts},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="copyFrom != null and copyFrom != ''">#{copyFrom},</if>
+            <if test="fromWay != null and fromWay != ''">#{fromWay},</if>
+            <if test="fromUrl != null and fromUrl != ''">#{fromUrl},</if>
+            <if test="articleLabel != null and articleLabel != ''">#{articleLabel},</if>
+            <if test="hits != null and hits != ''">#{hits},</if>
+            <if test="postNum != null and postNum != ''">#{postNum},</if>
+            <if test="onTop != null and onTop != ''">#{onTop},</if>
+            <if test="iselite != null and iselite != ''">#{iselite},</if>
+            <if test="openIntroduce != null and openIntroduce != ''">#{openIntroduce},</if>
+            <if test="allowComment != null and allowComment != ''">#{allowComment},</if>
+            <if test="allowReprinted != null and allowReprinted != ''">#{allowReprinted},</if>
+            <if test="thumb != null and thumb != ''">#{thumb},</if>
+            <if test="articleStatus != null and articleStatus != ''">#{articleStatus},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <!-- 修改文章信息 -->
+    <update id="updateArticleInfo" parameterType="com.lylblog.project.system.article.bean.ArticleBean">
+        update sys_article set
+            <if test="wznm != null and wznm != ''">wznm = #{wznm},</if>
+            <if test="columnId != null and columnId != ''">columnId = #{columnId},</if>
+            <if test="articleTitle != null and articleTitle != ''">articleTitle = #{articleTitle},</if>
+            <if test="abstracts != null and abstracts != ''">abstracts = #{abstracts},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="copyFrom != null and copyFrom != ''">copyFrom = #{copyFrom},</if>
+            <if test="fromWay != null and fromWay != ''">fromWay = #{fromWay},</if>
+            <if test="fromUrl != null and fromUrl != ''">fromUrl = #{fromUrl},</if>
+            <if test="articleLabel != null and articleLabel != ''">articleLabel = #{articleLabel},</if>
+            <if test="hits != null and hits != ''">hits = #{hits},</if>
+            <if test="postNum != null and postNum != ''">postNum = #{postNum},</if>
+            <if test="onTop != null and onTop != ''">onTop = #{onTop},</if>
+            <if test="iselite != null and iselite != ''">iselite = #{iselite},</if>
+            <if test="openIntroduce != null and openIntroduce != ''">openIntroduce = #{openIntroduce},</if>
+            <if test="allowComment != null and allowComment != ''">allowComment = #{allowComment},</if>
+            <if test="allowReprinted != null and allowReprinted != ''">allowReprinted = #{allowReprinted},</if>
+            <if test="thumb != null and thumb != ''">thumb = #{thumb},</if>
+            <if test="articleStatus != null and articleStatus != ''">articleStatus = #{articleStatus},</if>
+            <if test="updateBy != null and updateBy != ''">updateBy = #{updateBy},</if>
+            updateTime = sysdate()
+        where articleId = #{articleId}
+    </update>
+
+    <!-- 删除文章信息 -->
+    <delete id="deleteArticleInfo">
+        delete from sys_article where articleId in
+        <foreach collection="deleteIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 查询标签信息 -->
+    <select id="queryLabelInfo" parameterType="com.lylblog.project.system.article.bean.LabelBean" resultType="com.lylblog.project.system.article.bean.LabelBean">
+        SELECT
+            *
+        FROM
+            (
+        SELECT
+            ( @i := @i + 1 ) rk,
+            t.*,
+            (SELECT columnName FROM sys_column WHERE columnId = t.columnId ) AS columnName,
+            (SELECT nickname FROM m_user WHERE yhnm = t.createBy AND valid = '1') as nickName,
+            (SELECT dict_label FROM sys_dict_data WHERE dict_type = 'sys_label_status' AND dict_value = t.valid ) AS isAvailable
+        FROM
+            sys_label t,
+            ( SELECT @i := 0 ) rk
+            where 1 = 1
+            <if test="labelId != null and labelId != ''">
+                and labelId = #{labelId}
+            </if>
+            <if test="columnId != null and columnId != ''">
+                and columnId = #{columnId}
+            </if>
+            ) AS label
+        where rk between (#{page}-1)*#{limit} + 1 and #{page}*#{limit} ORDER BY rk
+    </select>
+
+    <!-- 查询标签信息总数 -->
+    <select id="queryLabelInfoCount" parameterType="com.lylblog.project.system.article.bean.LabelBean" resultType="int">
+        select count(1) from sys_label
+        where 1 = 1
+        <if test="labelId != null and labelId != ''">
+            and labelId = #{labelId}
+        </if>
+        <if test="columnId != null and columnId != ''">
+            and columnId = #{columnId}
+        </if>
+    </select>
+
+    <!-- 新增标签 -->
+    <insert id="addLabelInfo" parameterType="com.lylblog.project.system.article.bean.LabelBean">
+        insert into sys_label(
+            <if test="labelName != null and labelName != ''">labelName,</if>
+            <if test="columnId != null and columnId != ''">columnId,</if>
+            <if test="labelRemarks != null and labelRemarks != ''">labelRemarks,</if>
+            <if test="description != null and description != ''">description,</if>
+            <if test="valid != null and valid != ''">valid,</if>
+            <if test="createBy != null and createBy != ''">createBy,</if>
+            createTime
+        )values(
+            <if test="labelName != null and labelName != ''">#{labelName},</if>
+            <if test="columnId != null and columnId != ''">#{columnId},</if>
+            <if test="labelRemarks != null and labelRemarks != ''">#{labelRemarks},</if>
+            <if test="description != null and description != ''">#{description},</if>
+            <if test="valid != null and valid != ''">#{valid},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <!-- 修改标签 -->
+    <update id="updateLabelInfo" parameterType="com.lylblog.project.system.article.bean.LabelBean">
+        update sys_label set
+            <if test="labelName != null and labelName != ''">labelName = #{labelName},</if>
+            <if test="columnId != null and columnId != ''">columnId = #{columnId},</if>
+            <if test="labelRemarks != null and labelRemarks != ''">labelRemarks = #{labelRemarks},</if>
+            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="valid != null and valid != ''">valid = #{valid},</if>
+            <if test="updateBy != null and updateBy != ''">updateBy = #{updateBy},</if>
+            updateTime = sysdate()
+        where labelId = #{labelId}
+    </update>
+
+    <!-- 删除标签 -->
+    <delete id="deleteLabelInfo">
+        delete from sys_label where labelId in
+        <foreach collection="deleteIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 多选框标签回显 -->
+    <select id="queryLabelSelect" parameterType="String" resultType="com.lylblog.project.system.article.bean.LabelSelectBean">
+        select labelName as name, labelId as value, 'true' as selected from sys_label where labelId in (${labelIds})
+    </select>
+</mapper>

@@ -1,0 +1,176 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link rel="stylesheet" href="/common/layui/css/layui.css">
+    <link href="/admin/js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/common/semantic-ui/dist/semantic.min.css">
+    <link href="/admin/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="/admin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/admin/css/animate.css" rel="stylesheet"/>
+    <link href="/admin/css/style.css" rel="stylesheet"/>
+    <link href="/admin/css/tail.css" rel="stylesheet" type="text/css">
+    <link href="/admin/css/table.css" rel="stylesheet" type="text/css" />
+    <style>
+        .department_main label{width: 10%;text-align: right;font-size: 12px}
+        .department_main input, .department_main select{margin-right: 1%;height: 32px;border: 1px #ccc solid;background-color: #fff;border-radius: 4px;padding-left: 6px;}
+        .layui-form-radio {line-height: 28px;margin: 6px 10px 0 0;padding-right: 1px;cursor: pointer;font-size: 0;}
+        .layui-form-select {width:473px;}
+
+        .layui-form .blog-file-image img {
+            width: 100%;
+            height: 100%;
+        }
+        .layui-form .blog-file-image {
+            float: left;
+            background: #ffffff;
+            width: 35px;
+            height: 35px;
+            margin-right: 10px;
+            border-radius: 2px;
+            position: relative;
+        }
+        .layui-form .blog-btn-file {
+            float: left;
+            background: #ffffff;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            width: 35px;
+            height: 35px;
+            position: relative;
+            border-radius: 2px;
+        }
+        .layui-form .blog-btn-file input[type=file] {
+            opacity: 0;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+        }
+        .layui-form .blog-btn-file .blog-btn-name {
+            text-align: center;
+            background: #ecf0f5;
+            height: 35px;
+            padding-top: 30%;
+        }
+    </style>
+</head>
+<body style="border-radius: 8px;width: 680px;overflow: hidden">
+<form id="frm" class="layui-form" action="">
+    <div id="tools-box" class="wrapper wrapper-content animated fadeInRight ibox-content" align="left">
+        <div class="department_main">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style = 'width: 189px'>上传头像：</label>
+                <div class="layui-input-block">
+                    <div class="blog-file-image">
+                        <input type="hidden" id="yhnm" name="yhnm">
+                        <img id="icon" src="/admin/img/icon.png" />
+                    </div>
+                    <div class="blog-btn-file">
+                        <input type="file" accept="image/*" class="layui-upload-img" id="blog-image" name="file">
+                        <div class="blog-btn-name">
+                            <p class="fa fa-folder-open-o"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style = 'width: 189px'><font color='red'>*</font>&nbsp;用户昵称：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="nickname" id="nickname" lay-verify="nickname" autocomplete="off"
+                               class="layui-input" style="width: 473px">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style = 'width: 189px'><font color='red'>*</font>&nbsp;邮箱：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="email" id="email" lay-verify="email" autocomplete="off"
+                               class="layui-input" style="width: 473px">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="department_main" id="isAccord">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style = 'width: 189px'><font color='red'>*</font>&nbsp;密码：</label>
+                    <div class="layui-input-inline">
+                        <input type="password" name="pwd" id="pwd" lay-verify="pwd" autocomplete="off"
+                               class="layui-input" style="width: 473px" value="12345678">
+                    </div>
+                    <span class="help-block m-b-none" style="margin-top: 40px;margin-left: 189px;"><i class="fa fa-info-circle"></i> 初始化密码为12345678</span>
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style = 'width: 189px'>性别：</label>
+                    <div class="layui-input-inline" id="sex" name="radio">
+                        <!--<input type="radio" name="sex" value="0" title="男" checked="">
+                        <input type="radio" name="sex" value="1" title="女">
+                        <input type="radio" name="sex" value="2" title="未知">-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style = 'width: 189px'>所属角色：</label>
+                    <div class="layui-input-inline" id="roleid" name="radio" style="width: 400px">
+                        <!--<input type="radio" name="js" value="0" title="博主">
+                        <input type="radio" name="js" value="1" title="管理员">
+                        <input type="radio" name="js" value="2" title="普通用户" checked="">-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style = 'width: 189px'>账号状态：</label>
+                    <div class="layui-input-inline" id="valid" name="radio">
+                        <!--<input type="radio" name="valid" value="1" title="正常" checked="">
+                        <input type="radio" name="valid" value="0" title="停用">-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style = 'width: 189px'>个性签名：</label>
+                    <div class="layui-input-inline">
+                        <textarea name="signature" id="signature" class="layui-textarea" style="width: 473px"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="notice_bot" style="z-index: 0">
+        <div class="r_right but_p">
+            <div class="layui-btn but_save" id="nsbc" lay-filter="save" lay-submit="">保存</div>
+            <div class="layui-btn but_close" id="close" onclick="Cancel()">关闭</div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript" src="/admin/js/jquery/jQuery-2.2.0.min.js"></script>
+<script src="/common/semantic-ui/dist/semantic.min.js"></script>
+<script type="text/javascript" src="/admin/js/ztree/jquery.ztree.all-3.5.js"></script>
+<script type="text/javascript" src="/admin/js/ztree/jquery.ztree.exedit-3.5.js"></script>
+<script src="/common/layui/layui.all.js"></script>
+<script src="/common/util.js"></script>
+<script src="/admin/user/js/addOrUpdaUser.js"></script>
+</body>
+</html>

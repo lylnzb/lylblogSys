@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!-- saved from url=(0072)https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html# -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 -羅氏博客</title>
+    <link rel="stylesheet" href="/common/layui/css/layui.css">
+    <link rel="stylesheet" href="/common/semantic-ui/dist/semantic.min.css">
+    <link href="/admin/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="/admin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/admin/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
+    <link href="/admin/css/animate.css" rel="stylesheet"/>
+    <link href="/admin/css/style.css" rel="stylesheet"/>
+    <link href="/admin/css/tail.css" rel="stylesheet" type="text/css">
+    <link href="/admin/css/table.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        .department_main {margin-top: -10px}
+        .department_main label{width: 10%;text-align: right;font-size: 12px}
+        .department_main input, .department_main select{margin-right: 1%;height: 32px;border: 1px #ccc solid;background-color: #fff;border-radius: 4px;padding-left: 6px;}
+        .layui-form-radio {line-height: 28px;margin: 6px 10px 0 0;padding-right: 1px;cursor: pointer;font-size: 0;}
+        /*.layui-form-select {width:473px;}*/
+    </style>
+</head>
+<body>
+<form id="frm" class="layui-form" action="">
+    <div id="tools-box" class="wrapper wrapper-content animated fadeInRight ibox-content" align="left">
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style = 'font-weight: bold;width: 189px'><font color='red'>*</font>&nbsp;角色名称：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="rolename" id="rolename" lay-verify="rolename" autocomplete="off" class="layui-input" style="width: 473px">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style = 'font-weight: bold;width: 189px'><font color='red'>*</font>&nbsp;权限字符：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="roleKey" id="roleKey" lay-verify="roleKey" class="layui-input" style="width: 473px"
+                               onkeyup="value=value.replace(/[^a-zA-Z]/g,'')"
+                               onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^a-zA-Z]/g,''))"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style = 'font-weight: bold;width: 189px'><font color='red'>*</font> 显示顺序：</label>
+                    <div class="layui-input-inline">
+                        <input type="number" name="orderBy" id="orderBy" lay-verify="orderBy" autocomplete="off" class="layui-input" style="width: 473px">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style = 'font-weight: bold;width: 189px'>状态：</label>
+                    <div class="layui-input-inline" id="valid" name="radio">
+                        <!--<input type="radio" name="valid" value="1" title="正常" checked="">
+                        <input type="radio" name="valid" value="0" title="停用">-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style = 'font-weight: bold;width: 189px'>备注：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="roledesc" id="roledesc" lay-verify="roledesc" autocomplete="off" class="layui-input" style="width: 473px">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style = 'font-weight: bold;width: 189px'><font color='red'>*</font>&nbsp;所属权限：</label>
+                    <div class="layui-input-inline" style="overflow-y:scroll;border:1px solid #e6e6e6;width: 473px;height: 250px">
+                        <p><ul id="treeDemo" class="ztree"  style=" overflow:auto;margin-left: 20px"></ul></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="notice_bot">
+        <div class="r_right but_p">
+            <div class="layui-btn but_save" id="nsbc" lay-filter="save" lay-submit="">保存</div>
+            <div class="layui-btn but_close" id="close" onclick="Cancel()">关闭</div>
+        </div>
+    </div>
+</form>
+</body>
+<script type="text/javascript" src="/admin/js/jquery/jQuery-2.2.0.min.js"></script>
+<script src="/common/util.js"></script>
+<script type="text/javascript" src="/admin/js/ztree/jquery.ztree.all-3.5.js"></script>
+<script type="text/javascript" src="/admin/js/ztree/jquery.ztree.exedit-3.5.js"></script>
+<script src="/common/layui/layui.all.js"></script>
+<script src="/admin/role/js/addRole.js"></script>
+</html>

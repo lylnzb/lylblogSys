@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!-- saved from url=(0072)https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html# -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 -羅氏博客</title>
+    <link href="/admin/js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/common/semantic-ui/dist/semantic.min.css">
+    <link rel="stylesheet" href="/common/layui/css/layui.css">
+    <link href="/admin/css/tail.css" rel="stylesheet" type="text/css">
+    <link href="/admin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/admin/css/table.css" rel="stylesheet" type="text/css" />
+    <style>
+        /*.department_main{padding: 10px 10px 0 10px}*/
+        .department_main label{width: 10%;text-align: right;font-size: 12px}
+        .department_main input, .department_main select{margin-right: 1%;height: 32px;border: 1px #ccc solid;background-color: #fff;border-radius: 4px;padding-left: 6px;}
+        .department_main textarea{resize: none;border: 1px #ccc solid;height: 50px;background-color: #fff;border-radius: 4px;padding-left: 6px;padding-top: 5px;}
+        .layui-form.layui-border-box.layui-table-view{margin: 0 auto}
+        /*layui-input-inline{width: 38.7%}*/
+        .layui-form-select {width:220px;}
+    </style>
+</head>
+<body>
+<div id="tools-box" align="left" style = 'width: 100%;padding-top: 10px'>
+    <form id="frm" class="layui-form" action="">
+        <div class="department_main">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 115px">上级菜单：</label>
+                <div class="layui-input-inline" style="width: 535px">
+                    <input type="text" id="grainProperty" name="grainProperty" lay-verify="grainProperty" autocomplete="off"
+                           class="layui-input" placeholder="" required="" disabled="disabled">
+                    <input type="hidden" id="parentId" name="parentId">
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style = 'width: 115px'>图标代码：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="iconUrl" id="iconUrl" lay-verify="iconUrl" placeholder="请选择"
+                           autocomplete="off" class="layui-input" style="cursor:pointer;width: 220px" readonly="readonly">
+                </div>
+                <label class="layui-form-label" style = 'width: 115px'>权限名称：</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="permname" name="permname" lay-verify="permname" autocomplete="off"
+                           class="layui-input" placeholder="" required="" style="width: 220px">
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 115px">权限类型：</label>
+                <div class="layui-input-inline">
+                    <!--<input type="text" id="permType" name="permType" lay-verify="permType" autocomplete="off"
+                           class="layui-input" placeholder="" required="">-->
+                    <select id="permType" name="permType" lay-verify="permType" lay-filter="college" style="width: 100%">
+                        <option value=""></option>
+                        <option value="0">目录</option>
+                        <option value="1">菜单</option>
+                        <option value="2">按钮</option>
+                    </select>
+                </div>
+                <label class="layui-form-label" style="width: 115px">菜单路径：</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="permUrl" name="permUrl" lay-verify="permType" autocomplete="off"
+                           class="layui-input" placeholder="" required="" style="width: 220px">
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 115px">授权标识：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="permControl" id="permControl" lay-verify="permControl" autocomplete="off"
+                           class="layui-input" style="width: 220px">
+                </div>
+                <label class="layui-form-label" style="width: 115px">排列顺序：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="permOrder" id="permOrder" lay-verify="permOrder" autocomplete="off"
+                           class="layui-input" style="width: 220px">
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style = 'width: 115px'>权限描述：</label>
+                <div class="layui-input-inline" style="width: 535px">
+                    <textarea id = 'permdesc' lay-verify="permdesc" placeholder="请输入权限描述..." style="width: 100%;height: 70px"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="notice_bot">
+            <div class="r_right but_p">
+                <div class="layui-btn but_save" id="nsbc" lay-filter="save" lay-submit="">保存</div>
+                <div class="layui-btn but_close" id="close">关闭</div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script type="text/javascript" src="../js/jquery/jQuery-2.2.0.min.js"></script>
+<script type="text/javascript" src="/common/util.js"></script>
+<script src="../layui/layui.js"></script>
+<script src="/admin/permission/js/addPermission.js"></script>
+</html>

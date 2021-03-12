@@ -1,0 +1,64 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <title>栏目管理</title>
+    <!--<link rel="stylesheet" href="../treetable-lay/demo/layui/css/layui.css">-->
+    <link rel="stylesheet" href="/common/layui/css/layui.css">
+    <link rel="stylesheet" href="/common/semantic-ui/dist/semantic.min.css">
+    <link href="../css/table.css" rel="stylesheet" type="text/css" />
+    <link href="../css/animate.css" rel="stylesheet"/>
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="../css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../css/ry-ui.css" rel="stylesheet"/>
+    <style>
+        .layui-table-fixed.layui-table-fixed-r .layui-table-body tr{background-color: white}
+        .table-striped {height: 95%;}
+        .label-primary, .badge-primary {
+            background-color: #1ab394;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body style="margin: 0px 10px 0px;padding: 0;background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1000px;overflow: auto">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 select-table table-striped">
+            <div class="btn-group hidden-xs" role="group" style="margin-top: 10px">
+                <a class="btn btn-info" id="addColumn" onclick="addColumn()"><i class="fa fa-plus"></i> 新增栏目</a>
+            </div>
+            <div class="btn-group hidden-xs" role="group" style="margin-top: 10px">
+                <a class="btn btn-danger" id="deleteColumn" onclick="deleteColumn()"><i class="fa fa-trash-o"></i> 批量删除</a>
+            </div>
+            <table id="demoTreeTb" class="layui-hide" lay-filter="tableEvent" style="margin: 0 auto"></table>
+        </div>
+    </div>
+</div>
+
+<!-- 表格操作列 -->
+<div id="tbBar" style="display:none;">
+    <a class="btn btn-success btn-xs" lay-event="edit"><i class="fa fa-edit"></i> 编辑</a>
+    <a class="btn btn-primary btn-xs" lay-event="del"><i class="fa fa-remove"></i> 删除</a>
+</div>
+
+<script type="text/html" id="isHidden">
+    <span class='badge badge-primary'>{{ d.typeName}}</span>
+</script>
+
+<script type="text/html" id="icon">
+    {{ if(d.isDefault == '0'){ }}
+        <p style="margin-top: 5px"><i class="{{d.columnIcon}} icon"></i>{{d.columnName}}</p>
+    {{ }else { }}
+        <p style="margin-top: 5px">{{d.columnName}}</p>
+    {{ } }}
+</script>
+
+<script type="text/javascript" src="../js/jquery/jQuery-2.2.0.min.js"></script>
+<script type="text/javascript" src="../js/bstable/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/bstable/js/bootstrap-table.js"></script>
+<script type="text/javascript" src="../js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../treetable-lay/demo/layui/layui.js"></script>
+<script type="text/javascript" src="/common/util.js"></script>
+<script type="text/javascript" src="/admin/column/js/columnData.js"></script>
+</body>
+</html>

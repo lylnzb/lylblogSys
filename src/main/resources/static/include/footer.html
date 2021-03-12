@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<footer class="ui inverted vertical segment m-padded-tb-max" style="height: 195px;" th:fragment="myFooter">
+    <div class="ui center aligned container">
+        <div class="ui inverted divided stackable grid">
+            <div class="three wide column">
+                <div class="ui inverted link list">
+                    <div class="item">
+                        <img th:src="${blogSet.bloggersetBloggerWechatOrcode}" src="/img/wechat.jpg" class="ui rounded image" alt="" style="width: 100px;margin-top: -10px;">
+                        <p style="margin-top: 5px">我的微信</p>
+                    </div>
+                </div>
+            </div>
+            <div class="ten wide column" th:utext="${blogSet.basicsetBottomsiteInfo}" style="text-align: left;display: grid;height: 130px">
+                <p>1、本站个人博客网站，个人开源项目，个人可使用，但未经许可不得用于任何商业目的！</p>
+                <p>2、本站所有的原创文章未经授权禁止转载、复制等，如有违反，将追究法律责任！</p>
+                <p>3、欢迎交流学习！</p>
+            </div>
+        </div>
+        <div class="ui inverted section divider" style="margin-bottom: 10px;margin-top: 10px"></div>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny" style="color: #73777a;" th:utext="${blogSet.basicsetWebNoticeInfo}">Copyright © 2020 - 2020 Rownn Designed by Rownn</p>
+    </div>
+</footer>
+</body>
+</html>
+<script src="../common/jquery/jquery-1.11.1.js"></script>
+<script src="../common/semantic-ui/dist/semantic.min.js"></script>

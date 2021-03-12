@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>友链申请</title>
+</head>
+<body>
+<div class="linkdialog dialog--400" id="linkdialog" th:fragment="myFriendLinkApply">
+    <div class="dialog-body dialog-body-class">
+        <div class="link-wrap-box linkApply">
+            <h2 class="title" id="title" style="font-weight: bold">
+                友链申请
+                <i class="close icon"></i>
+            </h2>
+            <div class="content-box">
+                <form class="from-box" id="loginForm" autocomplete="off">
+                    <div class="emailLabel">
+                        <div class="layui-form-item" style="margin-top: 10px;">
+                            <div class="layui-inline">
+                                <label class="layui-form-label" style = 'width: 120px;font-weight: bold;text-align: right'>
+                                    <font color='red'>*</font>&nbsp;电子邮箱：
+                                </label>
+                                <div class="layui-input-inline">
+                                    <div class="ui input focus">
+                                        <input type="text" class="userEmail required" id="userEmail" placeholder="请输入电子邮箱" style="width: 408px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="userEmailError" class="error">
+                            <div class="ui basic red pointing prompt label transition">电子邮箱不能为空</div>
+                        </div>
+                    </div>
+                    <div class="pwdLabel">
+                        <div class="layui-form-item" style="margin-top: 10px;">
+                            <div class="layui-inline">
+                                <label class="layui-form-label" style = 'width: 120px;font-weight: bold;text-align: right'>
+                                    <font color='red'>*</font>&nbsp;密码：
+                                </label>
+                                <div class="layui-input-inline">
+                                    <div class="ui input focus">
+                                        <input type="text" class="userEmail required" id="aa" placeholder="请输入电子邮箱" style="width: 408px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="userPwdError" class="error">
+                            <div class="ui basic red pointing prompt label transition">密码不能为空</div>
+                        </div>
+                    </div>
+                    <div class="describeLabel">
+                        <div class="layui-form-item" style="margin-top: 10px;">
+                            <div class="layui-inline">
+                                <label class="layui-form-label" style = 'width: 120px;font-weight: bold;text-align: right'>
+                                    <font color='red'>*</font>&nbsp;密码：
+                                </label>
+                                <div class="layui-input-inline">
+                                    <div class="ui input focus">
+                                        <div id="editor" class="editor" placeholder="对我说点什么吧...." contenteditable="true" style="width: 408px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="describeError" class="error">
+                            <div class="ui basic red pointing prompt label transition">密码不能为空</div>
+                        </div>
+                    </div>
+                    <div class="btn-box" style="margin: -15px 4px 0 0;text-align: right;">
+                        <button type="button" class="btn close">取消</button>
+                        <button type="button" class="btn ok">确认</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

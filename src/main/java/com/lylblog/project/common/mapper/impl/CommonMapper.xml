@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lylblog.project.common.mapper.CommonMapper">
+
+    <!-- 字段映射 -->
+    <resultMap type="com.lylblog.project.system.blogSet.bean.BlogSetBean" id="BlogSetResult">
+        <id     property="blogSetId"     column="blog_set_id"     />
+
+        <result property="basicsetTitle"   column="basicset_title"   />
+        <result property="basicsetWebsiteIco"   column="basicset_website_ico"   />
+        <result property="basicsetDes"     column="basicset_des"      />
+        <result property="basicsetGlobalAllowComment"   column="basicset_global_allow_comment"   />
+        <result property="basicsetGlobalShowComment" column="basicset_global_show_comment" />
+        <result property="basicsetGlobalAllowReprint"   column="basicset_global_allow_reprint"   />
+        <result property="basicsetCommentNotice" column="basicset_comment_notice" />
+        <result property="basicsetOpenAppreciate" column="basicset_open_appreciate" />
+        <result property="basicsetShowArticleSource" column="basicset_show_article_source" />
+        <result property="basicsetCommentAutoReview" column="basicset_comment_auto_review" />
+        <result property="basicsetAddCopyrightNotice" column="basicset_add_copyright_notice" />
+        <result property="basicsetCopyrightNoticeInfo" column="basicset_copyright_notice_info" />
+        <result property="basicsetWebNoticeInfo" column="basicset_web_notice_info" />
+        <result property="basicsetBottomsiteInfo" column="basicset_bottomsite_info" />
+
+        <result property="bloggersetBloggerName" column="bloggerset_blogger_name" />
+        <result property="bloggersetBloggerDes" column="bloggerset_blogger_des" />
+        <result property="bloggersetBloggerProfile" column="bloggerset_blogger_profile" />
+        <result property="bloggersetBloggerQqNumber" column="bloggerset_blogger_qq_number" />
+        <result property="bloggersetBloggerWechatOrcode" column="bloggerset_blogger_wechat_orcode" />
+        <result property="bloggersetBloggerBackroundImg" column="bloggerset_blogger_backround_img" />
+
+        <result property="blogsetPerpageShowNum" column="blogset_perpage_show_num" />
+        <result property="blogsetLatestShowNum" column="blogset_latest_show_num" />
+        <result property="blogsetScrollRecommendedShowNum" column="blogset_scroll_recommended_show_num" />
+        <result property="blogsetRecommendedShowNum" column="blogset_recommended_show_num" />
+        <result property="blogsetRankingShowNum" column="blogset_ranking_show_num" />
+        <result property="blogsetSpecialRecdShowNum" column="blogset_special_recd_show_num" />
+        <result property="blogsetNoPicUseDefault" column="blogset_no_pic_use_default" />
+        <result property="blogsetNoCoverpicUseContentpic" column="blogset_no_coverpic_use_contentpic" />
+        <result property="blogsetDefaultPic" column="blogset_default_pic" />
+        <result property="blogsetFriendLinks" column="blogset_friend_links" />
+
+        <result property="eamilsetUsername" column="eamilset_username" />
+        <result property="eamilsetPassword" column="eamilset_password" />
+        <result property="eamilsetHost" column="eamilset_host" />
+        <result property="eamilsetProtocol" column="eamilset_protocol" />
+        <result property="eamilsetDefaultEncoding" column="eamilset_defaultEncoding" />
+        <result property="eamilsetVerificationCode" column="eamilset_verificationCode" />
+
+        <result property="createBy" column="createBy" />
+        <result property="createTime" column="createTime" />
+        <result property="updateBy" column="updateBy" />
+        <result property="updateTime" column="updateTime" />
+    </resultMap>
+
+    <!-- 根据编码类别查询字典 -->
+    <select id="queryCodeValue" resultType="com.lylblog.project.system.dict.bean.DictDataBean" parameterType="String">
+        SELECT * FROM (
+            SELECT
+                    roleid AS dictvalue,
+                    rolename AS dictlabel,
+                    (case when rolekey = 'common' then 'Y' else 'N' end) as isdefault,
+					orderBy
+            FROM
+                    ( SELECT t.*, 'role' AS dict_type FROM m_role t ) AS m_role
+            WHERE dict_type = #{dictType} AND valid = '1'
+             UNION ALL
+            SELECT
+                    dict_value AS dictvalue,
+                    dict_label AS dictlabel,
+                    is_default as isdefault,
+					dict_sort as orderBy
+            FROM
+                    sys_dict_data
+            WHERE dict_type = #{dictType} AND valid = '1'
+        ) aa ORDER BY orderBy
+    </select>
+
+    <!-- 查询音乐列表 -->
+    <select id="queryMusicList" resultType="com.lylblog.project.common.bean.MusicBean" parameterType="String">
+        SELECT
+            'true' AS basic,
+            dict_label AS NAME,
+            '' AS singer,
+            '' AS img,
+            '' AS src,
+            '' AS lrc,
+            '' AS time
+        FROM sys_dict_data WHERE dict_type = 'web_music_gedan' and dict_value = #{gedan} AND valid = '1'
+        union all
+        SELECT
+            'false' AS basic,
+            musicName AS NAME,
+            singer,
+            ( SELECT fileUrl FROM sys_music_file WHERE musicId = t.musicId AND fileType = 'image' AND valid = '1' ) AS img,
+            ( SELECT fileUrl FROM sys_music_file WHERE musicId = t.musicId AND fileType = 'audio' AND valid = '1' ) AS src,
+            lyrics AS lrc,
+            length AS time
+        FROM sys_music AS t where valid = '1' and gedan = #{gedan}
+    </select>
+
+    <!-- 导航栏初始化 -->
+    <select id="queryMeunInfo" resultType="com.lylblog.project.common.bean.MenuBean" parameterType="String">
+        SELECT
+            columnId AS id,
+            columnName AS menuName,
+            columnIcon AS icon,
+            columnUrl AS menuUrl,
+            isDefault
+        FROM
+            sys_column
+        WHERE isHidden = '0'
+        <if test="isDefault != null and isDefault == 1">
+            and parentId = #{columnId}
+        </if>
+        <if test="isDefault != null and isDefault == 2">
+            and parentId = '0'
+        </if>
+        order by orderBy
+    </select>
+
+    <!-- 获取博客配置信息 -->
+    <select id="getBlogConfiguration"  resultMap="BlogSetResult">
+        select * from sys_blogset
+    </select>
+
+</mapper>

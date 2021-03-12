@@ -1,0 +1,173 @@
+a:hover, a:focus, a:active, a.active {
+    cursor: url('/img/cur/link.cur'), pointer;
+}
+
+/* 遮盖层 */
+.bg{
+    background-color: #000;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    position: fixed;
+    opacity: 0.3;
+    -webkit-opacity: 0.3;
+    -moz-opacity: 0.3;
+    z-index: 99999;
+    display: none;
+}
+.login {
+    position:fixed;
+    z-index: 99999;
+    display: none;
+}
+.userLogin .close.icon{
+    margin-top: 10px;
+}
+.dialog--400 {
+    width: 25pc;
+}
+.dialog {
+    width: 350px;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.3);
+    box-sizing: border-box;
+    z-index: 1001;
+    top:-15%;
+    left: -50%;
+    top: 100px;
+    overflow:auto;
+}
+.dialog-body-class {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.dialog-body {
+    color: #333;
+    font-size: 14px;
+    position: relative;
+    z-index: 666;
+    background: #fff;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.login-wrap-box {
+    padding: 5px 20px;
+}
+.login-wrap-box .title {
+    position: relative;
+    color: #363940;
+    font-size: 1pc;
+    border-bottom: 1px solid #e8eaec;
+    padding: 14px 1pc;
+    line-height: 1;
+}
+.login-wrap-box .content-box {
+    width: 100%;
+    margin-bottom: 10px;
+}
+.login-wrap-box .from-box {
+    text-align: left;
+    width: 100%;
+}
+.login-wrap-box .password-label, .login-wrap-box .username-label {
+    position: relative;
+    display: block;
+    margin-top: 20px;
+}
+.login-wrap-box .label .tip {
+    color: #f55845;
+    padding-right: 2px;
+}
+login-wrap-box .password, .login-wrap-box .username {
+    display: block;
+    width: 84%;
+    margin-top: 5px;
+    padding: 7px 20px 7px 34px;
+    border: 1px solid #d7d9de;
+    line-height: 1.5;
+    font-size: 13px;
+    border: 1px solid #dcdee2;
+    border-radius: 4px;
+    color: #515a6e;
+    background-color: #fff;
+    background-image: none;
+    position: relative;
+    cursor: text;
+}
+.login-wrap-box .password-label, .login-wrap-box .username-label {
+    position: relative;
+    display: block;
+    margin-top: 20px;
+}
+.login-wrap-box .password-label .dl-icon-password, .login-wrap-box .username-label .dl-icon-password {
+    top: 30px;
+    left: 8px;
+    font-size: 20px;
+}
+.login-wrap-box .btn-box {
+    margin-top: 20px;
+    line-height: 10px;
+}
+.login-wrap-box .request-btn {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    border: none;
+    text-align: center;
+    line-height: 36px;
+    color: #fff;
+    background: #19be6b;
+}
+.login-wrap-box .other-login {
+    font-size: 14px;
+    margin: 15px 0 10px;
+}
+.login-wrap-box .list {
+    text-align: center;
+    /*padding-bottom: 15px;*/
+    padding-left: 0px;
+}
+.login-wrap-box .list-item {
+    display: inline-block;
+    padding: 0 15px;
+    cursor: url('/img/cur/link.cur'), pointer;
+}
+.login-wrap-box .list-item .qq {
+    color: #1a98fc;
+    font-size: 20px;
+}
+.login-wrap-box .list-item .wechat {
+    color: #0ea432;
+    font-size: 20px;
+}
+.login-wrap-box .list-item {
+    display: inline-block;
+    padding: 0 15px;
+    cursor: url('/img/cur/link.cur'), pointer;
+}
+.login-wrap-box .list-item .weibo {
+    color: #e93847;
+}
+.fl {
+    float: left;
+}
+.login-wrap-box .loginBtn,.login-wrap-box .registerBtn,.login-wrap-box .forgotPasBtn {
+    color: #2a8bec;
+    cursor: url('/img/cur/link.cur'), pointer;
+}
+.fr {
+    float: right;
+}
+.login-wrap-box .other-login {
+    /* font-size: 14px; */
+    margin: 15px 0 10px;
+}
+.separated {
+    margin-top: 44px;
+}

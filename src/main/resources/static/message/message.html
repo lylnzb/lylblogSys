@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<!-- saved from url=(0072)https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html# -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>留言反馈 -羅氏博客</title>
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../common/semantic-ui/dist/semantic.min.css">
+    <link rel="stylesheet" href="../common/css/style.css">
+    <link rel="stylesheet" href="../common/css/tx.css">
+    <link rel="stylesheet" href="../common/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../common/qqFace/css/reset.css">
+    <link rel="stylesheet" href="../common/css/index.css">
+    <link rel="stylesheet" href="../common/css/mplayer.css">
+    <link rel="stylesheet" href="../login/css/login.css">
+    <style>
+        /*img{*/
+        /*    display: inline-block;*/
+        /*    height: auto;*/
+        /*    max-width: 100%;*/
+        /*}*/
+    </style>
+</head>
+<body>
+<!-- 遮盖层 -->
+<div id="bg" class="bg"></div>
+
+<!-- 登录框 -->
+<div class="login">
+    <div th:replace="login/login :: loginBox"></div>
+</div>
+
+<!--导航-->
+<div id="header">
+    <div th:replace="include/header :: myHeader"></div>
+</div>
+
+<!--音乐-->
+<div id="music">
+    <div th:replace="include/music :: myMusic"></div>
+</div>
+
+<!--中间-->
+<div id="main">
+    <div class="m-padded-tb-max">
+        <div class="ui container">
+            <div class="ui stackable grid">
+                <!--左边-->
+                <div class="eleven wide column">
+                    <div class="ui attached segment form">
+                        <div class="field">
+                            <h2 class="leave_position">
+                                <i class="marker icon"></i>
+                                &nbsp;您现在的位置是：<a>首页</a>&nbsp;>&nbsp;<a>留言反馈</a>
+                            </h2>
+                            <div class="ui secondary pointing menu">
+                                <a class="item active" data-tab="tab-name">留言板</a>
+                            </div>
+                            <div class="ui tab active" data-tab="tab-name">
+                                <div id="editor" class="editor" placeholder="对我说点什么吧...." contenteditable="true"></div>
+                                <input id="saytext" name="saytext" type="text" style="display: none"/>
+                                <div class="app">
+                                    <div id="emoji" style="display:inline-block;">
+                                        <i id="emotion" style="font-size: 30px;cursor:pointer;" class="smile icon"></i>
+                                    </div>&nbsp;
+                                    <div id="image" style="display:inline-block;margin-left:10px;">
+                                        <div id="imageBox1" style="display: none">
+                                            <img id="showimg1" src="" alt=""/>
+                                            <i id="close1" class="close icon" onclick="$('#imageBox1').hide();"></i>
+                                            <i class="caret up"></i>
+                                        </div>
+                                        <div id="uploadImg">
+                                            <input type="file" accept="image/*" onchange="showImg(1,this)"/>
+                                        </div>
+                                        <i style="font-size: 30px;cursor:pointer;" class="image icon"></i>
+                                    </div>
+                                    <div class="submit" >
+                                        <button class="ui primary button" id="sub_btn">发布评论</button>
+                                    </div>
+                                </div>
+                                <div class="ui divider" style="margin-top: 25px"></div>
+                                <div class="message">
+                                    <span style="font-size: 20px">留言列表(100)</span>
+                                </div>
+                                <div class="ui divider"></div>
+                                <div class="ui comments">
+                                    <div class="comment">
+                                        <a class="avatar">
+                                            <img src="../img/matt.jpg">
+                                        </a>
+                                        <div class="content">
+                                            <a class="author">测试人1</a>
+                                            <div class="metadata">
+                                                <span class="date">2020-07-18 13:34:24</span>
+                                            </div>
+                                            <div class="text">
+                                                哈哈，欢迎大家来到我的博客。
+                                            </div>
+                                            <div class="actions">
+                                                <a class="reply" style="display:inline-block;">回复</a>
+                                                <div class="like" style="display:inline-block;">
+                                                    <i class="thumbs up icon" style="width: 9px"></i>(<span class="num">0</span>)
+                                                    <em style="display: none">+1</em>
+                                                </div>
+                                            </div>
+                                            <div class="ui divider" style="margin-top: 10px"></div>
+                                        </div>
+                                    </div>
+                                    <div class="comment">
+                                        <a class="avatar">
+                                            <img src="../img/elliot.jpg">
+                                        </a>
+                                        <div class="content">
+                                            <a class="author">测试人2</a>
+                                            <div class="metadata">
+                                                <span class="date">2020-06-23 13:34:00</span>
+                                            </div>
+                                            <div class="text">
+                                                <p>这对我的研究非常有用。谢谢!</p>
+                                            </div>
+                                            <div class="actions">
+                                                <a class="reply" style="display:inline-block;">回复</a>
+                                                <div class="like" style="display:inline-block;">
+                                                    <i class="thumbs up icon" style="width: 9px"></i>(<span class="num">0</span>)
+                                                    <em style="display: none">+1</em>
+                                                </div>
+                                            </div>
+                                            <div class="ui divider" style="margin-top: 10px"></div>
+                                        </div>
+                                        <div class="comments">
+                                            <div class="comment">
+                                                <a class="avatar">
+                                                    <img src="../img/jenny.jpg">
+                                                </a>
+                                                <div class="content">
+                                                    <a class="author">测试人3</a>
+                                                    <div class="metadata">
+                                                        <span class="date">2020-06-23 15:12:14</span>
+                                                    </div>
+                                                    <div class="text">
+                                                        艾略特你总是这样:)
+                                                    </div>
+                                                    <div class="actions">
+                                                        <a class="reply" style="display:inline-block;">回复</a>
+                                                        <div class="like" style="display:inline-block;">
+                                                            <i class="thumbs up icon" style="width: 9px"></i>(<span class="num">0</span>)
+                                                            <em style="display: none">+1</em>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ui divider" style="margin-top: 10px"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="comment">
+                                        <a class="avatar">
+                                            <img src="../img/joe.jpg">
+                                        </a>
+                                        <div class="content">
+                                            <a class="author">测试人4</a>
+                                            <div class="metadata">
+                                                <span class="date">2020-05-15 16:18:34</span>
+                                            </div>
+                                            <div class="text">
+                                                老兄,这是可怕的。非常感谢。
+                                            </div>
+                                            <div class="actions">
+                                                <a class="reply" style="display:inline-block;">回复</a>
+                                                <div class="like" style="display:inline-block;">
+                                                    <i class="thumbs up icon" style="width: 9px"></i>(<span class="num">0</span>)
+                                                    <em style="display: none">+1</em>
+                                                </div>
+                                            </div>
+                                            <div class="ui divider" style="margin-top: 10px"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--右边-->
+                <div class="five wide column">
+                    <!--分类-->
+                    <div class="ui segments">
+                        <div class="ui secondary segment">
+                            <div class="ui two column grid">
+                                <div class="column">
+                                    <i class="idea icon"></i>分类
+                                </div>
+                                <div class="right aligned column">
+                                    <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#">更多 &gt;&gt;</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui teal segment">
+                            <div class="ui fluid vertical menu">
+                                <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#" class="item">人生经历
+                                    <div class="ui teal basic label">10</div>
+                                </a>
+                            </div>
+                            <div class="ui fluid vertical menu">
+                                <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#" class="item">人生经历
+                                    <div class="ui teal basic label">10</div>
+                                </a>
+                            </div>
+                            <div class="ui fluid vertical menu">
+                                <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#" class="item">人生经历
+                                    <div class="ui teal basic label">10</div>
+                                </a>
+                            </div>
+                            <div class="ui fluid vertical menu">
+                                <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#" class="item">人生经历
+                                    <div class="ui teal basic label">10</div>
+                                </a>
+                            </div>
+                            <div class="ui fluid vertical menu">
+                                <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#" class="item">人生经历
+                                    <div class="ui teal basic label">10</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--标签-->
+                    <div class="ui segments">
+                        <div class="ui secondary segment">
+                            <div class="ui two column grid">
+                                <div class="column">
+                                    <i class="tags icon"></i>最新书籍
+                                </div>
+                                <div class="right aligned column">
+                                    <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#">更多 &gt;&gt;</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui teal segment">
+                            <div class="ui items">
+                                <div class="item">
+                                    <a class="ui small image" style="width: 90px;height: 130px">
+                                        <img src="../img/thumb.png">
+                                    </a>
+                                    <div class="content">
+                                        <a class="header">JSP动态网站技术入...</a>
+                                        <div class="description">
+                                            <p>Java在Internet领域内发展出来的JSP(Java Server Page)和Servlet技术是...</p>
+                                        </div>
+                                        <div class="extra">
+                                            <div class="ui label">作者：太阳工作室</div>
+                                            <div class="ui label"><i class="eye icon"></i>10</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui divider"></div>
+                                <div class="item">
+                                    <a class="ui small image" style="width: 90px;height: 130px">
+                                        <img src="../img/biancheng.jpg">
+                                    </a>
+                                    <div class="content">
+                                        <a class="header">Java编程思想(第4版)</a>
+                                        <div class="description">
+                                            <p>编辑推荐《Java编程思想(第4版)》获奖历史：·2003年《Software Development》...</p>
+                                        </div>
+                                        <div class="extra">
+                                            <div class="ui label">作者：埃史尔</div>
+                                            <div class="ui label"><i class="eye icon"></i>10</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui divider"></div>
+                                <div class="item">
+                                    <a class="ui small image" style="width: 90px;height: 130px">
+                                        <img src="../img/javahx.jpg">
+                                    </a>
+                                    <div class="content">
+                                        <a class="header">Java核心技术(卷1):基...</a>
+                                        <div class="description">
+                                            <p>Java领域最有影响力和价值的著作之一，与《Java编程思想》齐名，10余年全球...</p>
+                                        </div>
+                                        <div class="extra">
+                                            <div class="ui label">作者：霍斯特曼</div>
+                                            <div class="ui label"><i class="eye icon"></i>10</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui divider"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--最新推荐-->
+                    <div class="ui segment">
+                        <div class="ui secondary segment">
+                            <i class="bookmark icon"></i>最新推荐
+                        </div>
+                        <div class="ui segment">
+                            <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#" target="_blank" class="m-black m-text-thin">人生导师(my story)</a>
+                        </div>
+                        <div class="ui segment">
+                            <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#" target="_blank" class="m-black m-text-thin">心灵鸡汤(my video)</a>
+                        </div>
+                        <div class="ui segment">
+                            <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#" target="_blank" class="m-black m-text-thin">自我认知</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--底部-->
+<div id="footer">
+    <div th:replace="include/footer :: myFooter"></div>
+</div>
+</body>
+</html>
+<!--<script src="../common/jquery/jquery-1.11.1.js"></script>-->
+<script src="../common/qqFace/js/jquery.min.js"></script>
+<script src="../common/util.js"></script>
+<script src="../common/qqFace/js/jquery.qqFace.js"></script>
+<script src="../common/semantic-ui/dist/semantic.min.js"></script>
+<script src="../login/js/login.js"></script>
+<script src="../common/layui/layui.all.js"></script>
+<script src="/common/mPlayer/mplayer.js"></script>
+<script src="/common/mPlayer/mplayer-list.js"></script>
+<script src="/common/mPlayer/mplayer-functions.js"></script>
+<script src="http://cdn.bootcss.com/jquery-nstslider/1.0.13/jquery.nstSlider.min.js"></script>
+<script type="text/javascript" src="/common/player.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.pointing.menu .item').tab();
+
+        $('.ui.dropdown').dropdown();
+
+        $('#emotion').qqFace({
+            id : 'facebox',
+            assign:'editor',
+            path:'/common/qqFace/arclist/'	//表情存放的路径
+        });
+
+        $(".like").click(function(){
+            var html = "+1";
+            $(this).find('em').html(html);
+            $(this).find('em').fadeIn(500);
+            $(this).find('em').fadeOut(500);
+            setTimeout(function () {
+                $(this).attr('data-num', '9');
+                $(this).find('.num').html('4');
+            }, 500);
+        });
+
+        $(".reply").click(function(){
+            $(".replyBar").remove();
+            var html = '';
+            html += '<div class="replyBar">';
+            html += '    <div id="reply" class="editor" placeholder="对我说点什么吧...." contenteditable="true"></div>';
+            html += '    <div class="app">';
+            html += '        <div class="emoji" style="display:inline-block;">';
+            html += '            <i style="font-size: 30px;cursor:pointer;" class="smile icon emotion"></i>';
+            html += '        </div>';
+            html += '        <div class="image" style="display:inline-block;">';
+            html += '            <div id="imageBox2" style="display: none">';
+            html += '                <img id="showimg2" src="" alt=""/>';
+            html += '                <i id="close2" class="close icon" onclick="$(\'#imageBox2\').hide()"></i>';
+            html += '                <i class="caret up"></i>';
+            html += '            </div>';
+            html += '            <div id="uploadImg">';
+            html += '                <input type="file" accept="image/*" style="cursor:pointer;" onchange="showImg(2,this)"/>';
+            html += '            </div>';
+            html += '            <i style="font-size: 30px;" class="image icon"></i>';
+            html += '        </div>';
+            html += '        <div class="submit">';
+            html += '            <button class="ui primary button" clsss="sub_btn">发布评论</button>';
+            html += '        </div>';
+            html += '    </div>';
+            html += ' </div>';
+            $(this).parent().append(html);
+
+            $('.emotion').qqFace({
+                id : 'facebox1',
+                assign:'reply',
+                path:'/common/qqFace/arclist/'	//表情存放的路径
+            });
+        });
+    });
+
+    function showImg(id,file){
+        var reader = new FileReader();	// 实例化一个FileReader对象，用于读取文件
+        var img = '';
+        if(id == 1){
+            img = document.getElementById('showimg1'); 	// 获取要显示图片的标签
+        }else if(id == 2){
+            img = document.getElementById('showimg2'); 	// 获取要显示图片的标签
+        }
+        //读取File对象的数据
+        reader.onload = function(evt){
+            img.width  =  "80";
+            img.height =  "80";
+            img.src = evt.target.result;
+        }
+        reader.readAsDataURL(file.files[0]);
+        if(id == 1){
+            $("#imageBox1").show();
+        }else if(id == 2){
+            $("#imageBox2").show();
+        }
+    }
+
+    //悬浮变色事件
+    $('.like').mouseover(function(){
+        $(this).css({
+            'color':'#212E0A4E'
+        });
+    });
+    $('.like').mouseout(function(){
+        $(this).css({
+            'color':'#333'
+        });
+    });
+</script>

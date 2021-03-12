@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>测试表格重载</title>
+  <link rel="stylesheet" href="layui/src/css/layui.css" media="all">
+  <style>
+    body {
+      margin: 10px;
+    }
+
+    .layui-form-label {
+      width: 100px;
+    }
+
+    .layui-input-block {
+      margin-left: 130px;
+    }
+
+    .layui-btn.layui-btn-pink {
+      background-color: pink;
+    }
+  </style>
+</head>
+<body>
+<a href='https://gitee.com/sun_zoro/layuiTablePlug' target="gitee_tablePlug"
+   style="position: absolute; right: 0;top:0;">
+  <img src='https://gitee.com/sun_zoro/layuiTablePlug/widgets/widget_1.svg' alt='Fork me on Gitee'>
+</a>
+<div class="layui-row layui-col-space10">
+  <div class="layui-col-xs12">
+    <div class="layui-form">
+      <div class="layui-form-item">
+        <label class="layui-form-label">是否跨页记录</label>
+        <div class="layui-input-inline">
+          <input type="checkbox" name="status" lay-skin="switch" lay-filter="statusSwitch">
+        </div>
+        <div class="layui-input-inline">
+          <span class="layui-btn layui-btn-sm layui-btn-danger" onclick="resetCheckboxStatus(this)" data-id="demo">重置选中状态</span>
+        </div>
+
+        <label class="layui-form-label" style="width: 135px;">是否启用智能reload</label>
+        <div class="layui-input-inline">
+          <input type="checkbox" name="status" lay-skin="switch" lay-filter="smartSwitch" checked="">
+        </div>
+        <label class="layui-form-label" style="width: 190px;">当前表格要不要智能reload</label>
+        <div class="layui-input-inline">
+          <input type="checkbox" name="status" lay-skin="switch" lay-filter="tableSmartSwitch" checked="">
+        </div>
+      </div>
+    </div>
+    <table class="layui-hide" id="demo" lay-filter="test"></table>
+  </div>
+</div>
+
+<script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script type="text/html" id="toolbarDemo">
+  <div class="layui-btn-container layui-inline">
+    <span class="layui-btn layui-btn-sm" lay-event="getChecked">获得选中的数据</span>
+    <span class="layui-btn layui-btn-sm layui-btn-warm" lay-event="jump" data-page="1">第1页</span>
+    <span class="layui-btn layui-btn-sm layui-btn-warm" lay-event="jump" data-page="2">第2页</span>
+    <span class="layui-btn layui-btn-sm layui-btn-primary" lay-event="reload">重载(table.reload)</span>
+    <span class="layui-btn layui-btn-sm layui-btn-primary" lay-event="reloadIns">另一种重载(tableIns.reload)</span>
+  </div>
+  <div class="layui-input-inline">
+    <input name="name" class="layui-input" autocomplete="off">
+  </div>
+  <div class="layui-btn-container layui-inline">
+    <span class="layui-btn layui-btn-sm layui-btn-danger" lay-event="reload" data-url="data_null">error(404,500)</span>
+    <span class="layui-btn layui-btn-sm layui-btn-primary" lay-event="reload" data-url="data_none">无数据</span>
+    <span class="layui-btn layui-btn-sm layui-btn-warm" lay-event="reload" data-url="data_code_error">状态码异常</span>
+    <!--<span class="layui-btn layui-btn-sm layui-btn-warm" lay-event="reload" data-url="data11" data-option="{totalRow: false}">不显示totalRow</span>-->
+    <!--<span class="layui-btn layui-btn-sm layui-btn-primary" lay-event="reload" data-url="data11" data-option="{totalRow: true}">显示totalRow</span>-->
+    <span class="layui-btn layui-btn-sm" lay-event="reload" data-url="data11">正常</span>
+    <span class="layui-btn layui-btn-sm layui-btn-warm" lay-event="reload" data-url="data11"
+          data-option="{page: {curr: 1}}">分页</span>
+    <span class="layui-btn layui-btn-sm layui-btn-warm" lay-event="reload" data-url="data11"
+          data-option="{page: false}">不分页</span>
+    <span class="layui-btn layui-btn-sm layui-btn-warm" lay-event="autoReload">自动刷新(reload)</span>
+    <span class="layui-btn layui-btn-sm layui-btn-pink" lay-event="autoRefresh" data-time="500">自动刷新(refresh)</span>
+  </div>
+</script>
+
+<script src="layui/src/layui.js"></script>
+<script>
+
+  layui.config({base: 'test/js/'}).use(['testTablePlug'], function () {
+    var $ = layui.jquery
+      , layer = layui.layer //弹层
+      , form = layui.form //弹层
+      , table = layui.table //表格
+      , tablePlug = layui.tablePlug //表格插件
+
+    // 处理操作列
+    var fn1 = function (field) {
+      return function (data) {
+        return data[field];
+      };
+    };
+
+    //执行一个 table 实例
+    table.render({
+      elem: '#demo'
+      , height: 600
+      , url: 'json/data11.json' //数据接口
+      // , data: data
+      // , page: {}
+      , title: '用户表'
+      , page: {} //开启分页
+      , loading: true
+      , toolbar: '#toolbarDemo' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+      , totalRow: true //开启合计行
+      , cellMinWidth: 90
+      // 是否开启字段筛选的记忆功能，支持true/false/'local'/'session'/其他 开启的情况下默认是session，除非显式的指定为'local'
+      , colFilterRecord: true
+      // 是否开启智能reload的模式
+      , smartReloadModel: true
+      , done: function () {
+        // var tableView = this.elem.next();
+        // var totalRow = tableView.find('.layui-table-total');
+        // var limit = this.page ? this.page.limit : this.limit;
+        // layui.each(totalRow.find('td'), function (index, tdElem) {
+        //   tdElem = $(tdElem);
+        //   var text = tdElem.text();
+        //   if (text && !isNaN(text)) {
+        //     text = (parseFloat(text) / limit).toFixed(2);
+        //     tdElem.find('div.layui-table-cell').html(text);
+        //   }
+        // });
+      },
+      parseData: function (ret) {
+        return {
+          code: ret.code,
+          msg: ret.msg,
+          // count: Math.ceil((ret.data ? (ret.data.total || 0) : 0)*Math.random()), // 伪造数据条数发生改变的情况
+          count: ret.data ? (ret.data.total || 0) : 0,
+          data: ret.data ? (ret.data.list || []) : []
+        }
+      }
+      // , checkStatus: {}
+      , cols: [
+        [
+          {type: 'checkbox', fixed: 'left', rowspan: 2},
+          {
+            type: 'numbers',
+            fixed: 'left',
+            rowspan: 2
+          },
+          {
+            field: 'id',
+            title: 'ID',
+            width: 80,
+            sort: true,
+            fixed: 'left',
+            // totalRowText: '平均:',
+            rowspan: 2
+          },
+          {title: '基本信息', colspan: 2, align: 'center'},
+          {title: '详细信息', colspan: 6, align: 'center'},
+          {
+            fixed: 'right',
+            type: 'toolbar',
+            field: 'toolbar_common',
+            title: '操作',
+            width: 80,
+            align: 'center',
+            toolbar: '#barDemo',
+            rowspan: 2
+          }
+        ]
+        , [ //表头
+          {field: 'username', title: '姓名', hideable: false}
+          , {field: 'sex', title: '性别', width: 90, sort: true}
+          , {
+            field: 'experience'
+            , title: '积分'
+            , width: 90
+            , templet: function (d) {
+              return d.experience + Math.ceil(10000 * Math.random()) /*/ 100*/
+            }
+            , sort: true
+            , totalRow: true
+            , totalFormat: function (tableId, data, field) {
+              var options = this;
+              var res = 0;
+              var tableView = options.elem.next();
+              layui.each(tableView.find('.layui-table-main td[data-field="' + field + '"]'), function (index, item) {
+                res += parseFloat($(item).text()) || 0;
+              });
+              // 如果是异步的就调用下面这一句
+              // tablePlug.renderTotal(tableId, field, res);
+              // 如果不是异步的请求的可以调用上一句代码也可以直接将结果返回即可
+              return res;
+            }
+          }
+          , {field: 'score', title: '评分', edit: true, width: 90, sort: true, totalRow: true}
+          , {field: 'city', title: '城市', width: 150, templet: fn1('city')}
+          , {field: 'sign', title: '签名', style: 'background-color: yellowgreen;color: #fff;', width: 200}
+          , {field: 'classify', title: '职业', width: 100}
+          , {field: 'wealth', title: '财富', width: 135, edit: true, sort: true, totalRow: true}
+        ]
+      ]
+    });
+  });
+</script>
+</body>
+</html>

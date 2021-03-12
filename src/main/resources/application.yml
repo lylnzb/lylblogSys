@@ -1,0 +1,58 @@
+# 项目相关配置
+lylblog:
+  # 名称
+  name: LylBlog
+  # 版本
+  version: 2.4.0
+  # 版权年份
+  copyrightYear: 2020
+  # 头像上传路径
+  profile: E:/profile/
+  # 音乐上传路径
+  musicfile: E:/musicfile/
+  # 文章上传路径
+  articlefile: E:/articlefile/
+  # 百度编辑器文件保存路径
+  ueditorfile: E:/ueditorfile/
+  # 获取ip地址开关
+  addressEnabled: false
+  # 项目域名
+  basePath: http://127.0.0.1/
+server:
+  port: 80
+spring:
+  redis:
+    host: 127.0.0.1
+    post: 6379
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+    timeout: 5000
+  # thymeleaf
+  thymeleaf:
+    prefix: classpath:/static/
+    check-template-location: true
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML5
+    cache: false
+    servlet:
+      content-type: text/html
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/rocheblog?useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+  mvc:
+    favicon:
+      enabled: false
+  #文件上传
+  servlet:
+    multipart:
+      max-file-size:  30MB
+      max-request-size:  30MB
+mybatis:
+  mapper-locations: classpath*:com/lylBlog/**/**/**/*.xml

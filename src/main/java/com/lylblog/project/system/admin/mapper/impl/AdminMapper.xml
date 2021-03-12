@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lylblog.project.system.admin.mapper.AdminMapper">
+
+    <!-- 查询所有用户信息 -->
+    <select id="queryUserList" parameterType="com.lylblog.project.system.admin.bean.UserBean" resultType="com.lylblog.project.system.admin.bean.UserBean">
+        SELECT
+            *
+        FROM
+            (
+        SELECT
+            m_user.*,
+            (select iconUrl from m_user_icon where yhnm = m_user.yhnm and isActivity = '1') as iconUrl,
+            t2.roleid,
+            t2.rolename
+        FROM
+            (
+        SELECT
+            ( @i := @i + 1 ) rk,
+            t.*
+        FROM
+            m_user t,
+            ( SELECT @i := 0 ) rk
+            ) AS m_user
+            LEFT JOIN m_user_role AS t1 ON m_user.yhnm = t1.yhnm
+            LEFT JOIN m_role AS t2 ON t1.roleid = t2.roleid
+        WHERE 1 = 1
+        <if test="roleId != null and roleId != ''"> and t2.roleid = #{roleId}</if>
+        <if test="nickName != null and nickName != ''"> and m_user.nickname like concat('%',#{nickName},'%')</if>
+        <if test="valid != null and valid != ''"> and m_user.valid = #{valid}</if>
+            ) AS t
+        where rk between (#{page}-1)*#{limit} + 1 and #{page}*#{limit} ORDER BY rk
+    </select>
+
+    <!-- 查询所有用户信息总数 -->
+    <select id="queryUserListCount" parameterType="com.lylblog.project.system.admin.bean.UserBean" resultType="int">
+        SELECT
+           count(1)
+        FROM m_user
+           LEFT JOIN m_user_role AS t1 ON m_user.yhnm = t1.yhnm
+           LEFT JOIN m_role AS t2 ON t1.roleid = t2.roleid
+        WHERE 1 = 1
+        <if test="roleId != null and roleId != ''"> and t2.roleid = #{roleId}</if>
+        <if test="nickName != null and nickName != ''"> and m_user.nickname like concat('%',#{nickName},'%')</if>
+        <if test="valid != null and valid != ''"> and m_user.valid = #{valid}</if>
+    </select>
+
+    <!-- 新增用户信息 -->
+    <insert id="addUserInfo" parameterType="com.lylblog.project.system.admin.bean.UserBean">
+        insert into m_user(
+            <if test="yhnm != null and yhnm != ''">yhnm,</if>
+            <if test="sex != null and sex != ''">sex,</if>
+            <if test="nickName != null and nickName != ''">nickName,</if>
+            <if test="email != null and email != ''">email,</if>
+            <if test="password != null and password != ''">password,</if>
+            <if test="salt != null and salt != ''">salt,</if>
+            <if test="signature != null and signature != ''">signature,</if>
+            <if test="valid != null and valid != ''">valid,</if>
+            regtime
+        )values(
+            <if test="yhnm != null and yhnm != ''">#{yhnm},</if>
+            <if test="sex != null and sex != ''">#{sex},</if>
+            <if test="nickName != null and nickName != ''">#{nickName},</if>
+            <if test="email != null and email != ''">#{email},</if>
+            <if test="password != null and password != ''">#{password},</if>
+            <if test="salt != null and salt != ''">#{salt},</if>
+            <if test="signature != null and signature != ''">#{signature},</if>
+            <if test="valid != null and valid != ''">#{valid},</if>
+            SYSDATE()
+        )
+    </insert>
+
+    <!-- 修改用户信息 -->
+    <update id="updateUserInfo" parameterType="com.lylblog.project.system.admin.bean.UserBean">
+        update m_user set
+            <if test="sex != null and sex != ''">sex = #{sex},</if>
+            <if test="nickName != null and nickName != ''">nickName = #{nickName},</if>
+            <if test="email != null and email != ''">email = #{email},</if>
+            <if test="password != null and password != ''">password = #{password},</if>
+            <if test="salt != null and salt != ''">salt = #{salt},</if>
+            <if test="signature != null and signature != ''">signature = #{signature},</if>
+            <if test="valid != null and valid != ''">valid = #{valid},</if>
+            userId = #{userId}
+        where userId = #{userId}
+    </update>
+
+    <!-- 停用账号 -->
+    <update id="disableUserInfo" parameterType="String">
+        update m_user set valid = '0' where userId in
+        <foreach collection="userIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!-- 新增用户头像信息数据 -->
+    <insert id="insertUserIcon" parameterType="com.lylblog.project.system.admin.bean.UserIconBean">
+        insert into m_user_icon(
+            <if test="yhnm != null and yhnm != ''">yhnm,</if>
+            <if test="iconUrl != null and iconUrl != ''">iconUrl,</if>
+            <if test="isActivity != null and isActivity != ''">isActivity,</if>
+            createtime
+        )values(
+            <if test="yhnm != null and yhnm != ''">#{yhnm},</if>
+            <if test="iconUrl != null and iconUrl != ''">#{iconUrl},</if>
+            <if test="isActivity != null and isActivity != ''">#{isActivity},</if>
+            sysdate()
+        )
+    </insert>
+
+    <!-- 指定用户是否存在头像 -->
+    <select id="isUserIcon" resultType="int" parameterType="String">
+        select count(1) from m_user_icon where yhnm =#{yhnm} and isActivity = '1'
+    </select>
+
+    <!-- 修改头像状态 -->
+    <update id="updateUserIconStatus" parameterType="String">
+        update m_user_icon set isActivity = #{isActivity} where yhnm = #{yhnm}
+    </update>
+
+    <!-- 重置密码 -->
+    <update id="resetPassword" parameterType="Map">
+        update m_user set password = #{password}, salt = #{salt} where email = #{email}
+    </update>
+
+    <!-- 查询所有角色信息 -->
+    <select id="queryRoleList" parameterType="com.lylblog.project.system.admin.bean.RoleBean" resultType="com.lylblog.project.system.admin.bean.RoleBean">
+        SELECT
+            m_role.*,
+            ( SELECT email FROM m_user WHERE yhnm = m_role.createperson ) founder,
+            ( SELECT email FROM m_user WHERE yhnm = m_role.modifyperson ) modifier
+        FROM
+            (
+        SELECT
+            ( @i := @i + 1 ) rk,
+            t.*
+        FROM
+            m_role t,
+            ( SELECT @i := 0 ) rk
+        where 1 = 1
+        <if test="roleid != null and roleid != ''">
+            and roleid = #{roleid}
+        </if>
+        order by orderBy
+        ) AS m_role
+        <if test="limit != null and limit != ''">
+            where rk between (#{page}-1)*#{limit} + 1 and #{page}*#{limit}
+        </if>
+    </select>
+
+    <!-- 查询所有角色信息总数 -->
+    <select id="queryRoleListCount" parameterType="com.lylblog.project.system.admin.bean.RoleBean" resultType="int">
+        select count(1) from m_role
+        where 1 = 1
+        <if test="roleid != null and roleid != ''">
+            and roleid = #{roleid}
+        </if>
+    </select>
+
+    <!-- 新增角色信息 -->
+    <insert id="addRoleInfo" parameterType="com.lylblog.project.system.admin.bean.RoleBean" useGeneratedKeys="true" keyProperty="roleid">
+        insert into m_role (
+            <if test="roleid != null and roleid != 0">roleid,</if>
+            <if test="rolename != null and rolename != ''">rolename,</if>
+            <if test="roledesc != null and roledesc != ''">roledesc,</if>
+            <if test="rolekey != null and rolekey != ''">rolekey,</if>
+            <if test="orderBy != null and orderBy != ''">orderBy,</if>
+            <if test="valid != null and valid != ''">valid,</if>
+            <if test="createperson != null and createperson != ''">createperson,</if>
+            createtime
+        ) values (
+            <if test="roleid != null and roleid != 0">#{roleid},</if>
+            <if test="rolename != null and rolename != ''">#{rolename},</if>
+            <if test="roledesc != null and roledesc != ''">#{roledesc},</if>
+            <if test="rolekey != null and rolekey != ''">#{rolekey},</if>
+            <if test="orderBy != null and orderBy != ''">#{orderBy},</if>
+            <if test="valid != null and valid != ''">#{valid},</if>
+            <if test="createperson != null and createperson != ''">#{createperson},</if>
+            #{createtime}
+        )
+    </insert>
+
+    <!-- 修改角色信息 -->
+    <update id="updateRoleInfo" parameterType="com.lylblog.project.system.admin.bean.RoleBean">
+        update m_role set
+            <if test="rolename != null and rolename != ''">rolename = #{rolename},</if>
+            <if test="roledesc != null and roledesc != ''">roledesc = #{roledesc},</if>
+            <if test="rolekey != null and rolekey != ''">rolekey = #{rolekey},</if>
+            <if test="orderBy != null and orderBy != ''">orderBy = #{orderBy},</if>
+            <if test="valid != null and valid != ''">valid = #{valid},</if>
+            <if test="createperson != null and createperson != ''">createperson = #{createperson},</if>
+            <if test="createtime != null and createtime != ''">createtime = #{createtime},</if>
+            roleid = #{roleid}
+        where roleid = #{roleid}
+    </update>
+
+    <!-- 删除角色信息 -->
+    <delete id="deleteRoleInfo">
+        delete from m_role where roleid in
+        <foreach collection="deleteIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 查询所有权限信息 -->
+    <select id="queryPermInfoToTree" parameterType="com.lylblog.project.system.admin.bean.PermissionBean" resultType="com.lylblog.project.common.bean.ZTreeBean">
+        SELECT permid as id,permname as name,parentid,permType,'true' as open,'false' as nocheck FROM m_permission ORDER BY permOrder
+    </select>
+
+    <!-- 通过角色id查询所有权限id，用于数据回显 -->
+    <select id="queryPermsByRoleId" parameterType="String" resultType="String">
+        select permid from m_role_permission where roleid = #{roleId}
+    </select>
+
+    <!-- 通过id查询权限详情 -->
+    <select id="qeuryPermInfoByConditions" parameterType="com.lylblog.project.system.admin.bean.PermissionBean" resultType="com.lylblog.project.system.admin.bean.PermissionBean">
+        SELECT t.*, IFNULL((select permname from m_permission where permid = t.parentid),'最高级别') as parentName FROM m_permission t where 1=1
+        <if test="permId != null and permId != ''">
+            and permId = #{permId}
+        </if>
+        <if test="parentId != null and parentId != ''">
+            and parentId = #{parentId}
+        </if>
+        ORDER BY permOrder
+    </select>
+
+    <!-- 新增权限信息 -->
+    <insert id="addPermInfo" parameterType="com.lylblog.project.system.admin.bean.PermissionBean">
+        insert into m_permission(
+            <if test="iconUrl != null and iconUrl != ''">iconUrl,</if>
+            <if test="permname != null and permname != ''">permname,</if>
+            <if test="permdesc != null and permdesc != ''">permdesc,</if>
+            <if test="permission != null and permission != ''">permission,</if>
+            <if test="parentId != null and parentId != ''">parentId,</if>
+            <if test="permType != null and permType != ''">permType,</if>
+            <if test="permUrl != null and permUrl != ''">permUrl,</if>
+            <if test="permOrder != null and permOrder != ''">permOrder,</if>
+            <if test="valid != null and valid != ''">valid,</if>
+            <if test="createperson != null and createperson != ''">createperson,</if>
+            <if test="createtime != null and createtime != ''">createtime,</if>
+            permId
+        ) values (
+            <if test="iconUrl != null and iconUrl != ''">#{iconUrl},</if>
+            <if test="permname != null and permname != ''">#{permname},</if>
+            <if test="permdesc != null and permdesc != ''">#{permdesc},</if>
+            <if test="permission != null and permission != ''">#{permission},</if>
+            <if test="parentId != null and parentId != ''">#{parentId},</if>
+            <if test="permType != null and permType != ''">#{permType},</if>
+            <if test="permUrl != null and permUrl != ''">#{permUrl},</if>
+            <if test="permOrder != null and permOrder != ''">#{permOrder},</if>
+            <if test="valid != null and valid != ''">#{valid},</if>
+            <if test="createperson != null and createperson != ''">#{createperson},</if>
+            <if test="createtime != null and createtime != ''">#{createtime},</if>
+            #{permId}
+        )
+    </insert>
+
+    <!-- 修改权限信息 -->
+    <update id="updatePermInfo" parameterType="com.lylblog.project.system.admin.bean.PermissionBean">
+        update m_permission set
+            <if test="iconUrl != null and iconUrl != ''">iconUrl = #{iconUrl},</if>
+            <if test="permname != null and permname != ''">permname = #{permname},</if>
+            <if test="permdesc != null and permdesc != ''">permdesc = #{permdesc},</if>
+            <if test="permission != null and permission != ''">permission = #{permission},</if>
+            <if test="parentId != null and parentId != ''">parentId = #{parentId},</if>
+            <if test="permType != null and permType != ''">permType = #{permType},</if>
+            <if test="permUrl != null and permUrl != ''"> permUrl = #{permUrl},</if>
+            <if test="permOrder != null and permOrder != ''">permOrder = #{permOrder},</if>
+            <if test="valid != null and valid != ''">valid = #{valid},</if>
+            <if test="modifyperson != null and modifyperson != ''">modifyperson = #{modifyperson},</if>
+            <if test="modifytime != null and modifytime != ''">modifytime = #{modifytime},</if>
+            permId = #{permId}
+        where permId = #{permId}
+    </update>
+
+    <!-- 取消或者恢复权限功能 -->
+    <update id="cancelOrRestorePermInfo">
+        update m_permission set valid = #{valid} where permId in
+        <foreach collection="permIds" index="index" item="item" open="(" separator="," close=")">
+            #{item.permId}
+        </foreach>
+    </update>
+
+    <!-- 新增角色权限关系数据 -->
+    <insert id="addRoleAuthorizationRelations" parameterType="com.lylblog.project.system.admin.bean.RoleAndPermBean">
+        insert into m_role_permission(
+            <if test="roleid != null and roleid != ''">roleid,</if>
+            <if test="permid != null and permid != ''">permid,</if>
+            <if test="valid != null and valid != ''">valid,</if>
+            <if test="createperson != null and createperson != ''">createperson,</if>
+            createtime
+        )values(
+            <if test="roleid != null and roleid != ''">#{roleid},</if>
+            <if test="permid != null and permid != ''">#{permid},</if>
+            <if test="valid != null and valid != ''">#{valid},</if>
+            <if test="createperson != null and createperson != ''">#{createperson},</if>
+            sysdate()
+        )
+    </insert>
+
+    <!-- 删除角色权限关系数据 -->
+    <delete id="deleteRoleAuthorizationRelations">
+        delete from m_role_permission where roleId = #{roleId} and permid in
+        <foreach collection="deleteList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 根据权限id查询所有权限信息 -->
+    <select id="queryPermByRole" parameterType="String" resultType="com.lylblog.project.system.admin.bean.RoleAndPermBean">
+        select * from m_role_permission where roleId = #{roleId}
+    </select>
+
+    <select id="queryMenuInfo" parameterType="String" resultType="com.lylblog.project.system.admin.bean.MenuBean">
+        SELECT
+            t1.permid AS F_ModuleId,
+            t1.parentId AS F_ParentId,
+            t1.permname AS F_FullName,
+            t1.iconUrl AS F_Icon,
+            t1.permUrl AS F_UrlAddress,
+            t1.permdesc AS F_Description
+        FROM
+            m_permission AS t1
+            LEFT JOIN m_role_permission t2 ON t1.permid = t2.permid
+            LEFT JOIN m_role t3 ON t2.roleid = t3.roleid
+            LEFT JOIN m_user_role t4 ON t4.roleid = t3.roleid
+            LEFT JOIN m_user t5 ON t5.yhnm = t4.yhnm
+        WHERE t5.yhnm = #{yhnm} AND t1.permid != '1'  AND t1.permType != '2' ORDER BY t1.permOrder
+    </select>
+</mapper>

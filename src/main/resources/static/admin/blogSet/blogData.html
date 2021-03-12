@@ -1,0 +1,586 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="/common/layui/css/layui.css">
+    <link href="/admin/css/table.css" rel="stylesheet" type="text/css" />
+    <link href="/admin/css/animate.css" rel="stylesheet"/>
+    <link href="/admin/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/admin/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="/admin/css/ry-ui.css" rel="stylesheet"/>
+
+    <link href="/admin/css/style.css" rel="stylesheet"/>
+    <link href="/admin/css/tail.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/common/semantic-ui/dist/semantic.min.css">
+    <style>
+        .department_main label{width: 10%;text-align: right;font-size: 14px}
+        .department_main input, .department_main select{margin-right: 1%;height: 30px;border: 1px #ccc solid;background-color: #fff;border-radius: 4px;padding-left: 6px;}
+        .layui-form-radio {line-height: 28px;margin: 6px 10px 0 0;padding-right: 1px;cursor: pointer;font-size: 0;}
+        .layui-form-select {width:150px;}
+        .layui-input.layui-unselect{height:30px;}
+        .layui-tab-title li {font-weight: bold;color: darkgray;}
+        .layui-tab {margin:0 0 0 0;padding: 10px 0;}
+        .department_main textarea{resize: none;border: 1px #ccc solid;height: 50px;background-color: #fff;border-radius: 4px;padding-left: 6px;padding-top: 5px;}
+        .layui-form .blog-file-image img {
+            width: 100%;
+            height: 100%;
+        }
+        .layui-form .blog-file-image {
+            float: left;
+            background: #ffffff;
+            width: 35px;
+            height: 35px;
+            margin-right: 10px;
+            border-radius: 2px;
+            position: relative;
+        }
+        .layui-form .blog-btn-file {
+            float: left;
+            background: #ffffff;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            width: 35px;
+            height: 35px;
+            position: relative;
+            border-radius: 2px;
+        }
+        .layui-form .blog-btn-file input[type=file] {
+            opacity: 0;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+        }
+        .layui-form .blog-btn-file .blog-btn-name {
+            text-align: center;
+            background: #ecf0f5;
+            height: 35px;
+            padding-top: 30%;
+        }
+        .layui-form-switch {height: 24.4px;margin-top: 6px;}
+        .department_main .uplodeFile {
+            width: 300px;
+            height: 200px;
+            background-color: rgba(210, 191, 191, 0.15);
+        }
+        .department_main .uplodeFile img {
+            max-width: 166px;
+            max-height: 110px;
+            text-align: center;
+            margin: -15px -15px -15px -15px;
+        }
+
+        .image img{
+            display: inline-block;
+            height: 100%;
+            width: 100%;
+            max-width: 100%;
+        }
+        a.widget_avatar_header {
+            display: block;
+            position: absolute;
+            top: -18px;
+            /* left: 50%; */
+            margin-left: -20px;
+            padding: 6px;
+            background-color: transparent;
+            border-radius: 100%;
+        }
+        a.widget_avatar_header img {
+            width: 50px;
+            height: 50px;
+            border-radius: 100%;
+        }
+        .department_main .uploadImg {
+            opacity: 0;
+        }
+
+        .department_main .file {
+            margin-top: -137px;
+            margin-left: -30px;
+            width: 300px;
+            height: 200px;
+            cursor:pointer;
+        }
+
+        .department_main .uploadCodeImg, .uploadBackgroundImg, .uploadDefaultImg{
+            width: 300px;
+            height: 200px;
+            margin-top: -200px;
+            margin-left: 320px;
+            border: 1px dashed #e2e2e2;
+            display: none;
+        }
+
+        .middle{
+            width: 300px;
+            max-height: 300px;
+            text-align: center;
+            display: flex;
+            vertical-align: middle;
+        }
+
+        .layui-form-item {
+            margin-bottom: 2px;
+            clear: both;
+            *zoom: 1;
+        }
+    </style>
+</head>
+<body style="margin: 0px 10px 0px;padding: 0;">
+<form id="frm1" class="layui-form" action="">
+    <input type="hidden" id="setTab" name="setTab" value="0"/>
+    <div class="layui-tab" lay-filter="blogSet" style="margin-bottom: 20px;">
+        <ul class="layui-tab-title">
+            <li id = 'basisSet' class="layui-this"><i class="cogs icon"></i>基础设置</li>
+            <li id = 'blogerSet'><i class="user outline icon"></i>博主设置</li>
+            <li id = 'blogSet'><i class="pencil alternate icon"></i>博客设置</li>
+            <li id = 'emailSet'><i class="envelope square icon"></i>邮箱设置</li>
+        </ul>
+        <div class="layui-tab-content" style="padding:2px 0px;">
+            <div class="layui-tab-item layui-show" id='basisSetDetail' style="padding-top: 15px">
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style = 'width: 300px;font-weight: bold'>网站图标：</label>
+                        <div class="layui-input-block">
+                            <div class="blog-file-image">
+                                <input type="hidden" id="isUploadWebIcon" name="isUploadWebIcon" lay-verify="isUploadWebIcon">
+                                <img id="webIcon" src="/admin/img/icon.png" />
+                            </div>
+                            <div class="blog-btn-file">
+                                <input type="file" accept="image/*" class="layui-upload-img" id="webimage" name="file" onchange="viewImg(this, 1)">
+                                <div class="blog-btn-name">
+                                    <p class="fa fa-folder-open-o"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;博客名称：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="basicsetTitle" id="basicsetTitle" lay-verify="basicsetTitle" autocomplete="off"
+                                       class="layui-input" style="width: 673px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'>博客描述：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="basicsetDes" id="basicsetDes" lay-verify="basicsetDes" autocomplete="off"
+                                       class="layui-input" style="width: 673px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'>全局允许评论：</label>
+                            <div class="layui-input-inline">
+                                <input type="checkbox" id="basicsetGlobalAllowComment" name="basicsetGlobalAllowComment" lay-skin="switch" lay-text="ON|OFF" checked="" style="height: 24.4px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'>全局展示评论：</label>
+                            <div class="layui-input-inline">
+                                <input type="checkbox" id="basicsetGlobalShowComment" name="basicsetGlobalShowComment" lay-skin="switch" lay-text="ON|OFF" checked="" style="height: 24.4px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'>全局允许转载：</label>
+                            <div class="layui-input-inline">
+                                <input type="checkbox" id="basicsetGlobalAllowReprint" name="basicsetGlobalAllowReprint" lay-skin="switch" lay-text="ON|OFF" checked="" style="height: 24.4px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'>评论是否通知：</label>
+                            <div class="layui-input-inline">
+                                <input type="checkbox" id="basicsetCommentNotice" name="basicsetCommentNotice" lay-skin="switch" lay-text="ON|OFF" checked="" style="height: 24.4px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'>赞赏是否开启：</label>
+                            <div class="layui-input-inline">
+                                <input type="checkbox" id="basicsetOpenAppreciate" name="basicsetOpenAppreciate" lay-skin="switch" lay-text="ON|OFF" checked="" style="height: 24.4px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'>显示文章来源：</label>
+                            <div class="layui-input-inline">
+                                <input type="checkbox" id="basicsetShowArticleSource" name="basicsetShowArticleSource" lay-skin="switch" lay-text="ON|OFF" style="height: 24.4px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'>评论自动审核：</label>
+                            <div class="layui-input-inline">
+                                <input type="checkbox" id="basicsetCommentAutoReview" name="basicsetCommentAutoReview" lay-skin="switch" lay-text="ON|OFF" checked="" style="height: 24.4px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'>是否添加原创版权声明：</label>
+                            <div class="layui-input-inline">
+                                <input type="checkbox" id="basicsetAddCopyrightNotice" name="basicsetAddCopyrightNotice" lay-skin="switch" lay-text="ON|OFF" checked="" style="height: 24.4px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;原创版权声明信息：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="basicsetCopyrightNoticeInfo" id="basicsetCopyrightNoticeInfo" lay-verify="basicsetCopyrightNoticeInfo" autocomplete="off"
+                                       class="layui-input" style="width: 673px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;底部网站版权信息：</label>
+                            <div class="layui-input-inline">
+                                <textarea name="basicsetWebNoticeInfo" id="basicsetWebNoticeInfo" lay-verify="basicsetWebNoticeInfo" class="layui-textarea" style="width: 673px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;底部站点声明：</label>
+                            <div class="layui-input-inline">
+                                <textarea name="basicsetBottomsiteInfo" id="basicsetBottomsiteInfo" lay-verify="basicsetBottomsiteInfo" class="layui-textarea" style="width: 673px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item" id='blogerSetDetail' style="padding-top: 15px">
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;博主头像：</label>
+                        <div class="layui-input-block">
+                            <div class="blog-file-image">
+                                <input type="hidden" id="isUploadIcon" name="isUploadIcon" lay-verify="isUploadIcon">
+                                <img id="icon" src="/admin/img/icon.png" />
+                            </div>
+                            <div class="blog-btn-file">
+                                <input type="file" accept="image/*" class="layui-upload-img" id="blog-image" name="file" onchange="viewImg(this, 2)">
+                                <div class="blog-btn-name">
+                                    <p class="fa fa-folder-open-o"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;博主姓名：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="bloggersetBloggerName" id="bloggersetBloggerName" lay-verify="bloggersetBloggerName" autocomplete="off"
+                                       class="layui-input" style="width: 673px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;个性签名：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="bloggersetBloggerDes" id="bloggersetBloggerDes" lay-verify="bloggersetBloggerDes" autocomplete="off"
+                                       class="layui-input" style="width: 673px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;博主QQ：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="bloggersetBloggerQqNumber" id="bloggersetBloggerQqNumber" lay-verify="bloggersetBloggerQqNumber" autocomplete="off"
+                                       class="layui-input" style="width: 673px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width: 300px;font-weight: bold"><font color='red'>*</font>&nbsp;微信二维码：</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-upload-drag uplodeFile">
+                                <div class="upload">
+                                    <!--<i class="layui-icon"></i>-->
+                                    <img src="http://127.0.0.1/profile/timg.jpg"/>
+                                    <p style="margin-top: 7px;">点击上传，或将图片拖拽到此处...</p>
+                                </div>
+                                <div class="uploadImg">
+                                    <input type="hidden" id="isUploadCodeImg" name="isUploadCodeImg" lay-verify="isUploadCodeImg">
+                                    <input type="file" class="file" id="file" accept="image/*" onchange="viewImg(this, 3)"/>
+                                </div>
+                            </div>
+                            <div class="uploadCodeImg">
+                                <i id="closeCodeImgView" class="close icon" style="margin-top: 6px;" onclick="closeView(3)"></i>
+                                <div class="middle">
+                                    <img id="showCodeImg" src="" alt="上传成功后渲染" style="max-width: 200px;max-height: 150px; margin:0 auto;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width: 300px;font-weight: bold"><font color='red'>*</font>&nbsp;背景图片：</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-upload-drag uplodeFile">
+                                <div class="upload">
+                                    <!--<i class="layui-icon"></i>-->
+                                    <img src="http://127.0.0.1/profile/timg.jpg"/>
+                                    <p style="margin-top: 7px;">点击上传，或将图片拖拽到此处...</p>
+                                </div>
+                                <div class="uploadImg">
+                                    <input type="hidden" id="isUploadBackgroundImg" name="isUploadBackgroundImg" lay-verify="isUploadBackgroundImg">
+                                    <input type="file" class="file" id="file1" accept="image/*" onchange="viewImg(this, 4)"/>
+                                </div>
+                            </div>
+                            <div class="uploadBackgroundImg">
+                                <i id="closeBackgroundView" class="close icon" style="margin-top: 6px;" onclick="closeView(4)"></i>
+                                <div class="middle">
+                                    <img id="showBackgroundImg" src="" alt="上传成功后渲染" style="max-width: 200px;max-height: 150px;margin:0 auto;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item" id='blogSetDetail'  style="padding-top: 15px">
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;每页显示文章条数：</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="blogsetPerpageShowNum" id="blogsetPerpageShowNum" lay-verify="blogsetPerpageShowNum" autocomplete="off"
+                                       class="layui-input" onKeyUp="this.value=this.value.replace(/[^\.\d]/g,'');this.value=this.value.replace('.','');" style="width: 673px;text-align: center">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;最新文章显示条数：</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="blogsetLatestShowNum" id="blogsetLatestShowNum" lay-verify="blogsetLatestShowNum" autocomplete="off"
+                                       class="layui-input" onKeyUp="this.value=this.value.replace(/[^\.\d]/g,'');this.value=this.value.replace('.','');" style="width: 673px;text-align: center">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;滚动推荐显示条数：</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="blogsetScrollRecommendedShowNum" id="blogsetScrollRecommendedShowNum" lay-verify="blogsetScrollRecommendedShowNum" autocomplete="off"
+                                       class="layui-input" onKeyUp="this.value=this.value.replace(/[^\.\d]/g,'');this.value=this.value.replace('.','');" style="width: 673px;text-align: center">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;点击排行显示条数：</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="blogsetRankingShowNum" id="blogsetRankingShowNum" lay-verify="blogsetRankingShowNum" autocomplete="off"
+                                       class="layui-input" onKeyUp="this.value=this.value.replace(/[^\.\d]/g,'');this.value=this.value.replace('.','');" style="width: 673px;text-align: center">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;列表推荐显示条数：</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="blogsetRecommendedShowNum" id="blogsetRecommendedShowNum" lay-verify="blogsetRecommendedShowNum" autocomplete="off"
+                                       class="layui-input" onKeyUp="this.value=this.value.replace(/[^\.\d]/g,'');this.value=this.value.replace('.','');" style="width: 673px;text-align: center">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;书籍推荐显示条数：</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="blogsetSpecialRecdShowNum" id="blogsetSpecialRecdShowNum" lay-verify="blogsetSpecialRecdShowNum" autocomplete="off"
+                                       class="layui-input" onKeyUp="this.value=this.value.replace(/[^\.\d]/g,'');this.value=this.value.replace('.','');" style="width: 673px;text-align: center">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="department_main">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label" style = 'width: 300px;font-weight: bold'>文章无图使用默认图片：</label>
+                                <div class="layui-input-inline">
+                                    <input type="checkbox" id="blogsetNoPicUseDefault" name="blogsetNoPicUseDefault" lay-skin="switch" lay-text="ON|OFF" checked="" style="height: 24.4px">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="department_main">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label" style = 'width: 300px;font-weight: bold'>无封面图使用内容图：</label>
+                                <div class="layui-input-inline">
+                                    <input type="checkbox" id="blogsetNoCoverpicUseContentpic" name="blogsetNoCoverpicUseContentpic" lay-skin="switch" lay-text="ON|OFF" checked="" style="height: 24.4px">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="department_main">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 300px;font-weight: bold"><font color='red'>*</font>&nbsp;上传默认图片：</label>
+                            <div class="layui-input-inline">
+                                <div class="layui-upload-drag uplodeFile">
+                                    <div class="upload">
+                                        <!--<i class="layui-icon"></i>-->
+                                        <img src="http://127.0.0.1/profile/timg.jpg"/>
+                                        <p style="margin-top: 7px;">点击上传，或将图片拖拽到此处...</p>
+                                    </div>
+                                    <div class="uploadImg">
+                                        <input type="hidden" id="isUploadDefaultImg" name="isUploadDefaultImg" lay-verify="isUploadDefaultImg">
+                                        <input type="file" class="file" id="file3" accept="image/*" onchange="viewImg(this, 5)"/>
+                                    </div>
+                                </div>
+                                <div class="uploadDefaultImg">
+                                    <i id="closeDefaultImgView" class="close icon" style="margin-top: 6px;" onclick="closeView(5)"></i>
+                                    <div class="middle">
+                                        <img id="showDefaultImg" src="" alt="上传成功后渲染" style="max-width: 200px;max-height: 150px; margin:0 auto;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;侧边栏友情链接：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="blogsetFriendLinks" id="blogsetFriendLinks" lay-verify="blogsetFriendLinks" autocomplete="off"
+                                       class="layui-input" style="width: 673px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item" id='emailSetDetail'  style="padding-top: 15px">
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;发送邮件账户：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="eamilsetUsername" id="eamilsetUsername" lay-verify="eamilsetUsername" autocomplete="off"
+                                       class="layui-input" style="width: 673px;">
+                            </div>
+                            <span class="help-block m-b-none" style="margin-top: 32px;margin-left: 300px;"><i class="fa fa-info-circle"></i> qq邮箱则为smtp.qq.com,163邮箱则为smtp.163.com</span>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;邮箱授权码：</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="eamilsetPassword" id="eamilsetPassword" lay-verify="eamilsetPassword" autocomplete="off"
+                                       class="layui-input" style="width: 673px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;smtp服务主机：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="eamilsetHost" id="eamilsetHost" lay-verify="eamilsetHost" autocomplete="off"
+                                       class="layui-input" style="width: 673px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;服务协议：</label>
+                            <div class="layui-input-inline">
+                                <select name="eamilsetProtocol" id='eamilsetProtocol' lay-verify="eamilsetProtocol" placeholder="请选择">
+                                    <option value="">请选择</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;编码集：</label>
+                            <div class="layui-input-inline">
+                                <select name="eamilsetDefaultEncoding" id='eamilsetDefaultEncoding' lay-verify="eamilsetDefaultEncoding" placeholder="请选择">
+                                    <option value="">请选择</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="department_main">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;发送验证码邮箱内容模板：</label>
+                                <div class="layui-input-inline">
+                                    <textarea name="eamilsetVerificationCode" id="eamilsetVerificationCode" lay-verify="eamilsetVerificationCode" class="layui-textarea" style="width: 673px"></textarea>
+                                </div>
+                                <span class="help-block m-b-none" style="margin-top: 102px;margin-left: 300px;"><i class="fa fa-info-circle"></i> ‘${code}’为邮箱动态验证码，模板中必须包含该值</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notice_bot" style="z-index: 0">
+            <div class="r_right but_p">
+                <div class="layui-btn but_save" id="nsbc" lay-filter="save" lay-submit="" style="margin-right: 10px;">提交</div>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript" src="/admin/js/jquery/jQuery-2.2.0.min.js"></script>
+<script type="text/javascript" src="/admin/js/bstable/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/admin/js/bstable/js/bootstrap-table.js"></script>
+<script type="text/javascript" src="/admin/js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="/common/layui/layui.all.js"></script>
+<script type="text/javascript" src="/common/util.js"></script>
+<script type="text/javascript" src="/admin/blogSet/js/blogData.js"></script>
+</body>
+</html>

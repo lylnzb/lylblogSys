@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lylblog.project.webSite.index.mapper.IndexMapper">
+
+    <!-- 展示网站首页轮播图信息 -->
+    <select id="showBannerInfo" resultType="com.lylblog.project.system.banner.bean.BannerBean" parameterType="String">
+        select * from sys_banner limit 0, ${page}
+    </select>
+
+    <!-- 获取选项卡信息 -->
+    <select id="getTabInfo" resultType="com.lylblog.project.webSite.index.bean.TabBean">
+        SELECT columnName as tabName,columnId as tabType FROM sys_column where isAllow = 'Y'
+    </select>
+
+    <!-- 展示网站首页卡片内容信息 -->
+    <select id="showCardInfo" resultType="com.lylblog.project.webSite.index.bean.CardBean" parameterType="String">
+        select
+            wznm,
+            CONCAT('/articlefile', thumb) as articleImg,
+            articleTitle as articleTitle,
+            CONCAT('/blog/detail/', wznm) as articleUrl,
+            abstracts as articleDec,
+            (select nickname from m_user where userid = t.createBy and valid = '1') as releasePeople,
+            DATE_FORMAT(createTime,'%Y-%m-%d') as releaseTime
+        from sys_article t where columnId = #{articleType} order by createTime desc
+        limit 0, ${page}
+    </select>
+
+    <!-- 展示网站首页最新文章列表信息 -->
+    <select id="showArticleInfo" resultType="com.lylblog.project.webSite.index.bean.ArticleListBean">
+        SELECT
+            wznm,
+            CONCAT('/articlefile', thumb) as articleImg,
+            articleTitle as articleTitle,
+            CONCAT('/blog/detail/', wznm) as articleUrl,
+            abstracts as articleDec,
+            (select nickname from m_user where userid = t.createBy and valid = '1') as releasePeople,
+            DATE_FORMAT(createTime,'%Y-%m-%d') as releaseTime,
+            hits,
+            postNum,
+            (select columnName from sys_column where columnId = t.columnId) as articleForm
+        FROM sys_article t order by createTime desc
+        limit 0, ${page}
+    </select>
+</mapper>

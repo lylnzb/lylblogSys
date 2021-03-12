@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lylblog.project.system.music.mapper.WebMusicMapper">
+
+    <!-- 查询所有音乐信息 -->
+    <select id="queryMusicInfo" parameterType="com.lylblog.project.system.music.bean.WebMusicBean" resultType="com.lylblog.project.system.music.bean.WebMusicBean">
+        SELECT * FROM(
+            SELECT
+                ( @i := @i + 1 ) rk,
+                t.* ,
+                (select dict_label from sys_dict_data where dict_type = 'web_music_language' and dict_value = t.Languages and valid = '1') as languageName,
+		        (select dict_label from sys_dict_data where dict_type = 'web_music_style' and dict_value = t.style and valid = '1') as styleName,
+                (select dict_label from sys_dict_data where dict_type = 'web_music_gedan' and dict_value = t.gedan and valid = '1') as gedanName,
+                (select nickname from m_user where id = t.createBy and valid = '1') as nickName,
+                (select fileUrl from sys_music_file where musicId = t.musicId and fileType = 'image' and valid = '1') as coverUrl,
+                (select fileUrl from sys_music_file where musicId = t.musicId and fileType = 'audio' and valid = '1') as musicUrl,
+                (select fileUrl from sys_music_file where musicId = t.musicId and fileType = 'lyrics' and valid = '1') as lyricsUrl
+            FROM sys_music t, ( SELECT @i := 0 ) rk
+            where 1=1
+            <if test="musicId != null and musicId != ''"> and musicId = #{musicId}</if>
+            <if test="musicName != null and musicName != ''"> and musicName like concat('%',#{musicName},'%')</if>
+            <if test="languages != null and languages != ''"> and languages = #{languages}</if>
+            <if test="style != null and style != ''"> and style = #{style}</if>
+            <if test="valid != null and valid != ''"> and valid = #{valid}</if>
+        ) AS music
+        where rk between (#{page}-1)*#{limit} + 1 and #{page}*#{limit} ORDER BY rk
+    </select>
+
+    <!-- 查询所有音乐信息总数 -->
+    <select id="queryMusicInfoCount" parameterType="com.lylblog.project.system.music.bean.WebMusicBean" resultType="int">
+        select count(1) from sys_music
+        where 1=1
+        <if test="musicId != null and musicId != ''"> and musicId = #{musicId}</if>
+        <if test="musicName != null and musicName != ''"> and musicName like concat('%',#{musicName},'%')</if>
+        <if test="languages != null and languages != ''"> and languages = #{languages}</if>
+        <if test="style != null and style != ''"> and style = #{style}</if>
+        <if test="valid != null and valid != ''"> and valid = #{valid}</if>
+    </select>
+
+    <!-- 新增音乐信息 -->
+    <insert id="addMusicInfo" parameterType="com.lylblog.project.system.music.bean.WebMusicBean">
+        insert into sys_music(
+            <if test="musicId != null and musicId != ''">musicId,</if>
+            <if test="musicName != null and musicName != ''">musicName,</if>
+            <if test="singer != null and singer != ''">singer,</if>
+            <if test="length != null and length != ''">length,</if>
+            <if test="lyrics != null and lyrics != ''">lyrics,</if>
+            <if test="languages != null and languages != ''">languages,</if>
+            <if test="style != null and style != ''">style,</if>
+            <if test="gedan != null and gedan != ''">gedan,</if>
+            <if test="valid != null and valid != ''">valid,</if>
+            <if test="description != null and description != ''">description,</if>
+            <if test="orderBy != null and orderBy != ''">orderBy,</if>
+            <if test="createBy != null and createBy != ''">createBy,</if>
+            createTime
+        )values(
+            <if test="musicId != null and musicId != ''">#{musicId},</if>
+            <if test="musicName != null and musicName != ''">#{musicName},</if>
+            <if test="singer != null and singer != ''">#{singer},</if>
+            <if test="length != null and length != ''">#{length},</if>
+            <if test="lyrics != null and lyrics != ''">#{lyrics},</if>
+            <if test="languages != null and languages != ''">#{languages},</if>
+            <if test="style != null and style != ''">#{style},</if>
+            <if test="gedan != null and gedan != ''">#{gedan},</if>
+            <if test="valid != null and valid != ''">#{valid},</if>
+            <if test="description != null and description != ''">#{description},</if>
+            <if test="orderBy != null and orderBy != ''">#{orderBy},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <!-- 新增音乐附件信息 -->
+    <insert id="addMusicFileInfo" parameterType="com.lylblog.project.system.music.bean.WebMusicBean">
+        insert into sys_music_file(
+            <if test="musicId != null and musicId != ''">musicId,</if>
+            <if test="fileName != null and fileName != ''">fileName,</if>
+            <if test="fileUrl != null and fileUrl != ''">fileUrl,</if>
+            <if test="fileType != null and fileType != ''">fileType,</if>
+            <if test="valid != null and valid != ''">valid,</if>
+            <if test="createBy != null and createBy != ''">createBy,</if>
+            createTime
+        )values(
+            <if test="musicId != null and musicId != ''">#{musicId},</if>
+            <if test="fileName != null and fileName != ''">#{fileName},</if>
+            <if test="fileUrl != null and fileUrl != ''">#{fileUrl},</if>
+            <if test="fileType != null and fileType != ''">#{fileType},</if>
+            <if test="valid != null and valid != ''">#{valid},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <!-- 修改音乐信息 -->
+    <update id="updateMusicInfo" parameterType="com.lylblog.project.system.music.bean.WebMusicBean">
+        update sys_music set
+            <if test="musicName != null and musicName != ''">musicName = #{musicName},</if>
+            <if test="singer != null and singer != ''">singer = #{singer},</if>
+            <if test="length != null and length != ''">Length = #{length},</if>
+            <if test="lyrics != null and lyrics != ''">lyrics = #{lyrics},</if>
+            <if test="languages != null and languages != ''">languages = #{languages},</if>
+            <if test="style != null and style != ''">style = #{style},</if>
+            <if test="gedan != null and gedan != ''">gedan = #{gedan},</if>
+            <if test="valid != null and valid != ''">valid = #{valid},</if>
+            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="orderBy != null and orderBy != ''">orderBy = #{orderBy},</if>
+            <if test="updateBy != null and updateBy != ''">updateBy = #{updateBy},</if>
+            updateTime = sysdate()
+        where musicId = #{musicId}
+    </update>
+
+    <!-- 修改音乐附件信息 -->
+    <update id="updateMusicFileInfo" parameterType="com.lylblog.project.system.music.bean.WebMusicBean">
+        update sys_music_file set
+            <if test="musicId != null and musicId != ''">musicId = #{musicId},</if>
+            <if test="fileName != null and fileName != ''">fileName = #{fileName},</if>
+            <if test="fileUrl != null and fileUrl != ''">fileUrl = #{fileUrl},</if>
+            <if test="fileType != null and fileType != ''">fileType = #{fileType},</if>
+            <if test="valid != null and valid != ''">valid = #{valid},</if>
+            <if test="updateBy != null and updateBy != ''">updateBy = #{updateBy},</if>
+            updateTime = sysdate()
+        where fileId = #{fileId}
+    </update>
+
+    <!-- 删除音乐信息 -->
+    <delete id="deleteMusicInfo">
+        delete from sys_music where musicId in
+        <foreach collection="deleteIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 删除音乐文件信息 -->
+    <delete id="deleteMusicFile" parameterType="String">
+        delete from sys_music_file where musicId = #{musicId}
+    </delete>
+
+    <!-- 是否存在音乐信息 -->
+    <select id="isMusicFile" resultType="int" parameterType="String">
+        select count(1) from sys_music_file where musicId = #{musicId} and fileType = #{fileType} and valid = '1'
+    </select>
+
+    <!-- 修改音乐文件数据状态 -->
+    <update id="updateMusicFileStatus" parameterType="String">
+        update sys_music_file set valid = #{valid} where musicId = #{musicId} and fileType = #{fileType}
+    </update>
+
+    <!-- 获取文件路径 -->
+    <select id="getFileUrl" parameterType="String" resultType="String">
+        select fileUrl from sys_music_file where musicId = #{musicId} and fileType = #{fileType} and valid = '1'
+    </select>
+
+    <!-- 获取文件名称 -->
+    <select id="getFileName" parameterType="String" resultType="String">
+        select fileName from sys_music_file where musicId = #{musicId} and fileType = #{fileType} and valid = '1'
+    </select>
+</mapper>

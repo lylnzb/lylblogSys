@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<!-- saved from url=(0072)https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html# -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 -羅氏博客</title>
+    <link href="../js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/common/semantic-ui/dist/semantic.min.css">
+    <link href="/admin/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/common/layui/css/layui.css">
+    <link href="../css/animate.css" rel="stylesheet"/>
+    <link href="../css/tail.css" rel="stylesheet" type="text/css">
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="../css/table.css" rel="stylesheet" type="text/css" />
+
+    <link href="../css/style.css" rel="stylesheet"/>
+    <style>
+        .department_main label{width: 10%;text-align: right;font-size: 12px}
+        .department_main input, .department_main select{margin-right: 1%;height: 32px;border: 1px #ccc solid;background-color: #fff;border-radius: 4px;padding-left: 6px;}
+        .department_main textarea{resize: none;border: 1px #ccc solid;height: 50px;background-color: #fff;border-radius: 4px;padding-left: 6px;padding-top: 5px;}
+        .layui-form.layui-border-box.layui-table-view{margin: 0 auto}
+        .layui-form-select {width:473px;}
+        .layui-form-item {margin-bottom: 10px;}
+    </style>
+</head>
+<body>
+<form id="frm" class="layui-form" action="">
+    <div id="tools-box" class="wrapper wrapper-content animated fadeInRight ibox-content" align="left">
+        <div class="department_main">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style = 'width: 189px;font-weight: bold'>栏目图标：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="iconUrl" id="iconUrl" lay-verify="columnIcon" placeholder="请选择"
+                           autocomplete="off" class="layui-input" style="cursor:pointer;width: 473px"
+                           readonly="readonly">
+                </div>
+            </div>
+        </div>
+        <div class="department_main" id="isAccord">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style = 'width: 189px;font-weight: bold'>所属父栏目：</label>
+                <div class="layui-input-inline">
+                    <select id="parentId" name="parentId" lay-verify="parentId" style="width: 100%">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style = 'width: 189px;font-weight: bold'><font color='red'>*</font>&nbsp;栏目名称：</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="columnName" name="columnName" lay-verify="columnName" autocomplete="off"
+                           class="layui-input" placeholder="" required="" style="width: 473px">
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 189px;font-weight: bold"><font color='red'>*</font>&nbsp;栏目路径：</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="columnUrl" name="columnUrl" lay-verify="columnUrl" autocomplete="off"
+                           class="layui-input" placeholder="" required="" style="width: 473px">
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline" style="margin-bottom: -10px">
+                    <label class="layui-form-label" style="width: 189px;font-weight: bold"><font color='red'>*</font>&nbsp;栏目关键词：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="keywords" name="keywords" lay-verify="keywords" autocomplete="off"
+                               class="layui-input" placeholder="" required="" style="width: 473px">
+                    </div>
+                    <span class="help-block m-b-none" style="margin-top: 40px;margin-left: 189px;margin-bottom: 10px"><i class="fa fa-info-circle"></i> 关键字会出现在网页的keywords属性中!</span>
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 189px;font-weight: bold">排列顺序：</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="orderBy" id="orderBy" lay-verify="orderBy" autocomplete="off"
+                           class="layui-input" style="width: 473px">
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 189px;font-weight: bold">栏目属性：</label>
+                <input type="hidden" id="isSelected">
+                <div class="layui-input-inline" id="isDefault" style="width: 300px">
+<!--                    <input type="radio" lay-filter="judgeM" name="sys_yes_no" value="Y" title="是" checked="">-->
+<!--                    <input type="radio" lay-filter="judgeM" name="sys_yes_no" value="N" title="否">-->
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 189px;font-weight: bold">栏目状态：</label>
+                <div class="layui-input-inline" id="isHidden">
+<!--                    <input type="radio" name="sys_hide_show" value="Y" title="显示" checked="">-->
+<!--                    <input type="radio" name="sys_hide_show" value="N" title="隐藏">-->
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 189px;font-weight: bold">是否允许发布文章：</label>
+                <div class="layui-input-inline" id="isAllow">
+<!--                    <input type="radio" lay-filter="judgeM" name="sys_yes_no" value="Y" title="是" checked="">-->
+<!--                    <input type="radio" lay-filter="judgeM" name="sys_yes_no" value="N" title="否">-->
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline" style="margin-bottom: -10px">
+                    <label class="layui-form-label" style = 'width: 189px;font-weight: bold'><font color='red'>*</font>&nbsp;栏目说明：</label>
+                    <div class="layui-input-inline" style="width: 473px">
+                        <textarea id = 'description' name = 'description' lay-verify="description" placeholder="请输入栏目说明..." style="width: 100%;height: 70px"></textarea>
+                    </div>
+                    <span class="help-block m-b-none" style="margin-top: 40px;margin-left: 189px;"><i class="fa fa-info-circle"></i> 描述会出现在网页的description属性中!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="notice_bot" style="z-index: 0">
+        <div class="r_right but_p">
+            <div class="layui-btn but_save" id="nsbc" lay-filter="save" lay-submit="">保存</div>
+            <div class="layui-btn but_close" id="close" onclick="Cancel()">关闭</div>
+        </div>
+    </div>
+</form>
+</body>
+<script type="text/javascript" src="../js/jquery/jQuery-2.2.0.min.js"></script>
+<script type="text/javascript" src="/common/util.js"></script>
+<script src="../layui/layui.js"></script>
+<script src="../column/js/addOrEditColumn.js"></script>
+</html>

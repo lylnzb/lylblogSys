@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>tablePlug--综合测试页面</title>
+  <link rel="stylesheet" href="layui/src/css/layui.css" media="all">
+  <link rel="stylesheet" href="layui/plug/formSelects/formSelects-v4.css" media="all">
+  <!--  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">-->
+  <!--  <script src="//code.jquery.com/jquery-1.12.4.js"></script>-->
+  <!--  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
+  <style>
+    /*html, body {*/
+    /*  height: 100%;*/
+    /*  width: 100%;*/
+    /*}*/
+    body {
+      margin: 10px;
+      /*border: 4px solid green;*/
+    }
+    html {
+      min-width: 700px;
+    }
+  </style>
+</head>
+<!--<body class="layui-container">-->
+<body>
+<a href='https://gitee.com/sun_zoro/layuiTablePlug' target="gitee_tablePlug"
+   style="position: absolute; right: 0;top:0;">
+  <img src='https://gitee.com/sun_zoro/layuiTablePlug/widgets/widget_1.svg' alt='Fork me on Gitee'>
+</a>
+<div class="layui-container">
+  <div class="layui-row layui-col-space10">
+    <div class="layui-col-xs12" style="margin-top: 10px;">
+      <table id="demo" class="layui-table" lay-filter="test">
+        <thead>
+        <tr>
+          <th lay-data="{align:'center',field:'id'}" rowspan="4">序号</th>
+          <th lay-data="{align:'center',field:'f2'}" rowspan="4">区块</th>
+          <th lay-data="{align:'center',field:'f3'}" rowspan="4">井号</th>
+          <th lay-data="{align:'center',field:'f4'}" rowspan="4">层位</th>
+          <th lay-data="{align:'center',field:'f41'}" rowspan="4">投产日期</th>
+          <th lay-data="{align:'center',field:'f51'}" rowspan="3">月产液</th>
+          <th lay-data="{align:'center',field:'f52'}" rowspan="3">月产油</th>
+          <th lay-data="{align:'center',field:'f53'}" rowspan="3">月产水</th>
+          <th lay-data="{align:'center',field:'f54'}" rowspan="3">含水</th>
+          <th lay-data="{align:'center',field:'f55'}" rowspan="3">油层中深</th>
+          <th lay-data="{align:'center',field:'f56'}" rowspan="3">泵挂</th>
+          <th lay-data="{align:'center',field:'f57'}" rowspan="3">动液面</th>
+          <th lay-data="{align:'center',field:'f58'}" rowspan="3">沉没度</th>
+          <th lay-data="{align:'center',field:'f59'}" rowspan="3">冲程</th>
+          <th lay-data="{align:'center',field:'f510'}" rowspan="3">冲数</th>
+          <th lay-data="{align:'center',field:'f511'}" rowspan="3">泵径</th>
+          <th lay-data="{align:'center'}" colspan="5">泵效</th>
+          <th lay-data="{align:'center',field:'f512'}" rowspan="3">流压</th>
+          <th lay-data="{align:'center'}" colspan="20">采油时率分析</th>
+          <th lay-data="{align:'center'}" colspan="3">检泵周期</th>
+          <th lay-data="{align:'center',field:'f515'}" rowspan="4">备注</th>
+        </tr>
+        <tr>
+          <th lay-data="{align:'center',field:'f516'}">日均</th>
+          <th lay-data="{align:'center',field:'f517'}">日均</th>
+          <th lay-data="{align:'center',field:'f22'}" rowspan="3">间开制度</th>
+          <th lay-data="{align:'center',field:'f518'}">日理论</th>
+          <th lay-data="{align:'center',field:'f519'}" rowspan="2">泵效</th>
+          <th lay-data="{align:'center',field:'f520'}">日历</th>
+          <th lay-data="{align:'center',field:'f521'}">生产</th>
+          <th lay-data="{align:'center'}" colspan="7">正常停井</th>
+          <th lay-data="{align:'center'}" colspan="10">非正常停井</th>
+          <th lay-data="{align:'center',field:'f524'}" rowspan="2">时率</th>
+          <th lay-data="{align:'center',field:'f525'}" rowspan="3">倒数第二次检泵周期</th>
+          <th lay-data="{align:'center',field:'f526'}" rowspan="3">倒数第一次检泵周期</th>
+          <th lay-data="{align:'center',field:'f527'}" rowspan="2">检泵周期</th>
+        </tr>
+        <tr>
+          <th lay-data="{align:'center'}">产液</th>
+          <th lay-data="{align:'center'}">产油</th>
+          <th lay-data="{align:'center'}">产液</th>
+          <th lay-data="{align:'center'}">时间</th>
+          <th lay-data="{align:'center'}">时间</th>
+          <th lay-data="{align:'center',field:'f6'}">措施</th>
+          <th lay-data="{align:'center',field:'f7'}">测压</th>
+          <th lay-data="{align:'center',field:'f8'}">小修</th>
+          <th lay-data="{align:'center',field:'f9'}">丛式井作业干扰</th>
+          <th lay-data="{align:'center',field:'f10'}">保养</th>
+          <th lay-data="{align:'center',field:'f11'}">大修</th>
+          <th lay-data="{align:'center',field:'f12'}">其它</th>
+          <th lay-data="{align:'center',field:'f18'}">待修</th>
+          <th lay-data="{align:'center',field:'f17'}">停电</th>
+          <th lay-data="{align:'center',field:'f16'}">小修返工</th>
+          <th lay-data="{align:'center',field:'f15'}">机械故障</th>
+          <th lay-data="{align:'center',field:'f14'}">出油管线破</th>
+          <th lay-data="{align:'center',field:'f106'}">出油管线堵</th>
+          <th lay-data="{align:'center',field:'f107'}">集输管线堵</th>
+          <th lay-data="{align:'center',field:'f108'}">集输管线破</th>
+          <th lay-data="{align:'center',field:'f109'}">憋罐</th>
+          <th lay-data="{align:'center',field:'f13'}">其它</th>
+        </tr>
+        <tr>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+          <th lay-data="{align:'center'}">m3</th>
+        </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="layui/src/layui.js"></script>
+<!--<script src="layui/release/zip/layui-v2.4.5/layui/layui.all.js"></script>-->
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script>
+  layui.config({base: 'test/js/'})
+    .use(['mockjax', 'testTablePlug', 'laydate'], function () {
+      var $ = layui.jquery
+        , layer = layui.layer //弹层
+        , form = layui.form //弹层
+        , table = layui.table //表格
+        , laydate = layui.laydate //日期控件
+        , tablePlug = layui.tablePlug //表格插件
+        , testTablePlug = layui.testTablePlug // 测试js模块
+      table.init('test', {
+        data: [{
+          id: 1,
+          f2: '区块',
+          f3: '井号',
+          f4: '层位',
+          f41: '投产日期',
+          f51: '月产液',
+          f52: '月产油',
+          f53: '月产水',
+          f54: '含水',
+          f55: '油层中深',
+          f56: '泵挂',
+          f57: '动液面',
+          f58: '沉没度',
+          f59: '冲程',
+          f510: '冲数',
+          f511: '泵径',
+          f512: '流压',
+          f515: '备注',
+          f516: '日均',
+          f517: '日均',
+          f22: '间开制度',
+          f518: '日理论',
+          f519: '泵效',
+          f520: '日历',
+          f521: '生产',
+          f524: '时率',
+          f525: '倒数第二次检泵周期',
+          f526: '倒数第一次检泵周期',
+          f527: '检泵周期',
+          f6: '措施',
+          f7: '测压',
+          f8: '小修',
+          f9: '丛式井作业干扰',
+          f10: '保养',
+          f11: '大修',
+          f12: '其它',
+          f18: '待修',
+          f17: '停电',
+          f16: '小修返工',
+          f15: '机械故障',
+          f14: '出油管线破',
+          f106: '出油管线堵',
+          f107: '集输管线堵',
+          f108: '集输管线破',
+          f109: '憋罐',
+          f13: '其它'
+        }]
+      });
+
+      table.eachCols('demo', function (index, item) {
+        console.log(index, item);
+      });
+    });
+</script>
+</body>
+</html>

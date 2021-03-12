@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lylblog.project.system.webColumn.mapper.WebColumnMapper">
+
+    <!-- 添加网站栏目信息 -->
+    <insert id="addWebColumnInfo" parameterType="com.lylblog.project.system.webColumn.bean.WebColumnBean">
+        insert into sys_column(
+            <if test="parentId != null and parentId != ''">parentId,</if>
+            <if test="columnName != null and columnName != ''">columnName,</if>
+            <if test="columnIcon != null and columnIcon != ''">columnIcon,</if>
+            <if test="columnUrl != null and columnUrl != ''">columnUrl,</if>
+            <if test="isDefault != null and isDefault != ''">isDefault,</if>
+            <if test="isHidden != null and isHidden != ''">isHidden,</if>
+            <if test="isAllow != null and isAllow != ''">isAllow,</if>
+            <if test="keywords != null and keywords != ''">keywords,</if>
+            <if test="description != null and description != ''">description,</if>
+            <if test="orderBy != null and orderBy != ''">orderBy,</if>
+            <if test="createBy != null and createBy != ''">createBy,</if>
+            createTime
+        )values(
+            <if test="parentId != null and parentId != ''">#{parentId},</if>
+            <if test="columnName != null and columnName != ''">#{columnName},</if>
+            <if test="columnIcon != null and columnIcon != ''">#{columnIcon},</if>
+            <if test="columnUrl != null and columnUrl != ''">#{columnUrl},</if>
+            <if test="isDefault != null and isDefault != ''">#{isDefault},</if>
+            <if test="isHidden != null and isHidden != ''">#{isHidden},</if>
+            <if test="isAllow != null and isAllow != ''">#{isAllow},</if>
+            <if test="keywords != null and keywords != ''">#{keywords},</if>
+            <if test="description != null and description != ''">#{description},</if>
+            <if test="orderBy != null and orderBy != ''">#{orderBy},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <!-- 编辑网站栏目信息 -->
+    <update id="updateWebColumnInfo" parameterType="com.lylblog.project.system.webColumn.bean.WebColumnBean">
+        update sys_column set
+            <if test="parentId != null and parentId != ''">parentId = #{parentId},</if>
+            <if test="columnName != null and columnName != ''">columnName = #{columnName},</if>
+            <if test="columnIcon != null and columnIcon != ''">columnIcon = #{columnIcon},</if>
+            <if test="columnUrl != null and columnUrl != ''">columnUrl = #{columnUrl},</if>
+            <if test="isDefault != null and isDefault != ''">isDefault = #{isDefault},</if>
+            <if test="isHidden != null and isHidden != ''">isHidden = #{isHidden},</if>
+            <if test="isAllow != null and isAllow != ''">isAllow = #{isAllow},</if>
+            <if test="keywords != null and keywords != ''">keywords = #{keywords},</if>
+            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="orderBy != null and orderBy != ''">orderBy = #{orderBy},</if>
+            <if test="updateBy != null and updateBy != ''">updateBy = #{updateBy},</if>
+            updateTime = sysdate()
+        where columnId = #{columnId}
+    </update>
+
+    <!-- 查询网站栏目信息 -->
+    <select id="queryWebColumnInfo" parameterType="com.lylblog.project.system.webColumn.bean.WebColumnBean" resultType="com.lylblog.project.system.webColumn.bean.WebColumnBean">
+        SELECT
+            t.*,
+            ( SELECT dict_label FROM sys_dict_data WHERE dict_type = 'web_column_attribute' AND dict_value = t.isDefault ) AS attributeName,
+            ( SELECT dict_label FROM sys_dict_data WHERE dict_type = 'sys_hide_show' AND dict_value = t.isHidden ) AS typeName
+        FROM
+            `sys_column` AS t order by orderBy
+    </select>
+
+    <!-- 查询允许发布文章的专栏信息 -->
+    <select id="queryWebColumnByAllow" resultType="com.lylblog.project.system.webColumn.bean.WebColumnBean">
+        select * from sys_column where isAllow = 'Y'
+    </select>
+
+    <!-- 根据id查询网站栏目信息 -->
+    <select id="queryWebColumnInfoById" parameterType="String" resultType="com.lylblog.project.system.webColumn.bean.WebColumnBean">
+        select * from sys_column where columnId = #{columnId}
+    </select>
+
+    <!-- 删除网站栏目信息 -->
+    <delete id="deleteWebColumnInfo">
+        delete from sys_column where columnId in
+        <foreach collection="deleteIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 查询所有父栏目信息 -->
+    <select id="queryParentColumn" resultType="com.lylblog.project.system.webColumn.bean.WebColumnBean">
+        select columnId,columnName from sys_column where isDefault = '1' and parentId = '0'
+    </select>
+</mapper>

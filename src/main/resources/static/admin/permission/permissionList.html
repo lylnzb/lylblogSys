@@ -1,0 +1,131 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <title></title>
+    <link href="/admin/js/bstable/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/admin/js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link href="/admin/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/common/layui/css/layui.css">
+    <link href="/admin/css/table.css" rel="stylesheet" type="text/css" />
+    <style>
+        .department_main label{width: 10%;text-align: right;font-size: 12px}
+        .department_main input, .department_main select{margin-right: 1%;height: 32px;border: 1px #ccc solid;background-color: #fff;border-radius: 4px;padding-left: 6px;}
+        .department_main textarea{resize: none;border: 1px #ccc solid;height: 50px;background-color: #fff;border-radius: 4px;padding-left: 6px;padding-top: 5px;}
+        .layui-form.layui-border-box.layui-table-view{margin: 0 auto}
+        layui-input-inline{width: 38.7%}
+        .layui-table-cell .layui-form-checkbox[lay-skin="primary"]{top: 50%;transform: translateY(-50%);}
+    </style>
+</head>
+<body style="margin-left: 10px; padding-top: 10px;background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
+<div class="news_main">
+    <div class="l_left news_left">
+        <h6>权限列表</h6>
+        <div class="tree_left_top" style="height: 90%;overflow: auto">
+            <div class=" order_ztree l_left organize_ztree" style="width: 100%">
+                <p><ul id="treeDemo" class="ztree"  style=" overflow:auto;margin-left: 20px"></ul></p>
+            </div>
+        </div>
+    </div>
+    <div class="l_left news_right">
+        <h6>权限信息</h6>
+        <form id="frm" class="layui-form" action="" style="margin-top: 10px;height: 84%;overflow: auto">
+            <div class="department_main">
+                <div class="layui-form-item" style="margin-bottom: 0;">
+                    <input type="hidden" id="permId" name="permId">
+                    <input type="hidden" id="dropdown_select" name="dropdown_select">
+                    <label class="layui-form-label" style="font-weight: bold">上级菜单：</label>
+                    <div class="layui-input-inline" style="width:22.1%">
+                        <input type="text" id="grainProperty" name="grainProperty" lay-verify="grainProperty" autocomplete="off"
+                               class="layui-input" placeholder="" required="" disabled="disabled">
+                        <input type="hidden" id="parentId" name="parentId">
+                    </div>
+                    <label class="layui-form-label" style="font-weight: bold">图标代码：</label>
+                    <div class="layui-input-inline" style="width:22.1%">
+                        <input type="text" name="iconUrl" id="iconUrl" xl lay-verify="iconUrl" placeholder="请选择"
+                        autocomplete="off" class="layui-input" style="cursor:pointer" readonly="readonly">
+                    </div>
+                    <label class="layui-form-label" style="font-weight: bold">权限名称：</label>
+                    <div class="layui-input-inline" style="width:22.1%">
+                        <input type="text" id="permname" name="permname" lay-verify="permname" autocomplete="off"
+                               class="layui-input" placeholder="" required="">
+                    </div>
+                </div>
+            </div>
+            <div class="department_main">
+                <div class="layui-form-item" style="margin-bottom: 0;">
+                    <label class="layui-form-label" style="font-weight: bold">权限类型：</label>
+                    <div class="layui-input-inline" style="width:22.1%">
+                        <select id="permType" name="permType" lay-verify="permType" style="width: 100%">
+                            <option value=""></option>
+                            <option value="0">目录</option>
+                            <option value="1">菜单</option>
+                            <option value="2">按钮</option>
+                        </select>
+                    </div>
+                    <label class="layui-form-label" style="font-weight: bold">菜单路径：</label>
+                    <div class="layui-input-inline" style="width:22.1%">
+                        <input type="text" id="permUrl" name="permUrl" lay-verify="permType" autocomplete="off"
+                               class="layui-input" placeholder="" required="">
+                    </div>
+                    <label class="layui-form-label" style="font-weight: bold">授权标识：</label>
+                    <div class="layui-input-inline" style="width:22.1%">
+                        <input type="text" id="permControl" name="permControl" lay-verify="permType" autocomplete="off"
+                               class="layui-input" placeholder="" required="">
+                    </div>
+                </div>
+            </div>
+            <div class="department_main">
+                <div class="layui-form-item" style="margin-bottom: 0;">
+                    <label class="layui-form-label" style="font-weight: bold">排列顺序：</label>
+                    <div class="layui-input-inline" style="width:22.1%">
+                        <input type="text" id="permOrder" name="permOrder" lay-verify="number" autocomplete="off"
+                               class="layui-input" placeholder="" required="">
+                    </div>
+                </div>
+            </div>
+            <div class="department_main">
+                <div class="layui-form-item" style="margin-bottom: 0;">
+                    <label class="layui-form-label" style="font-weight: bold">备注：</label>
+                    <div class="layui-input-inline" style="width:88.4%">
+                        <textarea id = 'permdesc' lay-verify="permdesc" placeholder="请输入权限描述..." style="width: 100%;height: 70px"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="department_main">
+                <div class="layui-form-item" style="margin-bottom: 0;">
+                    <label class="layui-form-label" style="font-weight: bold"></label>
+                    <div class="layui-input-inline" style="width:88.4%">
+                        <button type="button" class="btn btn-primary" id="nsbc" lay-filter="save" lay-submit="" style="margin-top: 10px;">修改节点权限</button>
+                        <!--<button  class="" data-loading-text="Loading..." style="margin-top: 10px;"></button>-->
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="l_left news_bottom" style="margin-top: 7px;">
+        <h6>下级权限列表</h6>
+        <div style="height: 88%;overflow: auto">
+            <table id="table" class="layui-hide" lay-filter="tableEvent" style="margin: 0 auto"></table>
+            <div class="button" style="margin-top: 10px;margin-left: 10px;">
+                <button type="button" id="addPerm" class="btn btn-primary" data-loading-text="Loading...">新增权限</button>
+                <button type="button" id="cancelPerm" class="btn btn-primary" data-loading-text="Loading...">取消权限</button>
+                <button type="button" id="restorePerm" class="btn btn-primary" data-loading-text="Loading...">恢复权限</button>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+
+</div>
+<script type="text/javascript" src="/common/util.js"></script>
+<script type="text/javascript" src="/admin/js/jquery/jQuery-2.2.0.min.js"></script>
+<script type="text/javascript" src="/admin/js/bstable/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/admin/js/bstable/js/bootstrap-table.js"></script>
+<script type="text/javascript" src="/admin/js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script type="text/javascript" src="/admin/js/ztree/jquery.ztree.all-3.5.js"></script>
+<script type="text/javascript" src="/admin/js/ztree/jquery.ztree.exedit-3.5.js"></script>
+<script src="/common/layui/layui.all.js"></script>
+<script type="text/javascript" src="/admin/js/organize.js"></script>
+</body>
+</html>

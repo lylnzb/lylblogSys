@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<nav class="ui inverted attached segment m-padded-tb-mini m-shadow-small" th:fragment="myHeader">
+    <!-- 判断用户是否登录 -->
+    <input type="hidden" id="isAuthenticated" th:value="${isAuthenticated}"/>
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui teal header item">羅氏博客</h2>
+            <div id="menu" style="display: contents;">
+                <a href="../index" class="m-item item m-mobile-hide" style="float: left"><i class="home icon"></i>首页</a>
+                <div class="ui dropdown item" style="float: left">
+                    <i class="idea icon"></i>学无止境<i class="dropdown icon"></i>
+                    <div class="menu" data-filtered="filtered">
+                        <div class="item" data-filtered="filtered"><a href="../blog/blogList" style="color: #0C0C0C">博客日记</a></div>
+                        <div class="item" data-filtered="filtered"><a href="../blog/blogList" style="color: #0C0C0C">文学摘录</a></div>
+                        <div class="item" data-filtered="filtered"><a href="../blog/blogList" style="color: #0C0C0C">程序人生</a></div>
+                    </div>
+                </div>
+                <a href="../book/bookList" class="m-item item m-mobile-hide" style="float: left"><i class="book icon"></i>电子书籍</a>
+                <a href="../message/messageFeedback" class="m-item item m-mobile-hide" style="float: left"><i class="envelope icon"></i>留言反馈</a>
+                <a href="../about/aboutMe" class="m-item item m-mobile-hide" style="float: left"><i class="info icon"></i>关于我</a>
+            </div>
+            <div class="m-item right item m-mobile-hide">
+                <div class="item" shiro:notAuthenticated="">
+                    <a class="m-mobile-hide" id="adminlogin">登录</a>&nbsp;/&nbsp;<a class="m-mobile-hide" id="registerlogin">注册</a>
+                </div>
+                <div class="item" shiro:authenticated="">
+                    <div class="ui pointing dropdown link item" id="hybrid">
+                        <a title="回忆里依稀" class="userIcon">
+                            <img class="widget_avatar" src="/img/Head.jpg" alt="回忆里依稀">
+                        </a>
+                        <!--<i class="dropdown icon"></i>-->
+                        <div class="menu" data-filtered="filtered" style="margin-top: 25px;margin-left: -20px;">
+                            <div class="item isLogin" data-filtered="filtered"><a style="color: #0C0C0C">个人中心</a></div>
+                            <div class="item background" shiro:hasRole="博主" data-filtered="filtered"><a style="color: #0C0C0C" href="http://127.0.0.1/admin/index" target="_blank">后台管理</a></div>
+                            <div class="item updatePwd" data-filtered="filtered"><a style="color: #0C0C0C">修改密码</a></div>
+                            <div class="item loginOut" data-filtered="filtered"><a style="color: #0C0C0C">退出登录</a></div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="item">
+                    <div class="ui icon input">
+                        <input type="text" placeholder="搜索...">
+                        <i class="search link icon"></i>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+    <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#" class="ui menu toggle black icon button m-top-right m-hide">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+</body>
+</html>

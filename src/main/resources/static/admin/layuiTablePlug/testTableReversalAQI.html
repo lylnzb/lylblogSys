@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>行列转换--空气质量</title>
+  <link rel="stylesheet" href="layui/src/css/layui.css" media="all">
+  <style>
+    body {
+      /*margin: 10px;*/
+    }
+
+    table.myTable + .layui-table-view.vertical thead tr:first-child th .layui-table-cell {
+      /*width: 48px;*/
+    }
+  </style>
+</head>
+<body>
+
+<table class="layui-hide myTable" id="demo" lay-filter="test"></table>
+
+<script src="layui/src/layui.js"></script>
+<script>
+
+  layui.config({base: 'download/'})
+    .extend({tablePlug: 'tablePlug/tablePlug'})
+    .use(['tablePlug'], function () {
+      var tablePlug = layui.tablePlug;
+      var table = layui.table;
+
+      table.render({
+        elem: '#demo'
+        , height: 500
+        , url: 'json/data.json' //数据接口
+        , data: [
+          {level: '一级', AQI: '0~50', state: '优', Jan: 4, Feb: 7, Mar: 0},
+          {level: '二级', AQI: '51~100', state: '良', Jan: 11, Feb: 11, Mar: 22},
+          {level: '三级', AQI: '101~150', state: '轻度污染', Jan: 7, Feb: 7, Mar: 7},
+          {level: '四级', AQI: '151~200', state: '中度污染', Jan: 8, Feb: 3, Mar: 2},
+          {level: '五级', AQI: '201~300', state: '重度污染', Jan: 1, Feb: 0, Mar: 0},
+          {level: '六级', AQI: '>300', state: '严重污染', Jan: 0, Feb: 0, Mar: 0}
+        ]
+        , title: '用户表'
+        // , page: false //开启分页
+        , loading: true
+        , cellMinWidth: 90
+        // 默认反转
+        , reversal: true
+        , cols: [
+          [
+            {field: 'level', title: '空气质量级别', rowspan: 2, align: 'center'},
+            {field: 'AQI', title: 'AQI', rowspan: 2, align: 'center'},
+            {field: 'state', title: '空气质量状况', rowspan: 2, align: 'center'},
+            {title: '出现天数', colspan: 4, align: 'center'},
+            {field: 'ratio', title: '比例(%)', rowspan: 2, align: 'center'}
+          ]
+          , [
+            {field: 'Jan', title: '1月', align: 'center'},
+            {field: 'Feb', title: '2月', align: 'center'},
+            {field: 'Mar', title: '3月', align: 'center'},
+            {
+              field: 'total', title: '小计', templet: function (d) {
+                return d.Jan + d.Feb + d.Mar;
+              }, align: 'center'
+            }
+          ]
+        ],
+        done: function (ret) {
+          // 目前小计和比例都是通过js计算的，也可以直接从接口返回对应的数据直接展示就行
+          var total = 0;
+          var tableView = this.elem.next();
+          tableView.find('td[data-field="total"]').filter(function (index, tdElem) {
+            total += parseInt(tdElem.innerText || '0');
+          });
+          layui.each(ret[this.response.dataName], function (index, data) {
+            var trElem = tableView.find('tr[data-index="' + index + '"]');
+            var totalCurr = parseInt(trElem.find('td[data-field="total"]').text() || '0');
+            trElem.find('td[data-field="ratio"] div').html((totalCurr * 100 / total).toFixed(1));
+          });
+          tableView.find('[data-field="level"],[data-field="AQI"]').css({backgroundColor: '#8DB3E2'});
+          tableView.find('[data-field="state"]').css({backgroundColor: '#B6DDE8'});
+        }
+      });
+    });
+</script>
+</body>
+</html>

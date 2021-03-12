@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lylblog.project.system.dict.mapper.DictMapper">
+
+    <!-- 字段映射 -->
+    <resultMap type="com.lylblog.project.system.dict.bean.DictTypeBean" id="DictTypeResult">
+        <id     property="dictId"     column="dict_id"     />
+        <result property="dictName"   column="dict_name"   />
+        <result property="dictType"   column="dict_type"   />
+        <result property="valId"     column="valid"      />
+        <result property="createBy"   column="create_by"   />
+        <result property="createTime" column="create_time" />
+        <result property="updateBy"   column="update_by"   />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <!-- 字段映射 -->
+    <resultMap type="com.lylblog.project.system.dict.bean.DictDataBean" id="DictDataResult">
+        <id     property="dictCode"   column="dict_code"   />
+        <result property="dictSort"   column="dict_sort"   />
+        <result property="dictLabel"  column="dict_label"  />
+        <result property="dictValue"  column="dict_value"  />
+        <result property="dictType"   column="dict_type"   />
+        <result property="cssClass"   column="css_class"   />
+        <result property="listClass"  column="list_class"  />
+        <result property="isDefault"  column="is_default"  />
+        <result property="valId"     column="valid"      />
+        <result property="createBy"   column="create_by"   />
+        <result property="createTime" column="create_time" />
+        <result property="updateBy"   column="update_by"   />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <!-- 查询字典类型信息 -->
+    <select id="queryDictTypeInfo" parameterType="com.lylblog.project.system.dict.bean.DictTypeBean" resultMap="DictTypeResult">
+        SELECT *  FROM
+            (
+        SELECT
+            ( @i := @i + 1 ) rk,
+            t.*
+        FROM
+            sys_dict_type t,
+            ( SELECT @i := 0 ) rk
+        WHERE 1 = 1
+        <if test="dictId != null and dictId != ''">
+            and dict_id = #{dictId}
+        </if>
+        <if test="dictType != null and dictType != ''">
+            and dict_type = #{dictType}
+        </if>
+        <if test="dictName != null and dictName != ''">
+            and dict_name like concat('%',#{dictName},'%')
+        </if>
+        ) AS dictType
+        <if test="limit != null and limit != ''">
+            where rk between (#{page}-1)*#{limit} + 1 and #{page}*#{limit}
+        </if>
+    </select>
+
+    <!-- 查询字典类型信息总数 -->
+    <select id="queryDictTypeInfoCount" parameterType="com.lylblog.project.system.dict.bean.DictTypeBean" resultType="int">
+        select count(1) from sys_dict_type
+        WHERE 1 = 1
+        <if test="dictId != null and dictId != ''">
+            and dict_id = #{dictId}
+        </if>
+        <if test="dictType != null and dictType != ''">
+            and dict_type = #{dictType}
+        </if>
+        <if test="dictName != null and dictName != ''">
+            and dict_name like concat('%',#{dictName},'%')
+        </if>
+    </select>
+
+    <!-- 新增字典类型信息 -->
+    <insert id="addDictTypeInfo" parameterType="com.lylblog.project.system.dict.bean.DictTypeBean">
+        insert into sys_dict_type(
+            <if test="dictName != null and dictName != ''">dict_name,</if>
+            <if test="dictType != null and dictType != ''">dict_type,</if>
+            <if test="valId != null">valid,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="dictName != null and dictName != ''">#{dictName},</if>
+            <if test="dictType != null and dictType != ''">#{dictType},</if>
+            <if test="valId != null">#{valId},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <!-- 编辑字典类型信息 -->
+    <update id="editDictTypeInfo" parameterType="com.lylblog.project.system.dict.bean.DictTypeBean">
+        update sys_dict_type
+        <set>
+            <if test="dictName != null and dictName != ''">dict_name = #{dictName},</if>
+            <if test="dictType != null and dictType != ''">dict_type = #{dictType},</if>
+            <if test="valId != null">valId = #{valId},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </set>
+        where dict_id = #{dictId}
+    </update>
+
+    <!-- 删除字典类型信息 -->
+    <delete id="deleteDictTypeInfo" parameterType="com.lylblog.project.system.dict.bean.DictTypeBean">
+        delete from sys_dict_type where dict_type = #{dictType}
+    </delete>
+
+    <!-- 通过条件查询字典数据信息 -->
+    <select id="queryDictDataInfo" parameterType="com.lylblog.project.system.dict.bean.DictDataBean" resultMap="DictDataResult">
+        select * from sys_dict_data where 1=1
+        <if test="dictCode != null and dictCode != ''"> and dict_code = #{dictCode}</if>
+        <if test="dictType != null and dictType != ''"> and dict_type = #{dictType}</if>
+    </select>
+
+    <!-- 新增字典数据信息 -->
+    <insert id="addDictDataInfo" parameterType="com.lylblog.project.system.dict.bean.DictDataBean">
+        insert into sys_dict_data(
+            <if test="dictSort != null and dictSort != ''">dict_sort,</if>
+            <if test="dictLabel != null and dictLabel != ''">dict_label,</if>
+            <if test="dictValue != null and dictValue != ''">dict_value,</if>
+            <if test="dictType != null and dictType != ''">dict_type,</if>
+            <if test="isDefault != null and isDefault != ''">is_default,</if>
+            <if test="valId != null">valId,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="dictSort != null and dictSort != ''">#{dictSort},</if>
+            <if test="dictLabel != null and dictLabel != ''">#{dictLabel},</if>
+            <if test="dictValue != null and dictValue != ''">#{dictValue},</if>
+            <if test="dictType != null and dictType != ''">#{dictType},</if>
+            <if test="isDefault != null and isDefault != ''">#{isDefault},</if>
+            <if test="valId != null">#{valId},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <!-- 编辑字典数据信息 -->
+    <update id="editDictDataInfo" parameterType="com.lylblog.project.system.dict.bean.DictDataBean">
+        update sys_dict_data
+        <set>
+            <if test="dictSort != null and dictSort != ''">dict_sort = #{dictSort},</if>
+            <if test="dictLabel != null and dictLabel != ''">dict_label = #{dictLabel},</if>
+            <if test="dictValue != null and dictValue != ''">dict_value = #{dictValue},</if>
+            <if test="dictType != null and dictType != ''">dict_type = #{dictType},</if>
+            <if test="isDefault != null and isDefault != ''">is_default = #{isDefault},</if>
+            <if test="valId != null">valId = #{valId},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </set>
+        where dict_code = #{dictCode}
+    </update>
+
+    <!-- 删除字典数据信息 -->
+    <delete id="deleteDictDataInfo" parameterType="com.lylblog.project.system.dict.bean.DictDataBean">
+        delete from sys_dict_data where 1=1
+        <if test="dictType != null and dictType != ''">and dict_type = #{dictType}</if>
+        <if test="dictCode != null and dictCode != ''">and dict_code = #{dictCode}</if>
+    </delete>
+
+    <!-- 修改字典数据默认值为‘否’ -->
+    <update id="updateIsDefault" parameterType="String">
+        update sys_dict_data set is_default = 'N' where dict_type = #{dictType} and dict_value != #{dictValue}
+    </update>
+</mapper>

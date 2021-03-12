@@ -1,0 +1,161 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link rel="stylesheet" href="/common/layui/css/layui.css">
+    <link href="/admin/js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/common/semantic-ui/dist/semantic.min.css">
+    <link href="/admin/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="/admin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/admin/css/animate.css" rel="stylesheet"/>
+    <link href="/admin/css/style.css" rel="stylesheet"/>
+    <link href="/admin/css/tail.css" rel="stylesheet" type="text/css">
+    <link href="/admin/css/table.css" rel="stylesheet" type="text/css" />
+    <style>
+        .department_main label{width: 10%;text-align: right;font-size: 12px}
+        .department_main input, .department_main select{margin-right: 1%;height: 32px;border: 1px #ccc solid;background-color: #fff;border-radius: 4px;padding-left: 6px;}
+        .department_main textarea{resize: none;border: 1px #ccc solid;height: 50px;background-color: #fff;border-radius: 4px;padding-left: 6px;padding-top: 5px;}
+        .layui-form-radio {line-height: 28px;margin: 6px 10px 0 0;padding-right: 1px;cursor: pointer;font-size: 0;}
+        .layui-form-select {width:620px;}
+        .layui-form-item {margin-bottom: 10px;}
+
+        #uplodeFile {
+            width: 300px;
+            height: 200px;
+            background-color: rgba(210, 191, 191, 0.15);
+        }
+        #uplodeFile img{
+            max-width: 166px;
+            max-height: 110px;
+            text-align: center;
+            margin: -15px -15px -15px -15px;
+        }
+
+        .image img{
+            display: inline-block;
+            height: 100%;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        #uploadBannerView{
+            width: 300px;
+            height: 200px;
+            margin-top: -200px;
+            margin-left: 320px;
+            border: 1px dashed #e2e2e2;
+            display: none;
+        }
+
+        #uploadImg {
+            opacity: 0;
+        }
+
+        #file {
+            margin-top: -137px;
+            margin-left: -30px;
+            width: 300px;
+            height: 200px;
+            cursor:pointer;
+        }
+
+        #middle{
+            width: 300px;
+            height: 200px;
+            text-align: center;
+            display: table-cell;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+<form id="frm" class="layui-form" action="">
+    <div id="tools-box" class="wrapper wrapper-content animated fadeInRight ibox-content" align="left">
+        <div class="department_main">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 189px;font-weight: bold"><font color='red'>*</font>&nbsp;轮播图：</label>
+                <div class="layui-input-inline">
+                    <div class="layui-upload-drag" id="uplodeFile">
+                        <div class="upload">
+                            <!--<i class="layui-icon"></i>-->
+                            <img src="http://127.0.0.1/profile/timg.jpg"/>
+                            <p style="margin-top: 7px;">点击上传，或将图片拖拽到此处...</p>
+                        </div>
+                        <div id="uploadImg">
+                            <input type="hidden" id="isUploadBannerImg" name="isUploadBannerImg" lay-verify="isUploadBannerImg">
+                            <input type="file" class="file" id="file" accept="image/*" onchange="viewImg(this)"/>
+                        </div>
+                    </div>
+                    <div id="uploadBannerView">
+                        <i id="closeBannerImgView" class="close icon" style="margin-top: 6px;"></i>
+                        <div id="middle">
+                            <img id="showBannerImg" src="" alt="上传成功后渲染" style="max-width: 200px;max-height: 150px; margin:0 auto;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style = 'width: 189px;font-weight: bold'><font color='red'>*</font>&nbsp;轮播图标题：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="bannerTitle" id="bannerTitle" lay-verify="bannerTitle" autocomplete="off"
+                               class="layui-input" style="width: 620px">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style = 'width: 189px;font-weight: bold'><font color='red'>*</font>&nbsp;轮播图url：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="bannerUrl" id="bannerUrl" lay-verify="bannerUrl" autocomplete="off"
+                               class="layui-input" style="width: 620px">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style = 'width: 189px;font-weight: bold'><font color='red'>*</font>&nbsp;是否展示：</label>
+                    <div class="layui-input-inline">
+                        <select id="valid" name="valid" lay-verify="valid" style="width: 100%;">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style = 'width: 189px;font-weight: bold'>排序：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="orderBy" id="orderBy" lay-verify="orderBy" autocomplete="off"
+                               class="layui-input" style="width: 620px">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="notice_bot" style="z-index: 0">
+        <div class="r_right but_p">
+            <div class="layui-btn but_save" id="nsbc" lay-filter="save" lay-submit="">保存</div>
+            <div class="layui-btn but_close" id="close" onclick="Cancel()">关闭</div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript" src="/admin/js/jquery/jQuery-2.2.0.min.js"></script>
+<script src="/common/semantic-ui/dist/semantic.min.js"></script>
+<script type="text/javascript" src="/admin/js/ztree/jquery.ztree.all-3.5.js"></script>
+<script type="text/javascript" src="/admin/js/ztree/jquery.ztree.exedit-3.5.js"></script>
+<script src="/common/layui/layui.all.js"></script>
+<script src="/common/util.js"></script>
+<script src="/admin/banner/js/addOrUpdaBanner.js"></script>
+</body>
+</html>

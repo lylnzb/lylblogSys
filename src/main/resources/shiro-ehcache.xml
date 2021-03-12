@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+         updateCheck="false"
+         monitoring="autodetect"
+         dynamicConfig="true">
+    　　<!-- 设置默认临时文件路径 -->
+    <diskStore path="java.io.tmpdir"/>
+    <cache name="authorizationCache"
+           maxEntriesLocalHeap="1000"
+           maxEntriesLocalDisk="1000"
+           eternal="false"
+           diskSpoolBufferSizeMB="20"
+           timeToIdleSeconds="7200"
+           timeToLiveSeconds="28800"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+    </cache>
+</ehcache>
