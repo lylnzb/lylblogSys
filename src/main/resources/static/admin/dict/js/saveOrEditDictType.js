@@ -31,7 +31,7 @@ layui.use(['form', 'layer'], function(){
             remark : remark
         }
         $.ajax({
-            url: basePath + "dict/addOrEditDictTypeInfo?type=add",
+            url: basePath + "admin/dict/addOrEditDictTypeInfo?type=add",
             type:"POST",
             data:JSON.stringify(paramData),
             dataType:"json",

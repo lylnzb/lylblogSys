@@ -1,6 +1,6 @@
 var nowPage;
 
-layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], function () {
+layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], function () {
     var table = layui.table,
         form = layui.form;
 
@@ -17,7 +17,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
                 shade: 0.5,
                 closeBtn:1,
                 area: ['790px', '580px'],
-                content: basePath + '/link/addOrUpdaLink?type=update&id='+data.id,
+                content: basePath + 'admin/link/addOrUpdaLink?type=update&id='+data.id,
                 end: function () {//层消失回调
                     layReload();
                 }
@@ -34,7 +34,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
                     var deleteIds = [];
                     deleteIds.push(data.id);
                     $.ajax({
-                        url:basePath + "link/deleteLikeInfo",
+                        url:basePath + "admin/link/deleteLikeInfo",
                         type:"POST",
                         data:JSON.stringify(deleteIds),
                         dataType:"json",
@@ -57,7 +57,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
 
     tableIns = table.render({
         elem: '#table'
-        ,url: basePath + 'link/queryLinkInfo'
+        ,url: basePath + 'admin/link/queryLinkInfo'
         ,method: 'post'
         ,contentType: "application/json; charset=utf-8"
         ,dataType:"json"
@@ -107,7 +107,7 @@ $("#applyLinks").click(function(){
         shade: 0.5,
         closeBtn:1,
         area: ['790px', '580px'],
-        content: basePath + '/link/addOrUpdaLink?type=add',
+        content: basePath + 'admin/link/addOrUpdaLink?type=add',
         end: function () {//层消失回调
             layReload();
         }
@@ -133,7 +133,7 @@ function deleteLinks(){
                 deleteIds.push(checkedObjs.data[i].id);
             }
             $.ajax({
-                url:basePath + "link/deleteLikeInfo",
+                url:basePath + "admin/link/deleteLikeInfo",
                 type:"POST",
                 data:JSON.stringify(deleteIds),
                 dataType:"json",

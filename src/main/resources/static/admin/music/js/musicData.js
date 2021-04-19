@@ -1,6 +1,6 @@
 var nowPage;
 
-layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], function () {
+layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], function () {
     var table = layui.table,
         form = layui.form;
 
@@ -17,7 +17,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
                 shade: 0.5,
                 closeBtn:1,
                 area: ['790px', '720px'],
-                content: basePath + '/webMusic/addOrUpdaMusic?type=update&musicId='+data.musicId,
+                content: basePath + 'admin/webMusic/addOrUpdaMusic?type=update&musicId='+data.musicId,
                 end: function () {//层消失回调
                     layReload();
                 }
@@ -34,7 +34,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
                     var deleteIds = [];
                     deleteIds.push(data.musicId);
                     $.ajax({
-                        url:basePath + "webMusic/deleteMusicInfo",
+                        url:basePath + "admin/webMusic/deleteMusicInfo",
                         type:"POST",
                         data:JSON.stringify(deleteIds),
                         dataType:"json",
@@ -57,7 +57,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
 
     tableIns = table.render({
         elem: '#table'
-        ,url: basePath + 'webMusic/queryMusicInfo'
+        ,url: basePath + 'admin/webMusic/queryMusicInfo'
         ,method: 'post'
         ,contentType: "application/json; charset=utf-8"
         ,dataType:"json"
@@ -112,7 +112,7 @@ $("#releaseArticle").click(function(){
         shade: 0.5,
         closeBtn:1,
         area: ['790px', '720px'],
-        content: basePath + '/webMusic/addOrUpdaMusic?type=add',
+        content: basePath + 'admin/webMusic/addOrUpdaMusic?type=add',
         end: function () {//层消失回调
             layReload();
         }
@@ -138,7 +138,7 @@ function deleteMusic(){
                 deleteIds.push(checkedObjs.data[i].musicId);
             }
             $.ajax({
-                url:basePath + "webMusic/deleteMusicInfo",
+                url:basePath + "admin/webMusic/deleteMusicInfo",
                 type:"POST",
                 data:JSON.stringify(deleteIds),
                 dataType:"json",

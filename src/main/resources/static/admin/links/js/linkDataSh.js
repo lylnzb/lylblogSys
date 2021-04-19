@@ -1,6 +1,6 @@
 var nowPage;
 
-layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], function () {
+layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], function () {
     var table = layui.table,
         form = layui.form;
 
@@ -22,7 +22,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
                         "auditStatus" : "1"
                     }
                     $.ajax({
-                        url:basePath + "link/auditLinkData",
+                        url:basePath + "admin/link/auditLinkData",
                         type:"POST",
                         data:JSON.stringify(paramData),
                         dataType:"json",
@@ -48,7 +48,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
                 shade: 0.5,
                 closeBtn:1,
                 area: ['450px', '280px'],
-                content: basePath + '/link/auditLink?id='+data.id,
+                content: basePath + 'admin/link/auditLink?id='+data.id,
                 end: function () {//层消失回调
                     layReload();
                 }
@@ -58,7 +58,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
 
     tableIns = table.render({
         elem: '#table'
-        ,url: basePath + 'link/queryLinkShInfo'
+        ,url: basePath + 'admin/link/queryLinkShInfo'
         ,method: 'post'
         ,contentType: "application/json; charset=utf-8"
         ,dataType:"json"

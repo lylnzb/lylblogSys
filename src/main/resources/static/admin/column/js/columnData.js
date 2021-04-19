@@ -11,7 +11,7 @@ layui.config({
     // 渲染表格
     insTb = treeTable.render({
         elem: '#demoTreeTb',
-        url: basePath+'webColumn/queryWebColumnInfo',
+        url: basePath+'admin/webColumn/queryWebColumnInfo',
         height: 'full-70',
         skin:'nob',// 无边框风格
         tree: {
@@ -68,7 +68,7 @@ layui.config({
                     var deleteIds = [];
                     deleteIds.push(data.columnId);
                     $.ajax({
-                        url:basePath + "webColumn/deleteWebColumnInfo",
+                        url:basePath + "admin/webColumn/deleteWebColumnInfo",
                         type:"POST",
                         data:JSON.stringify(deleteIds),
                         dataType:"json",
@@ -138,7 +138,7 @@ function deleteColumn(){
                 deleteIds.push(checkedObjs[i].columnId);
             }
             $.ajax({
-                url:basePath + "webColumn/deleteWebColumnInfo",
+                url:basePath + "admin/webColumn/deleteWebColumnInfo",
                 type:"POST",
                 data:JSON.stringify(deleteIds),
                 dataType:"json",

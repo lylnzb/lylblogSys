@@ -17,7 +17,7 @@ import java.util.List;
  * @Date: 2020/11/8 15:00
  */
 @Controller
-@RequestMapping("/webColumn")
+@RequestMapping("/admin/webColumn")
 public class WebColumnController {
 
     @Resource

@@ -21,7 +21,7 @@ import javax.annotation.Resource;
  * @Date: 2021/2/22 14:34
  */
 @Controller
-@RequestMapping("/online")
+@RequestMapping("/admin/online")
 public class UserOnlineController {
 
     private static String BASEPATH = "/admin/online";

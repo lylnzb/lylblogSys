@@ -78,7 +78,7 @@ function loadSelect(ele,code,form){
  */
 function loadSelectAllow(ele,form){
     $.ajax({
-        url:basePath+'/webColumn/queryWebColumnByAllow',
+        url:basePath+'admin/webColumn/queryWebColumnByAllow',
         type:"POST",
         async:false,
         success:function(data){

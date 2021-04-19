@@ -9,7 +9,7 @@ function change(){
     })
 }
 
-layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], function () {
+layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], function () {
     var table = layui.table,
         form = layui.form;
 
@@ -26,7 +26,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
                 if(!lock) {
                     lock = true;
                     $.ajax({
-                        url:basePath + "online/forceLogout?sessionId=" + data.sessionId,
+                        url:basePath + "admin/online/forceLogout?sessionId=" + data.sessionId,
                         type:"POST",
                         contentType : 'application/json;charset=utf-8',
                         success:function(resultData){
@@ -47,7 +47,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
 
     tableIns = table.render({
         elem: '#table'
-        ,url: basePath + 'online/selectUserOnlineList'
+        ,url: basePath + 'admin/online/selectUserOnlineList'
         ,method: 'post'
         ,contentType: "application/json; charset=utf-8"
         ,dataType:"json"
@@ -91,76 +91,6 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
     });
 
 });
-
-function addOrUpdateRole(type){
-    var checkedObjs = layui.table.checkStatus('idTest');//获取所有选中的节点
-    var title = "";
-    var param = "";
-    if(type == 'add'){
-        title = "添加角色";
-    }else if(type == 'update'){
-        title = "编辑角色";
-        if(checkedObjs.data.length < 1){
-            layer.msg("请选择要编辑的角色数据！");
-            return false;
-        }else if(checkedObjs.data.length != 1){
-            layer.msg("且只能选择一条数据！");
-            return false;
-        }
-        param = "&roleId="+checkedObjs.data[0].roleid;
-    }
-    top.layer.open({
-        type: 2,
-        title: title,
-        shadeClose: true,
-        shade: 0.5,
-        closeBtn:1,
-        area: ['780px', '620px'],
-        content: basePath + '/admin/role/addOrUpdaRole?type='+type+param,
-        end: function () {//层消失回调
-            layReload();
-        }
-    });
-}
-
-function deleteRole(){
-    var checkedObjs = layui.table.checkStatus('idTest');//获取所有选中的节点
-    if(checkedObjs.data.length < 1){
-        top.layer.msg("请选择要删除的角色数据！");
-        return false;
-    }
-    var lock = false; //默认未锁定
-    top.layer.confirm("确定要批量删除角色吗？", {
-        btn: ["确定","取消"], //按钮
-        title: "提示",
-        icon: 3
-    }, function(index){
-        if(!lock) {
-            lock = true;
-            var deleteIds = [];
-            for(var i = 0;i < checkedObjs.data.length;i++){
-                deleteIds.push(checkedObjs.data[i].roleid);
-            }
-            $.ajax({
-                url:basePath + "admin/deleteRoleInfo",
-                type:"POST",
-                data:JSON.stringify(deleteIds),
-                dataType:"json",
-                contentType : 'application/json;charset=utf-8',
-                success:function(resultData){
-                    if(resultData.code==0){
-                        parent.layer.alert(resultData.msg);
-                        layReload();
-                    }else{
-                        parent.layer.alert(resultData.msg);
-                    }
-                }
-            });
-        }
-    }, function(){
-
-    });
-}
 
 //查询条件
 function layReload(){

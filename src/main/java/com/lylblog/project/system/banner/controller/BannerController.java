@@ -17,7 +17,7 @@ import java.util.List;
  * @Date: 2021/1/20 19:33
  */
 @Controller
-@RequestMapping("/banner")
+@RequestMapping("/admin/banner")
 public class BannerController {
 
     @Resource

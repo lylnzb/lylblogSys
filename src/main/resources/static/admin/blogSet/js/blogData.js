@@ -138,7 +138,7 @@ layui.use(['form', 'table','tree'], function(){
     });
 
     $.ajax({
-        url: basePath + "blogSet/viewBlogSetInfo",
+        url: basePath + "admin/blogSet/viewBlogSetInfo",
         type:"POST",
         async:false,
         contentType : 'application/json;charset=utf-8',
@@ -355,7 +355,7 @@ layui.use(['form', 'table','tree'], function(){
         }
         console.log(paramData);
         $.ajax({
-            url: basePath + "blogSet/configurationBlogSetInfo",
+            url: basePath + "admin/blogSet/configurationBlogSetInfo",
             type:"POST",
             data:JSON.stringify(paramData),
             dataType:"json",

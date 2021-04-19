@@ -18,7 +18,7 @@ layui.use(['form', 'table','tree'], function(){
                 shade: 0.5,
                 closeBtn:1,
                 area: ['100%', '100%'],
-                content: basePath + '/article/releaseArticle?type=update&articleId=' + data.articleId,
+                content: basePath + 'admin/article/releaseArticle?type=update&articleId=' + data.articleId,
                 end: function () {//层消失回调
                     layReload(1);
                 }
@@ -35,7 +35,7 @@ layui.use(['form', 'table','tree'], function(){
                     var deleteIds = [];
                     deleteIds.push(data.articleId);
                     $.ajax({
-                        url:basePath + "article/deleteArticleInfo",
+                        url:basePath + "admin/article/deleteArticleInfo",
                         type:"POST",
                         data:JSON.stringify(deleteIds),
                         dataType:"json",
@@ -54,13 +54,13 @@ layui.use(['form', 'table','tree'], function(){
 
             });
         }else if(obj.event == 'preview'){
-            window.open(basePath + "article/previewArticle/" + data.wznm);
+            window.open(basePath + "admin/article/previewArticle/" + data.wznm);
         }
     });
 
     tableIns = table.render({
         elem: '#table'
-        ,url: basePath + 'article/queryArticleInfo'
+        ,url: basePath + 'admin/article/queryArticleInfo'
         ,method: 'post'
         ,contentType: "application/json; charset=utf-8"
         ,dataType:"json"
@@ -110,7 +110,7 @@ $("#releaseArticle").click(function(){
         shade: 0.5,
         closeBtn:1,
         area: ['100%', '100%'],
-        content: basePath + '/article/releaseArticle?type=add',
+        content: basePath + 'admin/article/releaseArticle?type=add',
         end: function () {//层消失回调
             layReload(1);
         }
@@ -136,7 +136,7 @@ function deleteArticle(){
                 deleteIds.push(checkedObjs.data[i].articleId);
             }
             $.ajax({
-                url:basePath + "article/deleteArticleInfo",
+                url:basePath + "admin/article/deleteArticleInfo",
                 type:"POST",
                 data:JSON.stringify(deleteIds),
                 dataType:"json",

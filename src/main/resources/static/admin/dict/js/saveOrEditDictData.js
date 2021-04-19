@@ -31,7 +31,7 @@ layui.use(['form', 'layer'], function(){
 
     if(type == "update"){
         $.ajax({
-            url: basePath + "dict/queryDictDataInfo",
+            url: basePath + "admin/dict/queryDictDataInfo",
             data:JSON.stringify({"dictCode":dictCode}),
             type:"POST",
             async:false,
@@ -71,7 +71,7 @@ layui.use(['form', 'layer'], function(){
             remark : remark
         }
         $.ajax({
-            url: basePath + "dict/addOrEditDictDataInfo?type="+type,
+            url: basePath + "admin/dict/addOrEditDictDataInfo?type="+type,
             type:"POST",
             data:JSON.stringify(paramData),
             dataType:"json",

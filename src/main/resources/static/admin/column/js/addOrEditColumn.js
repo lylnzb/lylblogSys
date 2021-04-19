@@ -56,7 +56,7 @@ layui.use(['form', 'layer'], function(){
 
     if(type == "update"){
         $.ajax({
-            url: basePath + "webColumn/queryWebColumnInfoById?columnId=" + columnId,
+            url: basePath + "admin/webColumn/queryWebColumnInfoById?columnId=" + columnId,
             type:"POST",
             async:false,
             contentType : 'application/json;charset=utf-8',
@@ -104,7 +104,7 @@ layui.use(['form', 'layer'], function(){
             description : description
         }
         $.ajax({
-            url: basePath + "webColumn/addOrUpdateWebColumnInfo?type="+type,
+            url: basePath + "admin/webColumn/addOrUpdateWebColumnInfo?type="+type,
             type:"POST",
             data:JSON.stringify(paramData),
             dataType:"json",
@@ -136,7 +136,7 @@ function findCodeValue(form){
     loadRadio("#isAllow", "sys_column_yes_no", form);
 
     $.ajax({
-        url:basePath+'/webColumn/queryParentColumn',
+        url:basePath+'admin/webColumn/queryParentColumn',
         type:"POST",
         async:false,
         success:function(data){

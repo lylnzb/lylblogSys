@@ -1,7 +1,7 @@
 var tableIns;
 var tableIns1;
 var nowPage;
-layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], function () {
+layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], function () {
     var table = layui.table,
         form = layui.form;
 
@@ -35,7 +35,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
             remark : remark
         }
         $.ajax({
-            url: basePath + "dict/addOrEditDictTypeInfo?type=update",
+            url: basePath + "admin/dict/addOrEditDictTypeInfo?type=update",
             type:"POST",
             data:JSON.stringify(paramData),
             dataType:"json",
@@ -54,7 +54,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
     table.on('row(tableEvent)', function(obj){
         var data = obj.data;
         $.ajax({
-            url: basePath + "dict/queryDictTypeInfo",
+            url: basePath + "admin/dict/queryDictTypeInfo",
             type:"POST",
             data:JSON.stringify({dictId : data.dictId}),
             dataType:"json",
@@ -87,7 +87,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
             if(!lock) {
                 lock = true;
                 $.ajax({
-                    url: basePath + "dict/deleteDictTypeInfo",
+                    url: basePath + "admin/dict/deleteDictTypeInfo",
                     type:"POST",
                     data:JSON.stringify({dictType:data.dictType}),
                     dataType:"json",
@@ -121,7 +121,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
                 if(!lock) {
                     lock = true;
                     $.ajax({
-                        url: basePath + "dict/deleteDictDataInfo",
+                        url: basePath + "admin/dict/deleteDictDataInfo",
                         type:"POST",
                         data:JSON.stringify({dictCode:data.dictCode}),
                         dataType:"json",
@@ -148,7 +148,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
                 shade: 0.5,
                 closeBtn:1,
                 area: ['800px', '600px'],
-                content: basePath + '/dict/saveOrEditDictData?type=update&dictType='+$("#dictType").val()+'&dictCode='+data.dictCode,
+                content: basePath + 'admin/dict/saveOrEditDictData?type=update&dictType='+$("#dictType").val()+'&dictCode='+data.dictCode,
                 end: function () {//层消失回调
                     layReload1();
                 }
@@ -158,7 +158,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
 
     tableIns = table.render({
         elem: '#table'
-        ,url: basePath + 'dict/queryDictTypeInfo'
+        ,url: basePath + 'admin/dict/queryDictTypeInfo'
         ,method: 'post'
         ,contentType: "application/json; charset=utf-8"
         ,dataType:"json"
@@ -206,7 +206,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
 
     tableIns1 = table.render({
         elem: '#table1'
-        ,url: basePath + 'dict/queryDictDataInfo'
+        ,url: basePath + 'admin/dict/queryDictDataInfo'
         ,method: 'post'
         ,contentType: "application/json; charset=utf-8"
         ,dataType:"json"
@@ -254,7 +254,7 @@ $("#addDictType").click(function(){
         shade: 0.5,
         closeBtn:1,
         area: ['800px', '500px'],
-        content: basePath + '/dict/saveOrEditDictType',
+        content: basePath + 'admin/dict/saveOrEditDictType',
         end: function () {//层消失回调
             layReload(1);
         }
@@ -272,7 +272,7 @@ $("#addDictData").click(function(){
             shade: 0.5,
             closeBtn:1,
             area: ['800px', '600px'],
-            content: basePath + '/dict/saveOrEditDictData?type=add&dictType='+$("#dictType").val(),
+            content: basePath + 'admin/dict/saveOrEditDictData?type=add&dictType='+$("#dictType").val(),
             end: function () {//层消失回调
                 layReload1();
             }
@@ -281,7 +281,7 @@ $("#addDictData").click(function(){
 });
 
 //查询
-$("#query").on("click",function(){
+$("#seach").on("click",function(){
     layReload(1);
 });
 

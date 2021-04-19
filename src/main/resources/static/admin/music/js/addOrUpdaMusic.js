@@ -12,7 +12,7 @@ layui.use(['form','layer','jquery','table', 'laydate', 'element'], function(){
     //普通图片上传
     upload.render({
         elem: '#blog-image'
-        ,url: basePath + '/webMusic/uploadMusicFile' //改成您自己的上传接口
+        ,url: basePath + 'admin/webMusic/uploadMusicFile' //改成您自己的上传接口
         ,type:"POST"
         ,data: {
             musicId: function() {
@@ -46,7 +46,7 @@ layui.use(['form','layer','jquery','table', 'laydate', 'element'], function(){
 
     upload.render({
         elem: '#uploadMusic'
-        ,url: basePath + 'webMusic/uploadMusicFile' //改成您自己的上传接口
+        ,url: basePath + 'admin/webMusic/uploadMusicFile' //改成您自己的上传接口
         ,type:"POST"
         ,data: {
             musicId: function() {
@@ -66,7 +66,7 @@ layui.use(['form','layer','jquery','table', 'laydate', 'element'], function(){
                 $("#length").val(data.length);
                 $('#downloadMusic').show();
                 $('#downloadMusic').click(function () {
-                    download('webMusic/downloadMusicFile?musicId='+data.musicId+'&fileType='+data.fileType);
+                    download('admin/webMusic/downloadMusicFile?musicId='+data.musicId+'&fileType='+data.fileType);
                 });
                 return layer.msg('上传成功');
             }else{
@@ -85,7 +85,7 @@ layui.use(['form','layer','jquery','table', 'laydate', 'element'], function(){
 
     upload.render({
         elem: '#uploadLyrics'
-        ,url: basePath + 'webMusic/uploadMusicFile' //改成您自己的上传接口
+        ,url: basePath + 'admin/webMusic/uploadMusicFile' //改成您自己的上传接口
         ,type:"POST"
         ,data: {
             musicId: function() {
@@ -105,7 +105,7 @@ layui.use(['form','layer','jquery','table', 'laydate', 'element'], function(){
                 $("#lyrics").val(data.lyrics);
                 $('#downloadLyrics').show();
                 $('#downloadLyrics').click(function () {
-                    download('webMusic/downloadMusicFile?musicId='+data.musicId+'&fileType='+data.fileType);
+                    download('admin/webMusic/downloadMusicFile?musicId='+data.musicId+'&fileType='+data.fileType);
                 });
                 return layer.msg('上传成功');
             }else{
@@ -163,7 +163,7 @@ layui.use(['form','layer','jquery','table', 'laydate', 'element'], function(){
     if(type == "update"){
         $("#isAccord").hide();
         $.ajax({
-            url: basePath + "webMusic/queryMusicInfo",
+            url: basePath + "admin/webMusic/queryMusicInfo",
             data:JSON.stringify({"musicId":musicId}),
             type:"POST",
             async:false,
@@ -186,11 +186,11 @@ layui.use(['form','layer','jquery','table', 'laydate', 'element'], function(){
                 $("#gedan").siblings("div.layui-form-select").find('dl').find('dd[lay-value=' + data.gedan + ']').click();
                 $('#downloadMusic').show();
                 $('#downloadMusic').click(function () {
-                    download('webMusic/downloadMusicFile?musicId='+data.musicId+'&fileType=audio');
+                    download('admin/webMusic/downloadMusicFile?musicId='+data.musicId+'&fileType=audio');
                 });
                 $('#downloadLyrics').show();
                 $('#downloadLyrics').click(function () {
-                    download('webMusic/downloadMusicFile?musicId='+data.musicId+'&fileType=lyrics');
+                    download('admin/webMusic/downloadMusicFile?musicId='+data.musicId+'&fileType=lyrics');
                 });
                 form.render();
             }
@@ -222,7 +222,7 @@ layui.use(['form','layer','jquery','table', 'laydate', 'element'], function(){
             valid : valId
         }
         $.ajax({
-            url: basePath + "webMusic/addOrUpdateMusicInfo?type="+type,
+            url: basePath + "admin/webMusic/addOrUpdateMusicInfo?type="+type,
             type:"POST",
             data:JSON.stringify(paramData),
             dataType:"json",

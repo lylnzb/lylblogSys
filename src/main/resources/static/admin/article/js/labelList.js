@@ -1,6 +1,6 @@
 var nowPage;
 
-layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], function () {
+layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], function () {
     var table = layui.table,
         form = layui.form;
 
@@ -17,7 +17,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
                 shade: 0.5,
                 closeBtn:1,
                 area: ['720px', '450px'],
-                content: basePath + '/article/saveOrEditLabelData?type=update&labelId=' + data.labelId,
+                content: basePath + 'admin/article/saveOrEditLabelData?type=update&labelId=' + data.labelId,
                 end: function () {//层消失回调
                     layReload();
                 }
@@ -34,7 +34,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
                     var deleteIds = [];
                     deleteIds.push(data.labelId);
                     $.ajax({
-                        url:basePath + "article/deleteLabelInfo",
+                        url:basePath + "admin/article/deleteLabelInfo",
                         type:"POST",
                         data:JSON.stringify(deleteIds),
                         dataType:"json",
@@ -57,7 +57,7 @@ layui.config({base: '../admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], 
 
     tableIns = table.render({
         elem: '#table'
-        ,url: basePath + 'article/queryLabelInfo'
+        ,url: basePath + 'admin/article/queryLabelInfo'
         ,method: 'post'
         ,contentType: "application/json; charset=utf-8"
         ,dataType:"json"
@@ -106,7 +106,7 @@ $("#releaseArticle").click(function(){
         shade: 0.5,
         closeBtn:1,
         area: ['720px', '450px'],
-        content: basePath + '/article/saveOrEditLabelData?type=add',
+        content: basePath + 'admin/article/saveOrEditLabelData?type=add',
         end: function () {//层消失回调
             layReload();
         }
@@ -132,7 +132,7 @@ function deleteMusic(){
                 deleteIds.push(checkedObjs.data[i].labelId);
             }
             $.ajax({
-                url:basePath + "article/deleteLabelInfo",
+                url:basePath + "admin/article/deleteLabelInfo",
                 type:"POST",
                 data:JSON.stringify(deleteIds),
                 dataType:"json",

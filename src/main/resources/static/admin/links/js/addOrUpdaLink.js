@@ -30,7 +30,7 @@ layui.use(['form','layer','jquery','table', 'laydate', 'element'], function(){
     if(addOrUpdaType == "update"){
         $("#isAccord").hide();
         $.ajax({
-            url: basePath + "link/queryLinkInfo",
+            url: basePath + "admin/link/queryLinkInfo",
             data:JSON.stringify({"id":id}),
             type:"POST",
             async:false,
@@ -70,7 +70,7 @@ layui.use(['form','layer','jquery','table', 'laydate', 'element'], function(){
             intro : intro
         }
         $.ajax({
-            url: basePath + "link/addOrUpdaLinkInfo?type="+addOrUpdaType,
+            url: basePath + "admin/link/addOrUpdaLinkInfo?type="+addOrUpdaType,
             type:"POST",
             data:JSON.stringify(paramData),
             dataType:"json",

@@ -25,7 +25,7 @@ layui.use(['form', 'layer'], function(){
 
     if(type == "update"){
         $.ajax({
-            url: basePath + "article/queryLabelInfo",
+            url: basePath + "admin/article/queryLabelInfo",
             type:"POST",
             data:JSON.stringify({"labelId":labelId}),
             async:false,
@@ -59,7 +59,7 @@ layui.use(['form', 'layer'], function(){
             description : description
         }
         $.ajax({
-            url: basePath + "article/addOrUpdaLabelInfo?type=" + type,
+            url: basePath + "admin/article/addOrUpdaLabelInfo?type=" + type,
             type:"POST",
             data:JSON.stringify(paramData),
             dataType:"json",

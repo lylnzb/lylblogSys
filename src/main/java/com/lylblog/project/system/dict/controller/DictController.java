@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 
 @Controller
-@RequestMapping("/dict")
+@RequestMapping("/admin/dict")
 public class DictController {
 
     @Resource

@@ -32,7 +32,7 @@ layui.use(['form','layer','jquery','table', 'laydate', 'element'], function(){
 
     if(type == "update"){
         $.ajax({
-            url: basePath + 'banner/queryBannerInfo',
+            url: basePath + 'admin/banner/queryBannerInfo',
             data:JSON.stringify({"bannerId":bannerId}),
             type:"POST",
             async:false,
@@ -71,7 +71,7 @@ layui.use(['form','layer','jquery','table', 'laydate', 'element'], function(){
         }
         console.log(paramData);
         $.ajax({
-            url: basePath + "banner/addOrUpdaBannerInfo?type="+type,
+            url: basePath + "admin/banner/addOrUpdaBannerInfo?type="+type,
             type:"POST",
             data:JSON.stringify(paramData),
             dataType:"json",

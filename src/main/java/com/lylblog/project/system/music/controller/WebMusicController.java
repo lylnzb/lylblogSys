@@ -20,7 +20,7 @@ import java.util.List;
  * @Date: 2020/11/15 13:29
  */
 @Controller
-@RequestMapping("/webMusic")
+@RequestMapping("/admin/webMusic")
 public class WebMusicController {
 
     private static String BASEPATH = "/admin/music";

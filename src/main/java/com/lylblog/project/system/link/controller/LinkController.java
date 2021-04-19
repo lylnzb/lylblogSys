@@ -19,7 +19,7 @@ import java.util.List;
  * @Date: 2021/3/17 16:46
  */
 @Controller
-@RequestMapping("/link")
+@RequestMapping("/admin/link")
 public class LinkController {
 
     private static String BASEPATH = "/admin/links";

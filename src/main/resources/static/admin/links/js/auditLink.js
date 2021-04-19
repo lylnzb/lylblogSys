@@ -16,7 +16,7 @@ layui.use(['form','layer','jquery','table', 'laydate', 'element'], function(){
     if(addOrUpdaType == "update"){
         $("#isAccord").hide();
         $.ajax({
-            url: basePath + "link/queryLinkInfo",
+            url: basePath + "admin/link/queryLinkInfo",
             data:JSON.stringify({"id":id}),
             type:"POST",
             async:false,
@@ -38,7 +38,7 @@ layui.use(['form','layer','jquery','table', 'laydate', 'element'], function(){
             auditStatus : "2"
         }
         $.ajax({
-            url: basePath + "link/auditLinkData",
+            url: basePath + "admin/link/auditLinkData",
             type:"POST",
             data:JSON.stringify(paramData),
             dataType:"json",

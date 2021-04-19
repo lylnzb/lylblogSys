@@ -4,7 +4,7 @@ var thumb;
 
 //全局定义一次, 加载formSelects
 layui.config({
-    base: '../admin/layuiTablePlug/layui/plug/formSelects/dist/' //此处路径请自行处理, 可以使用绝对路径
+    base: '../layuiTablePlug/layui/plug/formSelects/dist/' //此处路径请自行处理, 可以使用绝对路径
 }).extend({
     formSelects: 'formSelects-v4'
 });
@@ -50,7 +50,7 @@ layui.use(['jquery', 'formSelects'], function(){
             $(".xm-select-tips.xm-select-none.xm-select-empty").text("请选择所属专栏");
         }else{
             $.ajax({
-                url: basePath + "article/queryLabelInfo",
+                url: basePath + "admin/article/queryLabelInfo",
                 type:"POST",
                 data:JSON.stringify({"columnId":data.value}),
                 async:false,
@@ -123,7 +123,7 @@ layui.use(['jquery', 'formSelects'], function(){
 
     if(type == "update"){
         $.ajax({
-            url: basePath + "article/queryArticleInfo",
+            url: basePath + "admin/article/queryArticleInfo",
             type:"POST",
             data:JSON.stringify({"articleId":articleId}),
             async:false,
@@ -210,7 +210,7 @@ layui.use(['jquery', 'formSelects'], function(){
         };
         console.log(paramData);
         $.ajax({
-            url: basePath + "article/addOrUpdaArticleInfo?type=" + type,
+            url: basePath + "admin/article/addOrUpdaArticleInfo?type=" + type,
             type:"POST",
             data:JSON.stringify(paramData),
             dataType:"json",
