@@ -2,6 +2,10 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lylblog.project.webSite.link.mapper.LinkMapper">
+<mapper namespace="com.lylblog.project.webSite.link.mapper.LinksMapper">
 
+    <!-- 查询友情链接信息 -->
+    <select id="queryLinksInfo" resultType="com.lylblog.project.webSite.link.bean.LinkBean">
+        select * from sys_links where type = #{type} and auditStatus = '1' order by sortOrder
+    </select>
 </mapper>

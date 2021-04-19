@@ -328,4 +328,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             LEFT JOIN m_user t5 ON t5.yhnm = t4.yhnm
         WHERE t5.yhnm = #{yhnm} AND t1.permid != '1'  AND t1.permType != '2' ORDER BY t1.permOrder
     </select>
+
+    <!-- 获取博主的yhnm值 -->
+    <select id="getBloggerToYhnm" resultType="String">
+        SELECT user.yhnm
+        FROM
+            m_user user,
+            m_user_role ur
+        WHERE
+            user.yhnm = ur.yhnm
+            AND EXISTS ( SELECT 1 FROM m_role WHERE roleid = ur.roleid AND rolekey = 'blogger' )
+    </select>
 </mapper>

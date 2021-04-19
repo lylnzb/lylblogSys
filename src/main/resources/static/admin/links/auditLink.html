@@ -1,0 +1,92 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link rel="stylesheet" href="/common/layui/css/layui.css">
+    <link href="/admin/js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/common/semantic-ui/dist/semantic.min.css">
+    <link href="/admin/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="/admin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/admin/css/animate.css" rel="stylesheet"/>
+    <link href="/admin/css/style.css" rel="stylesheet"/>
+    <link href="/admin/css/tail.css" rel="stylesheet" type="text/css">
+    <link href="/admin/css/table.css" rel="stylesheet" type="text/css" />
+    <style>
+        .department_main label{width: 10%;text-align: right;font-size: 12px}
+        .department_main input, .department_main select{margin-right: 1%;height: 32px;border: 1px #ccc solid;background-color: #fff;border-radius: 4px;padding-left: 6px;}
+        .department_main textarea{resize: none;border: 1px #ccc solid;height: 50px;background-color: #fff;border-radius: 4px;padding-left: 6px;padding-top: 5px;}
+        .layui-form-radio {line-height: 28px;margin: 6px 10px 0 0;padding-right: 1px;cursor: pointer;font-size: 0;}
+        .layui-form-select {width:473px;}
+        .layui-form-item {margin-bottom: 10px;}
+
+        .layui-form .blog-file-image img {
+            width: 100%;
+            height: 100%;
+        }
+        .layui-form .blog-file-image {
+            float: left;
+            background: black;
+            width: 70px;
+            height: 70px;
+            margin-right: 10px;
+            border-radius: 2px;
+            position: relative;
+        }
+        .layui-form .blog-btn-file {
+            float: left;
+            background: #ffffff;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            width: 70px;
+            height: 70px;
+            position: relative;
+            border-radius: 2px;
+        }
+        .layui-form .blog-file-image input[type=file] {
+            opacity: 0;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+        }
+        .layui-form .blog-btn-file .blog-btn-name {
+            text-align: center;
+            background: #ecf0f5;
+            height: 35px;
+            padding-top: 30%;
+        }
+    </style>
+</head>
+<body style="border-radius: 8px;width: 680px;overflow: hidden">
+<form id="frm" class="layui-form" action="">
+    <div id="tools-box" class="wrapper wrapper-content animated fadeInRight ibox-content" align="left">
+        <div class="department_main">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style = 'width: 130px'>审核不通过原因：</label>
+                    <div class="layui-input-inline">
+                        <textarea type="text" name="auditNotThrough" id="auditNotThrough" lay-verify="auditNotThrough" class="layui-input" style="width: 273px;height: 150px"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="notice_bot" style="z-index: 0">
+        <div class="r_right but_p">
+            <div class="layui-btn but_save" id="nsbc" lay-filter="audit" lay-submit="">确定</div>
+            <div class="layui-btn but_close" id="close" onclick="Cancel()">关闭</div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript" src="/admin/js/jquery/jQuery-2.2.0.min.js"></script>
+<script src="/common/semantic-ui/dist/semantic.min.js"></script>
+<script type="text/javascript" src="/admin/js/ztree/jquery.ztree.all-3.5.js"></script>
+<script type="text/javascript" src="/admin/js/ztree/jquery.ztree.exedit-3.5.js"></script>
+<script src="/common/layui/layui.all.js"></script>
+<script src="/common/util.js"></script>
+<script src="/admin/links/js/auditLink.js"></script>
+</body>
+</html>

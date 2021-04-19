@@ -13,6 +13,7 @@ body{
     font:normal 14px/24px 'MicroSoft YaHei';
     background-image: url('../../img/moroccan-flower.png');
     background-attachment: fixed;
+    /*overflow: hidden;*/
 }
 .image img{
     display: inline-block;
@@ -576,11 +577,6 @@ li:hover, li:focus, li:active, li.active {
     cursor: url('/static/img/cur/link.cur'), pointer;
 }
 
-.from-box .error {
-    position: absolute;
-    z-index: 10;
-    display: none;
-}
 h3.slide-title {
     padding-right: 50px;
     position: absolute;

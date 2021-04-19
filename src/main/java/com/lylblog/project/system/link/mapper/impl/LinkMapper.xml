@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lylblog.project.system.link.mapper.LinkMapper">
+
+    <!-- 查询所有友情链接信息 -->
+    <select id="queryLinkInfo" parameterType="com.lylblog.project.system.link.bean.LinkBean" resultType="com.lylblog.project.system.link.bean.LinkBean">
+        SELECT link.*,
+               (select dict_label from sys_dict_data where dict_type = 'sys_link_type' and dict_value = link.type	and valid = '1') as typeName,
+               (select dict_label from sys_dict_data where dict_type = 'sys_link_yes_no' and dict_value = link.target and valid = '1') as targetName,
+               (select dict_label from sys_dict_data where dict_type = 'sys_link_show' and dict_value = link.status and valid = '1') as statusName,
+               (select dict_label from sys_dict_data where dict_type = 'link_audit_status' and dict_value = link.auditStatus and valid = '1') as auditName,
+               (select nickname from m_user where yhnm = link.submitPerson and valid = '1') as submitName
+        FROM(
+            SELECT	( @i := @i + 1 ) rk,t.* FROM sys_links t, ( SELECT @i := 0 ) rk
+            where 1=1
+            <if test="id != null and id != ''"> and id = #{id}</if>
+            <if test="title != null and title != ''"> and title like concat('%',#{title},'%')</if>
+            <if test="status != null and status != ''"> and status = #{status}</if>
+            <if test="auditStatus != null and auditStatus != ''"> and auditStatus = #{auditStatus}</if>
+            <if test="auditReason != null and auditReason != ''"> and auditReason = #{auditReason}</if>
+            order by auditStatus
+        ) AS link
+        where rk between (#{page}-1)*#{limit} + 1 and #{page}*#{limit} ORDER BY rk
+    </select>
+
+    <!-- 查询所有友情链接信息总数 -->
+    <select id="queryLinkInfoCount" parameterType="com.lylblog.project.system.link.bean.LinkBean" resultType="int">
+        select count(1) from sys_links where 1=1
+        <if test="id != null and id != ''"> and id = #{id}</if>
+        <if test="title != null and title != ''"> and title like concat('%',#{title},'%')</if>
+        <if test="status != null and status != ''"> and status = #{status}</if>
+        <if test="auditStatus != null and auditStatus != ''"> and auditStatus = #{auditStatus}</if>
+        <if test="auditReason != null and auditReason != ''"> and auditReason = #{auditReason}</if>
+    </select>
+
+    <!-- 新增友情链接信息 -->
+    <insert id="addLinkInfo" parameterType="com.lylblog.project.system.link.bean.LinkBean">
+        insert into sys_links(
+            <if test="title != null and title != ''">title,</if>
+            <if test="url != null and url != ''">url,</if>
+            <if test="sortOrder != null and sortOrder != ''">sortOrder,</if>
+            <if test="target != null and target != ''">target,</if>
+            <if test="intro != null and intro != ''">intro,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="submitPerson != null and submitPerson != ''">submitPerson,</if>
+            <if test="auditPerson != null and auditPerson != ''">auditPerson,</if>
+            <if test="auditStatus != null and auditStatus != ''">auditStatus,</if>
+            submitTime
+        ) values(
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="url != null and url != ''">#{url},</if>
+            <if test="sortOrder != null and sortOrder != ''">#{sortOrder},</if>
+            <if test="target != null and target != ''">#{target},</if>
+            <if test="intro != null and intro != ''">#{intro},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="submitPerson != null and submitPerson != ''">#{submitPerson},</if>
+            <if test="auditPerson != null and auditPerson != ''">#{auditPerson},</if>
+            <if test="auditStatus != null and auditStatus != ''">#{auditStatus},</if>
+            sysdate()
+        )
+    </insert>
+
+    <!-- 修改友情链接信息 -->
+    <update id="updaLikeInfo" parameterType="com.lylblog.project.system.link.bean.LinkBean">
+        update sys_links set
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="url != null and url != ''">url = #{url},</if>
+            <if test="sortOrder != null and sortOrder != ''">sortOrder = #{sortOrder},</if>
+            <if test="target != null and target != ''">target = #{target},</if>
+            <if test="intro != null and intro != ''">intro = #{intro},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            id = #{id}
+        where id = #{id}
+    </update>
+
+    <!-- 删除友情链接信息 -->
+    <delete id="deleteLikeInfo">
+        delete from sys_links where id in
+        <foreach collection="deleteIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 友情链接审核 -->
+    <update id="auditLink" parameterType="com.lylblog.project.system.link.bean.LinkBean">
+        update sys_links set
+            <if test="auditStatus != null and auditStatus != ''">auditStatus = #{auditStatus},</if>
+            <if test="auditReason != null and auditReason != ''">auditReason = #{auditReason},</if>
+            auditTime = sysdate()
+        where id = #{id}
+    </update>
+</mapper>

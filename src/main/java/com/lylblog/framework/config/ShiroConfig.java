@@ -80,7 +80,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/images/**", "anon");
         filterChainDefinitionMap.put("/img/**", "anon");
         filterChainDefinitionMap.put("/include/**", "anon");
-        filterChainDefinitionMap.put("/link/**", "anon");
+        filterChainDefinitionMap.put("/links/**", "anon");
         filterChainDefinitionMap.put("/login/**", "anon");
         filterChainDefinitionMap.put("/message/**", "anon");
         filterChainDefinitionMap.put("/profile/**", "anon");
@@ -90,6 +90,8 @@ public class ShiroConfig {
 
         filterChainDefinitionMap.put("/registerUser", "anon");
         filterChainDefinitionMap.put("/login", "anon");
+
+        filterChainDefinitionMap.put("/links/applyLinks", "authc");
 
         Map<String, Filter> filters = new LinkedHashMap<>();
         filters.put("onlineSession", onlineSessionFilter());

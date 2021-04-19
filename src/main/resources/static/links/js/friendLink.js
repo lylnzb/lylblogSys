@@ -1,0 +1,138 @@
+var offsetX;
+var offsetY;
+$(function (){
+    showFriendLinkInfo();
+});
+
+/**
+ * 输入框失焦事件
+ */
+$("#likeForm .required").change(function(){
+    var value = $(this).val();
+    if(value != null && value != ''){
+        var falg = 0;
+        if($(this).attr("id") == 'webSiteUrl'){
+            falg = vailEmail(this,value);
+        }
+        if(falg == 0){
+            $(this).parents(".field").siblings(".error").hide();
+        }
+    }
+});
+
+$(".ok").click(function(){
+    /**
+     * 是否为空验证
+     * @type {number}
+     */
+    var traverse = 0;
+    $("#likeForm .required").each(function(index,result){
+        var value = $(this).val();
+        if(value == null || value == ''){
+            $(this).parents(".field").siblings(".error").show();
+            traverse += 1;
+        }else{
+            if($(this).attr("id") == 'webSiteUrl'){
+                traverse += vailEmail(this,value);
+            }
+        }
+    });
+    if(traverse == 0){
+        var lock = false; //默认未锁定
+        top.layer.confirm("是否确定要提交申请？", {
+            btn: ["是","否"], //按钮
+            title: "提示",
+            icon: 3
+        }, function(index){
+            if(!lock) {
+                lock = true;
+                var paramData = {
+                    title : $("#webSiteName").val(),
+                    url : $("#webSiteUrl").val(),
+                    intro : $("#editor").text()
+                }
+                $.ajax({
+                    url: basePath + "links/applyLinks",
+                    type:"POST",
+                    data:JSON.stringify(paramData),
+                    dataType:"json",
+                    contentType : 'application/json;charset=utf-8',
+                    success:function(resultData){
+                        if(resultData.code==0){
+                            layer.msg("您的申请已提交，请等待审核通过。", { icon: 1, time: 2000, shift: 5 });
+                            $(".bg").hide();
+                            $("#friendLinkApply").hide();
+                        }else{
+                            //parent.layer.alert(resultData.msg);
+                            parent.layer.msg(resultData.msg, { icon: 2, time: 2000, shift: 6 });
+                        }
+                    }
+                });
+            }
+        }, function(){
+
+        });
+    }
+});
+
+function vailEmail(elem,value){
+    var strRegex = "^((https|http|ftp|rtsp|mms)?://)"
+        + "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" //ftp的user@
+        + "(([0-9]{1,3}\.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
+        + "|" // 允许IP和DOMAIN（域名）
+        + "([0-9a-z_!~*'()-]+\.)*" // 域名- www.
+        + "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\." // 二级域名
+        + "[a-z]{2,6})" // first level domain- .com or .museum
+        + "(:[0-9]{1,4})?" // 端口- :80 <br>
+        + "((/?)|" // a slash isn't required if there is no file name
+        + "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$";
+    var myreg=new RegExp(strRegex);
+    if(!myreg.test(value)){
+        $(elem).parents(".field").siblings(".error").find(".transition").text("网站地址格式不正确");
+        $(elem).parents(".field").siblings(".error").show();
+        return 1;
+    }
+    return 0;
+}
+
+function showFriendLinkInfo(){
+    $.ajax({
+        url: basePath + 'links/queryLinksInfo',
+        type: "POST",
+        //async:false,
+        contentType: 'application/json;charset=utf-8',
+        success: function (resultData) {
+            console.log(resultData);
+            var htmlStr = '';
+            for(var i = 0;i < Object.keys(resultData).length;i++){
+                htmlStr += '<div class="ui secondary pointing menu" style="width: 100%;">';
+                htmlStr += '    <a class="item active" data-tab="tab-name' + (i + 1) + '">' + Object.keys(resultData)[i] + '</a>';
+                htmlStr += '    <div class="right menu">';
+                htmlStr += '        <div class="item">';
+                htmlStr += '            <div class="ui transparent icon input">';
+                htmlStr += '                <span class="ly_button">';
+                htmlStr += '                    <a style="color: #0ea432" class="apply" onclick="openLink()">点击加入</a>';
+                htmlStr += '                </span>';
+                htmlStr += '            </div>';
+                htmlStr += '        </div>';
+                htmlStr += '    </div> ';
+                htmlStr += '</div>';
+                htmlStr += '<div class="ui tab active" data-tab="tab-name' + (i + 1) + '">';
+                htmlStr += '    <ul class="site_tj" class="webmasterRec" style="margin-top: -15px;padding-bottom: 10px;"> ';
+                for(var j = 0;j < Object.values(resultData)[i].length;j++){
+                    var target = '';
+                    if(Object.values(resultData)[i][j].target == 1){
+                        target = 'target="_blank"';
+                    }
+                    htmlStr += '   <li><a href="' + Object.values(resultData)[i][j].url + '" ' + target + '>' + Object.values(resultData)[i][j].title + '</a></li>';
+                }
+                htmlStr += '    </ul>';
+                htmlStr += '</div>';
+            }
+            $(".friendlink").html(htmlStr);
+        },
+        error: function () {
+
+        }
+    });
+}

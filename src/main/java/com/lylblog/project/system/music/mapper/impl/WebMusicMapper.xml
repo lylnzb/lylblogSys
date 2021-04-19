@@ -13,7 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 (select dict_label from sys_dict_data where dict_type = 'web_music_language' and dict_value = t.Languages and valid = '1') as languageName,
 		        (select dict_label from sys_dict_data where dict_type = 'web_music_style' and dict_value = t.style and valid = '1') as styleName,
                 (select dict_label from sys_dict_data where dict_type = 'web_music_gedan' and dict_value = t.gedan and valid = '1') as gedanName,
-                (select nickname from m_user where id = t.createBy and valid = '1') as nickName,
+                (select nickname from m_user where yhnm = t.createBy and valid = '1') as nickName,
                 (select fileUrl from sys_music_file where musicId = t.musicId and fileType = 'image' and valid = '1') as coverUrl,
                 (select fileUrl from sys_music_file where musicId = t.musicId and fileType = 'audio' and valid = '1') as musicUrl,
                 (select fileUrl from sys_music_file where musicId = t.musicId and fileType = 'lyrics' and valid = '1') as lyricsUrl

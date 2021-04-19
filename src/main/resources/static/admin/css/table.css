@@ -15,6 +15,10 @@
 ::-webkit-scrollbar-track{box-shadow: 1px 1px 5px rgba(0,0,0,.2) inset;}
 ::-webkit-scrollbar-thumb{min-height: 20px;background-clip: content-box;box-shadow: 0 0 0 5px rgba(0,0,0,.2) inset;}
 ::-webkit-scrollbar-corner{background: transparent;}/* 横向滚动条和纵向滚动条相交处尖角的颜色 */
+.label-primary, .badge-primary {
+    background-color: #1ab394!important;
+    color: #FFFFFF!important;
+}
 .clear{
     clear: both;
 }

@@ -184,4 +184,10 @@ public interface AdminMapper {
      * @return
      */
     List<MenuBean> queryMenuInfo(@Param("yhnm")String yhnm);
+
+    /**
+     * 获取博主的yhnm值
+     * @return
+     */
+    String getBloggerToYhnm();
 }

@@ -110,6 +110,19 @@ public class ResultObj {
         }
         return new ResultObj(CODE_FAIL, message);
     }
+    public static ResultObj fail(Object obj) {
+        if(obj instanceof List) {
+            List<Object> list = (ArrayList<Object>) obj;
+            return fail(1, list);
+        }else {
+            List<Object> list = new ArrayList<Object>();
+            list.add(obj);
+            return fail(1, list);
+        }
+    }
+    public static ResultObj fail(int count, List<?> data) {
+        return new ResultObj(CODE_FAIL, MSG_FAIL, count, data);
+    }
 
     public static ResultObj fail(int fail, String msg) {
         String message = MSG_FAIL;
