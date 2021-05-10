@@ -1,6 +1,7 @@
 package com.lylblog.framework.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import com.lylblog.framework.shiro.filter.LoginFormFilter;
 import com.lylblog.framework.shiro.filter.OnlineSessionFilter;
 import com.lylblog.framework.shiro.filter.SyncOnlineSessionFilter;
 import com.lylblog.framework.shiro.listener.ShiroSessionListener;
@@ -67,6 +68,7 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         // <!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
         filterChainDefinitionMap.put("/", "anon");
+        filterChainDefinitionMap.put("/toEmail", "anon");
         filterChainDefinitionMap.put("/index", "anon");
         filterChainDefinitionMap.put("/showBannerInfo", "anon");
         filterChainDefinitionMap.put("/showCardInfo", "anon");
@@ -87,15 +89,22 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/musicfile/**", "anon");
         filterChainDefinitionMap.put("/articlefile/**", "anon");
         filterChainDefinitionMap.put("/ueditorfile/**", "anon");
+        filterChainDefinitionMap.put("/comment/commentList", "anon");
 
         filterChainDefinitionMap.put("/registerUser", "anon");
         filterChainDefinitionMap.put("/login", "anon");
 
+        //友情链接申请URL
         filterChainDefinitionMap.put("/links/applyLinks", "authc");
+        //文章评论发布URL
+        filterChainDefinitionMap.put("/comment/releaseComment", "authc");
 
         Map<String, Filter> filters = new LinkedHashMap<>();
         filters.put("onlineSession", onlineSessionFilter());
         filters.put("syncOnlineSession", syncOnlineSessionFilter());
+
+        LoginFormFilter loginFormFilter = new LoginFormFilter();
+        filters.put("authc", loginFormFilter);
         shiroFilterFactoryBean.setFilters(filters);
 
         //所有请求需要认证

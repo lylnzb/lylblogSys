@@ -5,13 +5,13 @@
     <title>Title</title>
 </head>
 <body>
-<nav class="ui inverted attached segment m-padded-tb-mini m-shadow-small" th:fragment="myHeader">
+<nav id="myHeader" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" th:fragment="myHeader">
     <!-- 判断用户是否登录 -->
     <input type="hidden" id="isAuthenticated" th:value="${isAuthenticated}"/>
     <div class="ui container">
         <div class="ui inverted secondary stackable menu">
             <h2 class="ui teal header item">羅氏博客</h2>
-            <div id="menu" style="display: contents;"></div>
+            <div id="menu" class="wrapper wrapper-content animated fadeInRight ibox-content" style="display: contents;"></div>
             <div class="m-item right item m-mobile-hide">
                 <div class="item" shiro:notAuthenticated="">
                     <a class="m-mobile-hide" id="adminlogin">登录</a>&nbsp;/&nbsp;<a class="m-mobile-hide" id="registerlogin">注册</a>
@@ -19,7 +19,7 @@
                 <div class="item" shiro:authenticated="">
                     <div class="ui pointing dropdown link item" id="hybrid">
                         <a title="回忆里依稀" class="userIcon">
-                            <img class="widget_avatar" src="/img/Head.jpg" alt="回忆里依稀">
+                            <img class="widget_avatar" th:src="@{${icon}}" alt="回忆里依稀">
                         </a>
                         <!--<i class="dropdown icon"></i>-->
                         <div class="menu" data-filtered="filtered" style="margin-top: 25px;margin-left: -20px;">

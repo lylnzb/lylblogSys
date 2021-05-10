@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lylblog.project.system.comment.mapper.CommentMapper">
+
+    <!-- 评论发布 -->
+    <insert id="addComment" parameterType="com.lylblog.project.system.comment.bean.CommentBean">
+        replace into sys_comment(
+            <if test="replyId != null and replyId != ''">replyId,</if>
+            <if test="wznm != null and wznm != ''">wznm,</if>
+            <if test="commentContent != null and commentContent != ''">commentContent,</if>
+            <if test="commentType != null and commentType != ''">commentType,</if>
+            <if test="praiseNum != null and praiseNum != ''">praiseNum,</if>
+            <if test="submitPerson != null and submitPerson != ''">submitPerson,</if>
+            <if test="auditPerson != null and auditPerson != ''">auditPerson,</if>
+            <if test="auditStatus != null and auditStatus != ''">auditStatus,</if>
+            <if test="auditTime != null and auditTime != ''">auditTime,</if>
+            <if test="auditReason != null and auditReason != ''">auditReason,</if>
+            submitTime
+        )values (
+            <if test="replyId != null and replyId != ''">#{replyId},</if>
+            <if test="wznm != null and wznm != ''">#{wznm},</if>
+            <if test="commentContent != null and commentContent != ''">#{commentContent},</if>
+            <if test="commentType != null and commentType != ''">#{commentType},</if>
+            <if test="praiseNum != null and praiseNum != ''">#{praiseNum},</if>
+            <if test="submitPerson != null and submitPerson != ''">#{submitPerson},</if>
+            <if test="auditPerson != null and auditPerson != ''">#{auditPerson},</if>
+            <if test="auditStatus != null and auditStatus != ''">#{auditStatus},</if>
+            <if test="auditTime != null and auditTime != ''">#{auditTime},</if>
+            <if test="auditReason != null and auditReason != ''">#{auditReason},</if>
+            sysdate()
+        )
+    </insert>
+
+    <!-- 网站主评论列表信息查询总数 -->
+    <select id="mainCommentListCount" parameterType="com.lylblog.project.system.comment.bean.CommentBean" resultType="int">
+        SELECT count(1)
+        from sys_comment comment
+        left join m_user user on comment.submitPerson = user.yhnm
+        left join m_user_icon icon on icon.yhnm = user.yhnm
+        where  1 = 1
+        <if test="wznm != null and wznm != ''">and wznm = #{wznm}</if>
+        <if test="wznm != null and wznm != ''">and comment.commentType = #{commentType}</if>
+        and comment.valid = '1'
+        and comment.replyId is null
+        and icon.isActivity = '1'
+    </select>
+
+    <!-- 网站主评论列表信息查询 -->
+    <select id="mainCommentList" parameterType="com.lylblog.project.system.comment.bean.CommentBean" resultType="com.lylblog.project.webSite.comment.bean.WebCommentBean">
+        SELECT * FROM(
+            SELECT
+                ( @i := @i + 1 ) rk,
+                comment.commentId as id,
+                icon.iconUrl,
+                user.nickname as commitName,
+                comment.commentContent as content,
+                comment.praiseNum,
+                (case when great.status = '1' then true else false end) as isGiveLike,
+                DATE_FORMAT(comment.submitTime,'%Y-%m-%d') as time
+                from sys_comment comment
+                left join m_user user on comment.submitPerson = user.yhnm
+                left join m_user_icon icon on icon.yhnm = user.yhnm
+                left join (select * from sys_great_record where yhnm = #{yhnm}) great on great.typeId = comment.commentId, ( SELECT @i := 0 ) rk
+            where  1 = 1
+            <if test="wznm != null and wznm != ''">and wznm = #{wznm}</if>
+            <if test="commentType != null and commentType != ''">and comment.commentType = #{commentType}</if>
+            and comment.valid = '1'
+            and comment.replyId is null
+            and icon.isActivity = '1' order by submitTime desc
+        ) AS comment
+        <if test="limit != null and limit != ''">
+            where rk between (#{page}-1)*#{limit} + 1 and #{page}*#{limit}
+        </if>
+    </select>
+
+    <!-- 网站评论回复列表信息查询 -->
+    <select id="secondaryCommentList" parameterType="com.lylblog.project.system.comment.bean.CommentBean" resultType="com.lylblog.project.webSite.comment.bean.WebCommentBean">
+        select
+            comment.commentId as id,
+            icon.iconUrl,
+            user.nickname as commitName,
+            comment.commentContent as content,
+            comment.praiseNum,
+            (case when great.status = '1' then true else false end) as isGiveLike,
+            DATE_FORMAT(comment.submitTime,'%Y-%m-%d') as time
+        from sys_comment comment
+        left join m_user user on comment.submitPerson = user.yhnm
+        left join m_user_icon icon on icon.yhnm = user.yhnm
+        left join (select * from sys_great_record where yhnm = #{yhnm}) great on great.typeId = comment.commentId
+        where replyId = #{replyId}
+        <if test="wznm != null and wznm != ''"> and wznm = #{wznm}</if>
+        <if test="commentType != null and commentType != ''"> and comment.commentType = #{commentType}</if>
+        and comment.valid = '1' and icon.isActivity = '1' order by id asc
+    </select>
+
+    <!-- 通过文章内码查询总评论数量 -->
+    <select id="totalCommentCountByWznm" resultType="int" parameterType="String">
+        select count(1) from sys_comment where wznm = #{wznm}
+        and commentType = '1'
+        and valid = '1'
+    </select>
+
+    <!-- 文章点赞 -->
+    <insert id="addGreatInfo" parameterType="com.lylblog.project.webSite.comment.bean.WebGreatBean">
+        replace into sys_great_record (
+            <if test="typeId != null and typeId != ''">typeId,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="yhnm != null and yhnm != ''">yhnm,</if>
+            <if test="status != null and status != ''">status,</if>
+            greatTime
+        ) values (
+            <if test="typeId != null and typeId != ''">#{typeId},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="yhnm != null and yhnm != ''">#{yhnm},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            sysdate()
+        )
+    </insert>
+
+    <!-- 修改点赞记录 -->
+    <update id="updateGreatInfo" parameterType="com.lylblog.project.webSite.comment.bean.WebGreatBean">
+        update sys_great_record set
+            <if test="typeId != null and typeId != ''">typeId = #{typeId},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="yhnm != null and yhnm != ''">yhnm = #{yhnm},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            greatTime = sysdate()
+        where typeId = #{typeId} and yhnm = #{yhnm} and type = #{type}
+    </update>
+
+    <!-- 是否存在点赞记录 -->
+    <select id="isThereGreat" parameterType="String" resultType="int">
+        select count(1) from sys_great_record where typeid = #{typeId} and type = #{type} and yhnm = #{yhnm}
+    </select>
+
+    <select id="getCommentCountByCommentId" parameterType="String" resultType="String">
+        select sum(praiseNum) from sys_comment where commentId = #{commentId}
+    </select>
+
+    <!-- 修改评论的点赞数量 -->
+    <update id="updateCommentCountByCommentId">
+        update sys_comment set praiseNum = #{praiseNum} where commentId = #{commentId}
+    </update>
+</mapper>

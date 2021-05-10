@@ -49,7 +49,7 @@ public class LinksController {
      */
     @RequestMapping(value="/applyLinks")
     @ResponseBody
-    public ResultObj applyLinks(@RequestBody LinkBean linkBean){
+    public ResultObj applyLinks(@Validated @RequestBody LinkBean linkBean){
         try {
             linkBean.setType("2");//网站类型
             return linkService.addOrUpdaLinkInfo(linkBean,"add");

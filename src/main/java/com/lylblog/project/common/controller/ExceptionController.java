@@ -41,6 +41,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(value = ConstraintViolationException.class)
+    @ResponseBody
     public ResultObj handle1(ConstraintViolationException ex){
         StringBuilder msg = new StringBuilder();
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
@@ -56,6 +57,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    @ResponseBody
     public ResultObj handle2(MethodArgumentNotValidException ex){
         BindingResult bindingResult = ex.getBindingResult();
         if(bindingResult!=null){
@@ -76,6 +78,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(value = Exception.class)
+    @ResponseBody
     public ResultObj handle1(Exception ex){
         logger.error(ex.getMessage(),ex);
         return ResultObj.fail(ex.getMessage());

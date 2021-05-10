@@ -94,7 +94,7 @@ function showCardInfo(){
                     htmlStr += '                <i class="ztpic"><img src="' + data[i].cardList[j].articleImg + '"></i>';
                     htmlStr += '            </div>';
                     htmlStr += '            <div class="content">';
-                    htmlStr += '                <a class="header" style="font-size: 14px" href="' + data[i].cardList[j].articleUrl + '" target="_blank">' + data[i].cardList[j].articleTitle + '</a>';
+                    htmlStr += '                <a class="header" style="font-size: 14px;white-space: nowrap" href="' + data[i].cardList[j].articleUrl + '" target="_blank">' + data[i].cardList[j].articleTitle + '</a>';
                     htmlStr += '                <div class="description">';
                     htmlStr +=                      data[i].cardList[j].articleDec;
                     htmlStr += '                </div>';

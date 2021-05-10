@@ -1,5 +1,30 @@
 var basePath="http://127.0.0.1/";//业务系统basePath
 
+//cocomessage消息提示框 配置全局参数
+cocoMessage.config({duration: 10000});
+
+/**
+ * localStorage存值的方法
+ * @param key
+ * @param value
+ */
+function localSet(key,value){
+    var curTime = new Date().getTime();
+    localStorage.setItem(key,JSON.stringify({data:value,time:curTime}));
+}
+
+/**
+ * localStorage取值方法
+ * @param key
+ * @returns
+ */
+function localGet(key){
+    var data = localStorage.getItem(key);
+    var dataObj = JSON.parse(data);
+    if(!dataObj)return;
+    return dataObj.data;
+}
+
 /**
  * 获取url参数的方法
  * @param name 参数名称
@@ -16,8 +41,6 @@ function GetQueryString(name) {
     }
     return("");
 }
-
-
 
 /**
  *	打开窗口的方法
@@ -65,7 +88,7 @@ function loadSelect(ele,code,form){
             }
         },
         error:function(){
-            alert("初始化选项失败1");
+            alert("初始化选项失败");
         }
     });
 }
@@ -89,7 +112,7 @@ function loadSelectAllow(ele,form){
             }
         },
         error:function(){
-            alert("初始化选项失败2");
+            alert("初始化选项失败");
         }
     });
 }
@@ -122,7 +145,7 @@ function loadRadio(ele,code,form,filter){
             }
         },
         error:function(){
-            alert("初始化选项失败3");
+            alert("初始化选项失败");
         }
     });
 }
@@ -169,6 +192,31 @@ function menuInit(){
     });
 }
 
+/**
+ * 局部刷新方法
+ * @param url
+ * @param elem
+ */
+function localRefresh(url, elem){
+    $.ajax({
+        url: url,
+        type: 'GET',
+        async: false,
+        success: function (data) {
+            //重新局部渲染
+            $(elem).html(data);
+            //导航栏重新渲染
+            menuInit();
+            //登录框展示
+            $(".bg").show();
+            $(".login").show();
+            $(".userLogin").show();
+            $(".userRegister").hide();
+            $(".userRetrievePas").hide();
+        }
+    })
+}
+
 //HTML反转义
 function HTMLDecode(text) {
     var temp = document.createElement("div");
@@ -181,4 +229,180 @@ function HTMLDecode(text) {
 function escape2Html(text) {
     var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
     return text.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
+}
+
+// taken from mo.js demos
+function isIOSSafari() {
+    var userAgent;
+    userAgent = window.navigator.userAgent;
+    return userAgent.match(/iPad/i) || userAgent.match(/iPhone/i);
+};
+
+// taken from mo.js demos
+function isTouch() {
+    var isIETouch;
+    isIETouch = navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+    return [].indexOf.call(window, 'ontouchstart') >= 0 || isIETouch;
+};
+
+// taken from mo.js demos
+var isIOS = isIOSSafari(),
+    clickHandler = isIOS || isTouch() ? 'touchstart' : 'click';
+
+function extend( a, b ) {
+    for( var key in b ) {
+        if( b.hasOwnProperty( key ) ) {
+            a[key] = b[key];
+        }
+    }
+    return a;
+}
+
+function Animocon(el, options) {
+    this.el = el;
+    this.options = extend( {}, this.options );
+    extend( this.options, options );
+    this.checked = false;
+    this.timeline = new mojs.Timeline();
+    for(var i = 0, len = this.options.tweens.length; i < len; ++i) {
+        this.timeline.add(this.options.tweens[i]);
+    }
+    var self = this;
+    this.el.addEventListener(clickHandler, function() {
+        var isGiveLike = $(self.el).find("span").attr('data-text');
+        if(isGiveLike == 'true'){
+            self.checked = true;
+        }
+
+        if(isLogin == 'false'){
+            $(".bg").show();
+            $(".login").show();
+            $(".userLogin").show();
+            $(".userRegister").hide();
+            $(".userRetrievePas").hide();
+        }else {
+            var commentId = $(self.el).find("span").attr('data-id');
+            var praiseNum = $(self.el).siblings("span").text();
+            if( self.checked ) {
+                var falg = giveOrCancelLike(commentId, false);
+                if(falg){
+                    self.options.onUnCheck(self.el);
+                    $(self.el).siblings("span").text(parseInt(praiseNum) - 1);
+                }
+
+            }else {
+                var falg = giveOrCancelLike(commentId, true);
+                if(falg){
+                    self.options.onCheck(self.el);
+                    self.timeline.start();
+
+                    $(self.el).siblings("span").text(parseInt(praiseNum) + 1);
+                }
+
+            }
+        }
+
+        self.checked = !self.checked;
+    });
+}
+Animocon.prototype.options = {
+    tweens : [],
+    onCheck : function() { return false; },
+    onUnCheck : function() { return false; }
+};
+
+function giveLike() {
+    var items = [].slice.call(document.querySelectorAll('.like'));
+    for(var i = 0;i < items.length;i++){
+        /* Icon 1 */
+        var el1 = items[i].querySelector('button.icobutton'), el1span = el1.querySelector('span');
+        new Animocon(el1, {
+            tweens : [
+                // burst animation
+                new mojs.Burst({
+                    parent: el1,
+                    duration: 1700,
+                    shape : 'circle',
+                    fill: '#C0C1C3',
+                    x: '50%',
+                    y: '50%',
+                    opacity: 0.6,
+                    childOptions: { radius: {15:0} },
+                    radius: {30:90},
+                    count: 6,
+                    isRunLess: true,
+                    easing: mojs.easing.bezier(0.1, 1, 0.3, 1)
+                }),
+                // ring animation
+                new mojs.Transit({
+                    parent: el1,
+                    duration: 700,
+                    type: 'circle',
+                    radius: {0: 60},
+                    fill: 'transparent',
+                    stroke: '#C0C1C3',
+                    strokeWidth: {20:0},
+                    opacity: 0.6,
+                    x: '50%',
+                    y: '50%',
+                    isRunLess: true,
+                    easing: mojs.easing.sin.out
+                }),
+                // icon scale animation
+                new mojs.Tween({
+                    parent: el1,
+                    duration : 1200,
+                    onUpdate: function(progress) {
+                        var elem = this.o.parent;
+                        var $span = document.getElementById($(elem).find("span").attr('id'));
+                        if(progress > 0.3) {
+                            var elasticOutProgress = mojs.easing.elastic.out(1.43*progress-0.43);
+                            $span.style.WebkitTransform = $span.style.transform = 'scale3d(' + elasticOutProgress + ',' + elasticOutProgress + ',1)';
+                        } else {
+                            $span.style.WebkitTransform = $span.style.transform = 'scale3d(0,0,1)';
+                        }
+                    }
+                })
+            ],
+            onCheck : function(elem) {
+                elem.style.color = 'red';
+                $(elem).find("span").attr('data-text', true);
+            },
+            onUnCheck : function(elem) {
+                elem.style.color = '#C0C1C3';
+                $(elem).find("span").attr('data-text', false);
+            }
+        });
+    }
+}
+
+/**
+ * 点赞或者取消赞功能操作
+ * @param isGiveLike
+ */
+function giveOrCancelLike(commentId, isGiveLike){
+    var falg = false;
+
+    var obj = new Object();
+    obj.typeId = commentId;
+    obj.type = "1";
+    $.ajax({
+        url:basePath+'/comment/addGreatInfo?isGiveLike=' + isGiveLike,
+        type:"POST",
+        async: false,
+        data:JSON.stringify(obj),
+        dataType:"json",
+        contentType : 'application/json;charset=utf-8',
+        success:function(resultData){
+            if(resultData.code == 0){
+                falg = true;
+            }else {
+                falg = false;
+            }
+        },
+        error:function(){
+            alert("系统异常！");
+        }
+    });
+    return falg;
 }

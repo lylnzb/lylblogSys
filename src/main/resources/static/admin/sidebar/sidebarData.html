@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!-- saved from url=(0072)https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html# -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+<title></title>
+<link rel="stylesheet" href="/common/layui/css/layui.css">
+<link href="../css/table.css" rel="stylesheet" type="text/css" />
+<link href="../css/animate.css" rel="stylesheet"/>
+<link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../css/font-awesome.min.css" rel="stylesheet"/>
+<link href="/admin/css/ry-ui.css" rel="stylesheet"/>
+<style>
+    .layui-table-fixed.layui-table-fixed-r .layui-table-body tr{background-color: white}
+    .department_main label{width: 10%;text-align: right;font-size: 12px}
+    .department_main input, .department_main select{margin-right: 1%;height: 30px;border: 1px #ccc solid;background-color: #fff;border-radius: 4px;padding-left: 6px;}
+    .layui-form-radio {line-height: 28px;margin: 6px 10px 0 0;padding-right: 1px;cursor: pointer;font-size: 0;}
+    .layui-form-select {width:150px;}
+    .layui-input.layui-unselect{height:30px;}
+</style>
+</head>
+<body style="margin: 0px 10px 0px;padding: 0;">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 select-info">
+            <form id="frm" class="layui-form" style="margin-top: 10px;">
+                <div class="layui-input-inline" style="font-weight: bold">网站名称：</div>
+                <div class="layui-input-inline">
+                    <input type="text" name="title" id="title" style="height:30px;width:150px;" autocomplete="off" class="layui-input">
+                </div>&nbsp;&nbsp;&nbsp;
+                <div class="layui-input-inline" style="font-weight: bold">是否显示：</div>
+                <div class="layui-input-inline">
+                    <select name="isShow" id='isShow' placeholder="请选择">
+                        <option value="">请选择</option>
+                    </select>
+                </div>&nbsp;&nbsp;
+                <div class="layui-input-inline" style="font-weight: bold">审核状态：</div>
+                <div class="layui-input-inline">
+                    <select name="audit" id='audit' placeholder="请选择">
+                        <option value="">请选择</option>
+                    </select>
+                </div>&nbsp;&nbsp;
+                <a class="btn btn-primary btn-rounded btn-sm" id="seach"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                <a class="btn btn-success btn-rounded btn-sm" id="reset"><i class="fa fa-cog"></i>&nbsp;重置</a>
+            </form>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <div class="btn-group hidden-xs" role="group" style="margin-top: 10px">
+                <a class="btn btn-success" id="applyLinks"><i class="fa fa-plus"></i> 友情链接申请</a>
+            </div>
+            <div class="btn-group hidden-xs" role="group" style="margin-top: 10px">
+                <a class="btn btn-danger" id="deleteLinks" onclick="deleteLinks()"><i class="fa fa-trash-o"></i> 批量删除</a>
+            </div>
+            <table id="table" class="layui-hide" lay-filter="tableEvent" style="margin: 0 auto"></table>
+        </div>
+    </div>
+</div>
+<div id="barDemo" style="display:none;">
+    <a class="btn btn-success btn-xs" lay-event="edit"><i class="fa fa-edit"></i> 编辑</a>
+    <a class="btn btn-danger btn-xs" lay-event="delete"><i class="fa fa-remove"></i> 删除</a>
+</div>
+<script type="text/html" id="status">
+    <span class='badge badge-primary' style="margin-top: 5px;">{{ d.statusName }}</span>
+</script>
+
+<script type="text/html" id="auditStatus">
+    <span class='badge badge-primary' style="margin-top: 5px;">{{ d.auditName }}</span>
+</script>
+<script type="text/javascript" src="/common/util.js"></script>
+<script type="text/javascript" src="/admin/js/jquery/jQuery-2.2.0.min.js"></script>
+<script type="text/javascript" src="/admin/js/bstable/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/admin/js/bstable/js/bootstrap-table.js"></script>
+<script type="text/javascript" src="/admin/js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="/admin/layuiTablePlug/layui/src/layui.js"></script>
+<script src="/admin/sidebar/js/sidebarData.js"></script>
+</body>
+</html>

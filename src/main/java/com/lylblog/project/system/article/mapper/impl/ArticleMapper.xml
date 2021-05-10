@@ -23,6 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE
             1 = 1
             <if test="articleId != null and articleId != ''"> and articleId = #{articleId}</if>
+            <if test="columnId != null and columnId != ''"> and columnId = #{columnId}</if>
             <if test="wznm != null and wznm != ''"> and wznm = #{wznm}</if>
             ) AS article
         WHERE rk BETWEEN (#{page}-1)*#{limit} + 1 AND #{page}*#{limit} ORDER BY rk
@@ -32,7 +33,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="queryArticleInfoCount" parameterType="com.lylblog.project.system.article.bean.ArticleBean" resultType="int">
         SELECT count(1) FROM sys_article WHERE 1 = 1
         <if test="articleId != null and articleId != ''"> and articleId = #{articleId}</if>
+        <if test="columnId != null and columnId != ''"> and columnId = #{columnId}</if>
         <if test="wznm != null and wznm != ''"> and wznm = #{wznm}</if>
+    </select>
+
+    <!-- 查询网站前端博客列表信息 -->
+    <select id="queryBlogInfo" parameterType="com.lylblog.project.system.article.bean.ArticleBean" resultType="com.lylblog.project.webSite.blog.bean.WebArticleBean">
+        SELECT * FROM (
+            SELECT
+                ( @i := @i + 1 ) rk,
+                wznm,
+                CONCAT('/articlefile', thumb) as articleImg,
+                articleTitle as articleTitle,
+                CONCAT('/blog/detail/', wznm) as articleUrl,
+                abstracts as articleDec,
+                (select nickname from m_user where yhnm = t.createBy and valid = '1') as releasePeople,
+                DATE_FORMAT(createTime,'%Y-%m-%d') as releaseTime,
+                hits,
+                postNum,
+                (select columnName from sys_column where columnId = t.columnId) as articleForm
+            FROM sys_article t, ( SELECT @i := 0 ) rk
+            WHERE 1 = 1
+            <if test="columnId != null and columnId != ''"> and columnId = #{columnId}</if>
+            order by createTime desc
+        ) AS article
+        WHERE rk BETWEEN (#{page}-1)*#{limit} + 1 AND #{page}*#{limit} ORDER BY rk
+    </select>
+
+    <!-- 查询网站前端博客列表信息总数 -->
+    <select id="queryBlogInfoCount" parameterType="com.lylblog.project.system.article.bean.ArticleBean" resultType="int">
+        SELECT count(1) FROM sys_article WHERE 1 = 1
+        <if test="columnId != null and columnId != ''"> and columnId = #{columnId}</if>
     </select>
 
     <!-- 新增文章信息 -->
@@ -200,4 +231,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="queryLabelSelect" parameterType="String" resultType="com.lylblog.project.system.article.bean.LabelSelectBean">
         select labelName as name, labelId as value, 'true' as selected from sys_label where labelId in (${labelIds})
     </select>
+
+    <!-- 查询当前文章的上一篇文章 -->
+    <select id="getOnArticle" parameterType="String" resultType="com.lylblog.project.webSite.blog.bean.WebArticleBean">
+        select wznm, articleTitle from sys_article t where articleid =
+        (SELECT max(articleid) FROM sys_article WHERE articleid <![CDATA[ < ]]> #{articleId} AND columnId = #{columnId});
+    </select>
+
+    <!-- 查询当前文章的下一篇文章 -->
+    <select id="getUnderArticle" parameterType="String" resultType="com.lylblog.project.webSite.blog.bean.WebArticleBean">
+        select wznm, articleTitle from sys_article t where articleid =
+        (SELECT min(articleid) FROM sys_article WHERE articleid <![CDATA[ > ]]> #{articleId} AND columnId = #{columnId})
+    </select>
+
+    <select id="getCommentCountByWznm" parameterType="String" resultType="int">
+        select sum(postNum) from sys_article where wznm = #{wznm}
+    </select>
+
+    <!-- 修改文章的评论数量 -->
+    <update id="updateCommentCountByWznm">
+        update sys_article set postNum = #{postNum} where wznm = #{wznm}
+    </update>
 </mapper>

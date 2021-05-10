@@ -24,7 +24,7 @@ public class LinkBean extends ParaBean {
     private String sortOrder;	  //    排序号
     private String target;        //	是否开启浏览器新窗口
     private String intro;         //	网站简况
-    @NotBlank(message = "网站类型不能为空！")
+    //@NotBlank(message = "网站类型不能为空！")
     private String type;          //	类型
     private String status;        //	是否显示(1=显示，0=屏蔽)
     private String submitPerson;  // 	提交人

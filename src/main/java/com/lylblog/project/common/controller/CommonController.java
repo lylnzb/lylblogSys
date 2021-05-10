@@ -2,6 +2,7 @@ package com.lylblog.project.common.controller;
 
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.common.service.CommonService;
+import io.swagger.models.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,5 +59,10 @@ public class CommonController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @RequestMapping(value="/headerRefresh",method=RequestMethod.GET)
+    public String headerRefresh(Model model) {
+        return "include/header :: myHeader";
     }
 }

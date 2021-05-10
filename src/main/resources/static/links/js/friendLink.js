@@ -4,6 +4,11 @@ $(function (){
     showFriendLinkInfo();
 });
 
+cocoMessage.config({
+    //配置全局参数
+    duration: 10000,
+});
+
 /**
  * 输入框失焦事件
  */
@@ -59,13 +64,13 @@ $(".ok").click(function(){
                     contentType : 'application/json;charset=utf-8',
                     success:function(resultData){
                         if(resultData.code==0){
-                            layer.msg("您的申请已提交，请等待审核通过。", { icon: 1, time: 2000, shift: 5 });
+                            cocoMessage.success("您的申请已提交，请等待审核通过。", 3000); //duration为0时显示关闭按钮
                             $(".bg").hide();
                             $("#friendLinkApply").hide();
                         }else{
-                            //parent.layer.alert(resultData.msg);
-                            parent.layer.msg(resultData.msg, { icon: 2, time: 2000, shift: 6 });
+                            cocoMessage.error(resultData.msg, 3000); //duration为0时显示关闭按钮
                         }
+                        layer.close(index);
                     }
                 });
             }

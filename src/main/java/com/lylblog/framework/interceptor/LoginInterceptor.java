@@ -2,6 +2,7 @@ package com.lylblog.framework.interceptor;
 
 import com.lylblog.common.util.shiro.ShiroUtils;
 import com.lylblog.project.common.mapper.CommonMapper;
+import com.lylblog.project.login.bean.UserLoginBean;
 import com.lylblog.project.system.blogSet.bean.BlogSetBean;
 import com.lylblog.framework.config.*;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -30,6 +31,11 @@ public class LoginInterceptor implements HandlerInterceptor {
 //            }
 
             flag = ShiroUtils.isAuthenticated();
+            if(flag){
+                //获取当前用户信息
+                UserLoginBean user = ShiroUtils.getUserInfo();
+                request.setAttribute("icon", "/profile/" + user.getIconUrl());//
+            }
             request.setAttribute("isAuthenticated", flag);//判断用户是否登录
             request.setAttribute("basePath", LylBlogConfig.getBasePath());//项目基础路径
 

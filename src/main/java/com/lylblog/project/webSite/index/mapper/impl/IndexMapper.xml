@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             articleTitle as articleTitle,
             CONCAT('/blog/detail/', wznm) as articleUrl,
             abstracts as articleDec,
-            (select nickname from m_user where userid = t.createBy and valid = '1') as releasePeople,
+            (select nickname from m_user where yhnm = t.createBy and valid = '1') as releasePeople,
             DATE_FORMAT(createTime,'%Y-%m-%d') as releaseTime
         from sys_article t where columnId = #{articleType} order by createTime desc
         limit 0, ${page}
@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             articleTitle as articleTitle,
             CONCAT('/blog/detail/', wznm) as articleUrl,
             abstracts as articleDec,
-            (select nickname from m_user where userid = t.createBy and valid = '1') as releasePeople,
+            (select nickname from m_user where yhnm = t.createBy and valid = '1') as releasePeople,
             DATE_FORMAT(createTime,'%Y-%m-%d') as releaseTime,
             hits,
             postNum,
