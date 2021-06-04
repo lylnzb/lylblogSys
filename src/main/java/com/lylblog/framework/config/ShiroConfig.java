@@ -68,36 +68,55 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         // <!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
         filterChainDefinitionMap.put("/", "anon");
+        //邮箱验证码发送URL
         filterChainDefinitionMap.put("/toEmail", "anon");
+        //网站首页URL
         filterChainDefinitionMap.put("/index", "anon");
+        //网站首页轮播图URL
         filterChainDefinitionMap.put("/showBannerInfo", "anon");
+        //网站首页卡片推荐URL
         filterChainDefinitionMap.put("/showCardInfo", "anon");
+        //网站首页最新文章列表URL
         filterChainDefinitionMap.put("/showArticleInfo", "anon");
-
+        //'关于我'栏目URL
         filterChainDefinitionMap.put("/about/**", "anon");
+        //'学无止境'栏目URL
         filterChainDefinitionMap.put("/blog/**", "anon");
+        //'电子书籍'栏目URL
         filterChainDefinitionMap.put("/book/**", "anon");
+        //公共静态资源文件(js、css)URL
         filterChainDefinitionMap.put("/common/**", "anon");
+        //错误页面(404、505)URL
         filterChainDefinitionMap.put("/error/**", "anon");
+        //网站图标URL
         filterChainDefinitionMap.put("/images/**", "anon");
+        //公共图片URL
         filterChainDefinitionMap.put("/img/**", "anon");
+        //公共子页面(友情链接框、导航栏)URL
         filterChainDefinitionMap.put("/include/**", "anon");
-        filterChainDefinitionMap.put("/links/**", "anon");
+        //网站登录URL
         filterChainDefinitionMap.put("/login/**", "anon");
-        filterChainDefinitionMap.put("/message/**", "anon");
+        //用户头像图片文件URL
         filterChainDefinitionMap.put("/profile/**", "anon");
+        //音乐文件URL
         filterChainDefinitionMap.put("/musicfile/**", "anon");
+        //博客文章文件URL
         filterChainDefinitionMap.put("/articlefile/**", "anon");
+        //百度ueditor编辑框文件URL
         filterChainDefinitionMap.put("/ueditorfile/**", "anon");
-        filterChainDefinitionMap.put("/comment/commentList", "anon");
 
         filterChainDefinitionMap.put("/registerUser", "anon");
         filterChainDefinitionMap.put("/login", "anon");
 
         //友情链接申请URL
         filterChainDefinitionMap.put("/links/applyLinks", "authc");
+        filterChainDefinitionMap.put("/links/**", "anon");
         //文章评论发布URL
         filterChainDefinitionMap.put("/comment/releaseComment", "authc");
+        filterChainDefinitionMap.put("/comment/**", "anon");
+        //留言反馈评论发布URL
+        filterChainDefinitionMap.put("/message/releaseMessage", "authc");
+        filterChainDefinitionMap.put("/message/**", "anon");
 
         Map<String, Filter> filters = new LinkedHashMap<>();
         filters.put("onlineSession", onlineSessionFilter());

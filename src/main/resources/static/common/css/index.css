@@ -541,15 +541,15 @@ em {
 .qqFace table td img:hover{border:1px #0066cc solid;}
 
 a:hover, a:focus, a:active, a.active {
-    cursor: url('/static/img/cur/link.cur'), pointer;
+    cursor: url('/img/cur/link.cur'), pointer;
 }
 
 button:hover, button:focus, button:active, button.active {
-    cursor: url('/static/img/cur/link.cur'), pointer;
+    cursor: url('/img/cur/link.cur'), pointer;
 }
 
 li:hover, li:focus, li:active, li.active {
-    cursor: url('/static/img/cur/link.cur'), pointer;
+    cursor: url('/img/cur/link.cur'), pointer;
 }
 
 h3.slide-title {
@@ -564,7 +564,7 @@ h3.slide-title {
     line-height: 35px;
     font-weight: 500;
     color: #ffffff;
-    cursor: url('/static/img/cur/link.cur'), pointer;
+    cursor: url('/img/cur/link.cur'), pointer;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;

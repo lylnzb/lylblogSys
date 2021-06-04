@@ -50,6 +50,12 @@ public interface CommentMapper {
     int totalCommentCountByWznm(@Param("wznm") String wznm);
 
     /**
+     * 查询留言反馈总评论数量
+     * @return
+     */
+    int totalCommentCount();
+
+    /**
      * 新增点赞记录
      * @param greatBean
      * @return
@@ -86,4 +92,25 @@ public interface CommentMapper {
      * @return
      */
     int updateCommentCountByCommentId(@Param("praiseNum") int praiseNum, @Param("commentId") String commentId);
+
+    /**
+     * 后台系统评论管理信息查询
+     * @param commentBean
+     * @return
+     */
+    List<CommentBean> queryCommentInfo(CommentBean commentBean);
+
+    /**
+     * 后台系统评论管理信息总数查询
+     * @param commentBean
+     * @return
+     */
+    int queryCommentInfoCount(CommentBean commentBean);
+
+    /**
+     * 删除评论信息
+     * @param deleteIds
+     * @return
+     */
+    int deleteCommentInfo(@Param("deleteIds") List<String> deleteIds);
 }

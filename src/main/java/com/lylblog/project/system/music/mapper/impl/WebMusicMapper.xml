@@ -25,7 +25,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="style != null and style != ''"> and style = #{style}</if>
             <if test="valid != null and valid != ''"> and valid = #{valid}</if>
         ) AS music
-        where rk between (#{page}-1)*#{limit} + 1 and #{page}*#{limit} ORDER BY rk
+        <if test="limit != null and limit != ''">
+            limit #{page}, #{limit}
+        </if>
     </select>
 
     <!-- 查询所有音乐信息总数 -->

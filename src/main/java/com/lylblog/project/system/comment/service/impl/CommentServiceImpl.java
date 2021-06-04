@@ -18,5 +18,34 @@ import java.util.List;
 @Service("commentService")
 public class CommentServiceImpl implements CommentService {
 
+    @Resource
+    private CommentMapper commentMapper;
 
+    /**
+     * 后台系统评论管理信息查询
+     * @param commentBean
+     * @return
+     */
+    public ResultObj queryCommentInfo(CommentBean commentBean){
+        int count = commentMapper.queryCommentInfoCount(commentBean);
+        if(count > 0){
+            List<CommentBean> commentList = commentMapper.queryCommentInfo(commentBean);
+            return ResultObj.ok(count, commentList);
+        }
+        return ResultObj.fail("未查询到数据！");
+    }
+
+    /**
+     * 删除评论信息
+     * @param deleteIds
+     * @return
+     */
+    public ResultObj deleteCommentInfo(List<String> deleteIds) {
+        int num = commentMapper.deleteCommentInfo(deleteIds);
+        if(num > 0){
+            return ResultObj.ok("删除成功");
+        }else {
+            return ResultObj.fail("删除失败");
+        }
+    }
 }

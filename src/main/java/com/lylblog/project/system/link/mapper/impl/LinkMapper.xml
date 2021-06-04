@@ -22,7 +22,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="auditReason != null and auditReason != ''"> and auditReason = #{auditReason}</if>
             order by auditStatus
         ) AS link
-        where rk between (#{page}-1)*#{limit} + 1 and #{page}*#{limit} ORDER BY rk
+        <if test="limit != null and limit != ''">
+            limit #{page}, #{limit}
+        </if>
     </select>
 
     <!-- 查询所有友情链接信息总数 -->

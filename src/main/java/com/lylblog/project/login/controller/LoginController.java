@@ -88,6 +88,7 @@ public class LoginController {
             return ResultObj.fail(1,"用户名或密码不正确");
         }
         if (subject.isAuthenticated()) {
+
             return ResultObj.ok("登录成功");
         } else {
             token.clear();

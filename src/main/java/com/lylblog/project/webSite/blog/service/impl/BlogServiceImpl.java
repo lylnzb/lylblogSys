@@ -5,6 +5,7 @@ import com.lylblog.project.system.article.bean.ArticleBean;
 import com.lylblog.project.system.article.mapper.ArticleMapper;
 import com.lylblog.project.webSite.blog.bean.WebArticleBean;
 import com.lylblog.project.webSite.blog.service.BlogService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -53,5 +54,23 @@ public class BlogServiceImpl implements BlogService {
             return ResultObj.ok(count, articleList);
         }
         return ResultObj.fail("没有查询到文章信息");
+    }
+
+    /**
+     * 获取栏目名称
+     * @param columnId
+     * @return
+     */
+    public String getColumnName(String columnId){
+        return articleMapper.getColumnName(columnId);
+    }
+
+    /**
+     * 获取标签名称
+     * @param labelId
+     * @return
+     */
+    public String getLabelName(String labelId){
+        return articleMapper.getLabelName(labelId);
     }
 }

@@ -41,7 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         left join m_user_icon icon on icon.yhnm = user.yhnm
         where  1 = 1
         <if test="wznm != null and wznm != ''">and wznm = #{wznm}</if>
-        <if test="wznm != null and wznm != ''">and comment.commentType = #{commentType}</if>
+        <if test="commentType != null and commentType != ''">and comment.commentType = #{commentType}</if>
         and comment.valid = '1'
         and comment.replyId is null
         and icon.isActivity = '1'
@@ -71,7 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             and icon.isActivity = '1' order by submitTime desc
         ) AS comment
         <if test="limit != null and limit != ''">
-            where rk between (#{page}-1)*#{limit} + 1 and #{page}*#{limit}
+            limit #{page}, #{limit}
         </if>
     </select>
 
@@ -92,7 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where replyId = #{replyId}
         <if test="wznm != null and wznm != ''"> and wznm = #{wznm}</if>
         <if test="commentType != null and commentType != ''"> and comment.commentType = #{commentType}</if>
-        and comment.valid = '1' and icon.isActivity = '1' order by id asc
+        and comment.valid = '1' and icon.isActivity = '1' order by submitTime desc
     </select>
 
     <!-- 通过文章内码查询总评论数量 -->
@@ -100,6 +100,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select count(1) from sys_comment where wznm = #{wznm}
         and commentType = '1'
         and valid = '1'
+    </select>
+
+    <!-- 查询留言反馈总评论数量 -->
+    <select id="totalCommentCount" resultType="int">
+        select count(1) from sys_comment where commentType = '2' and valid = '1'
     </select>
 
     <!-- 文章点赞 -->
@@ -135,6 +140,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select count(1) from sys_great_record where typeid = #{typeId} and type = #{type} and yhnm = #{yhnm}
     </select>
 
+    <!-- 查询文章的评论数量 -->
     <select id="getCommentCountByCommentId" parameterType="String" resultType="String">
         select sum(praiseNum) from sys_comment where commentId = #{commentId}
     </select>
@@ -143,4 +149,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateCommentCountByCommentId">
         update sys_comment set praiseNum = #{praiseNum} where commentId = #{commentId}
     </update>
+
+    <!-- 后台系统评论管理信息查询 -->
+    <select id="queryCommentInfo" parameterType="com.lylblog.project.system.comment.bean.CommentBean" resultType="com.lylblog.project.system.comment.bean.CommentBean">
+        SELECT
+            comment.commentId,
+            user.nickname as submitName,
+            article.articleTitle as articleName,
+            comment.commentContent,
+            comment.praiseNum,
+            DATE_FORMAT(comment.submitTime,'%Y-%m-%d %H:%i:%S') as submitTime,
+            (select user.nickname from sys_comment comm left join m_user user on comm.submitPerson = user.yhnm where comm.commentId = comment.replyId) as replyName
+            from sys_comment comment
+            left join m_user user on comment.submitPerson = user.yhnm
+            left join sys_article ARTICLE ON COMMENT.wznm = ARTICLE.wznm
+		where 1 = 1
+		and comment.valid = '1'
+        <if test="commentId != null and commentId != ''">and comment.commentId = #{commentId}</if>
+        <if test="commentType != null and commentType != ''">and comment.commentType = #{commentType}</if>
+        <if test="articleName != null and articleName != ''">and article.articleTitle like concat('%',#{articleName},'%')</if>
+		order by submitTime desc
+        <if test="limit != null and limit != ''">
+            limit #{page}, #{limit}
+        </if>
+    </select>
+
+    <!-- 后台系统评论管理信息总数查询 -->
+    <select id="queryCommentInfoCount" parameterType="com.lylblog.project.system.comment.bean.CommentBean" resultType="int">
+        select count(1) from sys_comment comment where valid = '1'
+        <if test="commentId != null and commentId != ''">and comment.commentId = #{commentId}</if>
+        <if test="commentType != null and commentType != ''">and comment.commentType = #{commentType}</if>
+        <if test="articleName != null and articleName != ''">and article.articleTitle like concat('%',#{articleName},'%')</if>
+    </select>
+
+    <delete id="deleteCommentInfo">
+        delete from sys_comment where commentId in
+        <foreach collection="deleteIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

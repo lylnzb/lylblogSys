@@ -120,6 +120,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by orderBy
     </select>
 
+    <!-- 根据栏目编号获取标签信息 -->
+    <select id="getLabelList" resultType="com.lylblog.project.common.bean.LabelBean" parameterType="String">
+        select
+            labelid,
+            labelName,
+            columnId,
+            (select count(1) from sys_article where articleLabel like concat('%', label.labelId , '%')) as articleNum
+        from sys_label as label
+        where columnId = #{columnId} and valid = '1'
+    </select>
+
     <!-- 获取博客配置信息 -->
     <select id="getBlogConfiguration"  resultMap="BlogSetResult">
         select * from sys_blogset

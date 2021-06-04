@@ -17,8 +17,9 @@ import lombok.Data;
  */
 @Data
 public class ParaBean {
+
 	//分页选项
-	protected int page=1; //页码
+	protected int page = 1; //页码
 	protected int limit=10; //每页记录数
 	//操作选项
 	protected int rk;             //    序号
@@ -34,4 +35,20 @@ public class ParaBean {
 	protected String t4; //参数4
 
 	protected String userId; //用户编码
+
+	public int getPage() {
+		return (page - 1) * limit;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public int getLimit() {
+		return limit;
+	}
+
+	public void setLimit(int limit) {
+		this.limit = limit;
+	}
 }

@@ -15,7 +15,7 @@ layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], functi
                 shade: 0.5,
                 closeBtn:1,
                 area: ['580px', '430px'],
-                content: basePath + 'admin/comment/viewComment?commentId='+data.commentId + '&type=1',
+                content: basePath + 'admin/comment/viewComment?commentId='+data.commentId + '&type=2',
                 end: function () {//层消失回调
 
                 }
@@ -66,14 +66,13 @@ layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], functi
         // 是否开启智能reload的模式
         ,smartReloadModel: true
         ,where: {
-            commentType: '1'
+            commentType: '2'
         }
         ,cols: [[
             {checkbox: true, id:"idTest", width:'2%'}
             ,{field:'rk', title:'序号', width:'6%', align:'center', type:'numbers'}
             ,{field:'submitName', title:'评论人', width:'17%', align:'center'}
-            ,{field:'articleName', title:'文章名称', width:'23%', align:'center'}
-            ,{field:'commentContent', title:'内容', width:'28.7%', align:'center'}
+            ,{field:'commentContent', title:'内容', width:'51.7%', align:'center'}
             ,{field:'submitTime', title:'评论时间', width:'11%', align:'center'}
             ,{field:'right', title:'操作', width:'12.4%', align:'center', toolbar: '#barDemo'},
         ]]
@@ -152,7 +151,7 @@ function layReload(page){
     /*  */
     tableIns.reload({
         where: {
-            commentType: '1',
+            commentType: '2',
             articleName : $("#articleName").val()
         },
         page: {

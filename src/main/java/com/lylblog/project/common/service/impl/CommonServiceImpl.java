@@ -1,6 +1,7 @@
 package com.lylblog.project.common.service.impl;
 
 import com.lylblog.common.util.EntityToArrayUtil;
+import com.lylblog.project.common.bean.LabelBean;
 import com.lylblog.project.common.bean.MenuBean;
 import com.lylblog.project.common.bean.MusicBean;
 import com.lylblog.project.common.bean.ResultObj;
@@ -66,6 +67,16 @@ public class CommonServiceImpl implements CommonService {
             }
         }
         return ResultObj.ok(menuList.size(), menuList);
+    }
+
+    /**
+     * 根据栏目编号获取标签信息
+     * @param columnId
+     * @return
+     */
+    public ResultObj getLabelList(String columnId){
+        List<LabelBean> labelList = commonMapper.getLabelList(columnId);
+        return ResultObj.ok(labelList.size(), labelList);
     }
 
     /**

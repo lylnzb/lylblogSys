@@ -1,7 +1,11 @@
 package com.lylblog.project.common.service;
 
+import com.lylblog.project.common.bean.LabelBean;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.system.blogSet.bean.BlogSetBean;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface CommonService {
 
@@ -23,6 +27,13 @@ public interface CommonService {
      * @return
      */
     ResultObj queryMeunInfo();
+
+    /**
+     * 根据栏目编号获取标签信息
+     * @param columnId
+     * @return
+     */
+    ResultObj getLabelList(String columnId);
 
     /**
      * 获取博客配置信息

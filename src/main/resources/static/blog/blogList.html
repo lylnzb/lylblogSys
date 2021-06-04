@@ -46,7 +46,14 @@
         <div class="ui container">
             <div class="leave_position" style="font-size: 14px;font-weight: bold;margin-top: -4px;margin-bottom: -10px;">
                 <i class="fa fa-map-marker" aria-hidden="true"></i>
-                &nbsp;您现在的位置是：<a style="font-size: 14px;font-weight: bold;">首页</a>&nbsp;>&nbsp;<a style="font-size: 14px;font-weight: bold;">学无止境</a>
+                &nbsp;您现在的位置是：
+                <a href="/" style="font-size: 14px;font-weight: bold;">首页</a>&nbsp;
+                <label>&nbsp;>&nbsp;</label>
+                <a href="/blog/blogList" style="font-size: 14px;font-weight: bold;">学无止境</a>
+                <label th:if="${columnName != null && columnName != ''}">&nbsp;>&nbsp;</label>
+                <a th:if="${columnName != null && columnName != ''}" th:href="@{'/blog/blogList?columnId=' + ${columnId}}" th:text="${columnName}" style="font-size: 14px;font-weight: bold;">学无止境</a>
+                <label th:if="${labelName != null && labelName != ''}">&nbsp;>&nbsp;</label>
+                <a th:if="${labelName != null && labelName != ''}" th:href="@{'/blog/blogList?columnId=' + ${columnId} + '&labelId=' + ${labelId}}" th:text="${labelName}" style="font-size: 14px;font-weight: bold;">学无止境</a>
             </div>
             <div class="ui stackable grid">
                 <!--左边-->
@@ -57,7 +64,7 @@
                                 <a class="item active" data-tab="tab-name">博客列表</a>
                             </div>
                             <div class="ui tab active" data-tab="tab-name">
-                                <div class="blogList"></div>
+                                <div class="blogList" id="blogList"></div>
                                 <div id="page" style="text-align: right;"></div>
                             </div>
                         </div>
@@ -71,14 +78,14 @@
                             <div class="ui two column grid">
                                 <div class="column">
                                     <div class="ui icon input">
-                                        <input type="text"placeholder="请输入博客名称" style="width: 300px">
-                                        <i class="search link icon"></i>
+                                        <input id="articleTitle" type="text"placeholder="请输入博客名称" style="width: 300px">
+                                        <i class="search link icon" onclick="initBlogInfo(1, 10)"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="ui segments">
+                    <div class="ui segments" th:if="${columnName != null && columnName != ''}">
                         <div class="ui secondary segment">
                             <div class="ui two column grid">
                                 <div class="column">
@@ -87,30 +94,7 @@
                             </div>
                         </div>
                         <div class="ui teal segment">
-                            <section id="divTags">
-                                <ul class="sidebar_content divTags">
-                                    <li><a href="http://www.yunyueyi.cn/tags-8.html" title="分享" target="_blank">分享<span class="tag-count"> (5)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-9.html" title="经验" target="_blank">经验<span class="tag-count"> (5)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-1.html" title="正经事" target="_blank">正经事<span class="tag-count"> (4)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-11.html" title="zblog教程" target="_blank">zblog教程<span class="tag-count"> (4)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-16.html" title="情感" target="_blank">情感<span class="tag-count"> (4)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-10.html" title="教程" target="_blank">教程<span class="tag-count"> (3)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-20.html" title="爱" target="_blank">爱<span class="tag-count"> (3)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-3.html" title="站长" target="_blank">站长<span class="tag-count"> (2)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-5.html" title="图文教程" target="_blank">图文教程<span class="tag-count"> (2)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-12.html" title="SEO优化" target="_blank">SEO优化<span class="tag-count"> (2)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-19.html" title="zblog zblog插件 zblog用户中心" target="_blank">zblog zblog插件 zblog用户中心<span class="tag-count"> (2)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-26.html" title="会员等级" target="_blank">会员等级<span class="tag-count"> (2)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-31.html" title="图文教程" target="_blank">图文教程<span class="tag-count"> (2)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-2.html" title="分享" target="_blank">分享<span class="tag-count"> (1)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-4.html" title="教程" target="_blank">教程<span class="tag-count"> (1)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-6.html" title="百度" target="_blank">百度<span class="tag-count"> (1)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-7.html" title="zblog教程" target="_blank">zblog教程<span class="tag-count"> (1)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-13.html" title="网站关闭" target="_blank">网站关闭<span class="tag-count"> (1)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-14.html" title="zblog后台" target="_blank">zblog后台<span class="tag-count"> (1)</span></a></li>
-                                    <li><a href="http://www.yunyueyi.cn/tags-15.html" title="zblog后台打不开" target="_blank">zblog后台打不开<span class="tag-count"> (1)</span></a></li><!--您所查看的是热门标签缓存，缓存时间2020-05-24 01:39:34am-->
-                                </ul>
-                            </section>
+                            <section id="divTags"></section>
                         </div>
                     </div>
                     <!--分类-->
@@ -233,6 +217,7 @@
 </body>
 </html>
 <script src="../common/jquery/jquery-1.11.1.js"></script>
+<script src="../common/jquery/jquery.textSearch-1.0.js"></script>
 <script src="../common/util.js"></script>
 <script src="../common/semantic-ui/dist/semantic.min.js"></script>
 <script src='../common/snowflakes.min.js'></script>
@@ -243,105 +228,5 @@
 <script src="/common/mPlayer/mplayer-functions.js"></script>
 <script src="http://cdn.bootcss.com/jquery-nstslider/1.0.13/jquery.nstSlider.min.js"></script>
 <script type="text/javascript" src="/common/player.js"></script>
-<script>
-    var columnId = GetQueryString("columnId");
-
-    $(document).ready(function(){
-        $('.pointing.menu .item').tab();
-
-        $('.ui.dropdown').dropdown();
-
-        //初始换文章列表
-        initBlogInfo();
-
-        //悬浮变色事件
-        $('.newslist li').mouseover(function(){
-            $(this).addClass("active");
-            $(this).siblings(".active").removeClass("active");
-        });
-        $('.newslist li').mouseout(function(){
-            $(this).removeClass("active");
-            $('.newslist li:first-child').addClass("active");
-        });
-    });
-
-    function initBlogInfo(page, limit){
-        var obj = new Object();
-        obj.columnId = columnId;
-        obj.page = page;
-        obj.limit = limit;
-        $.ajax({
-            url: basePath + 'blog/queryBlogInfo',
-            type: "POST",
-            data:JSON.stringify(obj),
-            //asyns:false,
-            dataType:"json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (resultData) {
-                var data = resultData.data;
-                var htmlStr = '';
-                layui.use(['laypage', 'layer'], function () {
-                    var page = layui.laypage;
-                    page.render({
-                        elem: 'page',
-                        count: resultData.count,
-                        curr: obj.page,
-                        limit: obj.limit,
-                        jump: function (obj, first) {
-                            if (!first) {
-                                initBlogInfo(obj.curr, obj.limit)
-                            }
-                        }
-                    });
-                });
-                for(var i = 0;i < data.length;i++){
-                    var style = '';
-                    if(i == 0){
-                        style = 'style="margin-top: -14px"';
-                    }
-                    htmlStr += '<article class="post_box" ' + style + '>';
-                    htmlStr += '    <div class="post-img col-xs-4 backc2">';
-                    htmlStr += '        <a>';
-                    htmlStr += '            <img class="img-responsive img-rounded imgs" src="' + data[i].articleImg + '" style="display: block;">';
-                    htmlStr += '            <em></em>';
-                    htmlStr += '        </a>';
-                    htmlStr += '    </div>';
-                    htmlStr += '    <div class="post-left">';
-                    htmlStr += '        <h3>';
-                    htmlStr += '           <a class="blogTitle" href="' + data[i].articleUrl + '" target="_blank">';
-                    htmlStr += '              <span class="recommend-flag">新</span>';
-                    htmlStr += '              ' + data[i].articleTitle;
-                    htmlStr += '           </a>';
-                    htmlStr += '        </h3>';
-                    htmlStr += '        <div class="post-con">';
-                    htmlStr += '            <span class="title-l"></span>';
-                    htmlStr += '            ' + data[i].articleDec + '';
-                    htmlStr += '        </div>';
-                    htmlStr += '        <aside class="item-meta" style="margin-right: 10px;">';
-                    htmlStr += '            <div class="ui horizontal link list">';
-                    htmlStr += '                <div class="item">';
-                    htmlStr += '                    <i class="user icon"></i>' + data[i].releasePeople;
-                    htmlStr += '                </div>';
-                    htmlStr += '                <div class="item">';
-                    htmlStr += '                    <i class="calendar icon"></i>' + data[i].releaseTime;
-                    htmlStr += '                </div>';
-                    htmlStr += '               <div class="item">';
-                    htmlStr += '                   <i class="eye icon"></i> 浏览(' + data[i].hits + ')';
-                    htmlStr += '               </div>';
-                    htmlStr += '               <div class="item">';
-                    htmlStr += '                    <i class="comment icon"></i> 评论(' + data[i].postNum + ')';
-                    htmlStr += '                </div>';
-                    htmlStr += '            </div>';
-                    htmlStr += '        </aside>';
-                    htmlStr += '    </div> ';
-                    htmlStr += '</article>';
-                }
-                $(".blogList").html(htmlStr);
-
-            },
-            error: function () {
-
-            }
-        });
-    }
-</script>
+<script src="/common/coco-message.js"></script>
+<script src="/blog/js/blogList.js"></script>

@@ -136,4 +136,18 @@ public interface ArticleMapper {
      * @return
      */
     int updateCommentCountByWznm(@Param("postNum") int postNum, @Param("wznm") String wznm);
+
+    /**
+     * 获取栏目名称
+     * @param columnId
+     * @return
+     */
+    String getColumnName(@Param("columnId") String columnId);
+
+    /**
+     * 获取标签名称
+     * @param labelId
+     * @return
+     */
+    String getLabelName(@Param("labelId") String labelId);
 }

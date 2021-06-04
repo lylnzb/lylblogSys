@@ -63,12 +63,12 @@
 <body style="border-radius: 8px;width: 680px;overflow: hidden">
 <form id="frm" class="layui-form" action="">
     <div id="tools-box" class="wrapper wrapper-content animated fadeInRight ibox-content" align="left">
-        <div class="department_main">
+        <div class="department_main" id="isHidden">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label" style = 'width: 189px;font-weight: bold'><font color='red'>*</font>&nbsp;网站名称：</label>
+                    <label class="layui-form-label" style = 'width: 120px;font-weight: bold'>&nbsp;评论文章：</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="title" id="title" lay-verify="title" autocomplete="off" class="layui-input" style="width: 473px">
+                        <input type="text" id="articleName" disabled="disabled" autocomplete="off" class="layui-input" style="width: 373px;background-color: rgb(235, 235, 228);">
                     </div>
                 </div>
             </div>
@@ -76,9 +76,9 @@
         <div class="department_main">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label" style = 'width: 189px;font-weight: bold'><font color='red'>*</font>&nbsp;网站网址：</label>
+                    <label class="layui-form-label" style = 'width: 120px;font-weight: bold'>评论人：</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="url" id="url" lay-verify="url" autocomplete="off" class="layui-input" style="width: 473px">
+                        <input type="text" id="submitName" disabled="disabled" autocomplete="off" class="layui-input" style="width: 373px;background-color: rgb(235, 235, 228);">
                     </div>
                 </div>
             </div>
@@ -86,11 +86,9 @@
         <div class="department_main">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label" style = 'width: 189px;font-weight: bold'><font color='red'>*</font>&nbsp;网站类型：</label>
+                    <label class="layui-form-label" style = 'width: 120px;font-weight: bold'>被评论人：</label>
                     <div class="layui-input-inline">
-                        <select id="type" name="type" lay-verify="type" style="width: 100%;">
-                            <option value=""></option>
-                        </select>
+                        <input type="text" id="replyName" disabled="disabled" autocomplete="off" class="layui-input" style="width: 373px;background-color: rgb(235, 235, 228);">
                     </div>
                 </div>
             </div>
@@ -98,9 +96,9 @@
         <div class="department_main">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label" style = 'width: 189px;font-weight: bold'>排序：</label>
+                    <label class="layui-form-label" style = 'width: 120px;font-weight: bold'>评论时间：</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="sortOrder" id="sortOrder" autocomplete="off" class="layui-input" style="width: 473px">
+                        <input type="text" id="submitTime" disabled="disabled" autocomplete="off" class="layui-input" style="width: 373px;background-color: rgb(235, 235, 228);">
                     </div>
                 </div>
             </div>
@@ -108,31 +106,12 @@
         <div class="department_main">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label" style = 'font-weight: bold;width: 189px'>是否开启浏览器新窗口：</label>
-                    <div class="layui-input-inline" id="target" name="radio">
-                        <!--<input type="radio" name="valid" value="1" title="正常" checked="">
-                        <input type="radio" name="valid" value="0" title="停用">-->
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="department_main">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label" style = 'font-weight: bold;width: 189px'>是否显示：</label>
-                    <div class="layui-input-inline" id="status" name="radio">
-                        <!--<input type="radio" name="valid" value="1" title="正常" checked="">
-                        <input type="radio" name="valid" value="0" title="停用">-->
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="department_main">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label" style = 'width: 189px'>网站简况：</label>
+                    <label class="layui-form-label" style = 'font-weight: bold;width: 120px'>评论内容：</label>
                     <div class="layui-input-inline">
-                        <textarea type="text" name="intro" id="intro" class="layui-input" style="width: 473px;height: 100px"></textarea>
+                        <div id="commentContent" class="editor"
+                             contenteditable="false"
+                             style="width: 373px;height: 100px;background-color: rgb(235, 235, 228);padding-top: 5px;padding-left: 5px;border: 1px #ccc solid;"></div>
+<!--                        <textarea id="commentContent" disabled="disabled" style="width: 373px;height: 100px;background-color: rgb(235, 235, 228);"></textarea>-->
                     </div>
                 </div>
             </div>
@@ -140,7 +119,6 @@
     </div>
     <div class="notice_bot" style="z-index: 0">
         <div class="r_right but_p">
-            <div class="layui-btn but_save" id="nsbc" lay-filter="save" lay-submit="">保存</div>
             <div class="layui-btn but_close" id="close" onclick="Cancel()">关闭</div>
         </div>
     </div>
@@ -151,6 +129,6 @@
 <script type="text/javascript" src="/admin/js/ztree/jquery.ztree.exedit-3.5.js"></script>
 <script src="/common/layui/layui.all.js"></script>
 <script src="/common/util.js"></script>
-<script src="/admin/links/js/addOrUpdaLink.js"></script>
+<script src="/admin/comment/js/viewComment.js"></script>
 </body>
 </html>

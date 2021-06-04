@@ -173,18 +173,20 @@ function menuInit(){
                 if(data.data[i].isDefault == '2'){
                     htmlStr += '<a href="' + basePath + data.data[i].menuUrl +'" class="m-item item m-mobile-hide" style="float: left"><i class="'+ data.data[i].icon +' icon"></i>'+ data.data[i].menuName +'</a>';
                 }else if(data.data[i].isDefault == '1'){
-                    htmlStr += '<div class="ui dropdown item" style="float: left">';
+                    htmlStr += '<div class="ui printing dropdown link item" style="float: left" onclick="window.open(\'' + basePath + data.data[i].menuUrl + '\', target=\'_self\')">';
                     htmlStr += '    <i class="'+ data.data[i].icon +' icon"></i>'+ data.data[i].menuName +'<i class="dropdown icon"></i>';
                     htmlStr += '    <div class="menu" data-filtered="filtered">';
                     for(var j = 0;j < data.data[i].childList.length; j++){
-                        htmlStr += '    <div class="item" data-filtered="filtered"><a href="' + basePath + data.data[i].childList[j].menuUrl +'" style="color: #0C0C0C">'+ data.data[i].childList[j].menuName +'</a></div>';
+                        htmlStr += '    <div class="item" data-filtered="filtered"><a href="' + basePath + data.data[i].childList[j].menuUrl + '" style="color: #0C0C0C">'+ data.data[i].childList[j].menuName +'</a></div>';
                     }
                     htmlStr += '    </div>';
                     htmlStr += '</div>';
                 }
             }
             $("#menu").html(htmlStr);
-            $('.ui.dropdown').dropdown();
+            $('.ui.dropdown').dropdown({
+                on: 'hover'
+            });
         },
         error:function(){
             alert("初始化选项失败4");
@@ -274,6 +276,7 @@ function Animocon(el, options) {
             self.checked = true;
         }
 
+        var isLogin=$("#isAuthenticated").val();
         if(isLogin == 'false'){
             $(".bg").show();
             $(".login").show();
@@ -405,4 +408,26 @@ function giveOrCancelLike(commentId, isGiveLike){
         }
     });
     return falg;
+}
+
+function getLabelInfo(){
+    var columnId = GetQueryString("columnId");
+    $.ajax({
+        url:basePath+'/common/getLabelList?columnId=' + columnId,
+        type:"POST",
+        contentType : 'application/json;charset=utf-8',
+        success:function(resultData){
+            console.log(resultData);
+            var data = resultData.data;
+            var htmlStr = '<ul class="sidebar_content divTags">';
+            for(var i = 0; i < data.length; i++){
+                htmlStr += '<li><a href="/blog/blogList?columnId=' + columnId + '&labelId=' + data[i].labelId + '" title="' + data[i].labelName + '">' + data[i].labelName + '<span class="tag-count"> (' + data[i].articleNum + ')</span></a></li>';
+            }
+            htmlStr += '</ul>';
+            $("#divTags").html(htmlStr);
+        },
+        error:function(){
+            alert("系统异常！");
+        }
+    });
 }

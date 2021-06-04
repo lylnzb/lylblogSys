@@ -13,6 +13,17 @@ import java.util.List;
  */
 public interface CommentService {
 
+    /**
+     * 后台系统评论管理信息查询
+     * @param commentBean
+     * @return
+     */
+    ResultObj queryCommentInfo(CommentBean commentBean);
 
-
+    /**
+     * 删除评论信息
+     * @param deleteIds
+     * @return
+     */
+    ResultObj deleteCommentInfo(List<String> deleteIds);
 }

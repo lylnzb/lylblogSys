@@ -32,7 +32,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test="nickName != null and nickName != ''"> and m_user.nickname like concat('%',#{nickName},'%')</if>
         <if test="valid != null and valid != ''"> and m_user.valid = #{valid}</if>
             ) AS t
-        where rk between (#{page}-1)*#{limit} + 1 and #{page}*#{limit} ORDER BY rk
+        <if test="limit != null and limit != ''">
+            limit #{page}, #{limit}
+        </if>
     </select>
 
     <!-- 查询所有用户信息总数 -->
@@ -147,7 +149,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by orderBy
         ) AS m_role
         <if test="limit != null and limit != ''">
-            where rk between (#{page}-1)*#{limit} + 1 and #{page}*#{limit}
+            limit #{page}, #{limit}
         </if>
     </select>
 

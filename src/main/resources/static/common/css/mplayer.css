@@ -38,7 +38,7 @@
 .mp button {
   border: none;
   outline: none;
-  cursor: url('/static/img/cur/link.cur'), pointer;
+  cursor: url('/img/cur/link.cur'), pointer;
   background-color: transparent;
 }
 /* line 47, mplayer.less */
@@ -175,7 +175,7 @@
   position: absolute;
   bottom: 15px;
   left: 120px;
-  cursor: url('/static/img/cur/link.cur'), pointer;
+  cursor: url('/img/cur/link.cur'), pointer;
 }
 /* line 164, mplayer.less */
 .mp .mp-pro-current {
@@ -308,7 +308,7 @@
   top: -2px;
   border-radius: 5px;
   background: #d32f2f;
-  cursor: url('/static/img/cur/link.cur'), pointer;
+  cursor: url('/img/cur/link.cur'), pointer;
 }
 /* line 271, mplayer.less */
 .mp .mp-vol-circle:hover {
@@ -384,7 +384,7 @@
 .mp .mp-list-title li {
   float: left;
   padding: 0 20px;
-  cursor: url('/static/img/cur/link.cur'), pointer;
+  cursor: url('/img/cur/link.cur'), pointer;
 }
 /* line 338, mplayer.less */
 .mp .mp-list-title-current {
@@ -432,7 +432,7 @@
 }
 /* line 375, mplayer.less */
 .mp .mp-list-table tbody tr {
-  cursor: url('/static/img/cur/link.cur'), pointer;
+  cursor: url('/img/cur/link.cur'), pointer;
 }
 /* line 377, mplayer.less */
 .mp .mp-list-table tbody tr.mp-list-current,

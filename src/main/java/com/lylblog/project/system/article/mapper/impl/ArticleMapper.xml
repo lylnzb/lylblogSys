@@ -26,7 +26,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="columnId != null and columnId != ''"> and columnId = #{columnId}</if>
             <if test="wznm != null and wznm != ''"> and wznm = #{wznm}</if>
             ) AS article
-        WHERE rk BETWEEN (#{page}-1)*#{limit} + 1 AND #{page}*#{limit} ORDER BY rk
+        <if test="limit != null and limit != ''">
+            limit #{page}, #{limit}
+        </if>
     </select>
 
     <!-- 查询文章列表信息 -->
@@ -54,16 +56,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 (select columnName from sys_column where columnId = t.columnId) as articleForm
             FROM sys_article t, ( SELECT @i := 0 ) rk
             WHERE 1 = 1
+            <if test="articleTitle != null and articleTitle != ''"> and articleTitle like concat('%', #{articleTitle}, '%')</if>
             <if test="columnId != null and columnId != ''"> and columnId = #{columnId}</if>
+            <if test="labelId != null and labelId != ''"> and articleLabel like concat('%', #{labelId}, '%') </if>
             order by createTime desc
         ) AS article
-        WHERE rk BETWEEN (#{page}-1)*#{limit} + 1 AND #{page}*#{limit} ORDER BY rk
+        <if test="limit != null and limit != ''">
+            limit #{page}, #{limit}
+        </if>
     </select>
 
     <!-- 查询网站前端博客列表信息总数 -->
     <select id="queryBlogInfoCount" parameterType="com.lylblog.project.system.article.bean.ArticleBean" resultType="int">
         SELECT count(1) FROM sys_article WHERE 1 = 1
         <if test="columnId != null and columnId != ''"> and columnId = #{columnId}</if>
+        <if test="labelId != null and labelId != ''"> and articleLabel like concat('%', #{labelId}, '%') </if>
+        <if test="articleTitle != null and articleTitle != ''"> and articleTitle like concat('%', #{articleTitle}, '%')</if>
     </select>
 
     <!-- 新增文章信息 -->
@@ -170,7 +178,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 and columnId = #{columnId}
             </if>
             ) AS label
-        where rk between (#{page}-1)*#{limit} + 1 and #{page}*#{limit} ORDER BY rk
+        <if test="limit != null and limit != ''">
+            limit #{page}, #{limit}
+        </if>
     </select>
 
     <!-- 查询标签信息总数 -->
@@ -252,4 +262,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateCommentCountByWznm">
         update sys_article set postNum = #{postNum} where wznm = #{wznm}
     </update>
+
+    <!-- 获取栏目名称 -->
+    <select id="getColumnName" parameterType="String" resultType="String">
+        select columnName from sys_column where columnId = #{columnId}
+    </select>
+
+    <!-- 获取标签名称 -->
+    <select id="getLabelName" parameterType="String" resultType="String">
+        select labelName from sys_label where labelId = #{labelId}
+    </select>
 </mapper>

@@ -1,5 +1,6 @@
 package com.lylblog.project.common.mapper;
 
+import com.lylblog.project.common.bean.LabelBean;
 import com.lylblog.project.common.bean.MenuBean;
 import com.lylblog.project.common.bean.MusicBean;
 import com.lylblog.project.system.blogSet.bean.BlogSetBean;
@@ -30,6 +31,13 @@ public interface CommonMapper {
      * @return
      */
     List<MenuBean> queryMeunInfo(@Param("isDefault") String isDefault, @Param("columnId") String columnId);
+
+    /**
+     * 根据栏目编号获取标签信息
+     * @param columnId
+     * @return
+     */
+    List<LabelBean> getLabelList(@Param("columnId") String columnId);
 
     /**
      * 获取博客配置信息

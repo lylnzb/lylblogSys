@@ -153,13 +153,14 @@ $("#login").click(function(){
             data: JSON.stringify(obj),
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
-            success: function (resultData) {
+            success: function (resultData, XMLHttpRequest) {
                 if(resultData.code == 0){
-                    location.reload();
+                    localRefresh('/common/headerRefresh', '#header');
+                    $(".login").hide();
+                    $(".bg").hide();
                 }else{
                     layui.layer.msg(resultData.msg);
                 }
-
             },
             error: function () {
 

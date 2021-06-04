@@ -28,4 +28,8 @@ public class CommentBean extends ParaBean {
     private String auditReason;       //	审核原因
 
     private String yhnm;
+
+    private String submitName;        //    提交人名称
+    private String replyName;         //    回复人名称
+    private String articleName;       //    文章名称
 }

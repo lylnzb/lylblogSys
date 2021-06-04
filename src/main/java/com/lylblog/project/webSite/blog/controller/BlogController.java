@@ -36,7 +36,16 @@ public class BlogController {
     private WebCommentService webCommentService;
 
     @RequestMapping("/blogList")
-    public String blogList(){
+    public String blogList(Model model, String columnId, String labelId){
+        //获取栏目名称
+        String columnName = blogService.getColumnName(columnId);
+        model.addAttribute("columnId", columnId);
+        model.addAttribute("columnName", ((columnId != null && !"".equals(columnId))?columnName : ""));
+
+        //获取标签名称
+        String labelName = blogService.getLabelName(labelId);
+        model.addAttribute("labelId", labelId);
+        model.addAttribute("labelName", ((labelId != null && !"".equals(labelId))?labelName : ""));
         return "/blog/blogList";
     }
 

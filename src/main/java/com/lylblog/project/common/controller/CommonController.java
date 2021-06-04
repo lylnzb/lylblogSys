@@ -1,5 +1,6 @@
 package com.lylblog.project.common.controller;
 
+import com.lylblog.project.common.bean.LabelBean;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.common.service.CommonService;
 import io.swagger.models.Model;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Controller
 @RequestMapping("/common")
@@ -55,6 +57,22 @@ public class CommonController {
     public ResultObj queryMeunInfo(){
         try {
             return commonService.queryMeunInfo();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 根据栏目编号获取标签信息
+     * @param columnId
+     * @return
+     */
+    @RequestMapping(value="/getLabelList")
+    @ResponseBody
+    public ResultObj getLabelList(String columnId){
+        try {
+            return commonService.getLabelList(columnId);
         } catch (Exception e){
             e.printStackTrace();
         }

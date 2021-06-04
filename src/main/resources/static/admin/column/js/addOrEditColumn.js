@@ -14,13 +14,9 @@ layui.use(['form', 'layer'], function(){
         var level = data.value;//被点击的radio的value值
         if(level == "1"){
             $("#isAccord").hide();
-            $("#columnUrl").attr({"readonly":"readonly"});
-            $("#columnUrl").val("*");
             $("#iconUrl").val("");
         }else{
             $("#isAccord").show();
-            $("#columnUrl").removeAttr("readonly");
-            $("#columnUrl").val("");
         }
     });
 

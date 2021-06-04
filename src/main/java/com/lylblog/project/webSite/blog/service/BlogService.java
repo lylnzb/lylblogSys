@@ -33,4 +33,18 @@ public interface BlogService {
      * @return
      */
     ResultObj queryBlogInfo(ArticleBean article);
+
+    /**
+     * 获取栏目名称
+     * @param columnId
+     * @return
+     */
+    String getColumnName(String columnId);
+
+    /**
+     * 获取标签名称
+     * @param labelId
+     * @return
+     */
+    String getLabelName(String labelId);
 }

@@ -86,6 +86,11 @@
             margin-left: 120px;
             margin-top: -25px;
         }
+
+        .tj li {
+            height: 30px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -134,41 +139,6 @@
                     </div>
                     <!--右边-->
                     <div class="five wide column">
-                        <div class="ui segments">
-                            <div class="ui secondary segment">
-                                <div class="ui two column grid">
-                                    <div class="column">
-                                        <i class="idea icon"></i>书籍分类
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ui teal segment">
-                                <section id="divTags">
-                                    <ul class="sidebar_content divTags">
-                                        <li><a href="http://www.yunyueyi.cn/tags-8.html" title="分享" target="_blank">分享<span class="tag-count"> (5)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-9.html" title="经验" target="_blank">经验<span class="tag-count"> (5)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-1.html" title="正经事" target="_blank">正经事<span class="tag-count"> (4)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-11.html" title="zblog教程" target="_blank">zblog教程<span class="tag-count"> (4)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-16.html" title="情感" target="_blank">情感<span class="tag-count"> (4)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-10.html" title="教程" target="_blank">教程<span class="tag-count"> (3)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-20.html" title="爱" target="_blank">爱<span class="tag-count"> (3)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-3.html" title="站长" target="_blank">站长<span class="tag-count"> (2)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-5.html" title="图文教程" target="_blank">图文教程<span class="tag-count"> (2)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-12.html" title="SEO优化" target="_blank">SEO优化<span class="tag-count"> (2)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-19.html" title="zblog zblog插件 zblog用户中心" target="_blank">zblog zblog插件 zblog用户中心<span class="tag-count"> (2)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-26.html" title="会员等级" target="_blank">会员等级<span class="tag-count"> (2)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-31.html" title="图文教程" target="_blank">图文教程<span class="tag-count"> (2)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-2.html" title="分享" target="_blank">分享<span class="tag-count"> (1)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-4.html" title="教程" target="_blank">教程<span class="tag-count"> (1)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-6.html" title="百度" target="_blank">百度<span class="tag-count"> (1)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-7.html" title="zblog教程" target="_blank">zblog教程<span class="tag-count"> (1)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-13.html" title="网站关闭" target="_blank">网站关闭<span class="tag-count"> (1)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-14.html" title="zblog后台" target="_blank">zblog后台<span class="tag-count"> (1)</span></a></li>
-                                        <li><a href="http://www.yunyueyi.cn/tags-15.html" title="zblog后台打不开" target="_blank">zblog后台打不开<span class="tag-count"> (1)</span></a></li><!--您所查看的是热门标签缓存，缓存时间2020-05-24 01:39:34am-->
-                                    </ul>
-                                </section>
-                            </div>
-                        </div>
                         <!--分类-->
                         <div class="ui segments">
                             <div class="ui secondary segment">
@@ -276,6 +246,28 @@
 
                             </div>
                         </div>
+                        <!--标签-->
+                        <div class="ui segments">
+                            <div class="ui secondary placeholder segment">
+                                <div class="ui two column grid">
+                                    <div class="column">
+                                        <i class="tags icon"></i>网站统计
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui teal segment">
+                                <div class="ui items">
+                                    <ul class="tj">
+                                        <li><label>网站名称：</label><span>羅氏博客</span></li>
+                                        <li><label>文章总数：</label><span>10篇</span></li>
+                                        <li><label>总浏览量：</label><span>18652次</span></li>
+                                        <li><label>今日访问量：</label><span>176次</span></li>
+                                        <li><label>当前访客来源：</label><span>湖南长沙</span></li>
+                                        <li><label>网站运行：</label><span>1年3月29日12时29分19秒</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -308,8 +300,6 @@
 <script>
     $(document).ready(function(){
         $('.pointing.menu .item').tab();
-
-        $('.ui.dropdown').dropdown();
 
         //悬浮变色事件
         $('.newslist li').mouseover(function(){

@@ -55,7 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </if>
         ) AS dictType
         <if test="limit != null and limit != ''">
-            where rk between (#{page}-1)*#{limit} + 1 and #{page}*#{limit}
+            limit #{page}, #{limit}
         </if>
     </select>
 

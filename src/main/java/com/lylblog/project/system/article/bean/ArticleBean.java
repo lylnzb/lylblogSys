@@ -39,5 +39,7 @@ public class ArticleBean extends ParaBean {
 
     private String judgeLongTime;      //  判断时间据现在多久
 
+    private String labelId;          //  标签id
+
     private List<LabelSelectBean> label;
 }
