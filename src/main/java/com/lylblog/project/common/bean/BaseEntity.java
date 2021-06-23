@@ -127,7 +127,7 @@ public class BaseEntity implements Serializable
     }
 
     public int getPage() {
-        return page;
+        return (page - 1) * limit;
     }
 
     public void setPage(int page) {

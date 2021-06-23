@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lylblog.project.system.log.mapper.LogMapper">
+
+    <!-- 新增用户登录日志记录 -->
+    <insert id="insertLoginLogInfo" parameterType="com.lylblog.project.system.log.bean.LoginLogBean">
+        insert into m_user_login_log (
+            yhnm,
+            loginName,
+            onlineIp,
+            loginAddress,
+            browser,
+            loginSystem,
+            loginType,
+            loginWay,
+            loginMsg,
+            loginTime
+        ) values (
+            #{yhnm,jdbcType=VARCHAR},
+            #{loginName,jdbcType=VARCHAR},
+            #{onlineIp,jdbcType=VARCHAR},
+            #{loginAddress,jdbcType=VARCHAR},
+            #{browser,jdbcType=VARCHAR},
+            #{loginSystem,jdbcType=VARCHAR},
+            #{loginType,jdbcType=VARCHAR},
+            #{loginWay,jdbcType=VARCHAR},
+            #{loginMsg,jdbcType=VARCHAR},
+            SYSDATE()
+        )
+    </insert>
+
+    <!-- 新增用户登录日志记录 -->
+    <insert id="insertOperLogInfo" parameterType="com.lylblog.project.system.log.bean.OperLogBean">
+        insert into sys_oper_log (
+            yhnm,
+            title,
+            action,
+            method,
+            channel,
+            loginName,
+            operUrl,
+            operIp,
+            operParam,
+            status,
+            errorMsg,
+            operTime
+        ) values (
+            #{yhnm,jdbcType=VARCHAR},
+            #{title,jdbcType=VARCHAR},
+            #{action,jdbcType=VARCHAR},
+            #{method,jdbcType=VARCHAR},
+            #{channel,jdbcType=VARCHAR},
+            #{loginName,jdbcType=VARCHAR},
+            #{operUrl,jdbcType=VARCHAR},
+            #{operIp,jdbcType=VARCHAR},
+            #{operParam,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{errorMsg,jdbcType=VARCHAR},
+            SYSDATE()
+        )
+    </insert>
+
+    <!-- 查询用户登录日志记录 -->
+    <select id="queryLoginLogInfo" parameterType="com.lylblog.project.system.log.bean.LoginLogBean" resultType="com.lylblog.project.system.log.bean.LoginLogBean">
+        select * from m_user_login_log order by loginTime desc
+        <if test="limit != null and limit != ''">
+            limit #{page}, #{limit}
+        </if>
+    </select>
+
+    <!-- 查询用户登录日志记录总数 -->
+    <select id="queryLoginLogInfoCount" parameterType="com.lylblog.project.system.log.bean.LoginLogBean" resultType="int">
+        select count(1) from m_user_login_log
+    </select>
+
+    <!-- 查询系统操作日志记录 -->
+    <select id="queryOperLogInfo" parameterType="com.lylblog.project.system.log.bean.OperLogBean" resultType="com.lylblog.project.system.log.bean.OperLogBean">
+        select log.*, m.nickName from sys_oper_log log left join m_user m on m.yhnm = log.yhnm order by operTime desc
+        <if test="limit != null and limit != ''">
+            limit #{page}, #{limit}
+        </if>
+    </select>
+
+    <!-- 查询系统操作日志记录总数 -->
+    <select id="queryOperLogInfoCount" parameterType="com.lylblog.project.system.log.bean.OperLogBean" resultType="int">
+        select count(1) from sys_oper_log log left join m_user m on m.yhnm = log.yhnm
+    </select>
+</mapper>

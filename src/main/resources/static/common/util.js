@@ -1,4 +1,4 @@
-var basePath="http://127.0.0.1/";//业务系统basePath
+var basePath="http://www.lylBlog.com/";//业务系统basePath
 
 //cocomessage消息提示框 配置全局参数
 cocoMessage.config({duration: 10000});

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lylblog.project.webSite.user.mapper.UserMapper">
+
+    <!-- 查询当前登录用户的登录记录数据 -->
+    <select id="queryLoginRecord" parameterType="com.lylblog.project.webSite.user.bean.UserLoginRecordBean" resultType="com.lylblog.project.webSite.user.bean.UserLoginRecordBean">
+        SELECT
+            (select dict_label from sys_dict_data where dict_type = 'login_way' and dict_value = log.loginWay) as loginWay,
+            loginAddress as address,
+            loginSystem as loginSystem,
+            loginTime
+        FROM m_user_login_log as log
+        where yhnm = #{yhnm} and logintype  = '1'
+        order by loginTime desc
+        <if test="limit != null and limit != ''">
+            limit #{page}, #{limit}
+        </if>
+    </select>
+
+    <!-- 查询当前登录用户的登录记录数据总数 -->
+    <select id="queryLoginRecordCount" parameterType="com.lylblog.project.webSite.user.bean.UserLoginRecordBean" resultType="int">
+        SELECT count(1)
+        FROM m_user_login_log as log
+        where yhnm = #{yhnm} and logintype  = '1'
+    </select>
+
+    <!-- 是否已绑定邮箱 -->
+    <select id="isbindingEmail" resultType="int" parameterType="String">
+        select count(1) from m_user where yhnm = #{yhnm} and email is not null
+    </select>
+
+    <!-- 是否已设置密码 -->
+    <select id="isSetupPwd" resultType="int" parameterType="String">
+        select count(1) from m_user where yhnm = #{yhnm} and password is not null
+    </select>
+</mapper>

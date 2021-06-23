@@ -5,6 +5,7 @@ package com.lylblog.project.system.blogSet.controller;
  * @Date: 2021/2/18 10:44
  */
 
+import com.lylblog.framework.Aspectj.annotation.Log;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.system.blogSet.bean.BlogSetBean;
 import com.lylblog.project.system.blogSet.service.BlogSetService;
@@ -51,15 +52,11 @@ public class BlogSetController {
      * 配置博客设置
      * @return
      */
+    @Log(moduleName = "博客设置", functionName = "博客设置-设置")
     @RequestMapping("/configurationBlogSetInfo")
     @ResponseBody
     public ResultObj configurationBlogSetInfo(@RequestBody BlogSetBean blogSet){
-        try{
-            return blogSetService.configurationBlogSetInfo(blogSet);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return ResultObj.fail();
+        return blogSetService.configurationBlogSetInfo(blogSet);
     }
 }
 

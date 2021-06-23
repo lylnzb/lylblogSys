@@ -1,5 +1,6 @@
 package com.lylblog.project.system.banner.controller;
 
+import com.lylblog.framework.Aspectj.annotation.Log;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.system.banner.bean.BannerBean;
 import com.lylblog.project.system.banner.service.BannerService;
@@ -43,12 +44,7 @@ public class BannerController {
     @RequestMapping("/queryBannerInfo")
     @ResponseBody
     public ResultObj queryBannerInfo(@RequestBody BannerBean bannerBean){
-        try{
-            return bannerService.queryBannerInfo(bannerBean);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return ResultObj.fail();
+        return bannerService.queryBannerInfo(bannerBean);
     }
 
     /**
@@ -56,15 +52,11 @@ public class BannerController {
      * @param bannerBean
      * @return
      */
+    @Log(moduleName = "轮播图管理", functionName = "轮播图管理-新增（编辑）")
     @RequestMapping("/addOrUpdaBannerInfo")
     @ResponseBody
     public ResultObj addOrUpdaBannerInfo(@RequestBody BannerBean bannerBean, String type){
-        try{
-            return bannerService.addOrUpdaBannerInfo(bannerBean, type);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return ResultObj.fail();
+        return bannerService.addOrUpdaBannerInfo(bannerBean, type);
     }
 
     /**
@@ -72,14 +64,10 @@ public class BannerController {
      * @param deleteIds
      * @return
      */
+    @Log(moduleName = "轮播图管理", functionName = "轮播图管理-删除")
     @RequestMapping("/deleteBannerInfo")
     @ResponseBody
     public ResultObj deleteBannerInfo(@RequestBody List<String> deleteIds){
-        try{
-            return bannerService.deleteBannerInfo(deleteIds);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return ResultObj.fail();
+        return bannerService.deleteBannerInfo(deleteIds);
     }
 }

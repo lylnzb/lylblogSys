@@ -31,8 +31,6 @@ function initBlogInfo(page, limit){
         url: basePath + 'blog/queryBlogInfo',
         type: "POST",
         data:JSON.stringify(obj),
-        //
-        // async: false,
         dataType:"json",
         contentType: 'application/json;charset=utf-8',
         success: function (resultData) {

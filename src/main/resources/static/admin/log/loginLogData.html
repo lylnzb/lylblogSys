@@ -1,0 +1,38 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="/common/layui/css/layui.css">
+    <link href="/admin/css/table.css" rel="stylesheet" type="text/css" />
+    <link href="/admin/css/animate.css" rel="stylesheet"/>
+    <link href="/admin/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/admin/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="/admin/css/ry-ui.css" rel="stylesheet"/>
+    <style>
+        .layui-table-cell .layui-form-checkbox[lay-skin="primary"]{top: 48%;transform: translateY(-48%);}
+        .layui-table-fixed.layui-table-fixed-r .layui-table-body tr{background-color: white}
+        .table-striped {height: 95%;}
+    </style>
+</head>
+<body style="margin: 0px 10px 0px;padding: 0;background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1000px;overflow: auto">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 select-table table-striped">
+            <div class="btn-group hidden-xs" role="group" style="margin-top: 10px">
+                <a class="btn btn-danger" id="deleteRoles" onclick="deleteRole()"><i class="fa fa-trash-o"></i> 批量删除</a>
+            </div>
+            <table id="table" class="layui-hide" lay-filter="tableEvent" style="margin: 0 auto"></table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/admin/js/jquery/jQuery-2.2.0.min.js"></script>
+<script type="text/javascript" src="/admin/js/bstable/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/admin/js/bstable/js/bootstrap-table.js"></script>
+<script type="text/javascript" src="/admin/js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="/admin/layuiTablePlug/layui/src/layui.js"></script>
+<script type="text/javascript" src="/common/util.js"></script>
+<script type="text/javascript" src="/admin/log/js/loginLogData.js"></script>
+</body>
+</html>

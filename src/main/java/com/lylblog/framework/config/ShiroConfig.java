@@ -13,7 +13,6 @@ import com.lylblog.framework.shiro.session.OnlineSessionFactory;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.SessionListener;
-import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -21,7 +20,6 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
-import org.crazycake.shiro.RedisSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
@@ -51,13 +49,13 @@ public class ShiroConfig {
 
     //获取application.properties参数
     @Value("${spring.redis.host}")
-    private String host = "127.0.0.1";
+    private String host;
 
     @Value("${spring.redis.port}")
-    private int port = 6379;
+    private int port;
 
     @Value("${spring.redis.timeout}")
-    private int timeout = 10000;
+    private int timeout;
 
     @Bean(name = "shiroFilter")
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
@@ -104,6 +102,10 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/articlefile/**", "anon");
         //百度ueditor编辑框文件URL
         filterChainDefinitionMap.put("/ueditorfile/**", "anon");
+        //anon表示可以匿名访问
+        filterChainDefinitionMap.put("/login/qq", "anon");
+        //anon表示可以匿名访问
+        filterChainDefinitionMap.put("/authorize/qq", "anon");
 
         filterChainDefinitionMap.put("/registerUser", "anon");
         filterChainDefinitionMap.put("/login", "anon");
@@ -357,7 +359,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+    public static LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
     }
 

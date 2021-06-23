@@ -71,6 +71,15 @@ public class ShiroUtils {
     }
 
     /**
+     * 获取IP地址
+     * @return
+     */
+    public static String getIp()
+    {
+        return SecurityUtils.getSubject().getSession().getHost();
+    }
+
+    /**
      * 用户登出
      * @Author Sans
      * @CreateTime 2019/6/17 17:23

@@ -1,5 +1,6 @@
 package com.lylblog.project.system.article.controller;
 
+import com.lylblog.framework.Aspectj.annotation.Log;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.system.article.bean.ArticleBean;
 import com.lylblog.project.system.article.bean.LabelBean;
@@ -62,12 +63,7 @@ public class ArticleController {
     @RequestMapping("/queryArticleInfo")
     @ResponseBody
     public ResultObj queryArticleInfo(@RequestBody ArticleBean articleBean){
-        try{
-            return articleService.queryArticleInfo(articleBean);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return ResultObj.fail();
+        return articleService.queryArticleInfo(articleBean);
     }
 
     /**
@@ -75,16 +71,11 @@ public class ArticleController {
      * @param articleBean
      * @return
      */
+    @Log(moduleName = "文章管理", functionName = "文章管理-新增（编辑）")
     @RequestMapping("/addOrUpdaArticleInfo")
     @ResponseBody
     public ResultObj addOrUpdaArticleInfo(@RequestBody ArticleBean articleBean, String type){
-        try{
-            return articleService.addOrUpdaArticleInfo(articleBean, type);
-            //return ResultObj.ok();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return ResultObj.fail();
+        return articleService.addOrUpdaArticleInfo(articleBean, type);
     }
 
     /**
@@ -92,15 +83,11 @@ public class ArticleController {
      * @param deleteIds
      * @return
      */
+    @Log(moduleName = "文章管理", functionName = "文章管理-删除")
     @RequestMapping("/deleteArticleInfo")
     @ResponseBody
     public ResultObj deleteArticleInfo(@RequestBody List<String> deleteIds){
-        try{
-            return  articleService.deleteArticleInfo(deleteIds);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return ResultObj.fail();
+        return articleService.deleteArticleInfo(deleteIds);
     }
 
     /**
@@ -111,12 +98,7 @@ public class ArticleController {
     @RequestMapping("/queryLabelInfo")
     @ResponseBody
     public ResultObj queryLabelInfo(@RequestBody LabelBean label){
-        try{
-            return articleService.queryLabelInfo(label);
-        }catch (Exception e){
-           e.printStackTrace();
-        }
-        return ResultObj.fail();
+        return articleService.queryLabelInfo(label);
     }
 
     /**
@@ -124,15 +106,11 @@ public class ArticleController {
      * @param label
      * @return
      */
+    @Log(moduleName = "标签管理", functionName = "标签管理-新增（编辑）")
     @RequestMapping("/addOrUpdaLabelInfo")
     @ResponseBody
     public ResultObj addOrUpdaLabelInfo(@RequestBody LabelBean label, String type){
-        try{
-            return articleService.addOrUpdaLabelInfo(label, type);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return ResultObj.fail();
+        return articleService.addOrUpdaLabelInfo(label, type);
     }
 
     /**
@@ -140,14 +118,10 @@ public class ArticleController {
      * @param deleteIds
      * @return
      */
+    @Log(moduleName = "标签管理", functionName = "标签管理-删除")
     @RequestMapping("/deleteLabelInfo")
     @ResponseBody
     public ResultObj deleteLabelInfo(@RequestBody List<String> deleteIds){
-        try{
-            return  articleService.deleteLabelInfo(deleteIds);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return ResultObj.fail();
+        return articleService.deleteLabelInfo(deleteIds);
     }
 }

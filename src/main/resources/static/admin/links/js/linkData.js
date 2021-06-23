@@ -76,7 +76,7 @@ layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], functi
             ,{field:'submitTime', title:'提交时间', width:'11%', align:'center'}
             ,{field:'status', title:'是否显示', width:'10%', align:'center', templet : '#status'}
             ,{field:'auditStatus', title:'审核状态', width:'10%', align:'center', templet : '#auditStatus'}
-            ,{field:'right', title:'操作', width:'12.4%', align:'center', toolbar: '#barDemo'},
+            ,{field:'right', title:'操作', width:'12.4%', align:'center', toolbar: '#barDemo'}
         ]]
         ,id:"idTest"
         ,done:function(res,curr,count){

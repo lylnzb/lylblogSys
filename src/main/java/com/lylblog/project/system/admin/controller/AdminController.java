@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.lylblog.common.util.shiro.ShiroUtils;
 import com.lylblog.common.util.file.FileUploadUtil;
+import com.lylblog.framework.Aspectj.annotation.Log;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.login.bean.UserLoginBean;
 import com.lylblog.project.login.service.LoginService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -86,16 +88,11 @@ public class AdminController {
      * @param userBean
      * @return
      */
-    //@RequiresPermissions("system:user:list")
+    @RequiresPermissions("system:user:list")
     @RequestMapping("/queryUserList")
     @ResponseBody
-    public ResultObj queryUserList(@RequestBody UserBean userBean){
-        try {
-            return adminService.queryUserList(userBean);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
+    public ResultObj queryUserList(@RequestBody UserBean userBean) throws Exception{
+        return adminService.queryUserList(userBean);
     }
 
     /**
@@ -103,43 +100,32 @@ public class AdminController {
      * @param userBean
      * @return
      */
-    //@RequiresPermissions("system:user:add")
+    @Log(moduleName = "用户管理", functionName = "用户管理-新增（编辑）")
+    @RequiresPermissions("system:user:add")
     @PostMapping("/addOrEditUserInfo")
     @ResponseBody
-    public ResultObj addOrEditUserInfo(@RequestBody UserBean userBean, String type){
-        try {
-            return adminService.addOrEditUserInfo(userBean, type);
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-        return ResultObj.fail();
+    public ResultObj addOrEditUserInfo(@RequestBody UserBean userBean, String type) throws Exception{
+        return adminService.addOrEditUserInfo(userBean, type);
     }
 
+    @Log(moduleName = "用户管理", functionName = "用户管理-账号停用")
     @RequiresPermissions("system:user:disable")
     @PostMapping("/disableUserInfo")
     @ResponseBody
     public ResultObj disableUserInfo(@RequestBody List<String> userIds){
-        try {
-            return adminService.disableUserInfo(userIds);
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-        return ResultObj.fail();
+        return adminService.disableUserInfo(userIds);
     }
 
+    @Log(moduleName = "用户管理", functionName = "用户管理-头像上传")
     @PostMapping("/uploadIcon")
     @ResponseBody
-    public ResultObj uploadIcon(UserIconBean userIcon, @RequestParam(value = "file",required = false) MultipartFile file) {
-        try {
-            if (!file.isEmpty()) {
-                String avatar = FileUploadUtil.upload(file);
-                userIcon.setIconUrl(avatar);
-                return adminService.uploadIcon(userIcon);
-            }
-            return ResultObj.fail();
-        } catch (Exception e) {
-            return ResultObj.fail(e.getMessage());
+    public ResultObj uploadIcon(UserIconBean userIcon, @RequestParam(value = "file",required = false) MultipartFile file) throws IOException {
+        if (!file.isEmpty()) {
+            String avatar = FileUploadUtil.upload(file);
+            userIcon.setIconUrl(avatar);
+            return adminService.uploadIcon(userIcon);
         }
+        return ResultObj.fail();
     }
 
     /**
@@ -147,16 +133,12 @@ public class AdminController {
      * @param emails
      * @return
      */
+    @Log(moduleName = "用户管理", functionName = "用户管理-密码重置")
     @RequiresPermissions("system:user:reset")
     @PostMapping("/resetPassword")
     @ResponseBody
     public ResultObj resetPassword(@RequestBody List<String> emails){
-        try {
-            return adminService.resetPassword(emails);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
+        return adminService.resetPassword(emails);
     }
 
     /**
@@ -164,16 +146,11 @@ public class AdminController {
      * @param roleBean
      * @return
      */
-    //@RequiresPermissions("system:role:list")
+    @RequiresPermissions("system:role:list")
     @RequestMapping("/queryRoleList")
     @ResponseBody
-    public ResultObj queryRoleList(@RequestBody RoleBean roleBean){
-        try {
-            return adminService.queryRoleList(roleBean);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
+    public ResultObj queryRoleList(@RequestBody RoleBean roleBean) throws Exception {
+        return adminService.queryRoleList(roleBean);
     }
 
     /**
@@ -181,17 +158,13 @@ public class AdminController {
      * @param role
      * @return
      */
-    //@RequiresPermissions("system:role:add")
+    @Log(moduleName = "角色管理", functionName = "角色管理-新增（编辑）")
+    @RequiresPermissions("system:role:add")
     @RequestMapping("/addRoleInfo")
     @ResponseBody
-    public ResultObj addRoleInfo(@RequestBody Map<String, Object> role, String type){
-        try {
-            RoleBean roleBean = JSONObject.parseObject(JSON.toJSONString(role),RoleBean.class);
-            return adminService.addRoleInfo(roleBean, type);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
+    public ResultObj addRoleInfo(@RequestBody Map<String, Object> role, String type) throws Exception {
+        RoleBean roleBean = JSONObject.parseObject(JSON.toJSONString(role),RoleBean.class);
+        return adminService.addRoleInfo(roleBean, type);
     }
 
     /**
@@ -199,16 +172,12 @@ public class AdminController {
      * @param deleteIds
      * @return
      */
-    //@RequiresPermissions("system:role:delete")
+    @Log(moduleName = "角色管理", functionName = "角色管理-删除")
+    @RequiresPermissions("system:role:delete")
     @RequestMapping("/deleteRoleInfo")
     @ResponseBody
     public ResultObj deleteRoleInfo(@RequestBody List<String> deleteIds){
-        try {
-            return adminService.deleteRoleInfo(deleteIds);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
+        return adminService.deleteRoleInfo(deleteIds);
     }
 
     /**
@@ -217,13 +186,8 @@ public class AdminController {
      */
     @RequestMapping("/queryPermInfoToTree")
     @ResponseBody
-    public ResultObj queryPermInfoToTree(){
-        try {
-            return adminService.queryPermInfoToTree(null);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
+    public ResultObj queryPermInfoToTree() throws Exception {
+        return adminService.queryPermInfoToTree(null);
     }
 
     /**
@@ -233,13 +197,8 @@ public class AdminController {
      */
     @RequestMapping("/qeuryPermInfoByConditions")
     @ResponseBody
-    public ResultObj qeuryPermInfoByConditions(@RequestBody PermissionBean permissionBean){
-        try {
-            return adminService.qeuryPermInfoByConditions(permissionBean);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
+    public ResultObj qeuryPermInfoByConditions(@RequestBody PermissionBean permissionBean) throws Exception {
+        return adminService.qeuryPermInfoByConditions(permissionBean);
     }
 
     /**
@@ -247,16 +206,12 @@ public class AdminController {
      * @param permissionBean
      * @return
      */
+    @Log(moduleName = "权限维护", functionName = "权限维护-新增（编辑）")
     @RequiresPermissions("system:perm:add")
     @RequestMapping("/addPermInfo")
     @ResponseBody
-    public ResultObj addPermInfo(@RequestBody PermissionBean permissionBean,String type){
-        try {
-            return adminService.addPermInfo(permissionBean, type);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
+    public ResultObj addPermInfo(@RequestBody PermissionBean permissionBean,String type) throws Exception {
+        return adminService.addPermInfo(permissionBean, type);
     }
 
     /**
@@ -265,16 +220,12 @@ public class AdminController {
      * @param valid
      * @return
      */
+    @Log(moduleName = "权限维护", functionName = "权限维护-取消或者恢复权限")
     @RequiresPermissions("system:perm:cancelOrReturn")
     @RequestMapping("/cancelOrRestorePermInfo")
     @ResponseBody
-    public ResultObj cancelOrRestorePermInfo(@RequestBody List<Map<String,Object>> permIds, String valid){
-        try {
-            return adminService.cancelOrRestorePermInfo(permIds, valid);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
+    public ResultObj cancelOrRestorePermInfo(@RequestBody List<Map<String,Object>> permIds, String valid) throws Exception {
+        return adminService.cancelOrRestorePermInfo(permIds, valid);
     }
 
     /**
@@ -283,17 +234,7 @@ public class AdminController {
      */
     @RequestMapping("/queryMenuInfo")
     @ResponseBody
-    public ResultObj queryMenuInfo(){
-        try {
-            return adminService.queryMenuInfo();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @RequestMapping("/userCenter")
-    public String userCenter(Model model){
-        return "/user/userCenter";
+    public ResultObj queryMenuInfo() throws Exception {
+        return adminService.queryMenuInfo();
     }
 }

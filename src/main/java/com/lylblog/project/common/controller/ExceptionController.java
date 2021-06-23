@@ -31,7 +31,6 @@ public class ExceptionController {
     @ExceptionHandler(AuthorizationException.class)
     @ResponseBody
     public ResultObj handleAuthorizationException(HttpServletRequest request) {
-        System.out.println(request.getMethod());
         return ResultObj.fail(1,"无该权限的操作权，请联系博主！");
     }
 
@@ -47,7 +46,6 @@ public class ExceptionController {
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
         for (ConstraintViolation<?> constraintViolation : constraintViolations) {
             PathImpl pathImpl = (PathImpl) constraintViolation.getPropertyPath();
-            String paramName = pathImpl.getLeafNode().getName();
             String message = constraintViolation.getMessage();
             msg.append("[").append(message).append("]");
         }
@@ -81,6 +79,6 @@ public class ExceptionController {
     @ResponseBody
     public ResultObj handle1(Exception ex){
         logger.error(ex.getMessage(),ex);
-        return ResultObj.fail(ex.getMessage());
+        return ResultObj.fail("系统异常！");
     }
 }

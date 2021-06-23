@@ -52,24 +52,6 @@ public class OnlineSessionDAO extends RedisSessionDAO {
         super();
     }
 
-    /**
-     * 根据会话ID获取会话
-     *
-     * @param sessionId 会话ID
-     * @return ShiroSession
-     */
-//    @Override
-//    protected Session doReadSession(Serializable sessionId)
-//    {
-//        UserOnlineBean userOnline = onlineService.selectOnlineById(String.valueOf(sessionId));
-//        if (userOnline == null)
-//        {
-//            Session s = (Session) SerializeUtils.deserialize(redisManager.get(getByteKey(sessionId)));
-//            return s;
-//        }
-//        return onlineSessionFactory.createSession(userOnline);
-//    }
-
     private byte[] getByteKey(Serializable sessionId) {
         String preKey = this.keyPrefix + sessionId;
         return preKey.getBytes();

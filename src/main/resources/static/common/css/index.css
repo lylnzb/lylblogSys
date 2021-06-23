@@ -213,9 +213,9 @@ a {
 .widget_post_author {
     font-size: 13px;
 }
-.widget-cover.vip3 {
-    background-image: url(../../img/12809702.png);
-}
+/*.widget-cover.vip3 {*/
+/*    background-image: url(../../img/12809702.png);*/
+/*}*/
 a.widget_avatar {
     display: block;
     position: absolute;

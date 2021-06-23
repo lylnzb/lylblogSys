@@ -3,6 +3,7 @@ package com.lylblog.project.system.music.controller;
 import com.lylblog.common.util.IdUtil;
 import com.lylblog.common.util.file.FileDownloadUtil;
 import com.lylblog.common.util.file.FileUploadUtil;
+import com.lylblog.framework.Aspectj.annotation.Log;
 import com.lylblog.framework.config.LylBlogConfig;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.system.music.bean.WebMusicBean;
@@ -59,6 +60,7 @@ public class WebMusicController {
      * @param webMusicBean
      * @return
      */
+    @Log(moduleName = "音乐管理", functionName = "音乐管理-新增（编辑）")
     @RequestMapping("/addOrUpdateMusicInfo")
     @ResponseBody
     public ResultObj addOrUpdateMusicInfo(@RequestBody WebMusicBean webMusicBean, String type){
@@ -75,6 +77,7 @@ public class WebMusicController {
      * @param deleteIds
      * @return
      */
+    @Log(moduleName = "音乐管理", functionName = "音乐管理-删除")
     @PostMapping("/deleteMusicInfo")
     @ResponseBody
     public ResultObj deleteMusicInfo(@RequestBody List<String> deleteIds){
@@ -86,6 +89,7 @@ public class WebMusicController {
         return ResultObj.fail();
     }
 
+    @Log(moduleName = "音乐管理", functionName = "音乐管理-文件上传")
     @PostMapping("/uploadMusicFile")
     @ResponseBody
     public ResultObj uploadMusicFile(WebMusicBean webMusicBean, @RequestParam(value = "file",required = false) MultipartFile file) {
@@ -111,6 +115,7 @@ public class WebMusicController {
         }
     }
 
+    @Log(moduleName = "音乐管理", functionName = "音乐管理-文件下载")
     @RequestMapping(value = "/downloadMusicFile", method = RequestMethod.GET)
     public void downloadMusicFile(String musicId, String fileType, HttpServletResponse response){
         try{

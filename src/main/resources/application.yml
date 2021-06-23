@@ -21,9 +21,12 @@ lylblog:
 server:
   port: 80
 spring:
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
   redis:
     host: 127.0.0.1
-    post: 6379
+    port: 6379
     jedis:
       pool:
         max-active: 8
@@ -56,3 +59,19 @@ spring:
       max-request-size:  30MB
 mybatis:
   mapper-locations: classpath*:com/lylBlog/**/**/**/*.xml
+oauth:
+  qq:
+    #你的appid
+    client_id: 101955557
+    #你的appkey
+    client_secret: 7c611867eb8a3502ebc04f2969482beb
+    #你接收响应code码地址
+    redirect_uri: https://www.xinshouzhanzhang.com/qq/qqCallback
+    #腾讯获取code码地址
+    code_callback_uri: https://graph.qq.com/oauth2.0/authorize
+    #腾讯获取access_token地址
+    access_token_callback_uri: https://graph.qq.com/oauth2.0/token
+    #腾讯获取openid地址
+    openid_callback_uri: https://graph.qq.com/oauth2.0/me
+    #腾讯获取用户信息地址
+    user_info_callback_uri: https://graph.qq.com/user/get_user_info

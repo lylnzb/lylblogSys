@@ -1,10 +1,13 @@
 package com.lylblog.framework.shiro.realm;
 
+import com.lylblog.common.support.CommonConstant;
+import com.lylblog.common.util.MessageUtil;
 import com.lylblog.common.util.shiro.ShiroUtils;
 import com.lylblog.project.login.bean.UserLoginBean;
 import com.lylblog.project.login.service.LoginService;
 import com.lylblog.project.system.admin.bean.PermissionBean;
 import com.lylblog.project.system.admin.bean.RoleBean;
+import com.lylblog.project.system.log.service.LogService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -24,6 +27,9 @@ public class CustomRealm extends AuthorizingRealm {
 
     @Autowired
     private LoginService loginServer;
+
+    @Autowired
+    private LogService logService;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
@@ -51,15 +57,18 @@ public class CustomRealm extends AuthorizingRealm {
         //根据用户名从数据库获取密码
         UserLoginBean user = loginServer.findUserByEmail(userName);
         if (user == null) {
+            UserLoginBean userLoginBean = new UserLoginBean();
+            userLoginBean.setNickname(userName);
+            logService.insertLoginLogInfo(userLoginBean, CommonConstant.LOGIN_FAIL, MessageUtil.message("user.not.exists"));
             throw new AccountException("找不到该用户信息");
         }
         String md5Pwd = new SimpleHash("MD5", userPwd,
                 ByteSource.Util.bytes(user.getEmail() + ((user.getSalt() == null)?"":user.getSalt())), 2).toHex();
-        if (user.getPassword() == null) {
-            throw new AccountException("用户名不正确");
-        } else if (!md5Pwd.equals(user.getPassword())) {
+        if (!md5Pwd.equals(user.getPassword())) {
+            logService.insertLoginLogInfo(user, CommonConstant.LOGIN_FAIL, MessageUtil.message("user.password.not.match"));
             throw new AccountException("密码不正确");
         }
+        logService.insertLoginLogInfo(user, CommonConstant.LOGIN_SUCCESS, MessageUtil.message("user.login.success"));
         return new SimpleAuthenticationInfo(user, user.getPassword(),
                 ByteSource.Util.bytes(userName + user.getSalt()), getName());
     }
