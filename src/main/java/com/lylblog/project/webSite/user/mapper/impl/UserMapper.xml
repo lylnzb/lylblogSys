@@ -35,4 +35,95 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="isSetupPwd" resultType="int" parameterType="String">
         select count(1) from m_user where yhnm = #{yhnm} and password is not null
     </select>
+
+    <!--  我的评论列表  -->
+    <select id="queryMyCommentsByYhnm" parameterType="com.lylblog.project.webSite.user.bean.UserCommentBean" resultType="com.lylblog.project.webSite.user.bean.UserCommentBean">
+        select com.commentId,
+        (case when com.commentType = '1' then art.articleTitle else '留言反馈' end) as articleName,
+        art.wznm,
+        com.commentType,
+        DATE_FORMAT(com.submitTime, '%Y-%m-%d') as commentTime,
+        com.commentContent as comments,
+        m.nickname as commitName,
+        m1.nickname as replyName,
+        icon.iconUrl as icon from sys_comment com
+        left join sys_comment com1 on com.replyId = com1.commentId
+        left join sys_article art on com.wznm = art.wznm
+        left join m_user m on m.yhnm = com.submitPerson
+        left join m_user m1 on m1.yhnm = com1.submitPerson
+        left join m_user_icon icon on m.yhnm = icon.yhnm and isActivity = '1'
+        where com.submitPerson = #{yhnm}
+        order by com.submitTime desc
+        <if test="limit != null and limit != ''">
+            limit #{page}, #{limit}
+        </if>
+    </select>
+
+    <!-- 我的评论列表总数 -->
+    <select id="queryMyCommentsByYhnmCount" parameterType="com.lylblog.project.webSite.user.bean.UserCommentBean" resultType="int">
+        select count(1) from sys_comment com where com.submitPerson = #{yhnm}
+    </select>
+
+    <!-- 我的友链申请列表 -->
+    <select id="queryMyLinks" parameterType="String" resultType="com.lylblog.project.webSite.user.bean.UserLinkBean">
+        select id as linkId,
+        title as linkName,
+        url as linkUrl,
+        (select dict_label from sys_dict_data where dict_type = 'link_audit_status' and dict_value = link.auditStatus) as linkStatus,
+        auditReason as feedbackMsg
+        from sys_links link
+        where submitPerson = #{yhnm}
+        <if test="linkStatus != null and linkStatus != ''"> and auditStatus = #{linkStatus} </if>
+        order by link.submitTime desc
+    </select>
+
+    <!-- 根据编号查询友链信息 -->
+    <select id="queryMyLinksById" parameterType="String" resultType="com.lylblog.project.webSite.user.bean.UserLinkBean">
+        select id as linkId,
+        title as linkName,
+        url as linkUrl,
+        intro as intro
+        from sys_links link
+        where id = #{linkId}
+    </select>
+
+    <!-- 删除我的主体评论 -->
+    <delete id="delMyMainComments" parameterType="String">
+        delete from sys_comment where commentId = #{commentId}
+    </delete>
+
+    <!-- 删除我的子评论 -->
+    <delete id="delMyChildComments" parameterType="String">
+        delete from sys_comment where replyId = #{replyId}
+    </delete>
+
+    <!-- 更新个人资料 -->
+    <update id="updatePersonalData" parameterType="com.lylblog.project.webSite.user.bean.UserParamBean">
+        update m_user set
+        <if test="sex != null and sex != ''">sex = #{sex},</if>
+        <if test="nickName != null and nickName != ''">nickName = #{nickName},</if>
+        <if test="realName != null and realName != ''">realName = #{realName},</if>
+        <if test="area != null and area != ''">area = #{area},</if>
+        <if test="birthday != null and birthday != ''">birthday = #{birthday},</if>
+        <if test="workTime != null and workTime != ''">workTime = #{workTime},</if>
+        <if test="professional != null and professional != ''">professional = #{professional},</if>
+        <if test="company != null and company != ''">company = #{company},</if>
+        <if test="signature != null and signature != ''">signature = #{signature},</if>
+        yhnm = #{yhnm}
+        where yhnm = #{yhnm}
+    </update>
+
+    <!-- 查询个人资料详情 -->
+    <select id="queryPersonalData" resultType="com.lylblog.project.webSite.user.bean.UserParamBean" parameterType="String">
+        select sex,
+               nickname,
+               realName,
+               area,
+               DATE_FORMAT(birthday,'%Y-%m-%d') as birthday,
+			   DATE_FORMAT(workTime,'%Y-%m-%d') as workTime,
+               professional,
+               company,
+               signature
+        from m_user where yhnm = #{yhnm}
+    </select>
 </mapper>

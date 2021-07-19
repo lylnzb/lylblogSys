@@ -12,6 +12,32 @@ function change(){
 layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], function () {
     var table = layui.table;
 
+    //监听工具条
+    table.on('tool(tableEvent)', function(obj){
+        var event = obj.event;
+        var data = obj.data;
+        if (event === 'view') {
+            var height;
+            if(data.status == '1'){
+                height = '520px';
+            }else {
+                height = '640px';
+            }
+            top.layer.open({
+                type: 2,
+                title: '操作日志详细',
+                shadeClose: true,
+                shade: 0.5,
+                closeBtn:1,
+                area: ['780px', height],
+                content: basePath + 'admin/operLog/viewOperLog?logId=' + data.operId,
+                end: function () {//层消失回调
+
+                }
+            });
+        }
+    });
+
     tableIns = table.render({
         elem: '#table'
         ,url: basePath + 'admin/operLog/queryOperLogInfo'
@@ -41,8 +67,8 @@ layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], functi
                     }
                 }
              }
-            ,{field:'operTime', title:'操作时间', width:'13%', align:'center'}
-            ,{field:'right', title:'操作', width:'5.4%', align:'center', toolbar: '#barDemo'},
+            ,{field:'operTime', title:'操作时间', width:'12%', align:'center'}
+            ,{fixed:'right', title:'操作', width:'7%', align:'center', toolbar: '#barDemo'},
         ]]
         ,done:function(res,curr,count){
             $('th').css({ 'color': 'black', 'font-weight': 'bold'})//用于设置表头的样式，th即代表表头
@@ -52,7 +78,7 @@ layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], functi
             $(".layui-table-body tr").css("height","25px");
             $(".layui-form-checkbox").css("style","margin-top: 5px;");
         }
-        ,height: 'full-110'
+        ,height : "full-195"
         ,id:"idTest"
         ,page: {
             layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
@@ -65,11 +91,52 @@ layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], functi
 
 });
 
+function deleteOperLog() {
+    var checkedObjs = layui.table.checkStatus('idTest');//获取所有选中的节点
+    if(checkedObjs.data.length < 1){
+        top.layer.msg("请选择要删除的数据！");
+        return false;
+    }
+    var lock = false; //默认未锁定
+    top.layer.confirm("确定要批量删除数据吗？", {
+        btn: ["确定","取消"], //按钮
+        title: "提示",
+        icon: 3
+    }, function(index){
+        if(!lock) {
+            lock = true;
+            var deleteIds = [];
+            for(var i = 0;i < checkedObjs.data.length;i++){
+                deleteIds.push(checkedObjs.data[i].operId);
+            }
+            $.ajax({
+                url:basePath + "admin/operLog/deleteOperLogInfo",
+                type:"POST",
+                data:JSON.stringify(deleteIds),
+                dataType:"json",
+                contentType : 'application/json;charset=utf-8',
+                success:function(resultData){
+                    if(resultData.code==0){
+                        parent.layer.alert(resultData.msg);
+                        layReload();
+                    }else{
+                        parent.layer.alert(resultData.msg);
+                    }
+                }
+            });
+        }
+    }, function(){
+
+    });
+}
+
 //查询条件
 function layReload(){
     /*  */
     tableIns.reload({
-        where: {},
-        page: false
+        where: {
+            title : $("#title").val(),
+            status : $('#status').val()
+        }
     });
 }

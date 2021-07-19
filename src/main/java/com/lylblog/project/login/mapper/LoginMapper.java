@@ -50,4 +50,20 @@ public interface LoginMapper {
      * @return
      */
     List<PermissionBean> queryPerms(String email);
+
+    /**
+     * 修改密码
+     * @param newPwd
+     * @param salt
+     * @param email
+     * @return
+     */
+    int updatePwd(@Param("newPwd") String newPwd, @Param("salt") String salt, @Param("email") String email);
+
+    /**
+     * 验证邮箱是否已注册
+     * @param newEmail
+     * @return
+     */
+    int validationEmail(@Param("newEmail") String newEmail);
 }

@@ -180,3 +180,77 @@ a:hover, a:focus, a:active, a.active {
 .separated {
     margin-top: 44px;
 }
+
+.friendlink .site_tj li{
+    float: left;
+}
+
+.friendlink .site_tj li a{
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    margin-right: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.friendlink .site_tj li a:hover {
+    background: #0cc;
+    border: 1px solid #0cc;
+    color: white;
+}
+
+.ly_button {
+    width: 100px;
+    background: #000;
+    text-align: center;
+    border-radius: 3px;
+    line-height: 30px;
+}
+
+.btn-box .btn{
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    padding: 5px 15px 6px;
+    font-size: 9pt;
+    border-radius: 4px;
+    transition: color .2s linear,background-color .2s linear,border .2s linear;
+    color: #515a6e;
+    background-color: #fff;
+    border-color: #dcdee2;
+    margin-left: 5px;
+}
+
+.btn-box .ok {
+    color: #fff;
+    border: 1px solid #2d8cf0;
+    background-color: #2d8cf0;
+}
+
+#linkdialog .from-box .error {
+    position: absolute;
+    z-index: 10;
+    display: none;
+    margin-left: 120px;
+    margin-top: -25px;
+}
+
+.tj li {
+    height: 30px;
+    font-size: 14px;
+}

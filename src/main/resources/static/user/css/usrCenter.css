@@ -101,18 +101,22 @@ a {
 
 .widget_avatar_head{
     position: relative;
+    width: 100px;
     height: 100px;
     background-repeat: no-repeat;
     background-position: center center;
     margin-bottom: 10px;
     background-size: cover;
+    margin-top: 10px;
+    margin-left: 31%;
+    cursor: url('../../img/cur/link.cur'), pointer;
 }
 
 .head_portrait{
     width: 100px;
     height: 100px;
     border-radius: 100%;
-    margin-top: 10px;
+    /*margin-top: 10px;*/
 }
 
 .zw {
@@ -243,7 +247,7 @@ a {
 }
 
 .edit-icon {
-    /*display: none;*/
+    display: none;
     position: absolute;
     top: 16px;
     right: 16px;
@@ -265,19 +269,26 @@ a {
     border-radius: 12px;
 }
 
-.pc-ucenter-top .mod-center-verify-60 {
-    background: #F46036;
-    background-image: -webkit-gradient(linear, right top, left top, color-stop(1%, #F46036), to(#E53B36));
-    background-image: linear-gradient(
-            270deg
-            , #F46036 1%, #E53B36 100%);
-}
-
 .pc-ucenter-top .mod-ucenter-score {
     height: 92px;
     padding: 0 16px;
     margin-bottom: 10px;
     border-radius: 8px;
+    background: #1947FF;
+    background-image: -webkit-gradient(linear, left top, right top, from(#1947FF), to(#23A8FF));
+    background-image: linear-gradient(
+            90deg
+            , #1947FF 0%, #23A8FF 100%);
+}
+
+.pc-ucenter-top .mod-ucenter-score.mod-center-verify-80 {
+    background: #FFAC2F;
+    background-image: linear-gradient(
+            -57deg
+            , #FF8E18 0%, #F07A37 97%);
+}
+
+.pc-ucenter-top .mod-ucenter-score.mod-center-verify-60 {
     background: #F46036;
     background-image: -webkit-gradient(linear, right top, left top, color-stop(1%, #F46036), to(#E53B36));
     background-image: linear-gradient(
@@ -337,6 +348,10 @@ a {
     background-size: 100%;
     fLoat: left;
     opacity: 0.5;
+}
+
+.mod-ucenter-score-star li.starhight {
+    opacity: 1;
 }
 
 .mod-ucenter-score-desc p {
@@ -862,7 +877,7 @@ a {
     overflow: hidden;
 }
 
-.msg-list ul li .comment-text .comment-content .comment-content-detail:hover {
+.msg-list ul li .item-title a:hover {
     color: #fc5531;
 }
 
@@ -992,4 +1007,31 @@ a {
 
 .bind_list .item_cont .remove_text {
     color: #e33e33;
+}
+
+.avatar-hover {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.avatar-hover img {
+    width: 32px;
+    height: 32px;
+    margin-top: 32px;
+}
+
+.avatar-btns button {
+    height: 35px;
 }

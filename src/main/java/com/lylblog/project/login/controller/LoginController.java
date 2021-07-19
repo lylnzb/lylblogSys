@@ -95,12 +95,34 @@ public class LoginController {
             return ResultObj.fail(1,"用户名或密码不正确");
         }
         if (subject.isAuthenticated()) {
-
             return ResultObj.ok("登录成功");
         } else {
             token.clear();
             return ResultObj.fail(1,"登录失败");
         }
+    }
+
+    /**
+     * 验证邮箱是否已注册
+     * @param newEmail
+     * @return
+     */
+    @RequestMapping(value = "/user/validationEmail", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultObj validationEmail(String newEmail){
+        return loginService.validationEmail(newEmail);
+    }
+
+    @RequestMapping(value = "/user/validationPwd", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultObj validationPwd(String oldPwd){
+        return loginService.validationPwd(oldPwd);
+    }
+
+    @RequestMapping(value = "/user/updatePwd", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultObj updatePwd(String oldPwd, String newPwd){
+        return loginService.updatePwd(oldPwd, newPwd);
     }
 
     //QQ登陆对外接口，只需将该接口放置html的a标签href中即可

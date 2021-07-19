@@ -31,6 +31,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         )
     </insert>
 
+    <!-- 删除用户登录日志记录 -->
+    <delete id="deleteLoginLogInfo">
+        delete from m_user_login_log where logid in
+        <foreach collection="deleteIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
     <!-- 新增用户登录日志记录 -->
     <insert id="insertOperLogInfo" parameterType="com.lylblog.project.system.log.bean.OperLogBean">
         insert into sys_oper_log (
@@ -62,6 +70,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         )
     </insert>
 
+    <delete id="deleteOperLogInfo">
+        delete from sys_oper_log where operid in
+        <foreach collection="deleteIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
     <!-- 查询用户登录日志记录 -->
     <select id="queryLoginLogInfo" parameterType="com.lylblog.project.system.log.bean.LoginLogBean" resultType="com.lylblog.project.system.log.bean.LoginLogBean">
         select * from m_user_login_log order by loginTime desc
@@ -77,7 +92,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!-- 查询系统操作日志记录 -->
     <select id="queryOperLogInfo" parameterType="com.lylblog.project.system.log.bean.OperLogBean" resultType="com.lylblog.project.system.log.bean.OperLogBean">
-        select log.*, m.nickName from sys_oper_log log left join m_user m on m.yhnm = log.yhnm order by operTime desc
+        select log.*, m.nickName from sys_oper_log log left join m_user m on m.yhnm = log.yhnm where 1 = 1
+        <if test="title != null and title != ''">
+            and title like concat('%', #{title}, '%')
+        </if>
+        <if test="status != null and status != ''">
+            and status = #{status}
+        </if>
+        order by operTime desc
         <if test="limit != null and limit != ''">
             limit #{page}, #{limit}
         </if>
@@ -85,6 +107,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!-- 查询系统操作日志记录总数 -->
     <select id="queryOperLogInfoCount" parameterType="com.lylblog.project.system.log.bean.OperLogBean" resultType="int">
-        select count(1) from sys_oper_log log left join m_user m on m.yhnm = log.yhnm
+        select count(1) from sys_oper_log log left join m_user m on m.yhnm = log.yhnm where 1 = 1
+        <if test="title != null and title != ''">
+            and title like concat('%', #{title}, '%')
+        </if>
+        <if test="status != null and status != ''">
+            and status = #{status}
+        </if>
+    </select>
+
+    <!-- 查询操作日志详情信息 -->
+    <select id="queryOperLogDetailInfo" parameterType="String" resultType="com.lylblog.project.system.log.bean.LogDetailBean">
+        SELECT
+            CONCAT(log.title, ' / ', log.action) as operModule,
+            CONCAT(m.email, ' / ', m.nickname, ' / ', log.operIp) as loginInfo,
+            log.operUrl as requestUrl,
+            log.method as operMethod,
+            log.operParam as requestParam,
+            log.status,
+            log.errorMsg
+        FROM sys_oper_log log
+        left join m_user m on m.yhnm = log.yhnm where log.operId = #{logId}
     </select>
 </mapper>

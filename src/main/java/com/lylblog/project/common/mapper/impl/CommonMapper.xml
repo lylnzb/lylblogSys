@@ -54,6 +54,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime" column="updateTime" />
     </resultMap>
 
+    <resultMap type="com.lylblog.project.common.bean.AreaBean" id="AreaResult">
+        <result property="regionCode"   column="region_code"/>
+        <result property="regionName"   column="region_name"/>
+        <result property="regionLevel"   column="region_level"/>
+        <result property="parentRegionCode"   column="parent_region_code"/>
+    </resultMap>
+
     <!-- 根据编码类别查询字典 -->
     <select id="queryCodeValue" resultType="com.lylblog.project.system.dict.bean.DictDataBean" parameterType="String">
         SELECT * FROM (
@@ -136,4 +143,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select * from sys_blogset
     </select>
 
+    <!-- 查询行政区划名称 -->
+    <select id="queryAreas" resultType="String" parameterType="String">
+        select region_name as regionName from areas where region_code = #{code}
+    </select>
+
+    <!-- 获取所有省份 -->
+    <select id="getProvince" resultMap="AreaResult">
+        select * from areas where region_level = 1 order by region_code
+    </select>
+
+    <!-- 通过省份行政区划编码获取城市 -->
+    <select id="getCityByProvinceCode" resultMap="AreaResult" parameterType="String">
+        select * from areas where region_level = 2 and parent_region_code = #{code} order by region_code
+    </select>
+
+    <!-- 通过城市行政区划编码获取地区 -->
+    <select id="getAreaByCityCode" resultMap="AreaResult" parameterType="String">
+        select * from areas where region_level = 3 and parent_region_code = #{code} order by region_code
+    </select>
 </mapper>

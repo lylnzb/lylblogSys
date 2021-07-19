@@ -1,5 +1,6 @@
 package com.lylblog.project.common.mapper;
 
+import com.lylblog.project.common.bean.AreaBean;
 import com.lylblog.project.common.bean.LabelBean;
 import com.lylblog.project.common.bean.MenuBean;
 import com.lylblog.project.common.bean.MusicBean;
@@ -44,4 +45,31 @@ public interface CommonMapper {
      * @return
      */
     BlogSetBean getBlogConfiguration();
+
+    /**
+     * 查询行政区划名称
+     * @param code
+     * @return
+     */
+    String queryAreas(@Param("code") String code);
+
+    /**
+     * 获取所有省份
+     * @return
+     */
+    List<AreaBean> getProvince();
+
+    /**
+     * 通过省份行政区划编码获取城市
+     * @param code
+     * @return
+     */
+    List<AreaBean> getCityByProvinceCode(@Param("code") String code);
+
+    /**
+     * 通过城市行政区划编码获取地区
+     * @param code
+     * @return
+     */
+    List<AreaBean> getAreaByCityCode(@Param("code") String code);
 }

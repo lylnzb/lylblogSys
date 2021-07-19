@@ -5,6 +5,8 @@ import com.lylblog.common.util.DateUtil;
 import com.lylblog.common.util.EncryptionUtil;
 import com.lylblog.common.util.IdUtil;
 import com.lylblog.common.util.MessageUtil;
+import com.lylblog.common.util.shiro.ShiroUtils;
+import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.login.bean.UserLoginBean;
 import com.lylblog.project.login.mapper.LoginMapper;
 import com.lylblog.project.login.service.LoginService;
@@ -64,5 +66,62 @@ public class LoginServiceImpl implements LoginService {
             user.setPerms(loginMapper.queryPerms(email));
         }
         return user;
+    }
+
+    /**
+     * 修改密码
+     * @param oldPwd
+     * @param newPwd
+     * @return
+     */
+    public ResultObj updatePwd(String oldPwd, String newPwd){
+        UserLoginBean user = ShiroUtils.getUserInfo();
+
+        //旧密码加密
+        String oldMd5Pwd = new SimpleHash("MD5", oldPwd,
+                ByteSource.Util.bytes(user.getEmail() + ((user.getSalt() == null)?"":user.getSalt())), 2).toHex();
+
+        if(!oldMd5Pwd.equals(user.getPassword())){
+            return ResultObj.fail("旧密码与当前账号密码不一致！");
+        }
+
+        //新密码加密
+        Map<String, String> map = EncryptionUtil.MD5Pwd(user.getEmail(),newPwd);
+
+        int count = loginMapper.updatePwd(map.get("password"), map.get("salt"), user.getEmail());
+        if(count > 0){
+            return ResultObj.ok("密码修改成功，请重新登录！");
+        }
+        return ResultObj.fail("修改密码失败！");
+    }
+
+    /**
+     * 验证邮箱是否已注册
+     * @param newEmail
+     * @return
+     */
+    public ResultObj validationEmail(String newEmail){
+        int num = loginMapper.validationEmail(newEmail);
+        if(num > 0){
+            return ResultObj.fail("该邮箱已注册");
+        }
+        return ResultObj.ok();
+    }
+
+    /**
+     * 验证密码正确性
+     * @param oldPwd
+     * @return
+     */
+    public ResultObj validationPwd(String oldPwd){
+        UserLoginBean user = ShiroUtils.getUserInfo();
+        //旧密码加密
+        String oldMd5Pwd = new SimpleHash("MD5", oldPwd,
+                ByteSource.Util.bytes(user.getEmail() + ((user.getSalt() == null)?"":user.getSalt())), 2).toHex();
+
+        if(!oldMd5Pwd.equals(user.getPassword())){
+            return ResultObj.fail("旧密码与当前账号密码不一致！");
+        }
+        return ResultObj.ok();
     }
 }

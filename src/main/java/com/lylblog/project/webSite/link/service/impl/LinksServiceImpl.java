@@ -32,12 +32,6 @@ public class LinksServiceImpl implements LinksService {
     private LinksMapper linksMapper;
 
     @Resource
-    private LinkMapper linkMapper;
-
-    @Resource
-    private AdminMapper adminMapper;
-
-    @Resource
     private CommonMapper commonMapper;
 
     /**

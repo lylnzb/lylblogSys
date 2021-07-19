@@ -1,7 +1,13 @@
 package com.lylblog.project.webSite.user.service;
 
 import com.lylblog.project.common.bean.ResultObj;
+import com.lylblog.project.webSite.user.bean.UserCommentBean;
+import com.lylblog.project.webSite.user.bean.UserLinkBean;
 import com.lylblog.project.webSite.user.bean.UserLoginRecordBean;
+import com.lylblog.project.webSite.user.bean.UserParamBean;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @Author: lyl
@@ -27,4 +33,45 @@ public interface UserService {
      * @return
      */
     int isSetupPwd();
+
+    /**
+     * 我的评论列表
+     * @param comment
+     * @return
+     */
+    ResultObj queryMyCommentsByYhnm(UserCommentBean comment);
+
+    /**
+     * 我的友链申请列表
+     * @param linkStatus
+     * @return
+     */
+    ResultObj queryMyLinks(String linkStatus);
+
+    /**
+     * 根据编号查询友链信息
+     * @param linkId
+     * @return
+     */
+    ResultObj queryMyLinksById(String linkId);
+
+    /**
+     * 删除我的评论
+     * @param commentId
+     * @return
+     */
+    ResultObj delMyComment(String commentId);
+
+    /**
+     * 更新个人资料
+     * @param userParam
+     * @return
+     */
+    ResultObj updatePersonalData(UserParamBean userParam);
+
+    /**
+     * 查询个人资料详情
+     * @return
+     */
+    ResultObj queryPersonalData();
 }

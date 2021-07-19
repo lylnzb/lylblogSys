@@ -65,11 +65,49 @@ layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], functi
 
 });
 
+function deleteLoginLog(){
+    var checkedObjs = layui.table.checkStatus('idTest');//获取所有选中的节点
+    if(checkedObjs.data.length < 1){
+        top.layer.msg("请选择要删除的数据！");
+        return false;
+    }
+    var lock = false; //默认未锁定
+    top.layer.confirm("确定要批量删除数据吗？", {
+        btn: ["确定","取消"], //按钮
+        title: "提示",
+        icon: 3
+    }, function(index){
+        if(!lock) {
+            lock = true;
+            var deleteIds = [];
+            for(var i = 0;i < checkedObjs.data.length;i++){
+                deleteIds.push(checkedObjs.data[i].logId);
+            }
+            $.ajax({
+                url:basePath + "admin/loginLog/deleteLoginLogInfo",
+                type:"POST",
+                data:JSON.stringify(deleteIds),
+                dataType:"json",
+                contentType : 'application/json;charset=utf-8',
+                success:function(resultData){
+                    if(resultData.code==0){
+                        parent.layer.alert(resultData.msg);
+                        layReload();
+                    }else{
+                        parent.layer.alert(resultData.msg);
+                    }
+                }
+            });
+        }
+    }, function(){
+
+    });
+}
+
 //查询条件
 function layReload(){
     /*  */
     tableIns.reload({
-        where: {},
-        page: false
+        where: {}
     });
 }

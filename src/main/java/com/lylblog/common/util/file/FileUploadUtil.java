@@ -2,12 +2,15 @@ package com.lylblog.common.util.file;
 
 import com.lylblog.framework.config.LylBlogConfig;
 import com.lylblog.common.exception.file.FileNameLengthLimitExceededException;
+import com.mysql.cj.util.Base64Decoder;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
@@ -65,6 +68,33 @@ public class FileUploadUtil {
         {
             throw new IOException(e);
         }
+    }
+
+    /**
+     * 通过base64解码进行文件上传
+     * @param base64
+     * @return
+     */
+    public static final String uploadByBase64(String base64, String file) throws IOException {
+        FileOutputStream output = null;
+        String fileName = null;
+        try {
+            Base64Decoder decoder=new Base64Decoder();
+
+            base64 = base64.substring(base64.indexOf("base64,") + 7);
+            byte [] b=decoder.decode(base64.getBytes(), 0, base64.getBytes().length);
+
+            fileName = encodingFilename(file, FileUploadUtil.IMAGE_JPG_EXTENSION);
+            output = new FileOutputStream(getDefaultBaseDir() + fileName);
+            output.write(b);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            if(output != null){
+                output.close();
+            }
+        }
+        return fileName;
     }
 
     /**

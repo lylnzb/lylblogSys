@@ -33,6 +33,8 @@ public class ResultObj {
     //结果集合
     @JsonInclude(Include.NON_NULL)
     private List<?> data;
+    //对象
+    private Object obj;
 
     public Integer getCode() {
         return code;
@@ -58,12 +60,23 @@ public class ResultObj {
     public void setData(List<?> data) {
         this.data = data;
     }
+    public Object getObj() {
+        return obj;
+    }
+    public void setObj(Object obj) {
+        this.obj = obj;
+    }
 
     public ResultObj(){
     }
     private ResultObj(Integer code , String msg){
         this.code = code;
         this.msg = msg;
+    }
+    private ResultObj(Integer code , String msg , Object obj) {
+        this.code = code;
+        this.msg = msg;
+        this.obj = obj;
     }
     private ResultObj(Integer code , String msg, Integer count,List<?> data){
         this.code = code;
@@ -89,11 +102,11 @@ public class ResultObj {
             List<Object> list = (ArrayList<Object>) obj;
             return ok(list.size(), list);
         }else {
-            List<Object> list = new ArrayList<Object>();
-            list.add(obj);
-            return ok(1, list);
+            return new ResultObj(CODE_OK, MSG_OK, obj);
         }
     }
+
+
 
     public static ResultObj ok(int count, List<?> data) {
         return new ResultObj(CODE_OK, MSG_OK, count, data);

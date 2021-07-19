@@ -73,6 +73,11 @@
                 </div>
                 <!--右边-->
                 <div class="five wide column">
+                    <div class="ui rail">
+                        <div class="ui sticky">
+                            <!-- Any arbitrary content !-->
+                        </div>
+                    </div>
                     <div class="ui segments">
                         <div class="ui secondary segment">
                             <div class="ui two column grid">
@@ -98,7 +103,7 @@
                         </div>
                     </div>
                     <!--分类-->
-                    <div class="ui segments">
+                    <div id="context" class="ui segments">
                         <div class="ui secondary segment">
                             <div class="ui two column grid">
                                 <div class="column">
@@ -230,3 +235,11 @@
 <script type="text/javascript" src="/common/player.js"></script>
 <script src="/common/coco-message.js"></script>
 <script src="/blog/js/blogList.js"></script>
+<script>
+    $('.ui.sticky')
+        .sticky({
+            context: '#context',
+            pushing: true
+        })
+    ;
+</script>

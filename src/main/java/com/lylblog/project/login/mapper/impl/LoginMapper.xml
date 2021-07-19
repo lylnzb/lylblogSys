@@ -76,4 +76,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE
 			u.email = #{email}
 	</select>
+
+	<!-- 修改密码 -->
+	<update id="updatePwd" parameterType="String">
+		update m_user set password = #{newPwd}, salt = #{salt} where email = #{email}
+	</update>
+
+	<!-- 验证邮箱是否已注册 -->
+	<select id="validationEmail" parameterType="String" resultType="int">
+		select count(1) from m_user where email = #{newEmail} and valid = '1'
+	</select>
 </mapper>

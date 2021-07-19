@@ -58,4 +58,20 @@ public class LinksController {
         }
         return null;
     }
+
+    /**
+     * 网站友情链接申请
+     * @return
+     */
+    @RequestMapping(value="/updateLinks")
+    @ResponseBody
+    public ResultObj updaLinks(@Validated @RequestBody LinkBean linkBean){
+        try {
+            linkBean.setType("2");//网站类型
+            return linkService.addOrUpdaLinkInfo(linkBean,"update");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

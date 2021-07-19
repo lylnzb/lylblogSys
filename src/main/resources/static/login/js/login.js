@@ -1,22 +1,8 @@
-var isLogin=$("#isAuthenticated").val();
-var is = GetQueryString("isLogin");
-$(function(){
-    /**
-     * 如果用户未登录，则弹出登录框
-     */
-    if(is == 'no' && isLogin == 'false'){
-        $(".bg").show();
-        $(".login").show();
-        $(".userLogin").show();
-        $(".userRegister").hide();
-        $(".userRetrievePas").hide();
-    }
-});
-
 /**
  * 点击事件
  */
 $(document).on('click','.isLogin',function(){
+    var isLogin=$("#isAuthenticated").val();
     if(isLogin == 'false'){
         $(".bg").show();
         $(".login").show();
@@ -170,23 +156,7 @@ $("#login").click(function(){
 });
 
 $(".loginOut").click(function(){
-    $.ajax({
-        url: basePath + 'loginOut',
-        type: "POST",
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (resultData) {
-            if(resultData.code == 0){
-                location.reload();
-            }else{
-                layui.layer.msg(resultData.msg);
-            }
-
-        },
-        error: function () {
-
-        }
-    });
+    loginOut();
 });
 
 $(document).on('click','#adminlogin',function(){

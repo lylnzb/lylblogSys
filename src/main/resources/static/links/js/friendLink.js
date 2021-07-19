@@ -17,7 +17,7 @@ $("#likeForm .required").change(function(){
     if(value != null && value != ''){
         var falg = 0;
         if($(this).attr("id") == 'webSiteUrl'){
-            falg = vailEmail(this,value);
+            falg = vailUrl(this,value);
         }
         if(falg == 0){
             $(this).parents(".field").siblings(".error").hide();
@@ -38,49 +38,89 @@ $(".ok").click(function(){
             traverse += 1;
         }else{
             if($(this).attr("id") == 'webSiteUrl'){
-                traverse += vailEmail(this,value);
+                traverse += vailUrl(this,value);
             }
         }
     });
     if(traverse == 0){
-        var lock = false; //默认未锁定
-        top.layer.confirm("是否确定要提交申请？", {
-            btn: ["是","否"], //按钮
-            title: "提示",
-            icon: 3
-        }, function(index){
-            if(!lock) {
-                lock = true;
-                var paramData = {
-                    title : $("#webSiteName").val(),
-                    url : $("#webSiteUrl").val(),
-                    intro : $("#editor").text()
-                }
-                $.ajax({
-                    url: basePath + "links/applyLinks",
-                    type:"POST",
-                    data:JSON.stringify(paramData),
-                    dataType:"json",
-                    contentType : 'application/json;charset=utf-8',
-                    success:function(resultData){
-                        if(resultData.code==0){
-                            cocoMessage.success("您的申请已提交，请等待审核通过。", 3000); //duration为0时显示关闭按钮
-                            $(".bg").hide();
-                            $("#friendLinkApply").hide();
-                        }else{
-                            cocoMessage.error(resultData.msg, 3000); //duration为0时显示关闭按钮
-                        }
-                        layer.close(index);
+        var linkId = $("#linkId").val();
+        if(linkId == null || linkId == '') {
+            var lock = false; //默认未锁定
+            top.layer.confirm("是否确定要提交申请？", {
+                btn: ["是","否"], //按钮
+                title: "提示",
+                icon: 3
+            }, function(index){
+                if(!lock) {
+                    lock = true;
+                    var paramData = {
+                        title : $("#webSiteName").val(),
+                        url : $("#webSiteUrl").val(),
+                        intro : $("#editor").text()
                     }
-                });
-            }
-        }, function(){
+                    $.ajax({
+                        url: basePath + "links/applyLinks",
+                        type:"POST",
+                        data:JSON.stringify(paramData),
+                        dataType:"json",
+                        contentType : 'application/json;charset=utf-8',
+                        success:function(resultData){
+                            if(resultData.code==0){
+                                cocoMessage.success("您的申请已提交，请等待审核通过。", 3000); //duration为0时显示关闭按钮
+                                $(".bg").hide();
+                                $("#friendLinkApply").hide();
+                            }else{
+                                cocoMessage.error(resultData.msg, 3000); //duration为0时显示关闭按钮
+                            }
+                            layer.close(index);
+                        }
+                    });
+                }
+            }, function(){
 
-        });
+            });
+        }else {
+            var lock = false; //默认未锁定
+            top.layer.confirm("是否确定要更新友链信息？", {
+                btn: ["是","否"], //按钮
+                title: "提示",
+                icon: 3
+            }, function(index){
+                if(!lock) {
+                    lock = true;
+                    var paramData = {
+                        id : linkId,
+                        title : $("#webSiteName").val(),
+                        url : $("#webSiteUrl").val(),
+                        intro : $("#editor").text()
+                    }
+                    $.ajax({
+                        url: basePath + "links/updateLinks",
+                        type:"POST",
+                        data:JSON.stringify(paramData),
+                        dataType:"json",
+                        contentType : 'application/json;charset=utf-8',
+                        success:function(resultData){
+                            if(resultData.code==0){
+                                cocoMessage.success("您的友链已经更新，请等待审核通过。", 3000); //duration为0时显示关闭按钮
+                                $(".bg").hide();
+                                $("#friendLinkApply").hide();
+                                queryMyLinks("");
+                            }else{
+                                cocoMessage.error(resultData.msg, 3000); //duration为0时显示关闭按钮
+                            }
+                            layer.close(index);
+                        }
+                    });
+                }
+            }, function(){
+
+            });
+        }
     }
 });
 
-function vailEmail(elem,value){
+function vailUrl(elem,value){
     var strRegex = "^((https|http|ftp|rtsp|mms)?://)"
         + "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" //ftp的user@
         + "(([0-9]{1,3}\.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184

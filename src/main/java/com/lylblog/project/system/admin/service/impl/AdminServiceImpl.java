@@ -10,6 +10,7 @@ import com.lylblog.project.login.bean.*;
 import com.lylblog.project.system.admin.mapper.AdminMapper;
 import com.lylblog.project.system.admin.service.AdminService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -110,6 +111,7 @@ public class AdminServiceImpl implements AdminService {
      * @param userIcon
      * @return
      */
+    @Transactional
     public ResultObj uploadIcon(UserIconBean userIcon){
         int falg = adminMapper.isUserIcon(userIcon.getYhnm());
         if(falg > 0){

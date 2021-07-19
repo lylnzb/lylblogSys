@@ -13,22 +13,39 @@
     <style>
         .layui-table-cell .layui-form-checkbox[lay-skin="primary"]{top: 48%;transform: translateY(-48%);}
         .layui-table-fixed.layui-table-fixed-r .layui-table-body tr{background-color: white}
-        .table-striped {height: 95%;}
     </style>
 </head>
 <body style="margin: 0px 10px 0px;padding: 0;background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1000px;overflow: auto">
 <div class="container-div">
     <div class="row">
+        <div class="col-sm-12 select-info">
+            <form id="frm" class="layui-form" style="margin-top: 10px;">
+                <div class="layui-input-inline" style="font-weight: bold">模块：</div>
+                <div class="layui-input-inline">
+                    <input type="text" name="title" id="title" style="height:30px;width:150px;" autocomplete="off" class="layui-input">
+                </div>&nbsp;&nbsp;
+                <div class="layui-input-inline" style="font-weight: bold">状态：</div>
+                <div class="layui-input-inline">
+                    <select name="status" id='status' placeholder="请选择">
+                        <option value="">请选择</option>
+                        <option value="1">成功</option>
+                        <option value="2">失败</option>
+                    </select>
+                </div>&nbsp;&nbsp;
+                <a class="btn btn-primary btn-rounded btn-sm" id="search" onclick="layReload()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                <a class="btn btn-success btn-rounded btn-sm" id="reset"><i class="fa fa-cog"></i>&nbsp;重置</a>
+            </form>
+        </div>
         <div class="col-sm-12 select-table table-striped">
             <div class="btn-group hidden-xs" role="group" style="margin-top: 10px">
-                <a class="btn btn-danger" id="deleteRoles" onclick="deleteRole()"><i class="fa fa-trash-o"></i> 批量删除</a>
+                <a class="btn btn-danger" id="deleteOperLog" onclick="deleteOperLog()"><i class="fa fa-trash-o"></i> 批量删除</a>
             </div>
             <table id="table" class="layui-hide" lay-filter="tableEvent" style="margin: 0 auto"></table>
         </div>
     </div>
 </div>
 <div id="barDemo" style="display:none;">
-    <a class="btn btn-success btn-xs" lay-event="edit"><i class="fa fa-edit"></i> 详情</a>
+    <a class="btn btn-success btn-xs" lay-event="view"><i class="fa fa-edit"></i> 详情</a>
 </div>
 <script type="text/javascript" src="/admin/js/jquery/jQuery-2.2.0.min.js"></script>
 <script type="text/javascript" src="/admin/js/bstable/js/bootstrap.min.js"></script>

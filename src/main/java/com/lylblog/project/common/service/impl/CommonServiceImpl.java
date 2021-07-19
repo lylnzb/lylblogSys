@@ -1,10 +1,7 @@
 package com.lylblog.project.common.service.impl;
 
 import com.lylblog.common.util.EntityToArrayUtil;
-import com.lylblog.project.common.bean.LabelBean;
-import com.lylblog.project.common.bean.MenuBean;
-import com.lylblog.project.common.bean.MusicBean;
-import com.lylblog.project.common.bean.ResultObj;
+import com.lylblog.project.common.bean.*;
 import com.lylblog.project.common.mapper.CommonMapper;
 import com.lylblog.project.common.service.CommonService;
 import com.lylblog.project.system.blogSet.bean.BlogSetBean;
@@ -85,5 +82,34 @@ public class CommonServiceImpl implements CommonService {
      */
     public BlogSetBean getBlogConfiguration(){
         return commonMapper.getBlogConfiguration();
+    }
+
+    /**
+     * 获取所有省份
+     * @return
+     */
+    public ResultObj getProvince(){
+        List<AreaBean> provinceList = commonMapper.getProvince();
+        return ResultObj.ok(provinceList.size(), provinceList);
+    }
+
+    /**
+     * 通过省份行政区划编码获取城市
+     * @param code
+     * @return
+     */
+    public ResultObj getCityByProvinceCode(String code){
+        List<AreaBean> cityList = commonMapper.getCityByProvinceCode(code);
+        return ResultObj.ok(cityList.size(), cityList);
+    }
+
+    /**
+     * 通过城市行政区划编码获取地区
+     * @param code
+     * @return
+     */
+    public ResultObj getAreaByCityCode(String code){
+        List<AreaBean> areaList = commonMapper.getAreaByCityCode(code);
+        return ResultObj.ok(areaList.size(), areaList);
     }
 }

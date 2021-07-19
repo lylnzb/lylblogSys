@@ -431,3 +431,22 @@ function getLabelInfo(){
         }
     });
 }
+
+function loginOut(){
+    $.ajax({
+        url: basePath + 'loginOut',
+        type: "POST",
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success: function (resultData) {
+            if(resultData.code == 0){
+                location.reload();
+            }else{
+                layui.layer.msg(resultData.msg);
+            }
+        },
+        error: function () {
+
+        }
+    });
+}

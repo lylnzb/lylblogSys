@@ -14,11 +14,18 @@
     <link rel="stylesheet" href="../common/css/index.css">
     <link rel="stylesheet" href="../common/layui/css/layui.css">
     <link rel="stylesheet" href="../common/css/mplayer.css">
+    <link href="../include/css/cropper.min.css" rel="stylesheet">
+    <link href="../include/css/sitelogo.css" rel="stylesheet">
     <link rel="stylesheet" href="/login/css/login.css">
     <link rel="stylesheet" href="/user/css/msgList.css">
     <link rel="stylesheet" href="/user/css/usrCenter.css">
+    <link rel="stylesheet" href="../include/css/friendLinkApply.css">
+    <link rel="stylesheet" href="../include/css/uploadIcon.css">
 </head>
 <body>
+
+<!-- 遮盖层 -->
+<div id="bg" class="bg"></div>
 
 <!--音乐-->
 <div id="music">
@@ -28,6 +35,16 @@
 <!--导航-->
 <div id="header">
     <div th:replace="include/header :: myHeader"></div>
+</div>
+
+<!--友链更新-->
+<div id="friendLinkApply" shiro:authenticated="">
+    <div th:replace="include/friendLinkApply :: myFriendLinkApply"></div>
+</div>
+
+<!--头像上传-->
+<div id="upload" shiro:authenticated="">
+    <div th:replace="include/uploadIcon :: uploadIcon"></div>
 </div>
 
 <!--中间-->
@@ -41,12 +58,15 @@
                         <section class="sidebar_widget widget_post_author">
                             <section class="author_info">
                                 <div class="widget_avatar_head">
-                                    <img class="head_portrait" src="../img/Head.jpg" alt="回忆里依稀">
+                                    <img class="head_portrait" th:src="@{${icon}}" alt="回忆里依稀">
+                                    <div class="avatar-hover">
+                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAFC0lEQVR4Xu2ba8ilUxTHf39J5H6NQiQSii80bjENNeEDmtw1Jb64jhqF1AwJZcow+EJqmnJLzIeZmkJoxMQXComkjCL3cckk+WvpOdM++33OOc9znufMeY9zVp0v77P22mv991prr7X3fsWUk6bcfmYAzDxgyhGYhcCUO8DOTYK2d6kCuKR/qvC1wTPSELB9CHAVcA5wGLBrRaX/Br4B3gKelfRdxXG12UYGgO3TgQeAvWtr1T3gN+BuSe82lFM6fCQA2D4eeBrYvSWltwPXS/q0JXk7xLQOgO3dwm2Bo1pW9kvgakl/tSl3FAAsA67JlHwKeB4Id65CETZXADdkzOskPVpFQFWeVgGwfXLh+qncjZJWVFUo5bN9H3BB8jcXofDhMPLKxrQGgO2I9+eAI5KJvgcuk1R15bt0tB2e8CJwcPJhK3ClpMgLjakyAIWBC4ATC4X2zGaPLS++pXSrpHeaaGn7TCB3+4+BfGv8AwjA49uWqgANBMD2PsB1wJKaWX29pPubGN8Za/se4OIassI7XgKekfRrv3F9AShi+mHggBqTB+u3wOWSYlUak+3wtheAQ2sK+wm4Q1LPnNETANvh7qtrVG8d3QL9myV9UFPZvuy2TwEer+mFITOqymWStlROgrYjka0D9soG/Qi8CnwBlK1uTPbRqErXorQ+qceihJccA5wPHJjp/TtwraRIoF1U6gG2HwHOzng3AKskhbB5S7Zj0ZYDF2VKbpZ0+0AAbEcmX5sxRjJ5ct5aXaKY7RuL5J1+XSopdokdNMcDbN8W7pLwfF64T7j3xJDt6DwjjI9NlJ5TSZYBEHX8ccmguyRF3E8c2Y588GCi+GeSoj3v6wGvA/smPIsl/dCG9cWqnAvE74SkwosC5hPgzfhJasXbbB8EbEp03yZpUU8AbIdHvJ8Zu6ANhWwvBCK8Dh8A5tdR+Ul6oynoBeD59neqpOgp/qOuECiOrN7LJj6tyRFVIfOWLK9UsS3id00Lc/e1Z2cAkCfVKsZ3eBq1v1UWdKQAFG4fpXROUVOsB+KQI+jootbP9+74FqXsUOEwVgCK+IuGJI35n4EVvTpE22cA9wL7J4hFTlgyTB4aNwDnAQ9lSz+wPS5AeCwbd6ek1+rETvCOG4BohRcnSm+QtLKKEbaDLw2HTZKiJa5F4wbgZeDIROM41a3UIRadX5wqd+grSZfWsn4eeMBmYI9E6UWStlUxwnYUYlGQdehPSXlzNlDUuD1g6gGY+hCY+iQ49dtg9OPTWwgVhUh0gNNZCnf2qJITpoHbV8Iw2c1QUo5ObzuceMI4DkTiSc54zwNSfx/Dkdj8AqBO8LfBO9ZSuA0DmsqoDUCRtN7O7t8WDnu/39SApuOL9wXpadJ2SWelcsvuBV7JHjlUbmObKtz2+JK2equkSwYBkNfwQz9xaduguvJsx/Hahcm4OQcrZR5QVsPH9XKExsSQ7XD1uN5Pac7RWhkAZTX8L8DKSQGhMD6O1fZLrC89XO11PR5XV6tKlnsjEDmi1/uAcXpI531AxHjq9h2dlkuKq7cu6vdCJMrXpeO0qMW510paUyavHwBRRd30PwAh3jo80euKrcorsQiHeP056FKzxQVrRVTE/Ooyt++7DZZNndXwnXeCbT2EbsVaIB5ndd4JVr5mH+gBvbSr+s8PbVk3SM6wt8hDAzBIoUn5PgNgUlZqVHrOPGBUyE6K3JkHTMpKjUrPfwGerYtf3LH0qAAAAABJRU5ErkJggg==">
+                                    </div>
                                 </div>
                                 <h3 style="margin-top: 13px;font-weight: bold"><label th:text="${blogSet.bloggersetBloggerName}">回忆里依稀</label></h3>
                                 <div style="margin-top: -8px;color: #808080;"><label>男</label>&nbsp;|&nbsp;<label>注册用户</label></div>
                                 <div class="zw" style="background-color: aquamarine;color: white;" onclick="switchTab(this, 'myProfileTab')">个人资料</div>
-                                <div class="zw" style="margin-top: -3px;">退出登录</div>
+                                <div class="zw" style="margin-top: -3px;" onclick="loginOut();">退出登录</div>
                             </section>
                         </section>
                     </div>
@@ -87,17 +107,37 @@
                     <div class="ui top segment" data-id="myAccountTab" style="width: 820px;margin-top: 0;">
                         <div class="pageWrapper">
                             <div class="pc-ucenter-top">
-                                <div class="mod-ucenter-score mod-center-verify-60">
+                                <div class="mod-ucenter-score" th:classappend="${num == 45?'mod-center-verify-60':(num == 80?'mod-center-verify-80':'')}">
                                     <div class="mod-ucenter-score-main">
-                                        <p class="mod-ucenter-score-number">45</p>
+                                        <p class="mod-ucenter-score-number" th:text="${num}">45</p>
                                         <div class="mod-ucenter-score-desc">
-                                            <ul class="mod-ucenter-score-star clearfix">
+                                            <ul class="mod-ucenter-score-star clearfix" th:if="${num == 45}">
+                                                <li class="starhight"></li>
+                                                <li></li>
+                                                <li></li>
+                                                <li></li>
+                                            </ul>
+                                            <ul class="mod-ucenter-score-star clearfix" th:if="${num == 80}">
+                                                <li class="starhight"></li>
+                                                <li class="starhight"></li>
+                                                <li class="starhight"></li>
+                                                <li></li>
+                                            </ul>
+                                            <ul class="mod-ucenter-score-star clearfix" th:if="${num == 100}">
+                                                <li class="starhight"></li>
+                                                <li class="starhight"></li>
+                                                <li class="starhight"></li>
+                                                <li class="starhight"></li>
+                                            </ul>
+                                            <ul class="mod-ucenter-score-star clearfix" th:if="${num == 0}">
                                                 <li></li>
                                                 <li></li>
                                                 <li></li>
                                                 <li></li>
                                             </ul>
-                                            <p>帐号存在重大风险，请立即完善信息</p>
+                                            <p th:if="${num == 45 || num == 0}">帐号存在重大风险，请立即完善信息</p>
+                                            <p th:if="${num == 80}">帐号安全状况较好，请继续完善</p>
+                                            <p th:if="${num == 100}">帐号安全状况已完善</p>
                                         </div>
                                     </div>
                                     <div id="score-btn" class="mod-ucenter-score-btn" onclick="switchTab(this, 'accountSetTab', 2)">
@@ -319,7 +359,7 @@
                                     <li class="accout-body-item">
                                         <span>三方账号</span>
                                         <p>
-                                            <span class="accout-error">微信</span>
+                                            <span class="accout-error"></span>
                                             <a onclick="switchTab(this, 'accountAssociatedTab', 2)">立即设置</a>
                                         </p>
                                     </li>
@@ -346,80 +386,8 @@
                         </div>
                         <div class="ui tab active" data-tab="tab-name4">
                             <div class="msg-list">
-                                <ul>
-                                    <li class="msg-item cursor-active msg-unread">
-                                        <div class="msg-item-logo">
-                                            <img src="http://qzapp.qlogo.cn/qzapp/101649470/1DA44DE09370979B9B696593D27CB0CE/30" class="user-logo">
-                                        </div>
-                                        <div class="msg-item-content">
-                                            <span class="msg-title item-title">
-                                                <a>Java注释：单行、多行和文档注释</a>
-                                            </span>
-                                            <a class="btn-rush csdnc-trash" style="float: right;"><i class="trash alternate icon"></i></a>
-                                            <div class="msg-text clearfix comment-text">
-                                                <div class="comment-content">
-                                                    <p class="comment-content-title">您评论了该文章</p>
-                                                    <p class="bb-span-wrap comment-content-detail">你好吗？谢谢你。。。。</p>
-                                                </div>
-                                                <em class="fr">2021-06-11</em>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="msg-item cursor-active msg-unread">
-                                        <div class="msg-item-logo">
-                                            <img src="http://qzapp.qlogo.cn/qzapp/101649470/1DA44DE09370979B9B696593D27CB0CE/30" class="user-logo">
-                                        </div>
-                                        <div class="msg-item-content">
-                                            <span class="msg-title item-title">
-                                                <a>Java注释：单行、多行和文档注释</a>
-                                            </span>
-                                            <a class="btn-rush csdnc-trash" style="float: right;"><i class="trash alternate icon"></i></a>
-                                            <div class="msg-text clearfix comment-text">
-                                                <div class="comment-content">
-                                                    <p class="comment-content-title">您回复了<a>回忆里依稀</a>的评论</p>
-                                                    <p class="bb-span-wrap comment-content-detail">你好吗？谢谢你。。。。</p>
-                                                </div>
-                                                <em class="fr">2021-06-11</em>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="msg-item cursor-active msg-unread">
-                                        <div class="msg-item-logo">
-                                            <img src="http://qzapp.qlogo.cn/qzapp/101649470/1DA44DE09370979B9B696593D27CB0CE/30" class="user-logo">
-                                        </div>
-                                        <div class="msg-item-content">
-                                            <span class="msg-title item-title">
-                                                <a>留言反馈</a>
-                                            </span>
-                                            <a class="btn-rush csdnc-trash" style="float: right;"><i class="trash alternate icon"></i></a>
-                                            <div class="msg-text clearfix comment-text">
-                                                <div class="comment-content">
-                                                    <p class="comment-content-title">您留言了该网站</p>
-                                                    <p class="bb-span-wrap comment-content-detail">你好吗？谢谢你。。。。</p>
-                                                </div>
-                                                <em class="fr">2021-06-11</em>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="msg-item cursor-active msg-unread">
-                                        <div class="msg-item-logo">
-                                            <img src="http://qzapp.qlogo.cn/qzapp/101649470/1DA44DE09370979B9B696593D27CB0CE/30" class="user-logo">
-                                        </div>
-                                        <div class="msg-item-content">
-                                            <span class="msg-title item-title">
-                                                <a>留言反馈</a>
-                                            </span>
-                                            <a class="btn-rush csdnc-trash" style="float: right;"><i class="trash alternate icon"></i></a>
-                                            <div class="msg-text clearfix comment-text">
-                                                <div class="comment-content">
-                                                    <p class="comment-content-title">您回复了<a>回忆里依稀</a>的评论</p>
-                                                    <p class="bb-span-wrap comment-content-detail">你好吗？谢谢你。。。。</p>
-                                                </div>
-                                                <em class="fr">2021-06-11</em>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
+                                <ul class="commentList"></ul>
+                                <div id="commentPage" style="text-align: right;"></div>
                             </div>
                         </div>
                     </div>
@@ -531,14 +499,14 @@
                         <div class="ui tab active" data-tab="tab-name3">
                             <div class="main">
                                 <div class="ui basic buttons" style="float: right;margin-bottom: 10px;">
-                                    <button class="ui button active">全部</button>
-                                    <button class="ui button">待审核</button>
-                                    <button class="ui button">未通过</button>
-                                    <button class="ui button">已通过</button>
+                                    <button data-id="" class="ui button active">全部</button>
+                                    <button data-id="0" class="ui button">待审核</button>
+                                    <button data-id="2" class="ui button">未通过</button>
+                                    <button data-id="1" class="ui button">已通过</button>
                                 </div>
                                 <hr color="#f4f4f4" style="margin: 1% auto;">
                                 <div id="noLinks" style="text-align: center; font-weight: bolder;">您还没有申请过友链</div>
-                                <table class="ui celled striped selectable teal five column table" style="text-align: center;display: none">
+                                <table id="linkTable" class="ui celled striped selectable teal five column table" style="text-align: center;display: none">
                                     <thead>
                                     <tr>
                                         <th>友链名称</th>
@@ -548,7 +516,7 @@
                                         <th>操作</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="linkList">
                                     <tr>
                                         <td style="width: 250px">张三</td>
                                         <td>男</td>
@@ -567,43 +535,139 @@
                             <a class="item active" data-tab="dataTab">个人资料</a>
                         </div>
                         <div class="ui tab active" data-tab="dataTab">
-                            <div class="main dataList">
+                            <div class="main dataList" >
                                 <ul class="data-ul">
                                     <li class="data-li">
                                         <div class="content-show-l">用户昵称</div>
-                                        <div class="content-show-r">回忆里依稀</div>
+                                        <div class="content-show-r nickname"></div>
                                     </li>
                                     <li class="data-li">
                                         <div class="content-show-l">真实姓名</div>
-                                        <div class="content-show-r no-data">未填写</div>
+                                        <div class="content-show-r realName"></div>
                                     </li>
                                     <li class="data-li">
                                         <div class="content-show-l">
                                             <span>性</span>
                                             <span>别</span>
                                         </div>
-                                        <div class="content-show-r">
-                                            <i class="mars icon" style="color: blue;font-weight: bold"></i>
-                                        </div>
+                                        <div class="content-show-r sex"></div>
                                     </li>
                                     <li class="data-li">
                                         <div class="content-show-l">所在地区</div>
-                                        <div class="content-show-r no-data">未选择</div>
+                                        <div class="content-show-r area"></div>
                                     </li>
                                     <li class="data-li">
                                         <div class="content-show-l">出生日期</div>
-                                        <div class="content-show-r no-data">未设置</div>
+                                        <div class="content-show-r birthday"></div>
                                     </li>
                                     <li class="data-li">
                                         <div class="content-show-l">开始工作</div>
-                                        <div class="content-show-r no-data">未选择</div>
+                                        <div class="content-show-r workTime"></div>
+                                    </li>
+                                    <li class="data-li">
+                                        <div class="content-show-l">
+                                            <span>职</span>
+                                            <span>业</span>
+                                        </div>
+                                        <div class="content-show-r professional"></div>
+                                    </li>
+                                    <li class="data-li">
+                                        <div class="content-show-l">
+                                            <span>公</span>
+                                            <span>司</span>
+                                        </div>
+                                        <div class="content-show-r company"></div>
                                     </li>
                                     <li class="data-li">
                                         <div class="content-show-l">个性签名</div>
-                                        <div class="content-show-r no-data">未填写</div>
+                                        <div class="content-show-r signature"></div>
                                     </li>
                                 </ul>
                                 <div class="edit-icon"><i class="edit icon"></i>编辑</div>
+                            </div>
+                            <div class="main editUser" style="display: none">
+                                <form class="ui form layui-form" id="editUserForm" autocomplete="off">
+                                    <div class="inline fields">
+                                        <label style="width: 120px;font-weight: bold;text-align: right"><font color='red'>*</font>&nbsp;用户昵称：</label>
+                                        <div class="field">
+                                            <input type="text" class="nickname required" id="nickname" placeholder="请输入昵称" style="width: 615px;">
+                                        </div>
+                                    </div>
+                                    <div class="inline fields">
+                                        <label style="width: 120px;font-weight: bold;text-align: right">真实姓名：</label>
+                                        <div class="field">
+                                            <input type="text" class="realName required" id="realName" placeholder="请输入姓名" style="width: 615px;">
+                                        </div>
+                                    </div>
+                                    <div class="inline fields">
+                                        <label style="width: 120px;font-weight: bold;text-align: right">性别：</label>
+                                        <div class="field">
+                                            <input name="sex" value="0" type="radio" style="display: none" title="男" checked="">
+                                            <input name="sex" value="1" type="radio" style="display: none" title="女">
+                                        </div>
+                                    </div>
+                                    <div class="inline fields">
+                                        <label style="width: 120px;font-weight: bold;text-align: right">所属地区：</label>
+                                        <div class="field">
+                                            <div class="ui selection dropdown" style="width: 95px">
+                                                <input type="hidden" name="gender" id="provinceInput">
+                                                <i class="dropdown icon"></i>
+                                                <div class="default text" id="provinceText">选择省份</div>
+                                                <div class="menu" id="province"></div>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="ui selection dropdown" style="width: 95px">
+                                                <input type="hidden" name="gender" id="cityInput">
+                                                <i class="dropdown icon"></i>
+                                                <div class="default text" id="cityText">选择市州</div>
+                                                <div class="menu" id="city"></div>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="ui selection dropdown" style="width: 95px">
+                                                <input type="hidden" name="gender" id="areaInput">
+                                                <i class="dropdown icon"></i>
+                                                <div class="default text" id="areaText">选择区县</div>
+                                                <div class="menu" id="area"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="inline fields">
+                                        <label style="width: 120px;font-weight: bold;text-align: right">出生日期：</label>
+                                        <div class="field">
+                                            <input type="text" class="birthday required" id="birthday" placeholder="请输入出生日期" style="width: 615px;">
+                                        </div>
+                                    </div>
+                                    <div class="inline fields">
+                                        <label style="width: 120px;font-weight: bold;text-align: right">所属职业：</label>
+                                        <div class="field">
+                                            <input type="text" class="professional required" id="professional" placeholder="请填写 例如：java开发工程师" style="width: 615px;">
+                                        </div>
+                                    </div>
+                                    <div class="inline fields">
+                                        <label style="width: 120px;font-weight: bold;text-align: right">所在公司：</label>
+                                        <div class="field">
+                                            <input type="text" class="company required" id="company" placeholder="请输入当前所在公司" style="width: 615px;">
+                                        </div>
+                                    </div>
+                                    <div class="inline fields">
+                                        <label style="width: 120px;font-weight: bold;text-align: right">开始工作时间：</label>
+                                        <div class="field">
+                                            <input type="text" class="workTime required" id="workTime" placeholder="请输入开始工作时间" style="width: 615px;">
+                                        </div>
+                                    </div>
+                                    <div class="inline fields" style="align-items: end;">
+                                        <label style="width: 120px;font-weight: bold;text-align: right">个性签名：</label>
+                                        <div class="field">
+                                            <textarea class="signature required" id="signature" placeholder="你很懒，还没有添加个性签名" style="width: 615px;"></textarea>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div style="text-align: center">
+                                    <button class="ui primary button" id="save">保存</button>
+                                    <button class="ui button" id="cancel">取消</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -613,21 +677,24 @@
                             <span onclick="switchTab(this, 'accountSetTab', 2)">账号设置</span><em>/</em><span>修改密码</span>
                         </div>
                         <div class="acc_pass_con">
-                            <div class="ui small form" style="margin-left: 15px;">
+                            <div class="ui small form" id="updatePwdForm" style="margin-left: 15px;">
                                 <div class="inline field">
                                     <label>输入旧密码：</label>
-                                    <input id="oldPwd" placeholder="请输入旧密码" type="password" style="width: 280px;">
+                                    <input id="oldPwd" class="oldPwd required" placeholder="请输入旧密码" type="password" style="width: 280px;">
+                                    <span class="help-block m-b-none error" style="margin-left: 5px;color: red;display: none"></span>
                                 </div>
                                 <div class="inline field">
                                     <label>输入新密码：</label>
-                                    <input id="newPwd" placeholder="8~15位字母和数字组合" type="password" style="width: 280px;">
+                                    <input id="newPwd" class="newPwd required" placeholder="8~20位字母和数字组合" type="password" style="width: 280px;">
+                                    <span class="help-block m-b-none error" style="margin-left: 5px;color: red;display: none"></span>
                                 </div>
                                 <div class="inline field">
                                     <label>确认新密码：</label>
-                                    <input id="confirmNewPwd" placeholder="请确认新密码" type="password" style="width: 280px;">
+                                    <input id="confirmNewPwd" class="confirmNewPwd required" placeholder="请确认新密码" type="password" style="width: 280px;">
+                                    <span class="help-block m-b-none error" style="margin-left: 5px;color: red;display: none"></span>
                                 </div>
                                 <div class="confirmBtn" style="margin-left: 117px;">
-                                    <button class="ui primary button">
+                                    <button class="ui primary button" id="updatePwd">
                                         确认
                                     </button>
                                 </div>
@@ -641,17 +708,24 @@
                             <span onclick="switchTab(this, 'accountSetTab', 2)">账号设置</span><em>/</em><span>绑定邮箱</span>
                         </div>
                         <div class="acc_pass_con">
-                            <div class="ui small form" style="margin-left: 15px;">
+                            <div class="ui small form" id="bindingEmailForm" style="margin-left: 15px;">
                                 <div class="inline field">
                                     <label>输入新邮箱：</label>
-                                    <input id="newEmail" placeholder="请输入新邮箱" type="text" style="width: 280px;">
+                                    <input id="newEmail" class="newEmail required" placeholder="请输入新邮箱" type="text" style="width: 280px;">
+                                    <span class="help-block m-b-none error" style="margin-left: 5px;color: red;display: none"></span>
                                 </div>
                                 <div class="inline field">
                                     <label>填写验证码：</label>
-                                    <input id="verificationCode" placeholder="请输入验证码" type="text" style="width: 280px;">
+                                    <div class="ui right labeled input">
+                                        <input type="text" id="emailCode" class="emailCode required" placeholder="请输入邮箱验证码" style="width: 171px">
+                                        <div class="ui basic label" id="getCode" style="color: darkgray;">
+                                            获取验证码
+                                        </div>
+                                    </div>
+                                    <span class="help-block m-b-none error" style="margin-left: 5px;color: red;"></span>
                                 </div>
                                 <div class="confirmBtn" style="margin-left: 117px;">
-                                    <button class="ui primary button">
+                                    <button class="ui primary button" id="bindBtn">
                                         绑定
                                     </button>
                                 </div>
@@ -718,18 +792,25 @@
 </div>
 </body>
 <script src="../common/jquery/jquery-1.11.1.js"></script>
-<script src="../common/jquery/jquery.textSearch-1.0.js"></script>
+<script src="../common/coco-message.js"></script>
 <script src="../common/util.js"></script>
-<script src="../common/semantic-ui/dist/semantic.min.js"></script>
 <script src='../common/snowflakes.min.js'></script>
-<script src="../login/js/login.js"></script>
 <script src="../common/layui/layui.all.js"></script>
-<script src="/common/mPlayer/mplayer.js"></script>
-<script src="/common/mPlayer/mplayer-list.js"></script>
-<script src="/common/mPlayer/mplayer-functions.js"></script>
+<script src="../common/mPlayer/mplayer.js"></script>
+<script src="../common/mPlayer/mplayer-list.js"></script>
+<script src="../common/mPlayer/mplayer-functions.js"></script>
 <script src="http://cdn.bootcss.com/jquery-nstslider/1.0.13/jquery.nstSlider.min.js"></script>
-<script type="text/javascript" src="/common/player.js"></script>
-<script src="/common/coco-message.js"></script>
+<script src="../common/player.js"></script>
+<script src="../admin/js/bstable/js/bootstrap.min.js"></script>
+<script src="../include/js/sitelogo.js"></script>
+<script src="../common/semantic-ui/dist/semantic.min.js"></script>
+<script src="../include/js/cropper.js"></script>
+<script src="../include/js/html2canvas.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../include/js/uploadIcon.js"></script>
+<script src="../login/js/login.js"></script>
+<script src="../links/js/friendLink.js"></script>
+<script src="/user/js/userCenter.js"></script>
+
 <script>
     var config = {};
 
@@ -741,13 +822,15 @@
         //登录记录查看
         userLoginRecordByPage(1, 10);
 
-        $('.pointing.menu .item').tab();
+        //初始化省份下拉框
+        getProvince();
 
         $(".ui.button").click(function(){
             $(".ui.button.active").removeClass("blue");
             $(".ui.button.active").removeClass("active");
             $(this).addClass("blue");
             $(this).addClass("active");
+            queryMyLinks($(this).attr("data-id"));
         });
 
         //开启HASH
@@ -777,6 +860,14 @@
         if(tabName == 'accountAssociatedTab'){
             cocoMessage.warning("该功能正在开发中。。。", 3000); //loading可以选择是否展示关闭按钮
             return;
+        }else if(tabName == 'myCommentsTab') {
+            queryMyCommentList(1, 5);
+        }else if(tabName == 'myLinksTab') {
+            queryMyLinks("");
+        }else if(tabName == 'myProfileTab') {
+            $(".editUser").hide();
+            $(".dataList").show();
+            queryPersonalData();
         }
 
         if(number == 1){

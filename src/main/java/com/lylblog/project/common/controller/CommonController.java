@@ -1,5 +1,6 @@
 package com.lylblog.project.common.controller;
 
+import com.lylblog.project.common.bean.AreaBean;
 import com.lylblog.project.common.bean.LabelBean;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.common.service.CommonService;
@@ -82,5 +83,37 @@ public class CommonController {
     @RequestMapping(value="/headerRefresh",method=RequestMethod.GET)
     public String headerRefresh(Model model) {
         return "include/header :: myHeader";
+    }
+
+    /**
+     * 获取所有省份
+     * @return
+     */
+    @RequestMapping(value="/getProvince")
+    @ResponseBody
+    public ResultObj getProvince(){
+        return commonService.getProvince();
+    }
+
+    /**
+     * 通过省份行政区划编码获取城市
+     * @param code
+     * @return
+     */
+    @RequestMapping(value="/getCityByProvinceCode")
+    @ResponseBody
+    public ResultObj getCityByProvinceCode(String code){
+        return commonService.getCityByProvinceCode(code);
+    }
+
+    /**
+     * 通过城市行政区划编码获取地区
+     * @param code
+     * @return
+     */
+    @RequestMapping(value="/getAreaByCityCode")
+    @ResponseBody
+    public ResultObj getAreaByCityCode(String code){
+        return commonService.getAreaByCityCode(code);
     }
 }

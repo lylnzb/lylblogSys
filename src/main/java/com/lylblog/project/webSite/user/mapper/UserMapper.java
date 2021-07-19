@@ -1,6 +1,9 @@
 package com.lylblog.project.webSite.user.mapper;
 
+import com.lylblog.project.webSite.user.bean.UserCommentBean;
+import com.lylblog.project.webSite.user.bean.UserLinkBean;
 import com.lylblog.project.webSite.user.bean.UserLoginRecordBean;
+import com.lylblog.project.webSite.user.bean.UserParamBean;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -40,4 +43,61 @@ public interface UserMapper {
      * @return
      */
     int isSetupPwd(@Param("yhnm") String yhnm);
+
+    /**
+     * 我的评论列表
+     * @param comment
+     * @return
+     */
+    List<UserCommentBean> queryMyCommentsByYhnm(UserCommentBean comment);
+
+    /**
+     * 我的评论列表总数
+     * @param comment
+     * @return
+     */
+    int queryMyCommentsByYhnmCount(UserCommentBean comment);
+
+    /**
+     * 我的友链申请列表
+     * @param linkStatus
+     * @param yhnm
+     * @return
+     */
+    List<UserLinkBean> queryMyLinks(@Param("linkStatus") String linkStatus, @Param("yhnm") String yhnm);
+
+    /**
+     * 根据编号查询友链信息
+     * @param linkId
+     * @return
+     */
+    UserLinkBean queryMyLinksById(@Param("linkId") String linkId);
+
+    /**
+     * 删除我的主体评论
+     * @param commentId
+     * @return
+     */
+    int delMyMainComments(@Param("commentId") String commentId);
+
+    /**
+     * 删除我的子评论
+     * @param replyId
+     * @return
+     */
+    int delMyChildComments(@Param("replyId") String replyId);
+
+    /**
+     * 更新个人资料
+     * @param userParam
+     * @return
+     */
+    int updatePersonalData(UserParamBean userParam);
+
+    /**
+     * 查询个人资料详情
+     * @param yhnm
+     * @return
+     */
+    UserParamBean queryPersonalData(@Param("yhnm") String yhnm);
 }

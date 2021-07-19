@@ -81,7 +81,6 @@ layui.use(['form','layer','jquery','table', 'laydate', 'element'], function(){
                     var index = parent.layer.getFrameIndex(window.name);
                     parent.layer.close(index);//关闭当前页
                 }else{
-                    //parent.layer.alert(resultData.msg);
                     parent.layer.msg(resultData.msg, { icon: 2, time: 2000, shift: 6 });
                 }
             }

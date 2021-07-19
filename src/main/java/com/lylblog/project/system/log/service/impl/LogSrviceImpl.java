@@ -6,6 +6,7 @@ import com.lylblog.common.util.http.ServletUtil;
 import com.lylblog.common.util.shiro.ShiroUtils;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.login.bean.UserLoginBean;
+import com.lylblog.project.system.log.bean.LogDetailBean;
 import com.lylblog.project.system.log.bean.LoginLogBean;
 import com.lylblog.project.system.log.bean.OperLogBean;
 import com.lylblog.project.system.log.mapper.LogMapper;
@@ -62,12 +63,38 @@ public class LogSrviceImpl implements LogService {
     }
 
     /**
+     * 删除用户登录日志记录
+     * @param deleteIds
+     * @return
+     */
+    public ResultObj deleteLoginLogInfo(List<String> deleteIds) {
+        int count = logMapper.deleteLoginLogInfo(deleteIds);
+        if(count > 0){
+            return ResultObj.ok("删除成功");
+        }
+        return ResultObj.ok("删除失败");
+    }
+
+    /**
      * 新增系统操作日志记录
      * @param operLog
      * @return
      */
     public void insertOperLogInfo(OperLogBean operLog){
         logMapper.insertOperLogInfo(operLog);
+    }
+
+    /**
+     * 删除系统操作日志记录
+     * @param deleteIds
+     * @return
+     */
+    public ResultObj deleteOperLogInfo(List<String> deleteIds) {
+        int count = logMapper.deleteOperLogInfo(deleteIds);
+        if(count > 0){
+            return ResultObj.ok("删除成功");
+        }
+        return ResultObj.ok("删除失败");
     }
 
     /**
@@ -95,6 +122,19 @@ public class LogSrviceImpl implements LogService {
             List<OperLogBean> loginLogList = logMapper.queryOperLogInfo(operLog);
             return ResultObj.ok(count, loginLogList);
         }
-        return  ResultObj.fail("查询不到操作日志记录");
+        return ResultObj.fail("查询不到操作日志记录");
+    }
+
+    /**
+     * 查询操作日志详情信息
+     * @param logId
+     * @return
+     */
+    public ResultObj queryOperLogDetailInfo(String logId) {
+        LogDetailBean logDetail = logMapper.queryOperLogDetailInfo(logId);
+        if(logDetail != null) {
+            return ResultObj.ok(logDetail);
+        }
+        return ResultObj.fail("未查询到数据！");
     }
 }
