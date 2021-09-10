@@ -21,6 +21,8 @@ layui.use(['form', 'layedit', 'laydate', 'upload'],function() {
 
 $('select.dropdown').dropdown();
 
+$('.ui.radio.checkbox').checkbox();
+
 //头像框鼠标移入事件
 $(".widget_avatar_head").mouseover(function() {
    $(".avatar-hover").show();
@@ -73,11 +75,44 @@ $('#city').on('click', function (){
     getAreaByCityCode(code);
 });
 
+$("body").delegate("#nameClick","click", function(){
+    $(".collection-font").hide();
+    $(".collectionNameInput").show();
+});
+
+$("body").delegate("#desClick","click", function(){
+    $(".collection-desc").hide();
+    $(".collectionDesInput").show();
+});
+
+$("body").delegate("#nameClose","click", function(){
+    $(".collection-font").show();
+    $(".collectionNameInput").hide();
+});
+
+$("body").delegate("#desClose","click", function(){
+    $(".collection-desc").show();
+    $(".collectionDesInput").hide();
+});
+
+$("body").delegate(".menu-item","click", function(){
+    if($(this).hasClass("menu-item-new")){
+        $(".bg").show();
+        $(".addCollection").show();
+        $("#collection-box1").hide();
+        $("#collection-box2").show();
+        $("#collection-box3").hide();
+    }else {
+        $(this).siblings().removeClass("active-menu-item");
+        $(this).addClass("active-menu-item");
+    }
+})
+
 $("#save").on('click', function() {
     var area = $("#province").children(".active").attr("data-value") + ',' + $("#city").children(".active").attr("data-value") + ',' + $("#area").children(".active").attr("data-value");
     var paramDate = new Object();
     paramDate.sex = $("input[name='sex']:checked").val();                 //  性别
-    paramDate.nickname = $("#nickname").val();                            //  用户昵称
+    paramDate.nickName = $("#nickname").val();                            //  用户昵称
     paramDate.realName = $("#realName").val();                            //  真实姓名
     paramDate.area = area;                                                //  所在地区
     paramDate.birthday = $("#birthday").val();                            //  出生日期
@@ -655,6 +690,9 @@ function queryPersonalData(){
     });
 }
 
+/**
+ * 查询省级下拉框
+ */
 function getProvince() {
     $.ajax({
         url:basePath + "common/getProvince",
@@ -674,6 +712,10 @@ function getProvince() {
     });
 }
 
+/**
+ * 查询市级下拉框
+ * @param code
+ */
 function getCityByProvinceCode(code) {
     $.ajax({
         url:basePath + "common/getCityByProvinceCode?code=" + code,
@@ -695,6 +737,10 @@ function getCityByProvinceCode(code) {
     });
 }
 
+/**
+ * 查询区县下拉框
+ * @param code
+ */
 function getAreaByCityCode(code) {
     $.ajax({
         url:basePath + "common/getAreaByCityCode?code=" + code,
@@ -713,4 +759,336 @@ function getAreaByCityCode(code) {
             }
         }
     });
+}
+
+/**
+ * 初始化收藏文件夹
+ */
+function initCollection(){
+    $.ajax({
+        url: basePath + "myCollection/queryFavoriteInfo",
+        type:"POST",
+        success:function(resultData){
+            if(resultData.code==0){
+                var htmlStr = "";
+                htmlStr += '<li class="menu-item menu-item-new">';
+                htmlStr += '    <div class="imgBox"></div>';
+                htmlStr += '    <span>新建收藏夹</span> ';
+                htmlStr += '</li>';
+                for(var i = 0;i < resultData.data.length;i++) {
+                    var active = "";
+                    if(i == 0) {
+                        active = ' active-menu-item';
+                        showCollectionData(resultData.data[i].id);
+                    }
+                    htmlStr += '<li class="menu-item' + active + '" onclick="showCollectionData(' + resultData.data[i].id + ')">';
+                    htmlStr += '    <div class="menu-item-title">';
+                    htmlStr += '        <div class="imgBox"></div>';
+                    htmlStr += '        <span class="favoriteSpan">' + resultData.data[i].favoriteName + '</span>';
+                    htmlStr += '    </div>';
+                    htmlStr += '    <div class="menu-item-like">';
+                    htmlStr += '        <span class="comment">';
+                    htmlStr += '            <div class="imgBox"></div>';
+                    htmlStr += '            <span>' + resultData.data[i].count + '</span>';
+                    htmlStr += '        </span>';
+                    htmlStr += '    </div>';
+                    htmlStr += '</li>';
+                }
+                $(".ultab-sub-menu").html(htmlStr);
+            }else{
+                cocoMessage.error('系统异常', 3000); //loading可以选择是否展示关闭按钮
+            }
+        }
+    });
+}
+
+/**
+ * 展示指定收藏夹下的收藏数据
+ * @param collectId
+ */
+function showCollectionData(favoriteId) {
+    $.ajax({
+        url: basePath + "myCollection/showCollectionData?id=" + favoriteId,
+        type:"POST",
+        success:function(resultData){
+            if(resultData.code==0){
+                var htmlStr = "";
+                htmlStr += '<div class="titleHead">';
+                htmlStr += '    <div class="nameBox">';
+                htmlStr += '        <span class="collection-dir collection-font collection-detail">';
+                htmlStr += '            <span class="collection-folder-name">';
+                htmlStr += '                ' + resultData.obj.favoriteName + '';
+                htmlStr += '                <i class="edit icon" id="nameClick"></i>';
+                htmlStr += '            </span>';
+                htmlStr += '        </span>';
+                htmlStr += '        <div class="input-edit-box collectionNameInput" style="display: none">';
+                htmlStr += '            <div class="collection-edit-name el-input">';
+                htmlStr += '                <input type="text" id="favorite" class="el-input__inner favoriteName" maxlength="20" placeholder="请输入内容" value="" />';
+                htmlStr += '            </div>';
+                htmlStr += '            <img id="nameClose" src="../img/closeIcon.svg">';
+                htmlStr += '            <img id="nameSave" onclick="updateFavorite(' + resultData.obj.id + ', 1)" src="../img/saveIcon.svg">';
+                htmlStr += '        </div>';
+                htmlStr += '        <span class="collection-info collection-detail collection-detail-d">';
+                htmlStr += '            <p class="collection-text collection-detail collection-desc">';
+                htmlStr += '                ' + ((null == resultData.obj.describe || '' == resultData.obj.describe)?'请添加收藏夹描述':resultData.obj.describe) + '';
+                htmlStr += '                <i class="edit icon" id="desClick"></i>';
+                htmlStr += '            </p>';
+                htmlStr += '            <div class="input-edit-box collectionDesInput" style="margin-top: 10px;display: none">';
+                htmlStr += '                <div class="collection-edit-name el-input">';
+                htmlStr += '                    <input type="text" maxlength="200" id="describe" placeholder="请输入内容" class="el-input__inner describe">';
+                htmlStr += '                </div>';
+                htmlStr += '                <img id="desClose" src="../img/closeIcon.svg">';
+                htmlStr += '                <img id="desSave" onclick="updateFavorite(' + resultData.obj.id + ', 2)" src="../img/saveIcon.svg">';
+                htmlStr += '            </div>';
+                htmlStr += '            <p class="collection-edit-box">';
+                htmlStr += '                <em class="cursor" onclick="deleteFavoriteInfo(' + resultData.obj.id + ', ' + resultData.obj.collLists.length + ')" style="cursor:url(\'../../img/cur/link.cur\'), pointer">删除收藏夹</em>';
+                htmlStr += '            </p>';
+                htmlStr += '        </span>';
+                htmlStr += '    </div> ';
+                htmlStr += '</div> ';
+                htmlStr += '<div class="tab-content-box">';
+                if(0 == resultData.obj.collLists.length) {
+                    htmlStr += '<div id="noCollection" style="text-align: center; font-weight: bolder;margin-top: 10px;">您还没有添加收藏</div>';
+                }else {
+                    htmlStr += '    <ul class="collection-sublist">';
+                    for(var i = 0;i < resultData.obj.collLists.length;i++) {
+                        htmlStr += '        <li>';
+                        htmlStr += '            <div class="collection-con">';
+                        htmlStr += '                <span>';
+                        htmlStr += '                    <span class="collection-dir">';
+                        htmlStr += '                        <em class="conllection-type">BLOG</em>';
+                        htmlStr += '                        <span class="subtitle"><a href="' + basePath + 'blog/detail/' + resultData.obj.collLists[i].wznm + '" target="_blank">' + resultData.obj.collLists[i].articleTitle + '</a></span>';
+                        htmlStr += '                    </span>';
+                        htmlStr += '                </span>';
+                        htmlStr += '            </div>';
+                        htmlStr += '            <div class="collect-detail-right">';
+                        htmlStr += '                <a class="collect-cancel" onclick="deleteCollectionData(' + resultData.obj.collLists[i].collectionId + ', ' + resultData.obj.id + ')"><i class="star outline icon" style="font-size: 18px;color: #F46036;font-weight: bold;"></i></a>';
+                        htmlStr += '            </div>';
+                        htmlStr += '        </li>';
+                    }
+                    htmlStr += '    </ul>';
+                }
+                htmlStr += '</div>';
+                $(".list-wrap").html(htmlStr);
+            }else{
+                cocoMessage.error('系统异常', 3000); //loading可以选择是否展示关闭按钮
+            }
+        }
+    });
+}
+
+/**
+ * 删除文件夹信息
+ * @param favoriteId
+ */
+function deleteFavoriteInfo(favoriteId, count) {
+    if(count > 0){
+        getFavorite();
+        $(".bg").show();
+        $(".addCollection").show();
+        $("#collection-box1").hide();
+        $("#collection-box2").hide();
+        $("#collection-box3").show();
+
+        $("#favoriteId").val(favoriteId);
+    }else {
+        confirm({
+            title: '提示',
+            content: '是否要删除该文件夹？'
+        }).then(() => {
+            $.ajax({
+                url:basePath + "myCollection/deleteFavoriteInfo?id=" + favoriteId,
+                type:"POST",
+                success:function(resultData){
+                    if(resultData.code==0){
+                        cocoMessage.success(resultData.msg, 3000); //duration为0时显示关闭按钮
+                        initCollection();
+                    }else{
+                        cocoMessage.error(resultData.msg, 3000); //duration为0时显示关闭按钮
+                    }
+                }
+            });
+        }).catch(() => {
+
+        });
+    }
+}
+
+/**
+ * 获取文件夹下拉框列表
+ */
+function getFavorite() {
+    $.ajax({
+        url:basePath + "myCollection/queryFavoriteInfo",
+        type:"POST",
+        success:function(resultData){
+            if(resultData.code==0){
+                var htmlStr = '';
+                var data = resultData.data;
+                for(var i = 0; i < data.length; i++){
+                    htmlStr += '<div class="item" data-value="' +data[i].id  + '">' + data[i].favoriteName + '</div>';
+                }
+                $("#favoriteText").addClass("default");
+                $("#favoriteText").text("移动到其他收藏夹");
+                $("#favoriteList").html(htmlStr);
+            }else{
+                cocoMessage.error(resultData.msg, 3000); //duration为0时显示关闭按钮
+            }
+        }
+    });
+}
+
+/**
+ * 修改收藏夹信息
+ * @param favoriteId 收藏夹ID
+ * @param type 类型（1.修改名称  2.修改收藏夹描述）
+ */
+function updateFavorite(favoriteId, type) {
+    var favoriteName = $("#favorite").val();
+    var describe = $("#describe").val();
+    var obj = new Object();
+    obj.id = favoriteId;
+    obj.favoriteName = favoriteName;
+    obj.describe = describe;
+    if(type == '1' && (favoriteName == null || favoriteName == '')){
+        cocoMessage.error("收藏夹名称不能为空!", 3000);
+        return false;
+    }
+    if(type == '2' && (describe == null || describe == '')){
+        cocoMessage.error("收藏夹描述不能为空!", 3000);
+        return false;
+    }
+    $.ajax({
+        url:basePath + "myCollection/updateFavoriteInfo?type=" + type,
+        type:"POST",
+        data:JSON.stringify(obj),
+        dataType:"json",
+        contentType : 'application/json;charset=utf-8',
+        success:function(resultData){
+            if(resultData.code==0){
+                cocoMessage.success(resultData.msg, 3000); //duration为0时显示关闭按钮
+                showCollectionData(favoriteId);
+                if(type == '1') {
+                    $(".ultab-sub-menu").find(".active-menu-item").find(".favoriteSpan").text(favoriteName);
+                }
+            }else{
+                cocoMessage.error(resultData.msg, 3000); //duration为0时显示关闭按钮
+            }
+        }
+    });
+}
+
+/**
+ * 取消收藏
+ * @param collectId
+ * @param favoriteId
+ */
+function deleteCollectionData(collectId, favoriteId) {
+    confirm({
+        title: '提示',
+        content: '是否要取消收藏？'
+    }).then(() => {
+        $.ajax({
+            url:basePath + "myCollection/deleteCollectionDataByCollectId?collectionId=" + collectId,
+            type:"POST",
+            success:function(resultData){
+                if(resultData.code==0){
+                    cocoMessage.success(resultData.msg, 3000); //duration为0时显示关闭按钮
+                    showCollectionData(favoriteId);
+                }else{
+                    cocoMessage.error(resultData.msg, 3000); //duration为0时显示关闭按钮
+                }
+            }
+        });
+    }).catch(() => {
+
+    });
+}
+
+/**
+ * 查询个人动态信息
+ */
+function queryDynamicInfo(pageNum, limit) {
+    layui.use(['laypage', 'layer', 'flow'], function () {
+        var flow = layui.flow;
+        flow.load({
+            elem: '#acitve' //流加载容器
+            ,isAuto: false
+            ,isLazyimg: true
+            ,done: function(page, next){ //执行下一页的回调
+                var paramData = new Object();
+                paramData.page = page;
+                paramData.limit = limit;
+                $.ajax({
+                    url:basePath + "user/queryDynamicInfo",
+                    type:"POST",
+                    asyns: false,
+                    data: JSON.stringify(paramData),
+                    contentType: 'application/json;charset=utf-8',
+                    success:function(resultData){
+                        if(resultData.code==0){
+                            console.log(resultData.data);
+                            var data = resultData.data;
+                            var total = pageTotal(resultData.count, limit);
+                            var lis = [];
+                            for(var i = 0;i < data.length;i++) {
+                                var htmlStr = "";
+                                htmlStr += '<li style="min-height: 55px">';
+                                htmlStr += '    <div class="imgbox">';
+                                htmlStr += '        <img src="' + data[i].nickIcon + '" />';
+                                htmlStr += '    </div>';
+                                htmlStr += '    <div class="contentbox">';
+                                htmlStr += '        <p>' + data[i].nickName + '</p>';
+                                htmlStr += '        <span>' + data[i].operTime + '</span>';
+                                if(data[i].dynamicType == '1'){
+                                    htmlStr += '    <div class="text">您对文章《' + data[i].articleTitle + '》进行了评论：' + data[i].commentContent + '</div>';
+                                }else if(data[i].dynamicType == '2') {
+                                    htmlStr += '    <div class="text">在文章《' + data[i].articleTitle + '》中，您对' + data[i].commentName + '的评论进行了回复：' + data[i].commentContent + '</div>';
+                                }else if(data[i].dynamicType == '3') {
+                                    htmlStr += '    <div class="text">在文章《' + data[i].articleTitle + '》中，您对' + data[i].commentName + '的评论进行了点赞</div>';
+                                }else if(data[i].dynamicType == '4') {
+                                    htmlStr += '    <div class="text">在文章《' + data[i].articleTitle + '》中，您对' + data[i].commentName + '的评论取消了点赞</div>';
+                                }else if(data[i].dynamicType == '5') {
+                                    htmlStr += '    <div class="text">您在羅氏博客网站中进行了留言：' + data[i].commentContent + '</div>';
+                                }else if(data[i].dynamicType == '6') {
+                                    htmlStr += '    <div class="text">您对' + data[i].commentName + '的留言进行了回复：' + data[i].commentContent + '</div>';
+                                }else if(data[i].dynamicType == '7') {
+                                    htmlStr += '    <div class="text">您对' + data[i].commentName + '的留言进行了点赞</div>';
+                                }else if(data[i].dynamicType == '8') {
+                                    htmlStr += '    <div class="text">您对' + data[i].commentName + '的留言取消了点赞</div>';
+                                }
+
+                                htmlStr += '    </div>';
+                                htmlStr += '</li>';
+                                lis.push(htmlStr);
+                            }
+                            next(lis.join(''), page < total); //假设总页数为 6
+                        }else{
+                            $(".flow-default").html("暂无个人动态信息！")
+                        }
+                    }
+                });
+            }
+        });
+    });
+}
+
+
+/**
+ * 总页数@param（总条数，每页总条数）
+ */
+function pageTotal(rowCount, pageSize) {
+    console.log("总条数"+rowCount+"每页总条数"+pageSize)
+    if (rowCount == null || rowCount == "") {
+        return 0;
+    } else {
+        if (pageSize != 0 &&
+            rowCount % pageSize == 0) {
+            return parseInt(rowCount / pageSize);
+        }
+        if (pageSize != 0 &&
+            rowCount % pageSize != 0) {
+            return parseInt(rowCount / pageSize) + 1;
+        }
+    }
 }

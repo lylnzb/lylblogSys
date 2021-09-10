@@ -8,7 +8,7 @@
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0,0,0,.3);
     box-sizing: border-box;
-    z-index: 999999;
+    z-index: 9999;
     top: 100px;
     overflow:auto;
     position:fixed;

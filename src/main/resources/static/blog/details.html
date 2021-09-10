@@ -15,9 +15,10 @@
     <link rel="stylesheet" href="/common/css/index.css">
     <link rel="stylesheet" href="/login/css/login.css">
     <link rel="stylesheet" href="/common/css/mplayer.css">
-<!--    <link rel="stylesheet" href="/common/css/demo.css">-->
     <link rel="stylesheet" href="/common/css/icons.css">
     <link rel="stylesheet" href="/common/css/zoom.css">
+    <link rel="stylesheet" href="/include/css/addNewCollection.css">
+    <link rel="stylesheet" href="/include/css/friendLinkApply.css">
     <style>
         .content img{
             display: inline-block;
@@ -97,6 +98,14 @@
             border-radius: 100%;
         }
         .content table{ max-width: 721px }
+
+        #collectionClick {
+            cursor:url('../../img/cur/link.cur'), pointer;
+        }
+
+        .star.outline.icon {
+            cursor:url('../../img/cur/link.cur'), pointer;
+        }
     </style>
 </head>
 <body id="mainBody">
@@ -116,6 +125,11 @@
 <!--音乐-->
 <div id="music">
     <div th:replace="include/music :: myMusic"></div>
+</div>
+
+<!--收藏-->
+<div id="collection">
+    <div th:replace="include/addNewCollection :: addCollection"></div>
 </div>
 
 <!--中间-->
@@ -138,20 +152,18 @@
                                 <div id="portrait" style="">
                                     <a href="http://www.yunyueyi.cn/author-1.html" title="回忆里依稀" class="widget_avatar_header">
                                         <img class="widget_avatar" src="/img/Head.jpg" alt="回忆里依稀">
-                                        <!--<div class="widget-cover auvip1 vip3"></div>-->
-                                        <!--<i title="回忆里依稀" class="author-ident author1"></i>-->
                                     </a>
                                 </div>
                                 <div class="title" style="margin-left: 74px;">
                                     <h2 class="ui header" style="margin-top: 10px;margin-bottom: 10px;" th:text="${article.articleTitle}">idea 团队成员修改工程后push推送</h2>
                                     <span><i class="user icon"></i><label th:text="${article.nickName}">回忆里依稀</label></span>&nbsp;&nbsp;
                                     <span><i class="clock outline icon"></i><label th:text="${article.createTime}">2020-07-21 14:20:21</label></span>&nbsp;&nbsp;
-                                    <span><i class="eye icon"></i><label th:text="${article.hits}">0</label></span>浏览&nbsp;&nbsp;
-                                    <span><i class="comment icon"></i><label id="postNum" th:text="${article.postNum}">0</label></span>评论&nbsp;&nbsp;
+                                    <span><i class="eye icon"></i></span>浏览(<label th:text="${article.hits}">0</label>)&nbsp;&nbsp;
+                                    <span><i class="comment icon"></i></span>评论(<label id="postNum" th:text="${article.postNum}">0</label>)&nbsp;&nbsp;
+                                    <span><i class="star outline icon" th:style="${(isCollection == 0)?'color: rgb(153, 154, 170);':'color: red;'}"></i></span><span id="collectionClick" th:style="${(isCollection == 0)?'':'color: red;'}">收藏(<label id="collectionNum" th:text="${totalCollectionCount}">0</label>)</span>&nbsp;&nbsp;
                                 </div>
                             </div>
                         </div>
-                        <!--<div class="ui divider"></div>-->
                         <div class="ui m-padded-tb-max vertical segment ">
                             <div class="ui mobile reversed stackable grid">
                                 <div id="content" class="content" style="margin-top: 15px;width: 100%;background-color: white" th:utext="${article.content}"></div>
@@ -189,7 +201,7 @@
                                         <a class="item active" data-tab="tab-name">文章评论</a>
                                     </div>
                                     <div class="ui tab active" data-tab="tab-name">
-                                        <div id="editor" class="editor" placeholder="对我说点什么吧...." contenteditable="true"></div>
+                                        <div id="editor1" class="editor" placeholder="对我说点什么吧...." contenteditable="true"></div>
                                         <input id="saytext" name="saytext" type="text" style="display: none"/>
                                         <div class="app">
                                             <div id="emoji" style="display:inline-block;">
@@ -351,6 +363,8 @@
 <div id="footer">
     <div th:replace="include/footer :: myFooter"></div>
 </div>
+
+<input type="hidden" id="wznm" th:value="${article.wznm}">
 </body>
 </html>
 <script src="/common/qqFace/js/jquery.min.js"></script>
@@ -370,6 +384,7 @@
 <script type="text/javascript" src="/common/demo.js"></script>
 <script type="text/javascript" src="/common/zoom.js"></script>
 <script type="text/javascript" src="/blog/js/details.js"></script>
+<script type="text/javascript" src="/include/js/addNewCollection.js"></script>
 <script>
     $(function(){
         commentList('[[${article.wznm}]]');
@@ -377,5 +392,12 @@
     });
     uParse('.content', {rootPath: '/common/ueditor1_4_3_3/'});
     var type = '[[${type}]]';
+    var wznm = '[[${article.wznm}]]';
     var isLogin=$("#isAuthenticated").val();
+
+    $('#emotion').qqFace({
+        id : 'facebox',
+        assign:'editor1',
+        path:'/common/qqFace/arclist/'	//表情存放的路径
+    });
 </script>

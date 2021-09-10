@@ -2,12 +2,15 @@ package com.lylblog.project.webSite.message.service.impl;
 
 import com.lylblog.common.util.shiro.ShiroUtils;
 import com.lylblog.project.common.bean.ResultObj;
+import com.lylblog.project.common.service.CommonService;
 import com.lylblog.project.login.bean.UserLoginBean;
 import com.lylblog.project.system.comment.bean.CommentBean;
 import com.lylblog.project.system.comment.mapper.CommentMapper;
 import com.lylblog.project.webSite.comment.bean.WebCommentBean;
 import com.lylblog.project.webSite.message.service.MessageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -23,6 +26,9 @@ public class MessageServiceImpl implements MessageService {
     @Resource
     private CommentMapper commentMapper;
 
+    @Autowired
+    private CommonService commonService;
+
     /**
      * 留言发布
      * @param commentBean
@@ -36,6 +42,12 @@ public class MessageServiceImpl implements MessageService {
 
         int count = commentMapper.addComment(commentBean);
         if(count > 0){
+            try {
+                commonService.aspectDynamicInfo(commentBean, (null == commentBean.getReplyId() || "".equals(commentBean.getReplyId())?5:6));
+            }catch (Exception e) {
+                e.printStackTrace();
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            }
             return ResultObj.ok("评论成功");
         }else {
             return ResultObj.fail("评论失败");

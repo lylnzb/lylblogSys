@@ -162,4 +162,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="getAreaByCityCode" resultMap="AreaResult" parameterType="String">
         select * from areas where region_level = 3 and parent_region_code = #{code} order by region_code
     </select>
+
+    <!-- 新增个人动态数据 -->
+    <insert id="insertDynamicInfo" parameterType="com.lylblog.project.common.bean.DynamicBean">
+        insert into web_dynamic(
+            dynamicType,
+            wznm,
+            commentYhnm,
+            articleTitle,
+            commentContent,
+            operYhnm,
+            operTime
+        ) values (
+            #{dynamicType,jdbcType=VARCHAR},
+            #{wznm,jdbcType=VARCHAR},
+            #{commentYhnm,jdbcType=VARCHAR},
+            #{articleTitle,jdbcType=VARCHAR},
+            #{commentContent,jdbcType=VARCHAR},
+            #{operYhnm,jdbcType=VARCHAR},
+            SYSDATE()
+        )
+    </insert>
 </mapper>

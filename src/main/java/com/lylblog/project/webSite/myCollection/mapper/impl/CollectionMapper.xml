@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lylblog.project.webSite.myCollection.mapper.CollectionMapper">
+
+    <!-- 新增收藏夹信息 -->
+    <insert id="addFavoriteInfo" parameterType="com.lylblog.project.webSite.myCollection.bean.FavoriteBean">
+        insert into web_favorite(favoriteName,`describe`,createBy,createTime)
+        values(#{favoriteName, jdbcType=VARCHAR}, #{describe, jdbcType=VARCHAR}, #{createBy, jdbcType=VARCHAR}, SYSDATE())
+    </insert>
+
+    <!-- 修改收藏夹信息 -->
+    <update id="updateFavoriteInfo" parameterType="com.lylblog.project.webSite.myCollection.bean.FavoriteBean">
+        update web_favorite set
+            <if test="favoriteName != null and favoriteName != ''">favoriteName = #{favoriteName, jdbcType=VARCHAR},</if>
+            <if test="describe != null and describe != ''">`describe` = #{describe, jdbcType=VARCHAR},</if>
+            id = #{id, jdbcType=VARCHAR}
+        where id = #{id, jdbcType=VARCHAR}
+    </update>
+
+    <!-- 删除收藏夹信息 -->
+    <delete id="deleteFavoriteInfo" parameterType="String">
+        delete from web_favorite where id = #{id}
+    </delete>
+
+    <!-- 新增用户收藏数据 -->
+    <insert id="addCollectionData" parameterType="com.lylblog.project.webSite.myCollection.bean.CollectionBean">
+        insert into web_collection(favoriteId,wznm,createBy,createTime)
+        values(#{favoriteId, jdbcType=VARCHAR}, #{wznm, jdbcType=VARCHAR}, #{createBy, jdbcType=VARCHAR}, SYSDATE())
+    </insert>
+
+    <!-- 修改用户收藏数据 -->
+    <update id="updateCollectionData" parameterType="com.lylblog.project.webSite.myCollection.bean.CollectionBean">
+        update web_collection set favoriteId = #{favoriteId, jdbcType=VARCHAR}
+        where createBy = #{createBy, jdbcType=VARCHAR} and wznm = #{wznm, jdbcType=VARCHAR}
+    </update>
+
+    <!-- 移入收藏数据到其他收藏夹 -->
+    <update id="moveCollectionDataToFavorite" parameterType="String">
+        update web_collection set favoriteId = #{targetId, jdbcType=VARCHAR} where favoriteId = #{id, jdbcType=VARCHAR}
+    </update>
+
+    <!-- 通过收藏夹ID删除删除所有收藏数据 -->
+    <delete id="deleteCollectionDataByFavoriteId" parameterType="String">
+        delete from web_collection where favoriteId = #{favoriteId, jdbcType=VARCHAR}
+    </delete>
+
+    <!-- 根据收藏id删除收藏数据 -->
+    <delete id="deleteCollectionDataByCollectId" parameterType="String">
+        delete from web_collection where collectionId = #{collectionId, jdbcType=VARCHAR}
+    </delete>
+
+    <!-- 根据用户内码查询收藏夹信息 -->
+    <select id="queryFavoriteInfo" parameterType="String" resultType="com.lylblog.project.webSite.myCollection.bean.FavoriteBean">
+        select t.* from (
+            SELECT f.*,
+                   (select count(1) from web_collection where favoriteId = f.id) as count
+            FROM web_favorite as f
+            where createBy = #{yhnm}
+        ) as t order by count desc
+    </select>
+
+    <!-- 根据收藏夹ID查询指定收藏夹信息 -->
+    <select id="queryFavoriteInfoById"  parameterType="String" resultType="com.lylblog.project.webSite.myCollection.bean.FavoriteBean">
+        SELECT f.*
+        FROM web_favorite as f
+        where createBy = #{yhnm} and id = #{id}
+    </select>
+
+    <!-- 根据收藏夹ID查询指定收藏夹下的收藏数据 -->
+    <select id="queryCollectionData" parameterType="String" resultType="com.lylblog.project.webSite.myCollection.bean.CollectionBean">
+        select
+            favoriteId,
+            collectionId,
+            coll.wznm,
+            articleTitle,
+            coll.createTime
+        from web_collection coll
+        left join sys_article art on coll.wznm = art.wznm
+        where favoriteId = #{id}
+    </select>
+
+    <!-- 通过文章内码查询总收藏数量 -->
+    <select id="getCollectNumBywznm" parameterType="String" resultType="int">
+        select count(1) from web_collection where wznm = #{wznm, jdbcType=VARCHAR}
+    </select>
+
+    <!--  通过用户内码和文章内码判断当前用户是否已收藏  -->
+    <select id="isCollectionByYhnm" parameterType="String" resultType="int">
+        select count(1) from web_collection where wznm = #{wznm, jdbcType=VARCHAR} and createBy = #{yhnm, jdbcType=VARCHAR}
+    </select>
+</mapper>

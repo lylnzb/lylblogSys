@@ -6,6 +6,7 @@ import com.lylblog.project.system.article.bean.ArticleBean;
 import com.lylblog.project.system.article.service.ArticleService;
 import com.lylblog.project.webSite.blog.service.BlogService;
 import com.lylblog.project.webSite.comment.service.WebCommentService;
+import com.lylblog.project.webSite.myCollection.service.CollectionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +35,9 @@ public class BlogController {
 
     @Resource
     private WebCommentService webCommentService;
+
+    @Resource
+    public CollectionService collectionService;
 
     @RequestMapping("/blogList")
     public String blogList(Model model, String columnId, String labelId){
@@ -68,6 +72,11 @@ public class BlogController {
         model.addAttribute("totalCommentCount", webCommentService.totalCommentCountByWznm(article.getWznm()));
         //主评论总数
         model.addAttribute("totalMainCommentCount", webCommentService.totalCommentCountByWznm(article.getWznm()));
+        //文章收藏总数
+        model.addAttribute("totalCollectionCount", collectionService.getCollectNumBywznm(article.getWznm()));
+        //判断该用户是否已收藏文章(0.未收藏  1.已收藏)
+        model.addAttribute("isCollection", collectionService.isCollectionByYhnm(article.getWznm()));
+
         return "/blog/details";
     }
 

@@ -1,0 +1,222 @@
+a:hover, a:focus, a:active, a.active {
+    cursor: url('/img/cur/link.cur'), pointer;
+}
+
+.link-wrap-box .close.icon{
+    margin-top: 10px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-size: 14px;
+    color: #666;
+    cursor: url(../../img/cur/link.cur), pointer;
+}
+.addCollection {
+    display: none;
+    width: 450px!important;
+    margin-left: auto;
+    margin-right: auto;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.3);
+    box-sizing: border-box;
+    z-index: 9997;
+    top: 100px;
+    overflow:auto;
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translateX(-50%) translateY(-50%);
+}
+
+.dialog-body-class {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.dialog-body {
+    color: #333;
+    font-size: 14px;
+    position: relative;
+    z-index: 666;
+    background: #fff;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.link-wrap-box {
+    padding: 5px 20px;
+}
+.link-wrap-box .title {
+    position: relative;
+    color: #363940;
+    font-size: 1pc;
+    border-bottom: 1px solid #e8eaec;
+    padding: 14px 1pc;
+    line-height: 1;
+}
+
+.collectionItems {
+    font-size: 14px;
+    font-weight: 400;
+    padding: 8px 16px;
+    height: 244px;
+    overflow: auto;
+    -ms-scroll-chaining: none;
+    overscroll-behavior: contain;
+}
+
+.collectionItems {
+    color: #555666;
+}
+
+.collectionItems .collectionItem+li {
+    margin-top: 8px;
+}
+
+.collectionItems .collectionItem {
+    width: 100%;
+    height: 32px;
+    line-height: 32px;
+    position: relative;
+    cursor:url('../../img/cur/link.cur'), pointer;
+    padding-left: 32px;
+    padding-right: 40px;
+}
+
+.collectionItems li {
+    list-style: none;
+}
+
+.collectionItems .collectionItem i.near {
+    position: absolute;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    margin-top: -8px;
+    left: 8px;
+}
+
+.collectionItems .collectionItem i.near {
+    background: url(https://g.csdnimg.cn/collection-box/2.0.6/images/near-default.png) no-repeat center center;
+    background-size: contain;
+}
+
+.collectionItems .collectionItem span {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.collectionItems .collectionItem.select {
+    background: #f7f7fc;
+}
+
+.collectionItems .collectionItem.select::after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 24px;
+    height: 24px;
+    background: url(https://g.csdnimg.cn/collection-box/2.0.6/images/select.png) no-repeat center center;
+    background-size: contain;
+    right: 8px;
+    top: 50%;
+    margin-top: -12px;
+}
+
+.collectionFolder {
+    height: 40px;
+    line-height: 40px;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    padding: 16px;
+    position: relative;
+    border-top: 1px solid #f0f2f5;
+}
+
+.collectionFolder .collectionTip {
+    display: none;
+    position: absolute;
+    width: 292px;
+    height: 39px;
+    top: -30px;
+    left: 24px;
+    background: url(https://g.csdnimg.cn/collection-box/2.0.6/images/tip.png) no-repeat center center;
+    background-size: contain;
+    z-index: 999;
+}
+
+.collectionFolder .collectionBtn i {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url(https://g.csdnimg.cn/collection-box/2.0.6/images/add.png) no-repeat center center;
+    background-size: contain;
+    margin: 0 8px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+}
+
+.collectionFolder .collectionBtn {
+    color: #999aaa;
+    background: #fff;
+    border: 1px solid #e8e8ed;
+    height: 100%;
+    display: block;
+    cursor:url('../../img/cur/link.cur'), pointer;
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+.collectionFolder .collectionBtn:hover {
+    border: 1px solid #999aaa;
+}
+
+.collectionFooter {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.collectionFolder .collectionInput {
+    display: none;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    border: 1px solid #999aaa;
+    font-size: 0;
+    overflow: hidden;
+}
+
+.collectionFolder .collectionInput input {
+    font-size: 14px;
+    display: inline-block;
+    width: 308px;
+    height: 100%;
+    line-height: inherit;
+    padding-left: 8px;
+    outline: 0;
+    border: 0 none;
+}
+
+.collectionFolder .collectionInput button {
+    font-size: 14px;
+    display: inline-block;
+    width: 60px;
+    height: 40px;
+    text-align: center;
+    line-height: inherit;
+    outline: 0;
+    font-weight: bolder;
+    background: #fff;
+    color: #222226;
+    cursor:url('../../img/cur/link.cur'), pointer;
+    border: 0;
+    border-left: 1px solid #999aaa;
+
+}
+

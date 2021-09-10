@@ -2,6 +2,7 @@ package com.lylblog.project.webSite.user.service.impl;
 
 import com.lylblog.common.util.shiro.ShiroUtils;
 import com.lylblog.project.common.bean.AreaBean;
+import com.lylblog.project.common.bean.DynamicBean;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.common.mapper.CommonMapper;
 import com.lylblog.project.login.bean.UserLoginBean;
@@ -181,5 +182,20 @@ public class UserServiceImpl implements UserService {
         }else {
             return ResultObj.ok("查询不到个人资料信息");
         }
+    }
+
+    /**
+     * 查询个人动态信息
+     * @return
+     */
+    public ResultObj queryDynamicInfo(DynamicBean dynamic){
+        UserLoginBean user = ShiroUtils.getUserInfo();
+        dynamic.setOperYhnm(user.getYhnm());
+        int count = userMapper.queryDynamicInfoCount(dynamic);
+        if(count > 0){
+            List<DynamicBean> list = userMapper.queryDynamicInfo(dynamic);
+            return ResultObj.ok(count, list);
+        }
+        return ResultObj.fail("暂无个人动态信息");
     }
 }

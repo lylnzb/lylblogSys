@@ -1,5 +1,6 @@
 package com.lylblog.project.webSite.user.service;
 
+import com.lylblog.project.common.bean.DynamicBean;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.webSite.user.bean.UserCommentBean;
 import com.lylblog.project.webSite.user.bean.UserLinkBean;
@@ -74,4 +75,10 @@ public interface UserService {
      * @return
      */
     ResultObj queryPersonalData();
+
+    /**
+     * 查询个人动态信息
+     * @return
+     */
+    ResultObj queryDynamicInfo(DynamicBean dynamic);
 }

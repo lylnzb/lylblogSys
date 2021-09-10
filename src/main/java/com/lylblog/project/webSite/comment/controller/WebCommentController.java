@@ -1,7 +1,9 @@
 package com.lylblog.project.webSite.comment.controller;
 
 import com.lylblog.project.common.bean.ResultObj;
+import com.lylblog.project.common.service.CommonService;
 import com.lylblog.project.system.comment.bean.CommentBean;
+import com.lylblog.project.system.comment.service.CommentService;
 import com.lylblog.project.webSite.comment.bean.WebGreatBean;
 import com.lylblog.project.webSite.comment.service.WebCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class WebCommentController {
 
     @Autowired
     private WebCommentService webCommentService;
+
+    @Autowired
+    private CommonService commonService;
 
     /**
      * 评论发布

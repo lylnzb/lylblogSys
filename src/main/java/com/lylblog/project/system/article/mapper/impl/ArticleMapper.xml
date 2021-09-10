@@ -31,6 +31,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </if>
     </select>
 
+    <!-- 查询文章详细信息 -->
+    <select id="getArticleInfoByWznm" parameterType="String" resultType="com.lylblog.project.system.article.bean.ArticleBean">
+        select * from sys_article where wznm = #{wznm}
+    </select>
+
     <!-- 查询文章列表信息 -->
     <select id="queryArticleInfoCount" parameterType="com.lylblog.project.system.article.bean.ArticleBean" resultType="int">
         SELECT count(1) FROM sys_article WHERE 1 = 1

@@ -71,9 +71,9 @@
 		},
 
 		initModal: function() {
-			this.$avatarModal.modal({
-				show: false
-			});
+			// this.$avatarModal.modal({
+			// 	show: true
+			// });
 		},
 
 		initPreview: function() {

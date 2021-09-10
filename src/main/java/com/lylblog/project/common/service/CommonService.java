@@ -61,4 +61,11 @@ public interface CommonService {
      * @return
      */
     ResultObj getAreaByCityCode(String code);
+
+    /**
+     * 生成个人动态信息数据
+     * @param obj
+     * @param type
+     */
+    void aspectDynamicInfo(Object obj, int type);
 }

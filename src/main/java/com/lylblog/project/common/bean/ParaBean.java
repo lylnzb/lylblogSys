@@ -23,6 +23,7 @@ public class ParaBean {
 	protected int limit=10; //每页记录数
 	//操作选项
 	protected int rk;             //    序号
+	protected String nickIcon;    //    用户头像
 	protected String nickName;    //    用户昵称
 	protected String orderBy;     //	排序
 	protected String createBy;    //	创建者

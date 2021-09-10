@@ -2,6 +2,7 @@ package com.lylblog.project.webSite.comment.service.impl;
 
 import com.lylblog.common.util.shiro.ShiroUtils;
 import com.lylblog.project.common.bean.ResultObj;
+import com.lylblog.project.common.service.CommonService;
 import com.lylblog.project.login.bean.UserLoginBean;
 import com.lylblog.project.system.article.bean.ArticleBean;
 import com.lylblog.project.system.article.mapper.ArticleMapper;
@@ -10,7 +11,10 @@ import com.lylblog.project.system.comment.mapper.CommentMapper;
 import com.lylblog.project.webSite.comment.bean.WebCommentBean;
 import com.lylblog.project.webSite.comment.bean.WebGreatBean;
 import com.lylblog.project.webSite.comment.service.WebCommentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -21,6 +25,7 @@ import java.util.List;
  * @Date: 2021/4/19 16:52
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class WebCommentServiceImpl implements WebCommentService {
 
     @Resource
@@ -28,6 +33,9 @@ public class WebCommentServiceImpl implements WebCommentService {
 
     @Resource
     private ArticleMapper articleMapper;
+
+    @Autowired
+    private CommonService commonService;
 
     /**
      * 评论发布
@@ -45,6 +53,12 @@ public class WebCommentServiceImpl implements WebCommentService {
 
         int count = commentMapper.addComment(commentBean);
         if(count > 0){
+            try {
+                commonService.aspectDynamicInfo(commentBean, (null == commentBean.getReplyId() || "".equals(commentBean.getReplyId())?1:2));
+            }catch (Exception e) {
+                e.printStackTrace();
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            }
             return ResultObj.ok("评论成功");
         }else {
             return ResultObj.fail("评论失败");
@@ -134,12 +148,31 @@ public class WebCommentServiceImpl implements WebCommentService {
 
         int isThere = commentMapper.isThereGreat(webGreatBean.getType(), webGreatBean.getTypeId(), webGreatBean.getYhnm());
         int num = 0;
+        int type;
+
+        CommentBean comment = commentMapper.getCommentByReplyId(webGreatBean.getTypeId());
         if(isThere > 0){
+            if("1".equals(comment.getCommentType())){
+                type = 4;
+            }else {
+                type = 8;
+            }
             num = commentMapper.updateGreatInfo(webGreatBean);
         }else {
+            if("1".equals(comment.getCommentType())){
+                type = 3;
+            }else {
+                type = 7;
+            }
             num = commentMapper.addGreatInfo(webGreatBean);
         }
         if(num == 1){
+            try {
+                commonService.aspectDynamicInfo(webGreatBean, type);
+            }catch (Exception e) {
+                e.printStackTrace();
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            }
             return ResultObj.ok("点赞成功");
         }else{
             return ResultObj.fail("点赞失败");

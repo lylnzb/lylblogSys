@@ -1,5 +1,6 @@
 package com.lylblog.project.webSite.user.mapper;
 
+import com.lylblog.project.common.bean.DynamicBean;
 import com.lylblog.project.webSite.user.bean.UserCommentBean;
 import com.lylblog.project.webSite.user.bean.UserLinkBean;
 import com.lylblog.project.webSite.user.bean.UserLoginRecordBean;
@@ -100,4 +101,18 @@ public interface UserMapper {
      * @return
      */
     UserParamBean queryPersonalData(@Param("yhnm") String yhnm);
+
+    /**
+     * 查询个人动态信息总数
+     * @param dynamic
+     * @return
+     */
+    int queryDynamicInfoCount(DynamicBean dynamic);
+
+    /**
+     * 查询个人动态信息
+     * @param dynamic
+     * @return
+     */
+    List<DynamicBean> queryDynamicInfo(DynamicBean dynamic);
 }

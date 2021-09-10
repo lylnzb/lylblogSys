@@ -1,8 +1,4 @@
-$('#emotion').qqFace({
-    id : 'facebox',
-    assign:'editor',
-    path:'/common/qqFace/arclist/'	//表情存放的路径
-});
+
 
 function showImg(id,file){
     var reader = new FileReader();	// 实例化一个FileReader对象，用于读取文件
@@ -48,7 +44,7 @@ $(document).on('click','.reply',function(){
     html += '            <i style="font-size: 30px;" class="image icon"></i>';
     html += '        </div>';
     html += '        <div class="submit">';
-    html += '            <button class="ui primary button" clsss="sub_btn" onclick="releaseComment(2, \'[[${article.wznm}]]\', \'' + $(this).attr("data-id") + '\')">发布评论</button>';
+    html += '            <button class="ui primary button" clsss="sub_btn" onclick="releaseComment(2, \'' + wznm + '\', \'' + $(this).attr("data-id") + '\')">发布评论</button>';
     html += '        </div>';
     html += '    </div>';
     html += ' </div>';
@@ -109,7 +105,7 @@ function releaseComment(type, wznm, commentId){
     }else {
         var paramData = new Object();
         if(type == 1){
-            paramData.commentContent = $("#editor").html();
+            paramData.commentContent = $("#editor1").html();
         }else if(type == 2){
             paramData.replyId = commentId;
             paramData.commentContent = $("#reply").html();
@@ -135,7 +131,7 @@ function releaseComment(type, wznm, commentId){
                     commentList(wznm);
                     $("#totalCommentCount").text(parseInt($("#totalCommentCount").text())+ 1);//总评论数+1
                     $("#postNum").text(parseInt($("#totalCommentCount").text()));
-                    $("#editor").html("");//文本清空
+                    $("#editor1").html("");//文本清空
                 }else{
                     cocoMessage.error(resultData.msg, 3000); //loading可以选择是否展示关闭按钮
                 }

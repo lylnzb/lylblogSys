@@ -6,12 +6,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!-- 查询所有轮播图信息 -->
     <select id="queryBannerInfo" parameterType="com.lylblog.project.system.banner.bean.BannerBean" resultType="com.lylblog.project.system.banner.bean.BannerBean">
-        select t.* from sys_banner t order by orderBy desc
+        select t.* from sys_banner t
+        where 1=1
+        <if test="bannerId != null and bannerId != ''">
+            and bannerId = #{bannerId}
+        </if>
+        order by orderBy desc
     </select>
 
     <!-- 查询所有轮播图信息总数 -->
     <select id="queryBannerInfoCount" parameterType="com.lylblog.project.system.banner.bean.BannerBean" resultType="int">
-        select count(1) from sys_banner t order by orderBy desc
+        select count(1) from sys_banner t
+        where 1=1
+        <if test="bannerId != null and bannerId != ''">
+            and bannerId = #{bannerId}
+        </if>
     </select>
 
     <!-- 新增轮播图信息 -->

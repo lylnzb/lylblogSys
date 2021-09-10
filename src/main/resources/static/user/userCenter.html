@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="/login/css/login.css">
     <link rel="stylesheet" href="/user/css/msgList.css">
     <link rel="stylesheet" href="/user/css/usrCenter.css">
+    <link rel="stylesheet" href="../include/css/addNewCollection.css">
     <link rel="stylesheet" href="../include/css/friendLinkApply.css">
     <link rel="stylesheet" href="../include/css/uploadIcon.css">
 </head>
@@ -43,8 +44,13 @@
 </div>
 
 <!--头像上传-->
-<div id="upload" shiro:authenticated="">
+<div id="upload">
     <div th:replace="include/uploadIcon :: uploadIcon"></div>
+</div>
+
+<!--收藏-->
+<div id="collection">
+    <div th:replace="include/addNewCollection :: addCollection"></div>
 </div>
 
 <!--中间-->
@@ -63,8 +69,8 @@
                                         <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAFC0lEQVR4Xu2ba8ilUxTHf39J5H6NQiQSii80bjENNeEDmtw1Jb64jhqF1AwJZcow+EJqmnJLzIeZmkJoxMQXComkjCL3cckk+WvpOdM++33OOc9znufMeY9zVp0v77P22mv991prr7X3fsWUk6bcfmYAzDxgyhGYhcCUO8DOTYK2d6kCuKR/qvC1wTPSELB9CHAVcA5wGLBrRaX/Br4B3gKelfRdxXG12UYGgO3TgQeAvWtr1T3gN+BuSe82lFM6fCQA2D4eeBrYvSWltwPXS/q0JXk7xLQOgO3dwm2Bo1pW9kvgakl/tSl3FAAsA67JlHwKeB4Id65CETZXADdkzOskPVpFQFWeVgGwfXLh+qncjZJWVFUo5bN9H3BB8jcXofDhMPLKxrQGgO2I9+eAI5KJvgcuk1R15bt0tB2e8CJwcPJhK3ClpMgLjakyAIWBC4ATC4X2zGaPLS++pXSrpHeaaGn7TCB3+4+BfGv8AwjA49uWqgANBMD2PsB1wJKaWX29pPubGN8Za/se4OIassI7XgKekfRrv3F9AShi+mHggBqTB+u3wOWSYlUak+3wtheAQ2sK+wm4Q1LPnNETANvh7qtrVG8d3QL9myV9UFPZvuy2TwEer+mFITOqymWStlROgrYjka0D9soG/Qi8CnwBlK1uTPbRqErXorQ+qceihJccA5wPHJjp/TtwraRIoF1U6gG2HwHOzng3AKskhbB5S7Zj0ZYDF2VKbpZ0+0AAbEcmX5sxRjJ5ct5aXaKY7RuL5J1+XSopdokdNMcDbN8W7pLwfF64T7j3xJDt6DwjjI9NlJ5TSZYBEHX8ccmguyRF3E8c2Y588GCi+GeSoj3v6wGvA/smPIsl/dCG9cWqnAvE74SkwosC5hPgzfhJasXbbB8EbEp03yZpUU8AbIdHvJ8Zu6ANhWwvBCK8Dh8A5tdR+Ul6oynoBeD59neqpOgp/qOuECiOrN7LJj6tyRFVIfOWLK9UsS3id00Lc/e1Z2cAkCfVKsZ3eBq1v1UWdKQAFG4fpXROUVOsB+KQI+jootbP9+74FqXsUOEwVgCK+IuGJI35n4EVvTpE22cA9wL7J4hFTlgyTB4aNwDnAQ9lSz+wPS5AeCwbd6ek1+rETvCOG4BohRcnSm+QtLKKEbaDLw2HTZKiJa5F4wbgZeDIROM41a3UIRadX5wqd+grSZfWsn4eeMBmYI9E6UWStlUxwnYUYlGQdehPSXlzNlDUuD1g6gGY+hCY+iQ49dtg9OPTWwgVhUh0gNNZCnf2qJITpoHbV8Iw2c1QUo5ObzuceMI4DkTiSc54zwNSfx/Dkdj8AqBO8LfBO9ZSuA0DmsqoDUCRtN7O7t8WDnu/39SApuOL9wXpadJ2SWelcsvuBV7JHjlUbmObKtz2+JK2equkSwYBkNfwQz9xaduguvJsx/Hahcm4OQcrZR5QVsPH9XKExsSQ7XD1uN5Pac7RWhkAZTX8L8DKSQGhMD6O1fZLrC89XO11PR5XV6tKlnsjEDmi1/uAcXpI531AxHjq9h2dlkuKq7cu6vdCJMrXpeO0qMW510paUyavHwBRRd30PwAh3jo80euKrcorsQiHeP056FKzxQVrRVTE/Ooyt++7DZZNndXwnXeCbT2EbsVaIB5ndd4JVr5mH+gBvbSr+s8PbVk3SM6wt8hDAzBIoUn5PgNgUlZqVHrOPGBUyE6K3JkHTMpKjUrPfwGerYtf3LH0qAAAAABJRU5ErkJggg==">
                                     </div>
                                 </div>
-                                <h3 style="margin-top: 13px;font-weight: bold"><label th:text="${blogSet.bloggersetBloggerName}">回忆里依稀</label></h3>
-                                <div style="margin-top: -8px;color: #808080;"><label>男</label>&nbsp;|&nbsp;<label>注册用户</label></div>
+                                <h3 style="margin-top: 13px;font-weight: bold"><label th:text="${nickName}">回忆里依稀</label></h3>
+                                <div style="margin-top: -8px;color: #808080;"><label th:text="${sex}">男</label>&nbsp;|&nbsp;<label th:text="${roleName}">注册用户</label></div>
                                 <div class="zw" style="background-color: aquamarine;color: white;" onclick="switchTab(this, 'myProfileTab')">个人资料</div>
                                 <div class="zw" style="margin-top: -3px;" onclick="loginOut();">退出登录</div>
                             </section>
@@ -229,29 +235,7 @@
                         </div>
                         <div class="ui tab active" data-tab="tab-name1">
                             <div class="main">
-                                <ul class="flow-default" id="acitve" style="height: 329px">
-                                    <li style="margin-top: -14px;height: 55px">
-                                        <div class="imgbox">
-                                            <img src="http://qzapp.qlogo.cn/qzapp/101649470/1DA44DE09370979B9B696593D27CB0CE/30" />
-                                        </div>
-                                        <div class="contentbox">
-                                            <p>回忆里依稀</p>
-                                            <span>2020-07-25 11:06:36</span>
-                                            <div class="text">您对王忘忘的留言进行点赞</div>
-                                        </div>
-                                    </li>
-                                    <li style="height: 55px">
-                                        <div class="imgbox">
-                                            <img src="http://qzapp.qlogo.cn/qzapp/101649470/1DA44DE09370979B9B696593D27CB0CE/30" />
-                                        </div>
-                                        <div class="contentbox">
-                                            <p>回忆里依稀</p>
-                                            <span>2020-07-25 11:06:36</span>
-                                            <div class="text">您对王忘忘的留言进行点赞</div>
-                                        </div>
-                                    </li>
-                                    <div id="page" style="text-align: right;"></div>
-                                </ul>
+                                <ul class="flow-default" id="acitve" style="margin-top: -14px;"></ul>
                             </div>
                         </div>
                     </div>
@@ -398,95 +382,11 @@
                         </div>
                         <div class="ui tab active" data-tab="tab-name5">
                             <div class="collection-left-tab">
-                                <div class="ultab-sub-menu">
-                                    <li class="menu-item menu-item-new">
-                                        <div class="imgBox"></div>
-                                        <span>新建收藏夹</span>
-                                    </li>
-                                    <li class="menu-item active-menu-item">
-                                        <div class="menu-item-title">
-                                            <div class="imgBox"></div>
-                                            <span>鸡汤</span>
-                                        </div>
-                                        <div class="menu-item-like">
-                                            <span class="comment">
-                                                <div class="imgBox"></div>
-                                                <span>0</span>
-                                            </span>
-                                        </div>
-                                    </li>
-                                    <li class="menu-item">
-                                        <div class="menu-item-title">
-                                            <div class="imgBox"></div>
-                                            <span>默认收藏夹</span>
-                                        </div>
-                                        <div class="menu-item-like">
-                                            <span class="comment">
-                                                <div class="imgBox"></div>
-                                                <span>0</span>
-                                            </span>
-                                        </div>
-                                    </li>
-                                </div>
+                                <div class="ultab-sub-menu"></div>
                             </div>
                             <div class="collection-content">
                                 <div>
-                                    <div class="list-wrap">
-                                        <ul class="collection-list">
-                                            <li>
-                                                <div class="titleHead">
-                                                    <div class="nameBox">
-                                                        <span class="collection-dir collection-font collection-detail">
-                                                            <span class="collection-folder-name">
-                                                                鸡汤
-                                                                <i class="edit icon"></i>
-                                                            </span>
-                                                        </span>
-                                                        <span class="collection-info collection-detail collection-detail-d">
-                                                            <p class="collection-text collection-detail collection-desc">
-                                                                请添加收藏夹描述
-                                                                <i class="edit icon"></i>
-                                                            </p>
-                                                            <p class="collection-edit-box">
-                                                                <em class="cursor">删除收藏夹</em>
-                                                            </p>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="tab-content-box">
-                                                    <div id="noCollection" style="text-align: center; font-weight: bolder;margin-top: 10px;display: none">您还没有添加收藏</div>
-                                                    <ul class="collection-sublist">
-                                                        <li>
-                                                            <div class="collection-con">
-                                                                <span>
-                                                                    <span class="collection-dir">
-                                                                        <em class="conllection-type">BLOG</em>
-                                                                        <span class="subtitle">Java访问控制修饰符详解（public、 private、protected 和 friendly）</span>
-                                                                    </span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="collect-detail-right">
-                                                                <a class="collect-cancel"><i class="star outline icon" style="font-size: 18px;color: #F46036;font-weight: bold;"></i></a>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="collection-con">
-                                                                <span>
-                                                                    <span class="collection-dir">
-                                                                        <em class="conllection-type">BLOG</em>
-                                                                        <span class="subtitle">String、StringBuffer和StringBuilder类的区别</span>
-                                                                    </span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="collect-detail-right">
-                                                                <a class="collect-cancel"><i class="star outline icon" style="font-size: 18px;color: #F46036;font-weight: bold;"></i></a>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <div class="list-wrap"></div>
                                 </div>
                             </div>
                         </div>
@@ -801,12 +701,14 @@
 <script src="../common/mPlayer/mplayer-functions.js"></script>
 <script src="http://cdn.bootcss.com/jquery-nstslider/1.0.13/jquery.nstSlider.min.js"></script>
 <script src="../common/player.js"></script>
+<script src="../common/message.js"></script>
 <script src="../admin/js/bstable/js/bootstrap.min.js"></script>
 <script src="../include/js/sitelogo.js"></script>
 <script src="../common/semantic-ui/dist/semantic.min.js"></script>
 <script src="../include/js/cropper.js"></script>
 <script src="../include/js/html2canvas.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="../include/js/uploadIcon.js"></script>
+<script src="../include/js/addNewCollection.js"></script>
 <script src="../login/js/login.js"></script>
 <script src="../links/js/friendLink.js"></script>
 <script src="/user/js/userCenter.js"></script>
@@ -821,9 +723,10 @@
         initUserLoginRecord();
         //登录记录查看
         userLoginRecordByPage(1, 10);
-
         //初始化省份下拉框
         getProvince();
+        //个人动态信息查询
+        queryDynamicInfo(1, 5);
 
         $(".ui.button").click(function(){
             $(".ui.button.active").removeClass("blue");
@@ -831,14 +734,6 @@
             $(this).addClass("blue");
             $(this).addClass("active");
             queryMyLinks($(this).attr("data-id"));
-        });
-
-        //开启HASH
-        laypage.render({
-            elem: 'page'
-            ,count: 500
-            ,curr: location.hash.replace('#!fenye=', '') //获取hash值为fenye的当前页
-            ,hash: 'fenye' //自定义hash值
         });
 
         //开启HASH
@@ -857,7 +752,9 @@
      * @param number
      */
     function switchTab(elem, tabName, number){
-        if(tabName == 'accountAssociatedTab'){
+        if(tabName == 'myAccountTab') {
+            queryDynamicInfo(1, 5);
+        }else if(tabName == 'accountAssociatedTab'){
             cocoMessage.warning("该功能正在开发中。。。", 3000); //loading可以选择是否展示关闭按钮
             return;
         }else if(tabName == 'myCommentsTab') {
@@ -868,6 +765,8 @@
             $(".editUser").hide();
             $(".dataList").show();
             queryPersonalData();
+        }else if(tabName == 'myCollectionTab') {
+            initCollection()
         }
 
         if(number == 1){

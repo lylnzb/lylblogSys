@@ -120,6 +120,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/message/releaseMessage", "authc");
         filterChainDefinitionMap.put("/message/**", "anon");
 
+        filterChainDefinitionMap.put("/myCollection/**", "authc");
+
         Map<String, Filter> filters = new LinkedHashMap<>();
         filters.put("onlineSession", onlineSessionFilter());
         filters.put("syncOnlineSession", syncOnlineSessionFilter());

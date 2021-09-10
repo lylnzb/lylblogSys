@@ -43,6 +43,13 @@ public interface CommentMapper {
     List<WebCommentBean> secondaryCommentList(CommentBean commentBean);
 
     /**
+     * 通过回复ID查询评论数据
+     * @param replyId
+     * @return
+     */
+    CommentBean getCommentByReplyId(@Param("replyId") String replyId);
+
+    /**
      * 通过文章内码查询总评论数量
      * @param wznm
      * @return

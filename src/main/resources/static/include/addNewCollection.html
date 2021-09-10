@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="addCollection dialog--400" id="addCollection" th:fragment="addCollection">
+    <div class="dialog-body dialog-body-class">
+        <div class="link-wrap-box collectionBox">
+            <h2 class="title" id="addCollectionTitle" style="font-weight: bold">
+                <span id="linkTitle">添加收藏夹</span>
+                <i class="close icon"></i>
+            </h2>
+            <div class="content-box" id="collection-box1">
+                <ul class="collectionItems"></ul>
+                <div class="collectionFolder">
+                    <span class="collectionTip"></span>
+                    <span class="collectionBtn"><i></i>新建文件夹</span>
+                    <div class="collectionInput">
+                        <input type="text" id="collectionName" placeholder="最多可输入20个字">
+                        <button>新建</button>
+                    </div>
+                </div>
+                <div class="collectionFooter">
+                    <button class="ui twitter button" style="width: 200px">确  定</button>
+                </div>
+            </div>
+            <div class="content-box" id="collection-box2" style="display:none;">
+                <form class="from-box" id="collectionForm" autocomplete="off">
+                    <div class="collectionNameLabel">
+                        <div class="layui-form-item field" style="margin-top: 10px;">
+                            <div class="layui-inline">
+                                <label class="layui-form-label" style = 'width: 100px;font-weight: bold;text-align: right'>
+                                    <font color='red'>*</font>&nbsp;收藏夹：
+                                </label>
+                                <div class="layui-input-inline">
+                                    <div class="ui input focus">
+                                        <input type="text" class="favoriteName required" id="favoriteName" placeholder="请输入收藏夹名称" style="width: 300px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="favoriteNameError" class="error">
+                            <div class="ui basic red pointing prompt label transition">收藏夹不能为空</div>
+                        </div>
+                    </div>
+                    <div class="describeLabel">
+                        <div class="layui-form-item" style="margin-top: 10px;">
+                            <div class="layui-inline">
+                                <label class="layui-form-label" style = 'width: 100px;font-weight: bold;text-align: right'>
+                                    描述：
+                                </label>
+                                <div class="layui-input-inline">
+                                    <div class="ui input focus">
+                                        <div id="editor" class="editor" placeholder="请输入描述内容" contenteditable="true" style="width: 300px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-box" style="margin: -10px 2px 0 0;text-align: right;">
+                        <button type="button" class="btn close">取消</button>
+                        <button type="button" class="btn ok">确认</button>
+                    </div>
+                </form>
+            </div>
+            <div class="content-box" id="collection-box3" style="display:none;">
+                <input id="favoriteId" type="hidden" value="">
+                <div class="ui form">
+                    <div class="grouped fields" style="line-height: 30px;margin-top: 10px;margin-left: 30px;">
+                        <label for="fruit" style="display: block;width: 100%;font-size: 14px">收藏夹内容：</label>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="fruit" checked="" tabindex="1" class="hidden">
+                                <label>
+                                    <div class="ui selection dropdown" style="width: 250px">
+                                        <input type="hidden" name="gender">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text" id="favoriteText"></div>
+                                        <div class="menu" id="favoriteList" style="max-height: 150px"></div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="fruit" tabindex="2" class="hidden">
+                                <label>一并删除（删除后无法恢复）</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-box" style="margin: 80px 2px 0 0;text-align: right;">
+                        <button type="button" class="btn close">取消</button>
+                        <button type="button" class="btn del">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

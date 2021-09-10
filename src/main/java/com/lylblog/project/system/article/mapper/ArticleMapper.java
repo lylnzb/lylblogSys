@@ -30,6 +30,13 @@ public interface ArticleMapper {
     int queryArticleInfoCount(ArticleBean articleBean);
 
     /**
+     * 查询文章详细信息
+     * @param wznm
+     * @return
+     */
+    ArticleBean getArticleInfoByWznm(String wznm);
+
+    /**
      * 查询网站前端博客列表信息
      * @param articleBean
      * @return

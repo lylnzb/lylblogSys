@@ -95,6 +95,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         and comment.valid = '1' and icon.isActivity = '1' order by submitTime desc
     </select>
 
+    <!-- 通过回复ID查询评论数据 -->
+    <select id="getCommentByReplyId" parameterType="String" resultType="com.lylblog.project.system.comment.bean.CommentBean">
+        select
+            comment.*,
+            user.nickname as commitName
+        from sys_comment comment
+        left join m_user user on comment.submitPerson = user.yhnm
+        where commentId = #{replyId}
+    </select>
+
     <!-- 通过文章内码查询总评论数量 -->
     <select id="totalCommentCountByWznm" resultType="int" parameterType="String">
         select count(1) from sys_comment where wznm = #{wznm}

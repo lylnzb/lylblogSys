@@ -126,4 +126,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                signature
         from m_user where yhnm = #{yhnm}
     </select>
+
+    <!-- 查询个人动态信息总数 -->
+    <select id="queryDynamicInfoCount" resultType="int" parameterType="com.lylblog.project.common.bean.DynamicBean">
+        select count(1) from web_dynamic where operYhnm = #{operYhnm}
+    </select>
+
+    <!-- 查询个人动态信息 -->
+    <select id="queryDynamicInfo" resultType="com.lylblog.project.common.bean.DynamicBean" parameterType="com.lylblog.project.common.bean.DynamicBean">
+        select web.*, m1.nickname as commentName, m.nickName, CONCAT('/profile/', iconUrl) as nickIcon from web_dynamic web
+        left join m_user m on web.operYhnm = m.yhnm
+        left join m_user m1 on web.commentYhnm = m1.yhnm
+        left join m_user_icon icon on icon.yhnm = m.yhnm and isActivity = '1'
+        where operYhnm = #{operYhnm} order by operTime desc
+        <if test="limit != null and limit != ''">
+            limit #{page}, #{limit}
+        </if>
+    </select>
 </mapper>

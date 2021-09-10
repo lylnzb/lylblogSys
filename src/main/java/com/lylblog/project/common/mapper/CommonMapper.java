@@ -1,9 +1,6 @@
 package com.lylblog.project.common.mapper;
 
-import com.lylblog.project.common.bean.AreaBean;
-import com.lylblog.project.common.bean.LabelBean;
-import com.lylblog.project.common.bean.MenuBean;
-import com.lylblog.project.common.bean.MusicBean;
+import com.lylblog.project.common.bean.*;
 import com.lylblog.project.system.blogSet.bean.BlogSetBean;
 import com.lylblog.project.system.dict.bean.DictDataBean;
 import org.apache.ibatis.annotations.Mapper;
@@ -72,4 +69,11 @@ public interface CommonMapper {
      * @return
      */
     List<AreaBean> getAreaByCityCode(@Param("code") String code);
+
+    /**
+     * 新增个人动态数据
+     * @param dynamic
+     * @return
+     */
+    int insertDynamicInfo(DynamicBean dynamic);
 }

@@ -3,8 +3,10 @@ package com.lylblog.project.webSite.user.controller;
 import com.lylblog.common.util.StringUtil;
 import com.lylblog.common.util.file.FileUploadUtil;
 import com.lylblog.common.util.shiro.ShiroUtils;
+import com.lylblog.project.common.bean.DynamicBean;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.login.bean.UserLoginBean;
+import com.lylblog.project.login.service.LoginService;
 import com.lylblog.project.system.admin.bean.UserIconBean;
 import com.lylblog.project.system.admin.service.AdminService;
 import com.lylblog.project.webSite.user.bean.*;
@@ -33,12 +35,15 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private LoginService loginService;
+
+    @Autowired
     private AdminService adminService;
 
     @RequestMapping("/userCenter")
     public String blogList(Model model){
         //获取当前用户信息
-        UserLoginBean user = ShiroUtils.getUserInfo();
+        UserLoginBean user = loginService.findUserByEmail(ShiroUtils.getUserInfo().getEmail());
 
         int isbindingEmail = userService.isbindingEmail();
         int isSetupPwd = userService.isSetupPwd();
@@ -46,6 +51,12 @@ public class UserController {
         model.addAttribute("isbindingEmail", isbindingEmail == 1?true:false);
         //是否已设置密码
         model.addAttribute("isSetupPwd", isSetupPwd == 1?true:false);
+        //用户昵称
+        model.addAttribute("nickName", user.getNickname());
+        //性别
+        model.addAttribute("sex", "0".equals(user.getSex())?"男":"女");
+        //用户角色
+        model.addAttribute("roleName", user.getRoles().get(0).getRolename());
 
         int num = isbindingEmail + isSetupPwd + 0;
         if(num == 3) {
@@ -153,5 +164,15 @@ public class UserController {
     @ResponseBody
     public ResultObj queryPersonalData(){
         return userService.queryPersonalData();
+    }
+
+    /**
+     * 查询个人动态信息
+     * @return
+     */
+    @RequestMapping("/queryDynamicInfo")
+    @ResponseBody
+    public ResultObj queryDynamicInfo(@RequestBody DynamicBean dynamic){
+        return userService.queryDynamicInfo(dynamic);
     }
 }

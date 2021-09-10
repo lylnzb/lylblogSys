@@ -629,6 +629,11 @@ a {
     font-weight: 400;
 }
 
+.menu-item:hover {
+    background: #f6f7f8;
+    font-weight: 500;
+}
+
 .menu-item .menu-item-like, .menu-lock-item .menu-item-like {
     position: absolute;
     bottom: 12px;
@@ -660,7 +665,7 @@ a {
     overflow: hidden;
 }
 
-.collection-list .titleHead {
+.list-wrap .titleHead {
     padding: 0 16px;
     height: 85px;
     border-bottom: 1px solid #ededed;
@@ -671,7 +676,7 @@ a {
     height: 32px;
 }
 
-.collection-list li .collection-dir {
+.list-wrap .collection-dir {
     width: 89%;
     font-size: 14px!important;
     color: #555666;
@@ -680,21 +685,21 @@ a {
     overflow: hidden;
 }
 
-.collection-list li .collection-folder-name i {
+.list-wrap .collection-folder-name i {
     width: 16px;
     position: relative;
     left: 8px;
     cursor:url('../../img/cur/link.cur'), pointer;
 }
 
-.collection-list li .collection-info {
+.list-wrap .collection-info {
     width: 85%;
     font-size: 14px;
     overflow: hidden;
     margin-top: 10px;
 }
 
-.collection-list .collection-desc {
+.list-wrap .collection-desc {
     width: 450px!important;
     margin-top: 20px;
     white-space: nowrap;
@@ -709,14 +714,14 @@ a {
     text-align: justify;
 }
 
-.collection-list .collection-edit-box {
+.list-wrap .collection-edit-box {
     float: right;
-    width: 300px;
+    width: 200px;
     text-align: right;
     margin-top: -30px;
 }
 
-.collection-list li .collection-info em {
+.list-wrap .collection-info em {
     color: #108ee9;
 }
 
@@ -736,7 +741,7 @@ a {
     line-height: 52px;
 }
 
-.collection-list li .collection-dir {
+.list-wrap .collection-dir {
     width: 89%;
     font-size: 14px!important;
     color: #555666;
@@ -758,7 +763,7 @@ a {
     line-height: 52px;
 }
 
-.collection-list li .collect-detail-right {
+.list-wrap .collect-detail-right {
     position: absolute;
     right: 0;
     width: 150px;
@@ -795,7 +800,6 @@ a {
 .subtitle {
     overflow: hidden;
     text-overflow: ellipsis;
-    display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
 }
@@ -1034,4 +1038,60 @@ a {
 
 .avatar-btns button {
     height: 35px;
+}
+
+.input-edit-box {
+    width: 400px;
+    height: 32px;
+}
+
+.input-edit-box .el-input {
+    width: 200px;
+}
+
+.input-edit-box .collection-edit-name {
+    float: left;
+}
+
+.el-input {
+    position: relative;
+    font-size: 14px;
+    display: inline-block;
+    width: 100%;
+}
+
+.input-edit-box input {
+    height: 32px!important;
+    line-height: 32px!important;
+}
+
+.el-input__inner {
+    -webkit-appearance: none;
+    background-color: #fff;
+    background-image: none;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: #606266;
+    display: inline-block;
+    font-size: inherit;
+    height: 40px;
+    line-height: 40px;
+    outline: 0;
+    padding: 0 15px;
+    -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+    width: 100%;
+}
+
+.input-edit-box img {
+    display: block;
+    float: left;
+    width: 24px;
+    margin: 4px 0 0 15px;
+}
+
+#favoriteList {
+    max-height: 150px!important;
 }
