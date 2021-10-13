@@ -184,6 +184,17 @@
                 <div class="department_main">
                     <div class="layui-form-item">
                         <div class="layui-inline">
+                            <label class="layui-form-label" style = 'width: 300px;font-weight: bold'>网站上线时间：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="basicsetWebSiteOnlineTime" id="basicsetWebSiteOnlineTime" lay-verify="basicsetWebSiteOnlineTime" autocomplete="off"
+                                       class="layui-input" style="width: 673px" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="department_main">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
                             <label class="layui-form-label" style = 'width: 300px;font-weight: bold'>全局允许评论：</label>
                             <div class="layui-input-inline">
                                 <input type="checkbox" id="basicsetGlobalAllowComment" name="basicsetGlobalAllowComment" lay-skin="switch" lay-text="ON|OFF" checked="" style="height: 24.4px">
@@ -266,7 +277,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;原创版权声明信息：</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="basicsetCopyrightNoticeInfo" id="basicsetCopyrightNoticeInfo" lay-verify="basicsetCopyrightNoticeInfo" autocomplete="off"
+                                <input type="text" name="basicsetCopyrightNoticeInfo" id="basicsetCopyrightNoticeInfo" lay-verify="basicsetCopyrightNoticeInfo"
                                        class="layui-input" style="width: 673px">
                             </div>
                         </div>
@@ -368,7 +379,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="department_main">
+                <div class="department_main" style="margin-top: 15px">
                     <div class="layui-form-item">
                         <label class="layui-form-label" style="width: 300px;font-weight: bold"><font color='red'>*</font>&nbsp;背景图片：</label>
                         <div class="layui-input-inline">
@@ -493,7 +504,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="layui-form-item">
+                    <div class="layui-form-item" style="margin-top: 15px">
                         <div class="layui-inline">
                             <label class="layui-form-label" style = 'width: 300px;font-weight: bold'><font color='red'>*</font>&nbsp;侧边栏友情链接：</label>
                             <div class="layui-input-inline">
@@ -513,7 +524,6 @@
                                 <input type="text" name="eamilsetUsername" id="eamilsetUsername" lay-verify="eamilsetUsername" autocomplete="off"
                                        class="layui-input" style="width: 673px;">
                             </div>
-                            <span class="help-block m-b-none" style="margin-top: 32px;margin-left: 300px;"><i class="fa fa-info-circle"></i> qq邮箱则为smtp.qq.com,163邮箱则为smtp.163.com</span>
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -532,6 +542,7 @@
                                 <input type="text" name="eamilsetHost" id="eamilsetHost" lay-verify="eamilsetHost" autocomplete="off"
                                        class="layui-input" style="width: 673px;">
                             </div>
+                            <span class="help-block m-b-none" style="margin-top: 32px;margin-left: 300px;"><i class="fa fa-info-circle"></i> qq邮箱则为smtp.qq.com,163邮箱则为smtp.163.com</span>
                         </div>
                     </div>
                     <div class="layui-form-item">

@@ -3,6 +3,7 @@ package com.lylblog.project.common.mapper;
 import com.lylblog.project.common.bean.*;
 import com.lylblog.project.system.blogSet.bean.BlogSetBean;
 import com.lylblog.project.system.dict.bean.DictDataBean;
+import com.lylblog.project.webSite.index.bean.ArticleListBean;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -17,6 +18,13 @@ public interface CommonMapper {
      * @return
      */
     List<DictDataBean> queryCodeValue(@Param("dictType") String dictType);
+
+    /**
+     * 根据编码类别和字典值查询字典
+     * @param dictType
+     * @return
+     */
+    DictDataBean queryCodeValueByCode(@Param("dictType") String dictType, @Param("values") String values);
 
     /**
      * 查询音乐列表
@@ -36,6 +44,12 @@ public interface CommonMapper {
      * @return
      */
     List<LabelBean> getLabelList(@Param("columnId") String columnId);
+
+    /**
+     * 获取站长推荐文章信息
+     * @return
+     */
+    List<ArticleListBean> getBlogRecommended(@Param("page") String page);
 
     /**
      * 获取博客配置信息
@@ -76,4 +90,10 @@ public interface CommonMapper {
      * @return
      */
     int insertDynamicInfo(DynamicBean dynamic);
+
+    /**
+     * 查询网站统计数据
+     * @return
+     */
+    WebSiteTjBean queryWebSiteTjInfo();
 }

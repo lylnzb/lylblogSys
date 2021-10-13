@@ -115,4 +115,6 @@ public interface UserMapper {
      * @return
      */
     List<DynamicBean> queryDynamicInfo(DynamicBean dynamic);
+
+
 }

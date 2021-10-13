@@ -2,6 +2,10 @@ a:hover, a:focus, a:active, a.active {
     cursor: url('/img/cur/link.cur'), pointer;
 }
 
+label:hover, label:focus, label:active, label.active {
+    cursor: url('/img/cur/link.cur'), pointer;
+}
+
 /* 遮盖层 */
 .bg{
     background-color: #000;
@@ -17,7 +21,7 @@ a:hover, a:focus, a:active, a.active {
 }
 .login {
     position:fixed;
-    z-index: 9997;
+    z-index: 9999;
     display: none;
 }
 .userLogin .close.icon{
@@ -99,7 +103,7 @@ login-wrap-box .password, .login-wrap-box .username {
     position: relative;
     cursor: text;
 }
-.login-wrap-box .password-label, .login-wrap-box .username-label {
+.login-wrap-box .password-label, .login-wrap-box .username-label, .login-wrap-box .nickname-label {
     position: relative;
     display: block;
     margin-top: 20px;
@@ -170,4 +174,11 @@ login-wrap-box .password, .login-wrap-box .username {
 }
 .separated {
     margin-top: 44px;
+}
+
+#sendBtn, #sendCodeBtn {
+    width: 100px;
+    text-align: center;
+    color: darkgray;
+    cursor: not-allowed;
 }

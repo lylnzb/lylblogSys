@@ -81,4 +81,10 @@ public interface UserService {
      * @return
      */
     ResultObj queryDynamicInfo(DynamicBean dynamic);
+
+    /**
+     * 账号注销
+     * @return
+     */
+    ResultObj accountCancel();
 }

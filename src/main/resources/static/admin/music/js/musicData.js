@@ -76,9 +76,18 @@ layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], functi
                     return "《" + data.gedanName + "》";
                 }
              }
-            ,{field:'languageName', title:'语种', width:'6%', align:'center'}
-            ,{field:'styleName', title:'风格', width:'6%', align:'center'}
-            ,{field:'valid', title:'状态', width:'7%', align:'center', templet : '#valId'}
+            ,{field:'languageName', title:'语种', width:'6%', align:'center', templet : function(data){
+                    return selectDictLabel('web_music_language', data.languages);
+                }
+            }
+            ,{field:'styleName', title:'风格', width:'6%', align:'center', templet : function(data){
+                    return selectDictLabel('web_music_style', data.style);
+                }
+            }
+            ,{field:'valid', title:'状态', width:'7%', align:'center', templet : function(data){
+                    return selectDictLabel('sys_status', data.valid);
+                }
+             }
             ,{field:'nickName', title:'发布人', width:'10%', align:'center'}
             ,{field:'createTime', title:'发布时间', width:'14.6%', align:'center'}
             ,{field:'right', title:'操作', width:'12.4%', align:'center', toolbar: '#barDemo'},

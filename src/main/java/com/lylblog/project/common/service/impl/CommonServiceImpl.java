@@ -13,9 +13,12 @@ import com.lylblog.project.system.blogSet.bean.BlogSetBean;
 import com.lylblog.project.system.comment.bean.CommentBean;
 import com.lylblog.project.system.comment.mapper.CommentMapper;
 import com.lylblog.project.system.dict.bean.DictDataBean;
+import com.lylblog.project.system.log.bean.BrowseLogBean;
+import com.lylblog.project.system.log.mapper.LogMapper;
 import com.lylblog.project.webSite.blog.bean.WebArticleBean;
 import com.lylblog.project.webSite.comment.bean.WebCommentBean;
 import com.lylblog.project.webSite.comment.bean.WebGreatBean;
+import com.lylblog.project.webSite.index.bean.ArticleListBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.lylblog.framework.config.*;
@@ -37,6 +40,9 @@ public class CommonServiceImpl implements CommonService {
     @Resource
     private CommentMapper commentMapper;
 
+    @Resource
+    private LogMapper logMapper;
+
     /**
      * 根据编码类别查询字典
      * @param dictType
@@ -45,6 +51,16 @@ public class CommonServiceImpl implements CommonService {
     public ResultObj queryCodeValue(String dictType){
         List<DictDataBean> dictDataList = commonMapper.queryCodeValue(dictType);
         return ResultObj.ok(dictDataList);
+    }
+
+    /**
+     * 根据编码类别和字典值查询字典
+     * @param dictType
+     * @return
+     */
+    public ResultObj queryCodeValueByCode(String dictType, String values) {
+        DictDataBean dictDataBean = commonMapper.queryCodeValueByCode(dictType, values);
+        return ResultObj.ok(dictDataBean);
     }
 
     /**
@@ -91,6 +107,16 @@ public class CommonServiceImpl implements CommonService {
     public ResultObj getLabelList(String columnId){
         List<LabelBean> labelList = commonMapper.getLabelList(columnId);
         return ResultObj.ok(labelList.size(), labelList);
+    }
+
+    /**
+     * 获取站长推荐文章信息
+     * @return
+     */
+    public ResultObj getBlogRecommended() {
+        BlogSetBean blogSet = commonMapper.getBlogConfiguration();
+        List<ArticleListBean> articleList = commonMapper.getBlogRecommended(blogSet.getBlogsetRecommendedShowNum().toString());
+        return ResultObj.ok(articleList.size(), articleList);
     }
 
     /**
@@ -184,4 +210,18 @@ public class CommonServiceImpl implements CommonService {
         }
         commonMapper.insertDynamicInfo(dynamic);
     }
+
+    /**
+     * 新增博客浏览日志记录
+     * @param browseLog
+     * @return
+     */
+   public ResultObj insertBlogBrowseLogInfo(BrowseLogBean browseLog){
+       int count = logMapper.insertBlogBrowseLogInfo(browseLog);
+       if(count > 0){
+           return ResultObj.ok();
+       }
+       return ResultObj.fail();
+   }
+
 }

@@ -1,6 +1,8 @@
 package com.lylblog.project.webSite.message.service.impl;
 
+import com.lylblog.common.util.file.FileUploadUtil;
 import com.lylblog.common.util.shiro.ShiroUtils;
+import com.lylblog.framework.config.LylBlogConfig;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.common.service.CommonService;
 import com.lylblog.project.login.bean.UserLoginBean;
@@ -11,6 +13,7 @@ import com.lylblog.project.webSite.message.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -34,11 +37,25 @@ public class MessageServiceImpl implements MessageService {
      * @param commentBean
      * @return
      */
-    public ResultObj addMessage(CommentBean commentBean){
+    public ResultObj addMessage(CommentBean commentBean, MultipartFile file){
+        if(null == commentBean.getCommentContent() || "".equals(commentBean.getCommentContent())) {
+            return ResultObj.fail("留言内容不能为空");
+        }
+
         //获取当前用户信息
         UserLoginBean userBean = ShiroUtils.getUserInfo();
         commentBean.setSubmitPerson(userBean.getYhnm());//提交人用户编码
         commentBean.setCommentType("2");//评论类型（1.文章评论、2.留言反馈）
+
+        if(null != file){
+            String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+            try {
+                String fileurl = FileUploadUtil.upload(LylBlogConfig.getArticlefile(), file, "commentImg/" + commentBean.getWznm(), suffix);
+                commentBean.setImgPath(fileurl);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         int count = commentMapper.addComment(commentBean);
         if(count > 0){

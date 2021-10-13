@@ -1,5 +1,6 @@
 package com.lylblog.project.system.log.mapper;
 
+import com.lylblog.project.system.log.bean.BrowseLogBean;
 import com.lylblog.project.system.log.bean.LogDetailBean;
 import com.lylblog.project.system.log.bean.LoginLogBean;
 import com.lylblog.project.system.log.bean.OperLogBean;
@@ -14,6 +15,13 @@ import java.util.List;
  */
 @Mapper
 public interface LogMapper {
+
+    /**
+     * 新增博客浏览日志记录
+     * @param browseLog
+     * @return
+     */
+    int insertBlogBrowseLogInfo(BrowseLogBean browseLog);
 
     /**
      * 新增用户登录日志记录

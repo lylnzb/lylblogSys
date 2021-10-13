@@ -20,6 +20,8 @@ function showImg(id,file){
     }else if(id == 2){
         $("#imageBox2").show();
     }
+
+    uploadFile = file.files[0];
 }
 
 $(document).on('click','.reply',function(){
@@ -32,10 +34,10 @@ $(document).on('click','.reply',function(){
     html += '        <div class="emoji" style="display:inline-block;">';
     html += '            <i style="font-size: 30px;cursor:pointer;" class="smile icon emotion"></i>';
     html += '        </div>';
-    html += '        <div class="image" style="display:inline-block;">';
+    html += '        <div style="display:inline-block;">';
     html += '            <div id="imageBox2" style="display: none">';
     html += '                <img id="showimg2" src="" alt=""/>';
-    html += '                <i id="close2" class="close icon" onclick="$(\'#imageBox2\').hide()"></i>';
+    html += '                <i id="close2" class="close icon" onclick="$(\'#imageBox2\').hide()" style="margin-top: -135px;margin-left: 130px;position: absolute;"></i>';
     html += '                <i class="caret up"></i>';
     html += '            </div>';
     html += '            <div id="uploadImg">';
@@ -96,12 +98,15 @@ $('.newslist li').mouseout(function(){
  * 评论发布
  */
 function releaseComment(type, wznm, commentId){
+    var isLogin = $("#isAuthenticated").val();
     if(isLogin == 'false'){
         $(".bg").show();
         $(".login").show();
         $(".userLogin").show();
         $(".userRegister").hide();
         $(".userRetrievePas").hide();
+
+        autoCenter();
     }else {
         var paramData = new Object();
         if(type == 1){
@@ -111,12 +116,18 @@ function releaseComment(type, wznm, commentId){
             paramData.commentContent = $("#reply").html();
         }
         paramData.wznm = wznm;
+
+        var formData=new FormData();
+        formData.append("file", uploadFile);
+        formData.append("paramData", JSON.stringify(paramData));
         $.ajax({
             url: basePath + "comment/releaseComment",
             type:"POST",
-            data:JSON.stringify(paramData),
+            data:formData,
             dataType:"json",
-            contentType : 'application/json;charset=utf-8',
+            processData:false,//对data参数进行序列化处理
+            contentType:false,//内容编码类型
+            cache:false,//不使用缓存
             //设置ajax请求结束后的执行动作
             complete : function(XMLHttpRequest) {
                 // 通过XMLHttpRequest取得响应头
@@ -161,26 +172,21 @@ function commentList(wznm, page, limit){
             if(resultData.code == 0){
                 var data = resultData.data;
                 layui.use(['laypage', 'layer'], function () {
-                    $("#noComment").hide();
-
-                    var page = layui.laypage;
-                    page.render({
-                        elem: 'page',
-                        count: resultData.count,
-                        curr: paramData.page,
-                        limit: paramData.limit,
-                        jump: function (obj, first) {
-                            if (!first) {
-                                commentList(wznm, obj.curr, obj.limit)
-                            }
-                        }
-                    });
+                    htmlStr += '<h3 class="sideTab-title">';
+                    htmlStr += '    评论列表 ';
+                    htmlStr += '</h3>';
+                    htmlStr += '<div class="commentList" style="color: #333;font-size: 14px;width: 100%;margin-top: 20px;">';
+                    htmlStr += '    <div class="ui comments" id="commentList" style="margin-top: -10px;">';
                     for(var i = 0;i < data.length;i++){
                         var style = "";
                         if(data[i].giveLike){
                             style = "color: red";
                         }
-                        htmlStr += '<div class="comment">';
+                        var bottom = "";
+                        if(i == data.length - 1){
+                            bottom = "style='margin-bottom: 20px;'";
+                        }
+                        htmlStr += '<div class="comment" ' + bottom + '>';
                         htmlStr += '    <a class="avatar">';
                         htmlStr += '        <img src="/profile/' + data[i].iconUrl + '">';
                         htmlStr += '    </a>';
@@ -190,16 +196,20 @@ function commentList(wznm, page, limit){
                         htmlStr += '            <span class="date">' + data[i].time + '</span>';
                         htmlStr += '        </div>';
                         htmlStr += '        <div class="text" style="margin-top: 7px">' + data[i].content + '</div>';
-                        htmlStr += '        <div class="imgShow">';
-                        htmlStr += '            <img class="comment-item-img" style="display: block;width: 75pt;margin-top: 5px;transition: .3s;margin-bottom: 5px;" src="/img/background.png" data-action="zoom">';
-                        htmlStr += '        </div>';
+                        if(null != data[i].imgPath && "" != data[i].imgPath){
+                            htmlStr += '    <div class="imgShow">';
+                            htmlStr += '        <img class="comment-item-img" style="display: block;width: 75pt;margin-top: 5px;transition: .3s;margin-bottom: 5px;" src="' + '/articlefile/' + data[i].imgPath + '" data-action="zoom">';
+                            htmlStr += '    </div>';
+                        }
                         htmlStr += '        <div class="actions">';
                         htmlStr += '            <a class="reply" data-id="'+ data[i].id +'" style="display:inline-block;font-size: 15px;font-weight: bold;">回复</a>';
                         htmlStr += '            <div class="like" style="display:inline-block;margin-left: -10px;">';
                         htmlStr += '                <button class="icobutton icobutton--thumbs-up" style="' + style + '"><span data-id="'+ data[i].id +'" data-text="' + data[i].giveLike + '" class="fa fa fa-thumbs-o-up" id="effect-' + i + '" style="font-size: 14px;font-weight: bold;"></span></button><span class="num" style="color: #666;font-size: 14px;font-weight: bold;display: inline-block;margin-left: 2px;">' + data[i].praiseNum + '</span>';
                         htmlStr += '            </div>';
                         htmlStr += '        </div>';
-                        htmlStr += '        <div class="ui divider" style="margin-top: 10px"></div>';
+                        if(i != (data.length - 1) || data[i].childCommentList.length != 0){
+                            htmlStr += '    <div class="ui divider" style="margin-top: 10px"></div>';
+                        }
                         htmlStr += '    </div>';
                         htmlStr += '    <div class="comments" style="margin-top: -15px;margin-bottom: -28px;">';
                         for(var j = 0;j < data[i].childCommentList.length;j++){
@@ -215,25 +225,56 @@ function commentList(wznm, page, limit){
                             htmlStr += '                  <span class="date">' + data[i].childCommentList[j].time + '</span>';
                             htmlStr += '              </div>';
                             htmlStr += '              <div class="text" style="margin-top: 7px">' + data[i].childCommentList[j].content + '</div>';
+                            if(null != data[i].childCommentList[j].imgPath && "" != data[i].childCommentList[j].imgPath){
+                                htmlStr += '          <div class="imgShow">';
+                                htmlStr += '              <img class="comment-item-img" style="display: block;width: 75pt;margin-top: 5px;transition: .3s;margin-bottom: 5px;" src="' + '/articlefile/' + data[i].childCommentList[j].imgPath + '" data-action="zoom">';
+                                htmlStr += '          </div>';
+                            }
                             htmlStr += '              <div class="actions">';
                             htmlStr += '                  <a class="reply" data-id="'+ data[i].childCommentList[j].id +'" style="display:inline-block;font-size: 15px;font-weight: bold;">回复</a>';
                             htmlStr += '                  <div class="like" style="display:inline-block;margin-left: -10px;">';
                             htmlStr += '                      <button class="icobutton icobutton--thumbs-up" style="' + style + '"><span data-id="'+ data[i].childCommentList[j].id +'" data-text="' + data[i].childCommentList[j].giveLike + '" class="fa fa fa-thumbs-o-up" id="effect-' + i + '-' + j + '" style="font-size: 14px;font-weight: bold"></span></button><span class="num" style="color: #666;font-size: 14px;font-weight: bold;display: inline-block;margin-left: 2px;">' + data[i].childCommentList[j].praiseNum + '</span>';
                             htmlStr += '                  </div>';
                             htmlStr += '              </div>';
-                            htmlStr += '              <div class="ui divider" style="margin-top: 10px"></div>';
+                            if(i != (data.length - 1) || j != data[i].childCommentList.length -1){
+                                htmlStr += '    <div class="ui divider" style="margin-top: 10px"></div>';
+                            }
                             htmlStr += '           </div>';
                             htmlStr += '        </div>';
                         }
                         htmlStr += '    </div>';
                         htmlStr += '</div>';
                     }
-                    $("#commentList").html(htmlStr);
+                    htmlStr += '    </div>';
+                    htmlStr += '</div>';
+                    $(".commentInfo").html(htmlStr);
                     //点赞特效
                     giveLike();
+
+                    var page = layui.laypage;
+                    page.render({
+                        elem: 'page',
+                        count: resultData.count,
+                        curr: paramData.page,
+                        limit: paramData.limit,
+                        theme: '#108EE9',
+                        first: '<em>首页</em>',
+                        last: '<em>尾页</em>',
+                        prev: '<em>上页</em>',
+                        next: '<em>下页</em>',
+                        jump: function (obj, first) {
+                            if (!first) {
+                                commentList(wznm, obj.curr, obj.limit)
+                            }
+                            $(".pagePlug").show();
+                        }
+                    });
                 })
             }else {
-                $("#noComment").show();
+                htmlStr += '<div id="noComment">';
+                htmlStr += '    <label>还没有人评论？赶快抢个沙发~</label>';
+                htmlStr += '</div>';
+                $(".commentInfo").html(htmlStr);
             }
         }
     });

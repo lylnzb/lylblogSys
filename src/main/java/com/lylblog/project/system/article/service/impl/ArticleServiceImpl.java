@@ -57,7 +57,7 @@ public class ArticleServiceImpl implements ArticleService {
         //文章保存目录
         String fileDirectory = "";
         if(null != articleBean.getFile() && !"".equals(articleBean.getFile())){
-            fileDirectory = "/" + wznm + "/" + articleName + "." + FileUtil.checkImageBase64Format(articleBean.getFile());
+            fileDirectory = "/blogImg/" + wznm + "/" + articleName + "." + FileUtil.checkImageBase64Format(articleBean.getFile());
             //图片保存到本地
             boolean flag = FileUtil.GenerateImage(articleBean.getFile(), filePath + fileDirectory);
             if(!flag){
@@ -165,5 +165,32 @@ public class ArticleServiceImpl implements ArticleService {
         }
     }
 
+    /**
+     * 设置文章是否置顶
+     * @param wznm
+     * @param value
+     * @return
+     */
+    public ResultObj updateArticleToOnTop(String wznm, String value){
+        int count = articleMapper.updateArticleToOnTop(wznm, value);
+        if(count > 0){
+            return ResultObj.ok("修改成功");
+        }
+        return ResultObj.fail("修改失败");
+    }
+
+    /**
+     * 设置文章是否推荐
+     * @param wznm
+     * @param value
+     * @return
+     */
+    public ResultObj updateArticleToIselite(String wznm, String value) {
+        int count = articleMapper.updateArticleToIselite(wznm, value);
+        if(count > 0){
+            return ResultObj.ok("修改成功");
+        }
+        return ResultObj.fail("修改失败");
+    }
 
 }

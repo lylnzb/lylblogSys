@@ -3,7 +3,11 @@ package com.lylblog.project.common.service;
 import com.lylblog.project.common.bean.AreaBean;
 import com.lylblog.project.common.bean.LabelBean;
 import com.lylblog.project.common.bean.ResultObj;
+import com.lylblog.project.common.bean.WebSiteTjBean;
 import com.lylblog.project.system.blogSet.bean.BlogSetBean;
+import com.lylblog.project.system.dict.bean.DictDataBean;
+import com.lylblog.project.system.log.bean.BrowseLogBean;
+import com.lylblog.project.webSite.index.bean.ArticleListBean;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -16,6 +20,13 @@ public interface CommonService {
      * @return
      */
     ResultObj queryCodeValue(String dictType);
+
+    /**
+     * 根据编码类别和字典值查询字典
+     * @param dictType
+     * @return
+     */
+    ResultObj queryCodeValueByCode(String dictType, String values);
 
     /**
      * 查询音乐列表
@@ -35,6 +46,12 @@ public interface CommonService {
      * @return
      */
     ResultObj getLabelList(String columnId);
+
+    /**
+     * 获取站长推荐文章信息
+     * @return
+     */
+    ResultObj getBlogRecommended();
 
     /**
      * 获取博客配置信息
@@ -68,4 +85,12 @@ public interface CommonService {
      * @param type
      */
     void aspectDynamicInfo(Object obj, int type);
+
+    /**
+     * 新增博客浏览日志记录
+     * @param browseLog
+     * @return
+     */
+    ResultObj insertBlogBrowseLogInfo(BrowseLogBean browseLog);
+
 }

@@ -182,7 +182,7 @@ a:hover, a:focus, a:active, a.active {
 }
 
 .friendlink .site_tj li{
-    float: left;
+    display: inline-block;
 }
 
 .friendlink .site_tj li a{
@@ -248,9 +248,4 @@ a:hover, a:focus, a:active, a.active {
     display: none;
     margin-left: 120px;
     margin-top: -25px;
-}
-
-.tj li {
-    height: 30px;
-    font-size: 14px;
 }

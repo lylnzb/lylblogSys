@@ -25,6 +25,11 @@ public class IndexController {
         return "/about/aboutMe";
     }
 
+    @RequestMapping("/blogTouGao")
+    public String blogTouGao(){
+        return "/about/blogContribute";
+    }
+
     /**
      * 展示网站首页轮播图信息
      * @return

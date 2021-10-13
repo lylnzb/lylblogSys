@@ -3,6 +3,7 @@ package com.lylblog.project.webSite.comment.service;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.system.comment.bean.CommentBean;
 import com.lylblog.project.webSite.comment.bean.WebGreatBean;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @Author: lyl
@@ -15,7 +16,7 @@ public interface WebCommentService {
      * @param commentBean
      * @return
      */
-    ResultObj addComment(CommentBean commentBean);
+    ResultObj addComment(CommentBean commentBean, MultipartFile file);
 
     /**
      * 网站评论列表信息查询

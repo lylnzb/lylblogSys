@@ -64,6 +64,16 @@ $(".ok").click(function(){
                         data:JSON.stringify(paramData),
                         dataType:"json",
                         contentType : 'application/json;charset=utf-8',
+                        //设置ajax请求结束后的执行动作
+                        complete : function(XMLHttpRequest) {
+                            // 通过XMLHttpRequest取得响应头
+                            var redirect = XMLHttpRequest.getResponseHeader("isLogin");//未登录
+                            if (redirect == 'false') {
+                                localRefresh('/common/headerRefresh', '#header');
+                                $(".bg").show();
+                                top.layer.close(index);
+                            }
+                        },
                         success:function(resultData){
                             if(resultData.code==0){
                                 cocoMessage.success("您的申请已提交，请等待审核通过。", 3000); //duration为0时显示关闭按钮
@@ -150,9 +160,9 @@ function showFriendLinkInfo(){
             console.log(resultData);
             var htmlStr = '';
             for(var i = 0;i < Object.keys(resultData).length;i++){
-                htmlStr += '<div class="ui secondary pointing menu" style="width: 100%;">';
-                htmlStr += '    <a class="item active" data-tab="tab-name' + (i + 1) + '">' + Object.keys(resultData)[i] + '</a>';
-                htmlStr += '    <div class="right menu">';
+                htmlStr += '<h3 class="sideTab-title">';
+                htmlStr +=      Object.keys(resultData)[i];
+                htmlStr += '    <div class="right menu" style="float: right;margin-top: -5px">';
                 htmlStr += '        <div class="item">';
                 htmlStr += '            <div class="ui transparent icon input">';
                 htmlStr += '                <span class="ly_button">';
@@ -161,18 +171,16 @@ function showFriendLinkInfo(){
                 htmlStr += '            </div>';
                 htmlStr += '        </div>';
                 htmlStr += '    </div> ';
-                htmlStr += '</div>';
-                htmlStr += '<div class="ui tab active" data-tab="tab-name' + (i + 1) + '">';
-                htmlStr += '    <ul class="site_tj" class="webmasterRec" style="margin-top: -15px;padding-bottom: 10px;"> ';
+                htmlStr += '</h3>';
+                htmlStr += '<ul class="site_tj" class="webmasterRec" style="margin-top: -5px;padding-bottom: 40px;"> ';
                 for(var j = 0;j < Object.values(resultData)[i].length;j++){
                     var target = '';
                     if(Object.values(resultData)[i][j].target == 1){
                         target = 'target="_blank"';
                     }
-                    htmlStr += '   <li><a href="' + Object.values(resultData)[i][j].url + '" ' + target + '>' + Object.values(resultData)[i][j].title + '</a></li>';
+                    htmlStr += '<li><a href="' + Object.values(resultData)[i][j].url + '" ' + target + '>' + Object.values(resultData)[i][j].title + '</a></li>';
                 }
-                htmlStr += '    </ul>';
-                htmlStr += '</div>';
+                htmlStr += '</ul>';
             }
             $(".friendlink").html(htmlStr);
         },

@@ -1,4 +1,51 @@
-var basePath="http://www.lylBlog.com/";//业务系统basePath
+var basePath="http://www.lylblog.com/";//业务系统basePath
+// var basePath="http://289755ii86.wicp.vip/";//业务系统basePath
+
+var dialog = document.getElementById("loginPage");
+var diatitle1 = document.getElementById("title1");
+var diatitle2 = document.getElementById("title2");
+var diatitle3 = document.getElementById("title3");
+var isDraging = false; //是否可拖拽的标记
+
+$(function() {
+    getBlogRecommended();
+});
+
+$(window).scroll(function() {
+    if ($(window).scrollTop() > 50) {
+        $(".bt-box.top").fadeIn(200);
+    }else {
+        $(".bt-box.top").fadeOut(200);
+    }
+});
+
+//当点击跳转链接后，回到页面顶部位置
+$(".bt-box.top").click(function() {
+    $('body,html').animate({
+            scrollTop: 0
+        },
+        500);
+    return false;
+});
+
+//当点击跳转链接后，回到页面顶部位置
+$(".bt-box.bottom").click(function() {
+    $('body,html').animate({
+            scrollTop: $(document).height()
+        },
+        500);
+    return false;
+});
+
+$("body").delegate(".newslist li","mouseover", function(){
+    $(this).addClass("active");
+    $(this).siblings(".active").removeClass("active");
+});
+
+$("body").delegate(".newslist li","mouseout", function(){
+    $(this).removeClass("active");
+    $('.newslist li:first-child').addClass("active");
+});
 
 //cocomessage消息提示框 配置全局参数
 cocoMessage.config({duration: 10000});
@@ -94,6 +141,28 @@ function loadSelect(ele,code,form){
 }
 
 /**
+ * 查询字典值
+ * @param dictType
+ * @param value
+ */
+function selectDictLabel(dictType, value){
+    var elem = "";
+    $.ajax({
+        url:basePath+'/common/queryCodeValueByCode?dictType=' + dictType + "&values=" + value,
+        type:"POST",
+        async:false,
+        success:function(data){
+            var obj = data.obj;
+            elem = "<span class='badge badge-" + obj.dictStyle + "' style='margin-top: 5px;'>" + obj.dictLabel + "</span>"
+        },
+        error:function(){
+            alert("初始化选项失败");
+        }
+    });
+    return elem;
+}
+
+/**
  * 所属专栏初始化下拉框的方法
  * @param ele
  * @param code
@@ -171,9 +240,9 @@ function menuInit(){
             var htmlStr = '';
             for(var i = 0; i < data.data.length; i++){
                 if(data.data[i].isDefault == '2'){
-                    htmlStr += '<a href="' + basePath + data.data[i].menuUrl +'" class="m-item item m-mobile-hide" style="float: left"><i class="'+ data.data[i].icon +' icon"></i>'+ data.data[i].menuName +'</a>';
+                    htmlStr += '<a href="' + basePath + data.data[i].menuUrl +'" class="m-item item m-mobile-hide"><i class="'+ data.data[i].icon +' icon"></i>'+ data.data[i].menuName +'</a>';
                 }else if(data.data[i].isDefault == '1'){
-                    htmlStr += '<div class="ui printing dropdown link item" style="float: left" onclick="window.open(\'' + basePath + data.data[i].menuUrl + '\', target=\'_self\')">';
+                    htmlStr += '<div id="menu" class="ui printing dropdown link m-item item m-mobile-hide">';
                     htmlStr += '    <i class="'+ data.data[i].icon +' icon"></i>'+ data.data[i].menuName +'<i class="dropdown icon"></i>';
                     htmlStr += '    <div class="menu" data-filtered="filtered">';
                     for(var j = 0;j < data.data[i].childList.length; j++){
@@ -283,6 +352,8 @@ function Animocon(el, options) {
             $(".userLogin").show();
             $(".userRegister").hide();
             $(".userRetrievePas").hide();
+
+            autoCenter();
         }else {
             var commentId = $(self.el).find("span").attr('data-id');
             var praiseNum = $(self.el).siblings("span").text();
@@ -410,6 +481,9 @@ function giveOrCancelLike(commentId, isGiveLike){
     return falg;
 }
 
+/**
+ * 获取文章标签信息
+ */
 function getLabelInfo(){
     var columnId = GetQueryString("columnId");
     $.ajax({
@@ -419,7 +493,7 @@ function getLabelInfo(){
         success:function(resultData){
             console.log(resultData);
             var data = resultData.data;
-            var htmlStr = '<ul class="sidebar_content divTags">';
+            var htmlStr = '<ul class="sidebar_content divTags" style="margin-top: -15px;margin-left: -5px;">';
             for(var i = 0; i < data.length; i++){
                 htmlStr += '<li><a href="/blog/blogList?columnId=' + columnId + '&labelId=' + data[i].labelId + '" title="' + data[i].labelName + '">' + data[i].labelName + '<span class="tag-count"> (' + data[i].articleNum + ')</span></a></li>';
             }
@@ -432,6 +506,40 @@ function getLabelInfo(){
     });
 }
 
+/**
+ * 查询文章推荐信息
+ */
+function getBlogRecommended() {
+    $.ajax({
+        url:basePath+'/common/getBlogRecommended',
+        type:"POST",
+        contentType : 'application/json;charset=utf-8',
+        success:function(resultData){
+            console.log(resultData);
+            var data = resultData.data;
+            var htmlStr = '';
+            for(var i = 0; i < data.length; i++){
+                var calss = "";
+                if(i == 0){
+                    calss = "active";
+                }
+                htmlStr += '<li class="' + calss + '">';
+                htmlStr += '    <i content="' + (i + 1) + '"></i>';
+                htmlStr += '    <a href="' + data[i].articleUrl + '" target="_blank">' + (data[i].articleTitle.length > 15?(data[i].articleTitle.substr(0, 15) + '...'):data[i].articleTitle) + '</a>';
+                htmlStr += '    <p>' + data[i].articleDec + '</p>';
+                htmlStr += '</li>';
+            }
+            $(".newslist").html(htmlStr);
+        },
+        error:function(){
+            alert("系统异常！");
+        }
+    });
+}
+
+/**
+ * 退出登录
+ */
 function loginOut(){
     $.ajax({
         url: basePath + 'loginOut',
@@ -450,3 +558,187 @@ function loginOut(){
         }
     });
 }
+
+$(document).ready(function() {
+    try {
+        // 操作系统平台
+        var clientPlatform = navigator.platform;
+        // User-agent头部值
+        var clientUserAgent = navigator.userAgent;
+        var clientBrowseMessage = getClientBrowseName(clientUserAgent.toLowerCase());
+        // 浏览器系统
+        var clientBrowsePlatform = clientBrowseMessage[0];
+        // 浏览器真名
+        var clientBrowseName = clientBrowseMessage[1];
+        // 浏览器版本
+        var clientBrowseVersion = clientBrowseMessage[2];
+
+        // 浏览器ip
+        var clientBrowseIp = '未知';
+
+        // 浏览器地理位置
+        var clientBrowseCity = '未知';
+
+        try {
+            clientBrowseIp = returnCitySN["cip"];
+            clientBrowseCity = localAddress["province"] + localAddress["city"];
+            $("#city").text(clientBrowseCity);
+        } catch (err) {
+            // 处理错误
+        }
+
+        var clientBrowseAppAndPc = '未知';
+        if ((clientUserAgent
+            .match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+            clientBrowseAppAndPc = '移动端';
+        } else {
+            clientBrowseAppAndPc = 'PC端';
+        }
+
+        // 浏览地址
+        var clientBrowseUrl = window.location.href;
+
+        var paramDate = {
+            "clientPlatform" : clientPlatform,
+            "clientUserAgent" : clientUserAgent,
+            "clientBrowsePlatform" : clientBrowsePlatform,
+            "clientBrowseName" : clientBrowseName,
+            "clientBrowseVersion" : clientBrowseVersion,
+            "clientBrowseIp" : clientBrowseIp,
+            "clientBrowseCity" : clientBrowseCity,
+            "clientBrowseAppAndPc" : clientBrowseAppAndPc,
+            "clientBrowseUrl" : clientBrowseUrl
+        };
+
+        $.ajax({
+            url : basePath + "/common/insertBlogBrowseLogInfo",
+            type:"POST",
+            data:JSON.stringify(paramDate),
+            dataType:"json",
+            contentType : 'application/json;charset=utf-8',
+            async : false,
+            cache : true,
+            success : function(data) {
+            }
+        });
+
+    } catch (err) {
+        // 处理错误
+    }
+});
+
+// 获取具体浏览器
+function getClientBrowseName(agent) {
+    var arr = [];
+    var system = agent.split(' ')[1].split(' ')[0].split('(')[1];
+    arr.push(system);
+    var regStr_edge = /edge\/[\d.]+/gi;
+    var regStr_ie = /trident\/[\d.]+/gi;
+    var regStr_ff = /firefox\/[\d.]+/gi;
+    var regStr_chrome = /chrome\/[\d.]+/gi;
+    var regStr_saf = /safari\/[\d.]+/gi;
+    var regStr_opera = /opr\/[\d.]+/gi;
+    // IE
+    if (agent.indexOf("trident") > 0) {
+        arr.push(agent.match(regStr_ie)[0].split('/')[0]);
+        arr.push(agent.match(regStr_ie)[0].split('/')[1]);
+        return arr;
+    }
+    // Edge
+    if (agent.indexOf('edge') > 0) {
+        arr.push(agent.match(regStr_edge)[0].split('/')[0]);
+        arr.push(agent.match(regStr_edge)[0].split('/')[1]);
+        return arr;
+    }
+    // firefox
+    if (agent.indexOf("firefox") > 0) {
+        arr.push(agent.match(regStr_ff)[0].split('/')[0]);
+        arr.push(agent.match(regStr_ff)[0].split('/')[1]);
+        return arr;
+    }
+    // Opera
+    if (agent.indexOf("opr") > 0) {
+        arr.push(agent.match(regStr_opera)[0].split('/')[0]);
+        arr.push(agent.match(regStr_opera)[0].split('/')[1]);
+        return arr;
+    }
+    // Safari
+    if (agent.indexOf("safari") > 0 && agent.indexOf("chrome") < 0) {
+        arr.push(agent.match(regStr_saf)[0].split('/')[0]);
+        arr.push(agent.match(regStr_saf)[0].split('/')[1]);
+        return arr;
+    }
+    // Chrome
+    if (agent.indexOf("chrome") > 0) {
+        arr.push(agent.match(regStr_chrome)[0].split('/')[0]);
+        arr.push(agent.match(regStr_chrome)[0].split('/')[1]);
+        return arr;
+    } else {
+        arr.push('未知');
+        arr.push('未知');
+        return arr;
+    }
+}
+
+var time = $("#onlineTime").val();
+let timearr = time.replace(" ", ":").replace(/\:/g, "-").split("-");
+//计时器
+window.siteTime = function(){
+    window.setTimeout("siteTime()", 1000);
+    var seconds = 1000;
+    var minutes = seconds * 60;
+    var hours = minutes * 60;
+    var days = hours * 24;
+    var years = days * 365;
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    var t1 = Date.UTC(parseInt(timearr[0]),parseInt(timearr[1]),parseInt(timearr[2]),parseInt(timearr[3]),parseInt(timearr[4]),parseInt(timearr[5]));
+    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = t2-t1;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+    var html = "";
+    if(diffYears){
+        html += '<span style="color:#C40000;">'+diffYears+'</span>';
+        html += '<span style="color:#2F889A">年</span>';
+        html += '<span style="color:#C40000;">'+diffDays+'</span>';
+        html += '<span style="color:#2F889A">天</span>';
+        html += '<span style="color:#C40000;">'+diffHours+'</span>';
+        html += '<span style="color:#2F889A">时</span>';
+        html += '<span style="color:#C40000;">'+diffMinutes+'</span>';
+        html += '<span style="color:#2F889A">分</span>';
+        html += '<span style="color:#C40000;">'+diffSeconds+'</span>';
+        html += '<span style="color:#2F889A">秒</span>';
+    }else{
+        html += '<span style="color:#C40000;">'+diffDays+'</span>';
+        html += '<span style="color:#2F889A">天</span>';
+        html += '<span style="color:#C40000;">'+diffHours+'</span>';
+        html += '<span style="color:#2F889A">时</span>';
+        html += '<span style="color:#C40000;">'+diffMinutes+'</span>';
+        html += '<span style="color:#2F889A">分</span>';
+        html += '<span style="color:#C40000;">'+diffSeconds+'</span>';
+        html += '<span style="color:#2F889A">秒</span>';
+    }
+    $("#sitetime").html(html);
+}
+
+siteTime();
+
+$(function(){
+    $("#backtop").each(function(){
+        $(this).find(".weixin").mouseenter(function(){
+            $(this).find(".pic").fadeIn("fast")
+        });
+        $(this).find(".weixin").mouseleave(function(){
+            $(this).find(".pic").fadeOut("fast")
+        });
+    });
+});

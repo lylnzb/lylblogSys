@@ -1,11 +1,13 @@
-var isLogin=$("#isAuthenticated").val();
 function openLink(){
+    var isLogin=$("#isAuthenticated").val();
     if(isLogin == 'false'){
         $(".bg").show();
         $(".login").show();
         $(".userLogin").show();
         $(".userRegister").hide();
         $(".userRetrievePas").hide();
+
+        autoCenter();
     }else {
         $(".bg").show();
         $("#friendLinkApply").show();

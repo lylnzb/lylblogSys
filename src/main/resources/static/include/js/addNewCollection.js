@@ -100,6 +100,9 @@ $(".collectionFooter button").on('click', function() {
                 cocoMessage.success(resultData.msg, 3000); //duration为0时显示关闭按钮
                 $(".bg").hide();
                 $(".addCollection").hide();
+                $("#collectionSpan .star.outline.icon").css("color", "red");
+                $("#collectionClick").css("color", "red");
+                $("#collectionNum").text(parseInt($("#collectionNum").text()) + 1);
             }else{
                 cocoMessage.error(resultData.msg, 3000); //loading可以选择是否展示关闭按钮
             }

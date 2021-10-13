@@ -5,21 +5,17 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>博客列表 -羅氏博客</title>
+    <title th:if="${(p == null || p == '')}">博客列表 -羅氏博客</title>
+    <title th:if="${(p != null && p != '')}" th:text="'搜索关键字 &quot;' + ${p} + '&quot;结果 -羅氏博客'"></title>
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../common/semantic-ui/dist/semantic.min.css">
-    <link rel="stylesheet" href="../common/css/style.css">
     <link rel="stylesheet" href="../common/css/tx.css">
     <link rel="stylesheet" href="../common/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../common/css/index.css">
     <link rel="stylesheet" href="../common/layui/css/layui.css">
     <link rel="stylesheet" href="../common/css/mplayer.css">
     <link rel="stylesheet" href="/login/css/login.css">
-    <style>
-        .right.aligned.column{
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="../common/css/style.css">
 </head>
 <body id="mainBody">
 <!-- 遮盖层 -->
@@ -44,169 +40,95 @@
 <div id="main">
     <div class="m-padded-tb-max" style="margin-top: 15px;">
         <div class="ui container">
-            <div class="leave_position" style="font-size: 14px;font-weight: bold;margin-top: -4px;margin-bottom: -10px;">
+            <div class="leave_position" style="font-size: 14px;font-weight: bold;margin-top: -4px;margin-bottom: -10px;margin-left: 28px;color: white">
                 <i class="fa fa-map-marker" aria-hidden="true"></i>
                 &nbsp;您现在的位置是：
-                <a href="/" style="font-size: 14px;font-weight: bold;">首页</a>&nbsp;
+                <a href="/" style="font-size: 14px;font-weight: bold;color: white">首页</a>&nbsp;
                 <label>&nbsp;>&nbsp;</label>
-                <a href="/blog/blogList" style="font-size: 14px;font-weight: bold;">学无止境</a>
-                <label th:if="${columnName != null && columnName != ''}">&nbsp;>&nbsp;</label>
-                <a th:if="${columnName != null && columnName != ''}" th:href="@{'/blog/blogList?columnId=' + ${columnId}}" th:text="${columnName}" style="font-size: 14px;font-weight: bold;">学无止境</a>
-                <label th:if="${labelName != null && labelName != ''}">&nbsp;>&nbsp;</label>
-                <a th:if="${labelName != null && labelName != ''}" th:href="@{'/blog/blogList?columnId=' + ${columnId} + '&labelId=' + ${labelId}}" th:text="${labelName}" style="font-size: 14px;font-weight: bold;">学无止境</a>
+                <a th:if="${(p != null && p != '')}" th:href="${'/blog/search?p=' + p}" th:text="'搜索 &quot;'+ ${p} + '&quot;'" style="font-size: 14px;font-weight: bold;color: white"></a>
+                <a th:if="${(p == null || p == '')}" th:href="${blogType == 'life'?'/blog/life':'/blog/blogList'}" th:text="${blogType == 'life'?'生活记录':'学无止境'}" style="font-size: 14px;font-weight: bold;color: white">学无止境</a>
+                <label th:if="${(p == null || p == '') && columnName != null && columnName != ''}">&nbsp;>&nbsp;</label>
+                <a th:if="${(p == null || p == '') && columnName != null && columnName != ''}" th:href="@{'/blog/blogList?columnId=' + ${columnId}}" th:text="${columnName}" style="font-size: 14px;font-weight: bold;color: white">学无止境</a>
+                <label th:if="${(p == null || p == '') && labelName != null && labelName != ''}">&nbsp;>&nbsp;</label>
+                <a th:if="${(p == null || p == '') && labelName != null && labelName != ''}" th:href="@{'/blog/blogList?columnId=' + ${columnId} + '&labelId=' + ${labelId}}" th:text="${labelName}" style="font-size: 14px;font-weight: bold;color: white">学无止境</a>
             </div>
-            <div class="ui stackable grid">
+            <div class="ui stackable grid" style="margin-left: 8px">
                 <!--左边-->
-                <div class="eleven wide column">
-                    <div class="ui attached segment form">
+                <div class="twelve wide column">
+                    <div class="mainBox form">
                         <div class="field">
-                            <div class="ui secondary pointing menu">
-                                <a class="item active" data-tab="tab-name">博客列表</a>
-                            </div>
-                            <div class="ui tab active" data-tab="tab-name">
-                                <div class="blogList" id="blogList"></div>
-                                <div id="page" style="text-align: right;"></div>
+                            <h3 th:if="${(p != null && p != '')}" class="sideTab-title" style="margin-bottom: 13px;">
+                                搜索 <span style="color: red" th:text="${p}"></span> 的结果  (总共搜索到 <span id="num">0</span> 条记录)
+                            </h3>
+                            <h3 th:if="${(p == null || p == '')}" class="sideTab-title" style="margin-bottom: 13px;">
+                                博客列表
+                            </h3>
+                            <div class="blogList" id="blogList">
+                                <div class="loading" style="text-align: center;">
+                                    <span style="color: darkcyan;">文章加载中<span class="ani_dot">...</span></span>
+                                </div>
                             </div>
                         </div>
                     </div>
-
+                    <section class="sideTab pagePlug" style="display: none">
+                        <div id="page" style="text-align: right;margin-top: -10px;margin-bottom: -15px;"></div>
+                    </section>
                 </div>
                 <!--右边-->
-                <div class="five wide column">
-                    <div class="ui rail">
-                        <div class="ui sticky">
-                            <!-- Any arbitrary content !-->
-                        </div>
-                    </div>
-                    <div class="ui segments">
-                        <div class="ui secondary segment">
-                            <div class="ui two column grid">
-                                <div class="column">
-                                    <div class="ui icon input">
-                                        <input id="articleTitle" type="text"placeholder="请输入博客名称" style="width: 300px">
-                                        <i class="search link icon" onclick="initBlogInfo(1, 10)"></i>
+                <div class="four wide column" id="primary">
+                    <div class="wrapper">
+                        <div class="sidebar">
+                            <div class="ui segments">
+                                <div class="ui secondary segment">
+                                    <div class="ui two column grid">
+                                        <div class="column">
+                                            <div class="ui icon input">
+                                                <input id="articleTitle" type="text" placeholder="请输入博客名称" th:value="${p}" style="width: 280px">
+                                                <i class="search link icon" onclick="location.href='/blog/search?p=' + $('#articleTitle').val()"></i>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="ui segments" th:if="${columnName != null && columnName != ''}">
-                        <div class="ui secondary segment">
-                            <div class="ui two column grid">
-                                <div class="column">
-                                    <i class="bookmark icon"></i>标签云
+                            <!-- 站长推荐 -->
+                            <section class="sideTab" th:if="${columnName != null && columnName != ''}">
+                                <h3 class="sideTab-title">
+                                    标签云
+                                </h3>
+                                <section id="divTags">
+                                    <div class="loading" style="text-align: center;">
+                                        <span style="color: darkcyan;">标签加载中<span class="ani_dot">...</span></span>
+                                    </div>
+                                </section>
+                            </section>
+                            <!-- 站长推荐 -->
+                            <section class="sideTab" id="side_random">
+                                <h3 class="sideTab-title">
+                                    站长推荐
+                                </h3>
+                                <div class="newsitem">
+                                    <ul class="newslist">
+                                        <div class="loading" style="text-align: center;">
+                                            <span style="color: darkcyan;">文章加载中<span class="ani_dot">...</span></span>
+                                        </div>
+                                    </ul>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="ui teal segment">
-                            <section id="divTags"></section>
-                        </div>
-                    </div>
-                    <!--分类-->
-                    <div id="context" class="ui segments">
-                        <div class="ui secondary segment">
-                            <div class="ui two column grid">
-                                <div class="column">
-                                    <i class="idea icon"></i>猜你喜欢
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui teal segment">
-                            <div class="newsitem">
-                                <ul class="newslist">
-                                    <li class="active">
-                                        <i content="1"></i>
-                                        <a href="">php获取视频的时长和第一帧</a>
-                                        <p>视频网站一般都是从后台上传视频，并且都需要有视频的时长和第一帧来作为视频的缩略图显示。所以就需要在视频上传的时候拿到这些属性并保存到数据库。</p>
-                                    </li>
-                                    <li>
-                                        <i content="2"></i>
-                                        <a href="">高并发生成唯一的订单号</a>
-                                        <p>电商的订单号，在正常流程中，只精确到秒就可以啦，但是在高并发的时候，同一秒可能会有上千上万个请求，如何保证在这种情况下订单号不会有重复呢，我实现了两个方法，亲测有效。</p>
-                                    </li>
-                                    <li>
-                                        <i content="3"></i>
-                                        <a href="">linux下sphinx增量索引部署</a>
-                                        <p>linux下sphinx增量索引部署，实现搜索到的数据是实时更新的。</p>
-                                    </li>
-                                    <li>
-                                        <i content="4"></i>
-                                        <a href="">前端监控系统之“理论篇”</a>
-                                        <p>相信前端开发的朋友们，都有类似的经历。项目上线后，突然有一天收到部门Boss的反馈消息。 Boss: 咦，小张呀！你看我们网站啊，有人反馈打开有点慢、打不开啊！你看下是怎么回事？</p>
-                                    </li>
-                                    <li>
-                                        <i content="5"></i>
-                                        <a href="">windows下phpStudy mysql版本升级到5.7</a>
-                                        <p>windows下phpStudy mysql版本升级到5.7，本地和线上的mysql版本统一，避免因为导入数据库报错。</p>
-                                    </li>
+                            </section>
+                            <!--网站统计-->
+                            <section class="sideTab">
+                                <h3 class="sideTab-title">
+                                    网站统计
+                                </h3>
+                                <ul class="tj">
+                                    <li><label>网站名称：</label><span th:text="${webSiteTj.webName}"></span></li>
+                                    <li><label>文章总数：</label><span th:text="${webSiteTj.blogNum} + '篇'"></span></li>
+                                    <li><label>留言总数：</label><span th:text="${webSiteTj.messageNum} + '条'"></span></li>
+                                    <li><label>总浏览量：</label><span th:text="${webSiteTj.browseNum} + '次'"></span></li>
+                                    <li><label>今日访问量：</label><span th:text="${webSiteTj.toDaybrowseNum} + '次'"></span></li>
+                                    <li><label>当前访客来源：</label><span id="city"></span></li>
+                                    <li><label>网站运行：</label><span id="sitetime"></span></li>
                                 </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!--标签-->
-                    <div class="ui segments">
-                        <div class="ui secondary placeholder segment">
-                            <div class="ui two column grid">
-                                <div class="column">
-                                    <i class="tags icon"></i>最新书籍
-                                </div>
-                                <div class="right aligned column">
-                                    <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#">更多 &gt;&gt;</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui teal segment">
-                            <div class="ui items">
-                                <div class="item">
-                                    <a class="ui small image" style="width: 90px;height: 130px">
-                                        <img src="../img/thumb.png">
-                                    </a>
-                                    <div class="content">
-                                        <a class="header">JSP动态网站技术入...</a>
-                                        <div class="description">
-                                            <p>Java在Internet领域内发展出来的JSP(Java Server Page)和Servlet技术是...</p>
-                                        </div>
-                                        <div class="extra">
-                                            <div class="ui label">作者：太阳工作室</div>
-                                            <div class="ui label"><i class="eye icon"></i>10</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="ui divider"></div>
-                                <div class="item">
-                                    <a class="ui small image" style="width: 90px;height: 130px">
-                                        <img src="../img/biancheng.jpg">
-                                    </a>
-                                    <div class="content">
-                                        <a class="header">Java编程思想(第4版)</a>
-                                        <div class="description">
-                                            <p>编辑推荐《Java编程思想(第4版)》获奖历史：·2003年《Software Development》...</p>
-                                        </div>
-                                        <div class="extra">
-                                            <div class="ui label">作者：埃史尔</div>
-                                            <div class="ui label"><i class="eye icon"></i>10</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="ui divider"></div>
-                                <div class="item">
-                                    <a class="ui small image" style="width: 90px;height: 130px">
-                                        <img src="../img/javahx.jpg">
-                                    </a>
-                                    <div class="content">
-                                        <a class="header">Java核心技术(卷1):基...</a>
-                                        <div class="description">
-                                            <p>Java领域最有影响力和价值的著作之一，与《Java编程思想》齐名，10余年全球...</p>
-                                        </div>
-                                        <div class="extra">
-                                            <div class="ui label">作者：霍斯特曼</div>
-                                            <div class="ui label"><i class="eye icon"></i>10</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="ui divider"></div>
-                            </div>
-
+                            </section>
                         </div>
                     </div>
                 </div>
@@ -219,10 +141,17 @@
 <div id="footer">
     <div th:replace="include/footer :: myFooter"></div>
 </div>
+
+<input type="hidden" id="blogType" th:value="${blogType}">
 </body>
 </html>
 <script src="../common/jquery/jquery-1.11.1.js"></script>
+<!-- 引入获得ip和城市名的js -->
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script src="https://ip.ws.126.net/ipquery"></script>
 <script src="../common/jquery/jquery.textSearch-1.0.js"></script>
+<script src="../common/theia-sticky-sidebar.js"></script>
+<script src="../common/coco-message.js"></script>
 <script src="../common/util.js"></script>
 <script src="../common/semantic-ui/dist/semantic.min.js"></script>
 <script src='../common/snowflakes.min.js'></script>
@@ -236,10 +165,10 @@
 <script src="/common/coco-message.js"></script>
 <script src="/blog/js/blogList.js"></script>
 <script>
-    $('.ui.sticky')
-        .sticky({
-            context: '#context',
-            pushing: true
-        })
-    ;
+    jQuery(document).ready(function() {
+        jQuery('#primary, .sidebar').theiaStickySidebar({
+            // Settings
+            additionalMarginTop: 85
+        });
+    });
 </script>

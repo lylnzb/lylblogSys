@@ -1,4 +1,4 @@
-package com.lylblog.common.api.properties.QQ;
+package com.lylblog.common.api.QQ.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

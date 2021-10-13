@@ -80,7 +80,10 @@ layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], functi
             ,{field:'rolename', title:'角色名称', width:'11.1%', align:'center'}
             ,{field:'rolekey', title:'权限字符', width:'10%', align:'center'}
             ,{field:'orderBy', title:'显示顺序', width:'10%', align:'center'}
-            ,{field:'valid', title:'状态', width:'18%', align:'center', templet : '#valId'}
+            ,{field:'valid', title:'状态', width:'18%', align:'center', templet : function(data){
+                    return selectDictLabel('sys_status', data.valid);
+                }
+            }
             ,{field:'createTime', title:'创建时间', width:'20%', align:'center'}
             ,{field:'toolses', title:'操作', width:'23%', align:'center', toolbar: '#barDemo'}
         ]]

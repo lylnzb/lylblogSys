@@ -171,13 +171,8 @@ layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], functi
         ,cols: [[
             {field:'dictType', title:'类别编码', width:'28%', align:'center'}
             ,{field:'dictName', title:'类别名称', width:'40%', align:'center'}
-            ,{field:'valId', title:'有效标识', width:'17%', align:'center',
-                templet : function(data) {// 替换数据
-                    if(data.valId == 0){
-                        return "无效";
-                    }else if(data.valId == 1){
-                        return "有效";
-                    }
+            ,{field:'valId', title:'状态', width:'17%', align:'center', templet : function(data){
+                    return selectDictLabel('sys_status', data.valId);
                 }
             }
             ,{field:'right', title:'操作', width:'15%', align:'center', toolbar: '#barDemo'},
@@ -219,13 +214,8 @@ layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], functi
         ,cols: [[
             {field:'dictValue', title:'字典键值', width:'25%', align:'center'}
             ,{field:'dictLabel', title:'字典标签', width:'35%', align:'center'}
-            ,{field:'valId', title:'状态', width:'17%', align:'center',
-                templet : function(data) {// 替换数据
-                    if(data.valId == 0){
-                        return "停用";
-                    }else if(data.valId == 1){
-                        return "正常";
-                    }
+            ,{field:'valId', title:'状态', width:'17%', align:'center', templet : function(data){
+                    return selectDictLabel('sys_status', data.valId);
                 }
             }
             ,{field:'right', title:'操作', width:'22.7%', align:'center', toolbar: '#barDemo1'},

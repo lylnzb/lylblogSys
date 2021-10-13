@@ -28,9 +28,6 @@ import java.util.List;
 public class BlogController {
 
     @Resource
-    private ArticleService articleService;
-
-    @Resource
     private BlogService blogService;
 
     @Resource
@@ -38,6 +35,18 @@ public class BlogController {
 
     @Resource
     public CollectionService collectionService;
+
+    @RequestMapping("/life")
+    public String life(Model model){
+        model.addAttribute("blogType", "life");
+        return "/blog/blogList";
+    }
+
+    @RequestMapping("/search")
+    public String search(Model model, String p){
+        model.addAttribute("p", p);
+        return "/blog/blogList";
+    }
 
     @RequestMapping("/blogList")
     public String blogList(Model model, String columnId, String labelId){
@@ -50,19 +59,21 @@ public class BlogController {
         String labelName = blogService.getLabelName(labelId);
         model.addAttribute("labelId", labelId);
         model.addAttribute("labelName", ((labelId != null && !"".equals(labelId))?labelName : ""));
+
+        model.addAttribute("blogType", "learn");
         return "/blog/blogList";
     }
 
     @RequestMapping("/detail/{wznm}")
     public String previewArtilce(Model model, @PathVariable String wznm) throws Exception{
-        ArticleBean articleBean = new ArticleBean();
-        articleBean.setWznm(wznm);
-        ResultObj resultObj = articleService.queryArticleInfo(articleBean);
+        ArticleBean article = blogService.getArticleInfoByWznm(wznm);
         model.addAttribute("type","preview");
-        model.addAttribute("article", resultObj.getData().get(0));
+        model.addAttribute("article", article);
 
-        ArticleBean article = (ArticleBean)resultObj.getData().get(0);
         article.setJudgeLongTime(DateUtil.format(article.getCreateTime()));
+
+        //浏览量+1
+        blogService.updateHitsByWznm(wznm);
 
         //当前文章的上一篇文章
         model.addAttribute("upblogcontent", blogService.getOnArticle(article.getArticleId(),article.getColumnId()));

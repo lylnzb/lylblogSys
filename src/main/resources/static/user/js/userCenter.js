@@ -303,9 +303,9 @@ function vailEmail(elem,value){
         falg = 1;
     }else {
         $.ajax({
-            url: basePath + "user/validationEmail?newEmail=" + value,
+            url: basePath + "validationEmail?newEmail=" + value,
             type:"POST",
-            asyns:false,
+            async: false,
             success:function(resultData){
                 if(resultData.code!=0){
                     $(elem).attr("style", "width: 280px;border-style:solid;border-color:red;");
@@ -436,8 +436,11 @@ function queryMyCommentList(page, limit){
                     htmlStr += '</li>';
                 }
             }else {
-                htmlStr += '<div>未查询到文章信息</div>';
-                $("#page").hide();
+                htmlStr += "   <div style='margin-top: 20px;text-align: center;'>";
+                htmlStr += "       <img style='width: 200px;' src='/img/noData.png'><br/><br/>";
+                htmlStr += "       <span style='color: darkcyan;'>您还没有评论哦~</span>";
+                htmlStr += "   <div>";
+                $("#commentPage").hide();
             }
             $(".commentList").html(htmlStr);
         },
@@ -488,12 +491,10 @@ function queryMyLinks(linkStatus) {
  */
 function delComment(commentId) {
     var lock = false; //默认未锁定
-    layer.confirm("确定要删除评论信息吗？", {
-        btn: ["确定","取消"] //按钮
-        , skin: 'layui-layer-lan'
-        , closeBtn: 0
-        , icon: 3
-    }, function(index){
+    confirm({
+        title: '提示',
+        content: '确定要删除评论信息吗？'
+    }).then(() => {
         if(!lock) {
             lock = true;
             $.ajax({
@@ -510,7 +511,7 @@ function delComment(commentId) {
                 }
             });
         }
-    }, function(){
+    }).catch(() => {
 
     });
 }
@@ -775,24 +776,28 @@ function initCollection(){
                 htmlStr += '    <div class="imgBox"></div>';
                 htmlStr += '    <span>新建收藏夹</span> ';
                 htmlStr += '</li>';
-                for(var i = 0;i < resultData.data.length;i++) {
-                    var active = "";
-                    if(i == 0) {
-                        active = ' active-menu-item';
-                        showCollectionData(resultData.data[i].id);
+                if(resultData.data != null && resultData.data.length > 0) {
+                    for(var i = 0;i < resultData.data.length;i++) {
+                        var active = "";
+                        if(i == 0) {
+                            active = ' active-menu-item';
+                            showCollectionData(resultData.data[i].id);
+                        }
+                        htmlStr += '<li class="menu-item' + active + '" onclick="showCollectionData(' + resultData.data[i].id + ')">';
+                        htmlStr += '    <div class="menu-item-title">';
+                        htmlStr += '        <div class="imgBox"></div>';
+                        htmlStr += '        <span class="favoriteSpan">' + resultData.data[i].favoriteName + '</span>';
+                        htmlStr += '    </div>';
+                        htmlStr += '    <div class="menu-item-like">';
+                        htmlStr += '        <span class="comment">';
+                        htmlStr += '            <div class="imgBox"></div>';
+                        htmlStr += '            <span>' + resultData.data[i].count + '</span>';
+                        htmlStr += '        </span>';
+                        htmlStr += '    </div>';
+                        htmlStr += '</li>';
                     }
-                    htmlStr += '<li class="menu-item' + active + '" onclick="showCollectionData(' + resultData.data[i].id + ')">';
-                    htmlStr += '    <div class="menu-item-title">';
-                    htmlStr += '        <div class="imgBox"></div>';
-                    htmlStr += '        <span class="favoriteSpan">' + resultData.data[i].favoriteName + '</span>';
-                    htmlStr += '    </div>';
-                    htmlStr += '    <div class="menu-item-like">';
-                    htmlStr += '        <span class="comment">';
-                    htmlStr += '            <div class="imgBox"></div>';
-                    htmlStr += '            <span>' + resultData.data[i].count + '</span>';
-                    htmlStr += '        </span>';
-                    htmlStr += '    </div>';
-                    htmlStr += '</li>';
+                }else {
+                    showCollectionData("");
                 }
                 $(".ultab-sub-menu").html(htmlStr);
             }else{
@@ -807,74 +812,85 @@ function initCollection(){
  * @param collectId
  */
 function showCollectionData(favoriteId) {
-    $.ajax({
-        url: basePath + "myCollection/showCollectionData?id=" + favoriteId,
-        type:"POST",
-        success:function(resultData){
-            if(resultData.code==0){
-                var htmlStr = "";
-                htmlStr += '<div class="titleHead">';
-                htmlStr += '    <div class="nameBox">';
-                htmlStr += '        <span class="collection-dir collection-font collection-detail">';
-                htmlStr += '            <span class="collection-folder-name">';
-                htmlStr += '                ' + resultData.obj.favoriteName + '';
-                htmlStr += '                <i class="edit icon" id="nameClick"></i>';
-                htmlStr += '            </span>';
-                htmlStr += '        </span>';
-                htmlStr += '        <div class="input-edit-box collectionNameInput" style="display: none">';
-                htmlStr += '            <div class="collection-edit-name el-input">';
-                htmlStr += '                <input type="text" id="favorite" class="el-input__inner favoriteName" maxlength="20" placeholder="请输入内容" value="" />';
-                htmlStr += '            </div>';
-                htmlStr += '            <img id="nameClose" src="../img/closeIcon.svg">';
-                htmlStr += '            <img id="nameSave" onclick="updateFavorite(' + resultData.obj.id + ', 1)" src="../img/saveIcon.svg">';
-                htmlStr += '        </div>';
-                htmlStr += '        <span class="collection-info collection-detail collection-detail-d">';
-                htmlStr += '            <p class="collection-text collection-detail collection-desc">';
-                htmlStr += '                ' + ((null == resultData.obj.describe || '' == resultData.obj.describe)?'请添加收藏夹描述':resultData.obj.describe) + '';
-                htmlStr += '                <i class="edit icon" id="desClick"></i>';
-                htmlStr += '            </p>';
-                htmlStr += '            <div class="input-edit-box collectionDesInput" style="margin-top: 10px;display: none">';
-                htmlStr += '                <div class="collection-edit-name el-input">';
-                htmlStr += '                    <input type="text" maxlength="200" id="describe" placeholder="请输入内容" class="el-input__inner describe">';
-                htmlStr += '                </div>';
-                htmlStr += '                <img id="desClose" src="../img/closeIcon.svg">';
-                htmlStr += '                <img id="desSave" onclick="updateFavorite(' + resultData.obj.id + ', 2)" src="../img/saveIcon.svg">';
-                htmlStr += '            </div>';
-                htmlStr += '            <p class="collection-edit-box">';
-                htmlStr += '                <em class="cursor" onclick="deleteFavoriteInfo(' + resultData.obj.id + ', ' + resultData.obj.collLists.length + ')" style="cursor:url(\'../../img/cur/link.cur\'), pointer">删除收藏夹</em>';
-                htmlStr += '            </p>';
-                htmlStr += '        </span>';
-                htmlStr += '    </div> ';
-                htmlStr += '</div> ';
-                htmlStr += '<div class="tab-content-box">';
-                if(0 == resultData.obj.collLists.length) {
-                    htmlStr += '<div id="noCollection" style="text-align: center; font-weight: bolder;margin-top: 10px;">您还没有添加收藏</div>';
-                }else {
-                    htmlStr += '    <ul class="collection-sublist">';
-                    for(var i = 0;i < resultData.obj.collLists.length;i++) {
-                        htmlStr += '        <li>';
-                        htmlStr += '            <div class="collection-con">';
-                        htmlStr += '                <span>';
-                        htmlStr += '                    <span class="collection-dir">';
-                        htmlStr += '                        <em class="conllection-type">BLOG</em>';
-                        htmlStr += '                        <span class="subtitle"><a href="' + basePath + 'blog/detail/' + resultData.obj.collLists[i].wznm + '" target="_blank">' + resultData.obj.collLists[i].articleTitle + '</a></span>';
-                        htmlStr += '                    </span>';
-                        htmlStr += '                </span>';
-                        htmlStr += '            </div>';
-                        htmlStr += '            <div class="collect-detail-right">';
-                        htmlStr += '                <a class="collect-cancel" onclick="deleteCollectionData(' + resultData.obj.collLists[i].collectionId + ', ' + resultData.obj.id + ')"><i class="star outline icon" style="font-size: 18px;color: #F46036;font-weight: bold;"></i></a>';
-                        htmlStr += '            </div>';
-                        htmlStr += '        </li>';
+    if(favoriteId != null && favoriteId != '') {
+        $.ajax({
+            url: basePath + "myCollection/showCollectionData?id=" + favoriteId,
+            type:"POST",
+            success:function(resultData){
+                if(resultData.code==0){
+                    var htmlStr = "";
+                    htmlStr += '<div class="titleHead">';
+                    htmlStr += '    <div class="nameBox">';
+                    htmlStr += '        <span class="collection-dir collection-font collection-detail">';
+                    htmlStr += '            <span class="collection-folder-name">';
+                    htmlStr += '                ' + resultData.obj.favoriteName + '';
+                    htmlStr += '                <i class="edit icon" id="nameClick"></i>';
+                    htmlStr += '            </span>';
+                    htmlStr += '        </span>';
+                    htmlStr += '        <div class="input-edit-box collectionNameInput" style="display: none">';
+                    htmlStr += '            <div class="collection-edit-name el-input">';
+                    htmlStr += '                <input type="text" id="favorite" class="el-input__inner favoriteName" maxlength="20" placeholder="请输入内容" value="" />';
+                    htmlStr += '            </div>';
+                    htmlStr += '            <img id="nameClose" src="../img/closeIcon.svg">';
+                    htmlStr += '            <img id="nameSave" onclick="updateFavorite(' + resultData.obj.id + ', 1)" src="../img/saveIcon.svg">';
+                    htmlStr += '        </div>';
+                    htmlStr += '        <span class="collection-info collection-detail collection-detail-d">';
+                    htmlStr += '            <p class="collection-text collection-detail collection-desc">';
+                    htmlStr += '                ' + ((null == resultData.obj.describe || '' == resultData.obj.describe)?'请添加收藏夹描述':resultData.obj.describe) + '';
+                    htmlStr += '                <i class="edit icon" id="desClick"></i>';
+                    htmlStr += '            </p>';
+                    htmlStr += '            <div class="input-edit-box collectionDesInput" style="margin-top: 10px;display: none">';
+                    htmlStr += '                <div class="collection-edit-name el-input">';
+                    htmlStr += '                    <input type="text" maxlength="200" id="describe" placeholder="请输入内容" class="el-input__inner describe">';
+                    htmlStr += '                </div>';
+                    htmlStr += '                <img id="desClose" src="../img/closeIcon.svg">';
+                    htmlStr += '                <img id="desSave" onclick="updateFavorite(' + resultData.obj.id + ', 2)" src="../img/saveIcon.svg">';
+                    htmlStr += '            </div>';
+                    htmlStr += '            <p class="collection-edit-box">';
+                    htmlStr += '                <em class="cursor" onclick="deleteFavoriteInfo(' + resultData.obj.id + ', ' + resultData.obj.collLists.length + ')" style="cursor:url(\'../../img/cur/link.cur\'), pointer">删除收藏夹</em>';
+                    htmlStr += '            </p>';
+                    htmlStr += '        </span>';
+                    htmlStr += '    </div> ';
+                    htmlStr += '</div> ';
+                    htmlStr += '<div class="tab-content-box">';
+                    if(null != resultData.obj.collLists && 0 == resultData.obj.collLists.length) {
+                        htmlStr += "   <div style='margin-top: 20px;text-align: center;'>";
+                        htmlStr += "       <img style='width: 200px;' src='/img/noData.png'><br/><br/>";
+                        htmlStr += "       <span style='color: darkcyan;'>您还没有添加收藏哦~</span>";
+                        htmlStr += "   <div>";
+                    }else {
+                        htmlStr += '    <ul class="collection-sublist">';
+                        for(var i = 0;i < resultData.obj.collLists.length;i++) {
+                            htmlStr += '        <li>';
+                            htmlStr += '            <div class="collection-con">';
+                            htmlStr += '                <span>';
+                            htmlStr += '                    <span class="collection-dir">';
+                            htmlStr += '                        <em class="conllection-type">BLOG</em>';
+                            htmlStr += '                        <span class="subtitle"><a href="' + basePath + 'blog/detail/' + resultData.obj.collLists[i].wznm + '" target="_blank">' + resultData.obj.collLists[i].articleTitle + '</a></span>';
+                            htmlStr += '                    </span>';
+                            htmlStr += '                </span>';
+                            htmlStr += '            </div>';
+                            htmlStr += '            <div class="collect-detail-right">';
+                            htmlStr += '                <a class="collect-cancel" onclick="deleteCollectionData(' + resultData.obj.collLists[i].collectionId + ', ' + resultData.obj.id + ')"><i class="star outline icon" style="font-size: 18px;color: #F46036;font-weight: bold;"></i></a>';
+                            htmlStr += '            </div>';
+                            htmlStr += '        </li>';
+                        }
+                        htmlStr += '    </ul>';
                     }
-                    htmlStr += '    </ul>';
+                    htmlStr += '</div>';
+                    $(".list-wrap").html(htmlStr);
+                }else{
+                    cocoMessage.error('系统异常', 3000); //loading可以选择是否展示关闭按钮
                 }
-                htmlStr += '</div>';
-                $(".list-wrap").html(htmlStr);
-            }else{
-                cocoMessage.error('系统异常', 3000); //loading可以选择是否展示关闭按钮
             }
-        }
-    });
+        });
+    }else {
+        var htmlStr = "<div style='margin-top: 20px;text-align: center;'>";
+        htmlStr += "       <img style='width: 200px;' src='/img/noData.png'><br/><br/>";
+        htmlStr += "       <span style='color: darkcyan;'>您还没有新建收藏夹哦~</span>";
+        htmlStr += "   <div>";
+        $(".list-wrap").html(htmlStr);
+    }
 }
 
 /**
@@ -1043,19 +1059,19 @@ function queryDynamicInfo(pageNum, limit) {
                                 if(data[i].dynamicType == '1'){
                                     htmlStr += '    <div class="text">您对文章《' + data[i].articleTitle + '》进行了评论：' + data[i].commentContent + '</div>';
                                 }else if(data[i].dynamicType == '2') {
-                                    htmlStr += '    <div class="text">在文章《' + data[i].articleTitle + '》中，您对' + data[i].commentName + '的评论进行了回复：' + data[i].commentContent + '</div>';
+                                    htmlStr += '    <div class="text">在文章《' + data[i].articleTitle + '》中，您对『' + data[i].commentName + '』的评论进行了回复：' + data[i].commentContent + '</div>';
                                 }else if(data[i].dynamicType == '3') {
-                                    htmlStr += '    <div class="text">在文章《' + data[i].articleTitle + '》中，您对' + data[i].commentName + '的评论进行了点赞</div>';
+                                    htmlStr += '    <div class="text">在文章《' + data[i].articleTitle + '》中，您对『' + data[i].commentName + '』的评论进行了点赞</div>';
                                 }else if(data[i].dynamicType == '4') {
-                                    htmlStr += '    <div class="text">在文章《' + data[i].articleTitle + '》中，您对' + data[i].commentName + '的评论取消了点赞</div>';
+                                    htmlStr += '    <div class="text">在文章《' + data[i].articleTitle + '》中，您对『' + data[i].commentName + '』的评论取消了点赞</div>';
                                 }else if(data[i].dynamicType == '5') {
                                     htmlStr += '    <div class="text">您在羅氏博客网站中进行了留言：' + data[i].commentContent + '</div>';
                                 }else if(data[i].dynamicType == '6') {
-                                    htmlStr += '    <div class="text">您对' + data[i].commentName + '的留言进行了回复：' + data[i].commentContent + '</div>';
+                                    htmlStr += '    <div class="text">您对『' + data[i].commentName + '』的留言进行了回复：' + data[i].commentContent + '</div>';
                                 }else if(data[i].dynamicType == '7') {
-                                    htmlStr += '    <div class="text">您对' + data[i].commentName + '的留言进行了点赞</div>';
+                                    htmlStr += '    <div class="text">您对『' + data[i].commentName + '』的留言进行了点赞</div>';
                                 }else if(data[i].dynamicType == '8') {
-                                    htmlStr += '    <div class="text">您对' + data[i].commentName + '的留言取消了点赞</div>';
+                                    htmlStr += '    <div class="text">您对『' + data[i].commentName + '』的留言取消了点赞</div>';
                                 }
 
                                 htmlStr += '    </div>';
@@ -1064,7 +1080,11 @@ function queryDynamicInfo(pageNum, limit) {
                             }
                             next(lis.join(''), page < total); //假设总页数为 6
                         }else{
-                            $(".flow-default").html("暂无个人动态信息！")
+                            var htmlStr = "<div style='margin-top: 20px;text-align: center;'>";
+                            htmlStr += "       <img style='width: 200px;' src='/img/noData.png'><br/><br/>";
+                            htmlStr += "       <span style='color: darkcyan;'>暂无个人动态信息哦~</span>";
+                            htmlStr += "   <div>";
+                            $(".flow-default").html(htmlStr);
                         }
                     }
                 });

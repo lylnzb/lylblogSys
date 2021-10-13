@@ -19,6 +19,7 @@ public class CommentBean extends ParaBean {
     private String commentContent;    //	评论内容
     private String commentType;       //	评论类型
     private String praiseNum;         //	点赞数
+    private String imgPath;           //    图片路径
     private String valid;             //	有效标志[1:有效,0:无效]
     private String submitPerson;      //	提交人
     private String submitTime;        //	提交时间

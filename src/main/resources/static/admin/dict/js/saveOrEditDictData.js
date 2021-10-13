@@ -8,6 +8,7 @@ layui.use(['form', 'layer'], function(){
         ,$ = layui.jquery;
 
     $("#dictType").val(dictType);
+    loadSelect("#dictStyle","sys_echo_style", form);
 
     //自定义表单认证只需要非空认证可以直接在元素中添加属性lay-verify="required"
     //test指表单元素lay-verify="test"标识
@@ -26,6 +27,11 @@ layui.use(['form', 'layer'], function(){
             if (value.length < 1) {
                 return '字典类型不能为空！';
             }
+        },
+        dictStyle:function(value) {
+            if (value.length < 1) {
+                return '请选择回显样式！';
+            }
         }
     });
 
@@ -43,6 +49,7 @@ layui.use(['form', 'layer'], function(){
                 $("#dictValue").val(data.dictValue);
                 $("#dictSort").val(data.dictSort);
                 $("#remark").val(data.remark);
+                $("#dictStyle").siblings("div.layui-form-select").find('dl').find('dd[lay-value=' + data.dictStyle + ']').click();
                 $("#isDefault").find('input[value=' + resultData.data[0].isDefault + ']').prop("checked",true);
                 $("#valid").find('input[value=' + resultData.data[0].valId + ']').prop("checked",true);
 
@@ -57,6 +64,7 @@ layui.use(['form', 'layer'], function(){
         var dictValue = data.field.dictValue;//字典键值
         var dictType = data.field.dictType;//字典类型
         var dictSort = data.field.dictSort;//字典排序
+        var dictStyle = data.field.dictStyle;//字典回显样式
         var isDefault = data.field.isDefault;//系统默认
         var valId = data.field.valid;//状态
         var remark = data.field.remark;//备注
@@ -66,6 +74,7 @@ layui.use(['form', 'layer'], function(){
             dictValue : dictValue,
             dictType : dictType,
             dictSort : dictSort,
+            dictStyle : dictStyle,
             isDefault : isDefault,
             valId : valId,
             remark : remark

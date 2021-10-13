@@ -74,7 +74,10 @@ layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], functi
             ,{field:'url', title:'网址地址', width:'23%', align:'center'}
             ,{field:'submitName', title:'提交人', width:'9%', align:'center'}
             ,{field:'submitTime', title:'提交时间', width:'11%', align:'center'}
-            ,{field:'status', title:'是否显示', width:'10%', align:'center', templet : '#status'}
+            ,{field:'status', title:'是否显示', width:'10%', align:'center', templet : function(data){
+                    return selectDictLabel('sys_link_show', data.status);
+                }
+            }
             ,{field:'auditStatus', title:'审核状态', width:'10%', align:'center', templet : '#auditStatus'}
             ,{field:'right', title:'操作', width:'12.4%', align:'center', toolbar: '#barDemo'}
         ]]

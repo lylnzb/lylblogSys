@@ -145,6 +145,13 @@ public interface ArticleMapper {
     int updateCommentCountByWznm(@Param("postNum") int postNum, @Param("wznm") String wznm);
 
     /**
+     * 文章浏览量加一
+     * @param wznm
+     * @return
+     */
+    int updateHitsByWznm(@Param("wznm") String wznm);
+
+    /**
      * 获取栏目名称
      * @param columnId
      * @return
@@ -157,4 +164,20 @@ public interface ArticleMapper {
      * @return
      */
     String getLabelName(@Param("labelId") String labelId);
+
+    /**
+     * 设置文章是否置顶
+     * @param wznm
+     * @param value
+     * @return
+     */
+    int updateArticleToOnTop(@Param("wznm") String wznm,@Param("value") String value);
+
+    /**
+     * 设置文章是否推荐
+     * @param wznm
+     * @param value
+     * @return
+     */
+    int updateArticleToIselite(@Param("wznm") String wznm,@Param("value") String value);
 }

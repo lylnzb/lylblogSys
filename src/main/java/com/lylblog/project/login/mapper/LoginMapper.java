@@ -66,4 +66,11 @@ public interface LoginMapper {
      * @return
      */
     int validationEmail(@Param("newEmail") String newEmail);
+
+    /**
+     * 获取角色ID
+     * @param roleKey
+     * @return
+     */
+    String getRoleId(@Param("roleKey") String roleKey);
 }

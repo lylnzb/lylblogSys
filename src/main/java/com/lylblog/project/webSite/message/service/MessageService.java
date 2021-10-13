@@ -3,6 +3,7 @@ package com.lylblog.project.webSite.message.service;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.system.comment.bean.CommentBean;
 import com.lylblog.project.webSite.comment.bean.WebGreatBean;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @Author: lyl
@@ -15,7 +16,7 @@ public interface MessageService {
      * @param commentBean
      * @return
      */
-    ResultObj addMessage(CommentBean commentBean);
+    ResultObj addMessage(CommentBean commentBean, MultipartFile file);
 
     /**
      * 留言反馈列表信息查询

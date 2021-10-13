@@ -1,6 +1,10 @@
 package com.lylblog.project.webSite.comment.service.impl;
 
+import com.lylblog.common.exception.file.FileNameLengthLimitExceededException;
+import com.lylblog.common.util.file.FileUploadUtil;
+import com.lylblog.common.util.file.FileUtil;
 import com.lylblog.common.util.shiro.ShiroUtils;
+import com.lylblog.framework.config.LylBlogConfig;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.common.service.CommonService;
 import com.lylblog.project.login.bean.UserLoginBean;
@@ -11,12 +15,15 @@ import com.lylblog.project.system.comment.mapper.CommentMapper;
 import com.lylblog.project.webSite.comment.bean.WebCommentBean;
 import com.lylblog.project.webSite.comment.bean.WebGreatBean;
 import com.lylblog.project.webSite.comment.service.WebCommentService;
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,11 +49,25 @@ public class WebCommentServiceImpl implements WebCommentService {
      * @param commentBean
      * @return
      */
-    public ResultObj addComment(CommentBean commentBean){
+    public ResultObj addComment(CommentBean commentBean, MultipartFile file){
+        if(null == commentBean.getCommentContent() || "".equals(commentBean.getCommentContent())) {
+            return ResultObj.fail("评论内容不能为空");
+        }
+
         //获取当前用户信息
         UserLoginBean userBean = ShiroUtils.getUserInfo();
         commentBean.setSubmitPerson(userBean.getYhnm());//提交人用户编码
         commentBean.setCommentType("1");//评论类型（1.文章评论、2.留言反馈）
+
+        if(null != file){
+            String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+            try {
+                String fileurl = FileUploadUtil.upload(LylBlogConfig.getArticlefile(), file, "commentImg/" + commentBean.getWznm(), suffix);
+                commentBean.setImgPath(fileurl);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         int num = articleMapper.getCommentCountByWznm(commentBean.getWznm());
         articleMapper.updateCommentCountByWznm(num + 1 , commentBean.getWznm());

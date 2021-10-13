@@ -9,6 +9,8 @@ $(document).on('click','.isLogin',function(){
         $(".userLogin").show();
         $(".userRegister").hide();
         $(".userRetrievePas").hide();
+
+        autoCenter();
     }else{
         window.open("/user/userCenter");
     }
@@ -19,7 +21,15 @@ $(document).on('click','.isLogin',function(){
  */
 function sendemail() {
     var obj = new Object();
-    obj.tos = $(".email").val();
+    obj.tos = $("#registerUserEmail").val();
+    if(obj.tos == null || obj.tos == '') {
+        $("#registerUserEmail").parents(".field").siblings(".error").find(".transition").text("电子邮箱不能为空");
+        $("#registerUserEmail").parents(".field").siblings(".error").show();
+        return;
+    }
+    if(1 == vailEmail($("#registerUserEmail"), obj.tos)){
+        return;
+    }
     $.ajax({
         url: basePath + 'toEmail',
         type: "POST",
@@ -27,9 +37,8 @@ function sendemail() {
         dataType: "json",
         contentType: 'application/json;charset=utf-8',
         success: function (resultData) {
-            var obj = $("#btn");
+            var obj = $("#sendBtn");
             settime(obj);
-            console.log('发送邮件');
         },
         error: function () {
 
@@ -62,28 +71,75 @@ function settime(obj) {
  * 用户注册点击事件
  */
 $("#register").click(function(){
-    var obj = new Object();
-    obj.email = $(".email").val();
-    obj.password = $("#password").val();
-    obj.vCode = $("#code").val();
-    $.ajax({
-        url: basePath + 'registerUser',
-        type: "POST",
-        data: JSON.stringify(obj),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (resultData) {
-            if(resultData.code == 0){
-                layui.layer.msg("注册成功");
-            }else{
-                layui.layer.msg(resultData.msg);
+    /**
+     * 是否为空验证
+     * @type {number}
+     */
+    var traverse = 0;
+    $("#registerForm .required").each(function(index,result){
+        var value = $(this).val();
+        if(value == null || value == ''){
+            $(this).parents(".field").siblings(".error").show();
+            traverse += 1;
+        }else{
+            if($(this).attr("id") == 'registerUserEmail'){
+                traverse += vailEmail(this,value);
+                traverse += validationEmail(value);
+            }else {
+                $(this).parents(".field").siblings(".error").hide();
             }
-        },
-        error: function () {
-
         }
     });
+    var obj = new Object();
+    obj.nickname = $("#registerNickName").val();     //  用户昵称
+    obj.email = $("#registerUserEmail").val();       //  用户邮箱
+    obj.password = $("#registerUserPwd").val();      //  密码
+    obj.vCode = $("#code").val();                    //  邮箱验证码
+    if(traverse == 0){
+        $.ajax({
+            url: basePath + 'registerUser',
+            type: "POST",
+            async: false,
+            data: JSON.stringify(obj),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (resultData) {
+                if(resultData.code == 0){
+                    location.reload();
+                }else{
+                    cocoMessage.error(resultData.msg);
+                }
+            },
+            error: function () {
+
+            }
+        });
+    }
 });
+
+function validationEmail(newEmail) {
+    var num = 0;
+    $.ajax({
+        url: basePath + "validationEmail?newEmail=" + newEmail,
+        type:"POST",
+        async: false,
+        success:function(resultData){
+            if(resultData.code!=0){
+                $("#sendBtn").removeAttr('onclick');
+                $("#sendBtn").removeAttr('style');
+                $("#registerUserEmail").parents(".field").siblings(".error").find(".transition").text(resultData.msg);
+                $("#registerUserEmail").parents(".field").siblings(".error").show();
+                num = 1;
+            }else {
+                $("#sendBtn").attr('onclick', 'sendemail();');
+                $("#sendBtn").attr("style", "cursor: url('../../img/cur/link.cur'), pointer;color: white;background-color: #2185d0!important;");
+                $("#registerUserEmail").parents(".field").siblings(".error").hide();
+                num = 0;
+            }
+        }
+    });
+    return num;
+}
 
 /**
  * 登录输入框失焦事件
@@ -112,10 +168,6 @@ function vailEmail(elem,value){
 }
 
 $("#login").click(function(){
-    var obj = new Object();
-    obj.email = $("#userEmail").val();
-    obj.password = $("#userPwd").val();
-
     /**
      * 用户邮箱和密码是否为空验证
      * @type {number}
@@ -132,6 +184,10 @@ $("#login").click(function(){
             }
         }
     });
+
+    var obj = new Object();
+    obj.email = $("#userEmail").val();
+    obj.password = $("#userPwd").val();
     if(traverse == 0){
         $.ajax({
             url: basePath + 'login',
@@ -139,7 +195,7 @@ $("#login").click(function(){
             data: JSON.stringify(obj),
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
-            success: function (resultData, XMLHttpRequest) {
+            success: function (resultData) {
                 if(resultData.code == 0){
                     localRefresh('/common/headerRefresh', '#header');
                     $(".login").hide();
@@ -159,20 +215,24 @@ $(".loginOut").click(function(){
     loginOut();
 });
 
-$(document).on('click','#adminlogin',function(){
+$(document).on('click','.adminlogin',function(){
     $(".bg").show();
     $(".login").show();
     $(".userLogin").show();
     $(".userRegister").hide();
     $(".userRetrievePas").hide();
+
+    autoCenter();
 });
 
-$(document).on('click','#registerlogin',function(){
+$(document).on('click','.registerlogin',function(){
     $(".bg").show();
     $(".login").show();
     $(".userLogin").hide();
     $(".userRegister").show();
     $(".userRetrievePas").hide();
+
+    autoCenter();
 });
 
 $(".loginBtn").click(function(){
@@ -193,7 +253,22 @@ $(".forgotPasBtn").click(function(){
     $(".userRegister").hide();
 });
 
-$(".userLogin .close.icon").click(function(){
+$("#registerUserEmail").blur(function() {
+    var value = $(this).val();
+    if(value != null && value != '') {
+        if(1 == vailEmail(this, value)) {
+            $("#sendBtn").removeAttr('onclick');
+            $("#sendBtn").removeAttr('style');
+        }else {
+            validationEmail(value);
+        }
+    }else {
+        $("#sendBtn").removeAttr('onclick');
+        $("#sendBtn").removeAttr('style');
+    }
+});
+
+$(".userLogin .close.icon, .userRegister .close.icon, .userRetrievePas .close.icon").click(function(){
     $(".bg").hide();
     $(".login").hide();
 });
@@ -202,77 +277,67 @@ $(function(){
     menuInit();
 });
 
-//登陆页面的拖拽功能实现代码
-window.onload=function() {
-    var dialog = document.getElementById("loginPage");
-    var diatitle1 = document.getElementById("title1");
-    var diatitle2 = document.getElementById("title2");
-    var diatitle3 = document.getElementById("title3");
-    var isDraging = false; //是否可拖拽的标记
+function autoCenter() {
+
     diatitle1.onmousedown = down;
     diatitle2.onmousedown = down;
     diatitle3.onmousedown = down;
     document.onmousemove = move;
     document.onmouseup = up;
 
-    //登陆层居中
-    autoCenter();
+    var bodyW = document.documentElement.clientWidth;
+    var bodyH = document.documentElement.clientHeight;
+    var elW = 0;
+    var elH = 0;
+    dialog.style.left = ((bodyW - elW) / 2 - 175) + 'px';
+    dialog.style.top = ((bodyH - elH) / 2 - 230) + 'px';
+}
 
-    function autoCenter() {
-        var bodyW = document.documentElement.clientWidth;
-        var bodyH = document.documentElement.clientHeight;
-        var elW = dialog.offsetWidth;
-        var elH = dialog.offsetHeight;
-        dialog.style.left = ((bodyW - elW) / 2 - 190) + 'px';
-        dialog.style.top = ((bodyH - elH) / 2 - 190) + 'px';
+//按下
+function down() {
+    diatitle1.style.cursor = "move";
+    diatitle2.style.cursor = "move";
+    diatitle3.style.cursor = "move";
+    isDraging = true;
+    objleft = dialog.offsetLeft;
+    objtop = dialog.offsetTop;
+    posX = parseInt(mousePosition(event).x)
+    posY = parseInt(mousePosition(event).y);
+    offsetX = posX - objleft;
+    offsetY = posY - objtop;
+}
+
+//移动
+function move(event) {
+    if (isDraging == true) {
+        var x = mousePosition(event).x - offsetX;
+        var y = mousePosition(event).y - offsetY;
+        var w = document.documentElement.clientWidth - dialog.offsetWidth;
+        var h = document.documentElement.clientHeight - dialog.offsetHeight;
+        x = Math.min(w, Math.max(0, x));
+        y = Math.min(h, Math.max(0, y));
+        dialog.style.left = x + 'px';
+        dialog.style.top = y + 'px';
     }
+}
 
-    //按下
-    function down() {
-        diatitle1.style.cursor = "move";
-        diatitle2.style.cursor = "move";
-        diatitle3.style.cursor = "move";
-        isDraging = true;
-        objleft = dialog.offsetLeft;
-        objtop = dialog.offsetTop;
-        posX = parseInt(mousePosition(event).x)
-        posY = parseInt(mousePosition(event).y);
-        offsetX = posX - objleft;
-        offsetY = posY - objtop;
+//松开
+function up() {
+    isDraging = false;
+}
+
+function mousePosition(evt) {
+    var xPos, yPos;
+    evt = evt || window.event;
+    if (evt.pageX) {
+        xPos = evt.pageX;
+        yPos = evt.pageY;
+    } else {
+        xPos = evt.clientX + document.body.scrollLeft - document.body.clientLeft;
+        yPos = evt.clientY + document.body.scrollTop - document.body.clientTop;
     }
-
-    //移动
-    function move(event) {
-        if (isDraging == true) {
-            var x = mousePosition(event).x - offsetX;
-            var y = mousePosition(event).y - offsetY;
-            var w = document.documentElement.clientWidth - dialog.offsetWidth;
-            var h = document.documentElement.clientHeight - dialog.offsetHeight;
-            x = Math.min(w, Math.max(0, x));
-            y = Math.min(h, Math.max(0, y));
-            dialog.style.left = x + 'px';
-            dialog.style.top = y + 'px';
-        }
-    }
-
-    //松开
-    function up() {
-        isDraging = false;
-    }
-
-    function mousePosition(evt) {
-        var xPos, yPos;
-        evt = evt || window.event;
-        if (evt.pageX) {
-            xPos = evt.pageX;
-            yPos = evt.pageY;
-        } else {
-            xPos = evt.clientX + document.body.scrollLeft - document.body.clientLeft;
-            yPos = evt.clientY + document.body.scrollTop - document.body.clientTop;
-        }
-        return {
-            x: xPos,
-            y: yPos
-        }
+    return {
+        x: xPos,
+        y: yPos
     }
 }

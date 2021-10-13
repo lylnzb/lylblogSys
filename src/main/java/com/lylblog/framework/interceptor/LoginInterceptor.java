@@ -1,6 +1,7 @@
 package com.lylblog.framework.interceptor;
 
 import com.lylblog.common.util.shiro.ShiroUtils;
+import com.lylblog.project.common.bean.WebSiteTjBean;
 import com.lylblog.project.common.mapper.CommonMapper;
 import com.lylblog.project.login.bean.UserLoginBean;
 import com.lylblog.project.login.mapper.LoginMapper;
@@ -40,6 +41,11 @@ public class LoginInterceptor implements HandlerInterceptor {
             /*获取博客配置信息*/
             BlogSetBean blogSet = commonMapper.getBlogConfiguration();
             request.setAttribute("blogSet", blogSet);
+
+            /*获取网站统计数据*/
+            WebSiteTjBean webSiteTj = commonMapper.queryWebSiteTjInfo();
+            request.setAttribute("webSiteTj", webSiteTj);
+
         }catch (Exception e){
             System.out.println("我要忽略你。。。");
         }

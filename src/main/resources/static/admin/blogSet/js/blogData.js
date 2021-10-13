@@ -1,8 +1,10 @@
 
-layui.use(['form', 'table','tree'], function(){
+layui.use(['form', 'table','tree', 'laydate'], function(){
     var form = layui.form,
+        laydate = layui.laydate,
         element = layui.element;
 
+    laydate.render({elem: '#basicsetWebSiteOnlineTime',type: 'datetime'});
     element.on('tab(blogSet)', function (data) { $("#setTab").val(data.index); });
 
     findCodeValue(form);
@@ -16,6 +18,11 @@ layui.use(['form', 'table','tree'], function(){
         basicsetTitle:function(value) {
             if ('0' == $("#setTab").val() && value.length < 1) {
                 return '博客名称不能为空！';
+            }
+        },
+        basicsetWebSiteOnlineTime:function(value) {
+            if ('0' == $("#setTab").val() && value.length < 1) {
+                return '请选择网站上线时间！';
             }
         },
         basicsetCopyrightNoticeInfo:function(value) {
@@ -151,6 +158,8 @@ layui.use(['form', 'table','tree'], function(){
             $("#basicsetTitle").val(data.basicsetTitle);
             /*博客描述*/
             $("#basicsetDes").val(data.basicsetDes);
+            /*网站上线时间*/
+            $("#basicsetWebSiteOnlineTime").val(data.basicsetWebSiteOnlineTime);
             /*全局允许评论*/
             (data.basicsetGlobalAllowComment == 'Y')?$("#basicsetGlobalAllowComment").attr("checked", "checked"):$("#basicsetGlobalAllowComment").removeAttr("checked");
             /*全局展示评论*/
@@ -239,6 +248,8 @@ layui.use(['form', 'table','tree'], function(){
         /*博客名称*/
         var basicsetTitle = data.field.basicsetTitle;
         /*博客描述*/
+        var basicsetWebSiteOnlineTime = data.field.basicsetWebSiteOnlineTime;
+        /*博客描述*/
         var basicsetDes = data.field.basicsetDes;
         /*全局允许评论*/
         var basicsetGlobalAllowComment = (data.field.basicsetGlobalAllowComment == "on")?"Y":"N";
@@ -316,6 +327,7 @@ layui.use(['form', 'table','tree'], function(){
             paramData.basicsetWebsiteIco = webIcon;
             paramData.basicsetTitle = basicsetTitle;
             paramData.basicsetDes = basicsetDes;
+            paramData.basicsetWebSiteOnlineTime = basicsetWebSiteOnlineTime;
             paramData.basicsetGlobalAllowComment = basicsetGlobalAllowComment;
             paramData.basicsetGlobalShowComment = basicsetGlobalShowComment;
             paramData.basicsetGlobalAllowReprint = basicsetGlobalAllowReprint;

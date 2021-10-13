@@ -50,4 +50,21 @@ public interface ArticleService {
      * @return
      */
     ResultObj deleteLabelInfo(List<String> deleteIds);
+
+    /**
+     * 设置文章是否置顶
+     * @param wznm
+     * @param value
+     * @return
+     */
+    ResultObj updateArticleToOnTop(String wznm, String value);
+
+    /**
+     * 设置文章是否推荐
+     * @param wznm
+     * @param value
+     * @return
+     */
+    ResultObj updateArticleToIselite(String wznm, String value);
+
 }

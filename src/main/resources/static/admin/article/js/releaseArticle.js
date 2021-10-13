@@ -85,7 +85,7 @@ layui.use(['jquery', 'formSelects'], function(){
             }
         },
         copyFrom:function(value) {
-            if (value.length < 1) {
+            if ($("#fromWay option:selected").val() == '2' && value.length < 1) {
                 return '来源名称不能为空！';
             }
         },

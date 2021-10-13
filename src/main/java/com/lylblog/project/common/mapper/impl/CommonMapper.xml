@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="basicsetTitle"   column="basicset_title"   />
         <result property="basicsetWebsiteIco"   column="basicset_website_ico"   />
         <result property="basicsetDes"     column="basicset_des"      />
+        <result property="basicsetWebSiteOnlineTime"     column="basicset_webSite_online_time"      />
         <result property="basicsetGlobalAllowComment"   column="basicset_global_allow_comment"   />
         <result property="basicsetGlobalShowComment" column="basicset_global_show_comment" />
         <result property="basicsetGlobalAllowReprint"   column="basicset_global_allow_reprint"   />
@@ -84,6 +85,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         ) aa ORDER BY orderBy
     </select>
 
+    <!-- 根据编码类别和字典值查询字典 -->
+    <select id="queryCodeValueByCode" parameterType="String" resultType="com.lylblog.project.system.dict.bean.DictDataBean">
+        SELECT
+                dict_value AS dictvalue,
+                dict_label AS dictlabel,
+                is_default AS isdefault,
+                dict_style AS dictStyle,
+                dict_sort  AS orderBy
+        FROM
+                sys_dict_data
+        WHERE dict_type = #{dictType} AND dict_value = #{values} AND valid = '1'
+    </select>
+
     <!-- 查询音乐列表 -->
     <select id="queryMusicList" resultType="com.lylblog.project.common.bean.MusicBean" parameterType="String">
         SELECT
@@ -138,6 +152,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where columnId = #{columnId} and valid = '1'
     </select>
 
+    <!-- 展示网站首页最新文章列表信息 -->
+    <select id="getBlogRecommended" resultType="com.lylblog.project.webSite.index.bean.ArticleListBean">
+        SELECT
+            wznm,
+            articleTitle as articleTitle,
+            CONCAT('/blog/detail/', wznm) as articleUrl,
+            abstracts as articleDec
+        FROM sys_article t where iselite = 'Y' and articleStatus = '2' order by createTime desc
+        limit 0, ${page}
+    </select>
+
     <!-- 获取博客配置信息 -->
     <select id="getBlogConfiguration"  resultMap="BlogSetResult">
         select * from sys_blogset
@@ -183,4 +208,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             SYSDATE()
         )
     </insert>
+
+    <!-- 查询网站统计数据 -->
+    <select id="queryWebSiteTjInfo" resultType="com.lylblog.project.common.bean.WebSiteTjBean">
+        select
+            (select basicset_title from sys_blogset) as webName,
+            (select count(1) from sys_article where articleStatus = '2') as blogNum,
+            (select count(1) from sys_comment where commentType = '1') as commentNum,
+            (select count(1) from sys_comment where commentType = '2') as messageNum,
+            (select count(1) from sys_blogbrowe_log ) as browseNum,
+            (select count(1) from sys_blogbrowe_log where DATE_FORMAT(createTime,'%Y%c%d') = DATE_FORMAT(SYSDATE(),'%Y%c%d')) as toDaybrowseNum
+        from dual
+    </select>
 </mapper>

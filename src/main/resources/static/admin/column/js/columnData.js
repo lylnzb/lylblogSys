@@ -35,7 +35,10 @@ layui.config({
             },
             {title: '栏目地址', field: 'columnUrl', align: 'center'},
             {title: '栏目属性', field: 'attributeName', align: 'center'},
-            {title: '栏目状态', align: 'center', templet: "#isHidden"},
+            {title: '栏目状态', align: 'center', templet : function(data){
+                    return selectDictLabel('sys_hide_show', data.isHidden);
+                }
+            },
             {title: '创建时间', field: 'createTime', align: 'center'},
             {title: '操作', align: 'center', toolbar: '#tbBar', width: '30%'}
         ]],

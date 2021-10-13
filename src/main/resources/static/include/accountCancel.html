@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>账号注销</title>
+</head>
+<body>
+<div class="accountCancel dialog--400" id="accountCancel" th:fragment="myAccountCancel">
+    <div class="dialog-body dialog-body-class">
+        <div class="account-wrap-box">
+            <h2 class="title" id="tabName" style="font-weight: bold">
+                <span>账号注销</span>
+                <i class="close icon"></i>
+            </h2>
+            <div class="content-box">
+                <div class="warning-header">
+                    <label class="warning-label">在开始注销前，请确认以下内容：</label>
+                </div>
+                <div class="warning-content">
+                    <ul class="warning-ul">
+                        <li class="warning-li">
+                            <div class="marker"></div><span>账户处于安全状态</span>
+                            <div class="warning-desc">
+                                在最近3个月无异常登录记录，并且账户无修改密码、邮箱敏感操作。
+                            </div>
+                        </li>
+                        <li class="warning-li">
+                            <div class="marker"></div><span>账户将不能找回</span>
+                            <div class="warning-desc">
+                                账号注销后，账号绑定邮箱、第三方账号等相关信息将被删除，账号将无法登录。
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="warning-btn">
+                    <button class="ui primary button">开始注销</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

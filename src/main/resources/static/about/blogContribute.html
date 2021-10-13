@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<!-- saved from url=(0072)https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html# -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我 -羅氏博客</title>
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../common/semantic-ui/dist/semantic.min.css">
+    <link rel="stylesheet" href="../common/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../common/qqFace/css/reset.css">
+    <link rel="stylesheet" href="../common/css/style.css">
+    <link rel="stylesheet" href="../common/css/tx.css">
+    <link rel="stylesheet" href="../common/css/index.css">
+    <link rel="stylesheet" href="../common/layui/css/layui.css">
+    <link rel="stylesheet" href="../login/css/login.css">
+    <link rel="stylesheet" href="/common/css/mplayer.css">
+    <style>
+        a {
+            cursor:pointer;
+            text-decoration: none;
+            color: #333;
+        }
+        #header {
+            position: fixed;
+            top: 0;
+            z-index: 901;
+            width: 100%;
+            background: #fff;
+            box-shadow: 0 2px 6px 0 rgba(0,0,0,.17);
+        }
+        #main {
+            width: 885pt;
+            margin: 0 auto 20px;
+            padding-top: 65px;
+        }
+        .separated p {
+            margin: 16px 0px;
+            color: #8c8c8c;
+            text-align: center;
+            font-size: 14px;
+            font-size: .9em;
+            overflow: hidden;
+            line-height: 180%;
+        }
+        .wzbqsm-p span, p.wzbqsm-p a {
+            color: #e53935;
+        }
+        .nextinfo {
+            margin-top: 25px;
+        }
+        .shareUrl img {
+            width: 20px;
+        }
+        .shareUrl a {
+            margin-top: 10px;
+        }
+        .comment-text-center {
+            cursor: pointer;
+            text-align: center;
+            margin: 18px 0;
+            font-size: 16px;
+            font-size: 1.15em;
+            color: #338A9C;
+            font-weight: 500;
+        }
+        #head {
+            padding: 8px 20px 12px;
+            background-color: #FEF0ED;
+            margin-top: 25px;
+            width: 98%;
+            width: 740px;
+            margin-left: 13px;
+            border-radius: 9px 9px 9px 9px;
+        }
+        .bz_about {
+            margin: 10px 0;
+            padding: 10px 30px 10px 30px;
+            color: #555;
+            border-left: 4px solid #00bfff;
+            line-height: 28px;
+            font-weight: initial;
+        }
+        .ly_button {
+            width: 100px;
+            background: #000;
+            text-align: center;
+            border-radius: 3px;
+            line-height: 30px;
+        }
+    </style>
+</head>
+<body>
+<!-- 遮盖层 -->
+<div id="bg" class="bg"></div>
+
+<!-- 登录框 -->
+<div class="login">
+    <div th:replace="login/login :: loginBox"></div>
+</div>
+
+<!--导航-->
+<div id="header">
+    <div th:replace="include/header :: myHeader"></div>
+</div>
+
+<!--音乐-->
+<div id="music">
+    <div th:replace="include/music :: myMusic"></div>
+</div>
+
+<!--中间-->
+<div id="main">
+    <div class="m-padded-tb-max">
+        <div class="ui container">
+            <div class="leave_position" style="font-size: 14px;font-weight: bold;margin-top:-8px;margin-bottom: -10px;margin-left: 28px">
+                <i class="fa fa-map-marker"></i>
+                &nbsp;您现在的位置是：<a style="font-size: 14px;font-weight: bold;">首页</a>&nbsp;>&nbsp;<a style="font-size: 14px;font-weight: bold;">关于我</a>
+            </div>
+            <div class="ui stackable grid" style="margin-left: 8px">
+                <!--左边-->
+                <div class="twelve wide column">
+                    <!--博客主题-->
+                    <div class="mainBox">
+                        <div class="ui middle aligned one column grid"></div>
+                        <!--<div class="ui divider"></div>-->
+                        <div class="ui m-padded-tb-max vertical segment" style="margin-top: 15px;">
+                            <div class="ui secondary pointing menu" style="width: 100%;">
+                                <a class="item active" data-tab="tab-name1">关于我</a>
+                                <div class="right menu">
+                                    <div class="item">
+                                        <div class="ui transparent icon input">
+                                            <span class="ly_button">
+                                                <a style="color: #0ea432">留言</a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui tab active" data-tab="tab-name1">
+                                <div class="gyw_intro">
+                                    <h3>我的信息 | Information：</h3>
+                                    <div class="bz_about">
+                                        <span>姓名：罗永亮</span><br/>
+                                        <span>性别：男</span><br/>
+                                        <span>QQ：1279399209</span><br/>
+                                        <span>现居：湖南省 - 长沙市</span><br/>
+                                        <span>职业：Java后端开发工程师</span><br/>
+                                        <!--<span>爱好：听歌、追剧、打游戏(王者荣耀)<img src="../common/qqFace/arclist/13.gif" border="0" style="vertical-align:middle;"/></span><br/>
+                                        <span>喜欢的明星：许嵩</span>-->
+                                    </div>
+                                    <h3>个人简介 | Resume：</h3>
+                                    <div class="bz_about">
+                                        <span>
+                                            本人乃90后的精神小伙一枚，从事的工作是java后端开发。在生活中，除了工作外，妥妥的宅男一个<img src="../common/qqFace/arclist/13.gif" border="0" style="vertical-align:middle;"/>，
+                                            平时喜欢听听歌、看看电视、玩玩游戏，最欣赏的明星是许嵩，作为一名“嵩”鼠，希望可以有更多人喜欢他，也希望能通过我的这个博客认识很多志同道合的朋友。
+                                        </span>
+                                    </div>
+                                    <h3>个人理想 | Dream：</h3>
+                                    <div class="bz_about">
+                                        <span>希望能和喜欢的人去看一场许嵩的演唱会，其次是未来的自己越来越好，财源滚滚。</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui secondary pointing menu" style="width: 100%;">
+                                <a class="item active" data-tab="tab-name1">关于本站</a>
+                            </div>
+                            <div class="ui tab active" data-tab="tab-name1">
+                                <div class="bz_about">
+                                    <span>
+                                        很早以前就想自己做一个只属于自己的网站，想过很多主题：如电影、
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--右边-->
+                <div class="four wide column">
+                    <!-- 站长推荐 -->
+                    <section class="sideTab" id="side_random">
+                        <h3 class="sideTab-title">
+                            站长推荐
+                        </h3>
+                        <div class="newsitem">
+                            <ul class="newslist">
+                                <li class="active">
+                                    <i content="1"></i>
+                                    <a href="">php获取视频的时长和第一帧</a>
+                                    <p>视频网站一般都是从后台上传视频，并且都需要有视频的时长和第一帧来作为视频的缩略图显示。所以就需要在视频上传的时候拿到这些属性并保存到数据库。</p>
+                                </li>
+                                <li>
+                                    <i content="2"></i>
+                                    <a href="">高并发生成唯一的订单号</a>
+                                    <p>电商的订单号，在正常流程中，只精确到秒就可以啦，但是在高并发的时候，同一秒可能会有上千上万个请求，如何保证在这种情况下订单号不会有重复呢，我实现了两个方法，亲测有效。</p>
+                                </li>
+                                <li>
+                                    <i content="3"></i>
+                                    <a href="">linux下sphinx增量索引部署</a>
+                                    <p>linux下sphinx增量索引部署，实现搜索到的数据是实时更新的。</p>
+                                </li>
+                                <li>
+                                    <i content="4"></i>
+                                    <a href="">前端监控系统之“理论篇”</a>
+                                    <p>相信前端开发的朋友们，都有类似的经历。项目上线后，突然有一天收到部门Boss的反馈消息。 Boss: 咦，小张呀！你看我们网站啊，有人反馈打开有点慢、打不开啊！你看下是怎么回事？</p>
+                                </li>
+                                <li>
+                                    <i content="5"></i>
+                                    <a href="">windows下phpStudy mysql版...</a>
+                                    <p>windows下phpStudy mysql版本升级到5.7，本地和线上的mysql版本统一，避免因为导入数据库报错。</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                    <!--推荐书籍-->
+                    <section class="sideTab">
+                        <h3 class="sideTab-title">
+                            推荐书籍
+                        </h3>
+                        <div class="ui items">
+                            <div class="item">
+                                <a class="ui small image" style="width: 90px;height: 130px">
+                                    <img src="../img/thumb.png">
+                                </a>
+                                <div class="content">
+                                    <a class="header">JSP动态网站技术入...</a>
+                                    <div class="description">
+                                        <p>Java在Internet领域内发展出来的JSP(Java Server Page)和Servlet技术是...</p>
+                                    </div>
+                                    <div class="extra">
+                                        <div class="ui label">作者：太阳工作室</div>
+                                        <div class="ui label"><i class="eye icon"></i>10</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui divider"></div>
+                            <div class="item">
+                                <a class="ui small image" style="width: 90px;height: 130px">
+                                    <img src="../img/biancheng.jpg">
+                                </a>
+                                <div class="content">
+                                    <a class="header">Java编程思想(第4版)</a>
+                                    <div class="description">
+                                        <p>编辑推荐《Java编程思想(第4版)》获奖历史：·2003年《Software Development》...</p>
+                                    </div>
+                                    <div class="extra">
+                                        <div class="ui label">作者：埃史尔</div>
+                                        <div class="ui label"><i class="eye icon"></i>10</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui divider"></div>
+                            <div class="item">
+                                <a class="ui small image" style="width: 90px;height: 130px">
+                                    <img src="../img/javahx.jpg">
+                                </a>
+                                <div class="content">
+                                    <a class="header">Java核心技术(卷1):基...</a>
+                                    <div class="description">
+                                        <p>Java领域最有影响力和价值的著作之一，与《Java编程思想》齐名，10余年全球...</p>
+                                    </div>
+                                    <div class="extra">
+                                        <div class="ui label">作者：霍斯特曼</div>
+                                        <div class="ui label"><i class="eye icon"></i>10</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!--网站统计-->
+                    <section class="sideTab">
+                        <h3 class="sideTab-title">
+                            网站统计
+                        </h3>
+                        <ul class="tj">
+                            <li><label>网站名称：</label><span th:text="${webSiteTj.webName}">羅氏博客</span></li>
+                            <li><label>文章总数：</label><span th:text="${webSiteTj.blogNum} + '篇'">10篇</span></li>
+                            <li><label>留言总数：</label><span th:text="${webSiteTj.messageNum} + '条'">10条</span></li>
+                            <li><label>总浏览量：</label><span th:text="${webSiteTj.browseNum} + '次'">18652次</span></li>
+                            <li><label>今日访问量：</label><span th:text="${webSiteTj.toDaybrowseNum} + '次'">176次</span></li>
+                            <li><label>当前访客来源：</label><span id="city"></span></li>
+                            <li><label>网站运行：</label><span>1年3月29日12时29分19秒</span></li>
+                        </ul>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--底部-->
+<div id="footer">
+    <div th:replace="include/footer :: myFooter"></div>
+</div>
+</body>
+</html>
+<script src="../common/qqFace/js/jquery.min.js"></script>
+<!-- 引入获得ip和城市名的js -->
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script src="https://ip.ws.126.net/ipquery"></script>
+<script src="../common/util.js"></script>
+<script src="../common/qqFace/js/jquery.qqFace.js"></script>
+<script src="../common/semantic-ui/dist/semantic.min.js"></script>
+<script src="../login/js/login.js"></script>
+<script src="../common/layui/layui.all.js"></script>
+<script src="/common/mPlayer/mplayer.js"></script>
+<script src="/common/mPlayer/mplayer-list.js"></script>
+<script src="/common/mPlayer/mplayer-functions.js"></script>
+<script src="http://cdn.bootcss.com/jquery-nstslider/1.0.13/jquery.nstSlider.min.js"></script>
+<script type="text/javascript" src="/common/player.js"></script>
+<script>
+    $(document).ready(function(){
+
+        $('.pointing.menu .item').tab();
+
+        $('.ui.dropdown').dropdown();
+
+        //悬浮变色事件
+        $('.newslist li').mouseover(function(){
+            $(this).addClass("active");
+            $(this).siblings(".active").removeClass("active");
+        });
+        $('.newslist li').mouseout(function(){
+            $(this).removeClass("active");
+            $('.newslist li:first-child').addClass("active");
+        });
+    });
+    $('#hybrid select').dropdown({on: 'hover'});
+</script>
+

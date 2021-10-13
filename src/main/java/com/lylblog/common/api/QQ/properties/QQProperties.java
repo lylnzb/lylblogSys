@@ -1,4 +1,4 @@
-package com.lylblog.common.api.properties.QQ;
+package com.lylblog.common.api.QQ.properties;
 
 import lombok.Data;
 

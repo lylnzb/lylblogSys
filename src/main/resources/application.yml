@@ -75,3 +75,7 @@ oauth:
     openid_callback_uri: https://graph.qq.com/oauth2.0/me
     #腾讯获取用户信息地址
     user_info_callback_uri: https://graph.qq.com/user/get_user_info
+  weixin:
+    token: lylBlogToken
+    encodingAesKey: 1I9DLf7h1Zor4FPB2PTqtK7UFUI1TJItFGuonm6wh8n
+    appid: wx02272a66a63f92a1

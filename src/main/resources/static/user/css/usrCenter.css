@@ -108,7 +108,7 @@ a {
     margin-bottom: 10px;
     background-size: cover;
     margin-top: 10px;
-    margin-left: 31%;
+    margin-left: 34%;
     cursor: url('../../img/cur/link.cur'), pointer;
 }
 
@@ -572,7 +572,7 @@ a {
 }
 
 .collection-left-tab {
-    min-height: 760px;
+    /*min-height: 760px;*/
     width: 200px;
     border-right: 1px solid #ededed;
     -webkit-box-sizing: border-box;
@@ -1094,4 +1094,10 @@ a {
 
 #favoriteList {
     max-height: 150px!important;
+}
+
+.author_info {
+    height: 270px;
+    border: 1px solid rgba(34,36,38,.15);
+    box-shadow: 0 1px 2px 0 rgba(34,36,38,.15);
 }

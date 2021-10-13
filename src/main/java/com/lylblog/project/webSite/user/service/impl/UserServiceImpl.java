@@ -198,4 +198,19 @@ public class UserServiceImpl implements UserService {
         }
         return ResultObj.fail("暂无个人动态信息");
     }
+
+    /**
+     * 账号注销
+     * @return
+     */
+    public ResultObj accountCancel() {
+        UserLoginBean user = ShiroUtils.getUserInfo();
+        int num = 0;
+        try {
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResultObj.ok();
+    }
 }

@@ -19,7 +19,7 @@
         .department_main label{width: 10%;text-align: right;font-size: 12px}
         .department_main input, .department_main select{margin-right: 1%;height: 32px;border: 1px #ccc solid;background-color: #fff;border-radius: 4px;padding-left: 6px;}
         .department_main textarea{resize: none;border: 1px #ccc solid;height: 50px;background-color: #fff;border-radius: 4px;padding-left: 6px;padding-top: 5px;}
-        .layui-form-select {width:220px;}
+        .layui-form-select {width:473px;}
     </style>
 </head>
 <body>
@@ -58,6 +58,16 @@
                 <div class="layui-input-inline">
                     <input type="text" id="dictSort" name="dictSort" autocomplete="off"
                            class="layui-input" placeholder="" required="" style="width: 473px">
+                </div>
+            </div>
+        </div>
+        <div class="department_main">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 189px">回显样式：</label>
+                <div class="layui-input-inline">
+                    <select id="dictStyle" name="dictStyle" lay-verify="dictStyle" style="width: 100%">
+                        <option value=""></option>
+                    </select>
                 </div>
             </div>
         </div>

@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<div class="dialog dialog--400" id="loginPage" th:fragment="loginBox">
+<div class="dialog" id="loginPage" style="top: 60px" th:fragment="loginBox">
     <div class="dialog-body dialog-body-class">
         <div class="login-wrap-box userLogin">
             <h2 class="title" id="title1" style="font-weight: bold">
@@ -51,7 +51,7 @@
                     <button type="button" class="ui primary button" style="width: 100%" id="login">登录</button>
                     <div class="info clearfix">
                         <p class="info-item fl" style="line-height: 30px">没有账号？<span class="registerBtn">注册</span></p>
-                        <p class="forgotPasBtn fr" style="line-height: 30px">忘记密码？</p>
+<!--                        <p class="forgotPasBtn fr" style="line-height: 30px">忘记密码？</p>-->
                     </div>
                 </div>
                 <div class="separated">
@@ -77,34 +77,70 @@
                 <i class="close icon"></i>
             </h2>
             <div class="content-box">
-                <form class="from-box" autocomplete="off">
+                <form class="from-box" id="registerForm" autocomplete="off">
+                    <label class="nickname-label">
+                            <span class="label">
+                                <span class="tip">*</span>昵称：
+                            </span>
+                    </label>
+                    <div class="nicknameLabel">
+                        <div class="field">
+                            <div class="ui left icon input" style="width: 100%">
+                                <input type="text" class="registerNickName required" id="registerNickName" placeholder="请输入你的昵称">
+                                <i class="user icon"></i>
+                            </div>
+                        </div>
+                        <div id="registerNickNameError" class="error">
+                            <div class="ui basic red pointing prompt label transition">昵称不能为空</div>
+                        </div>
+                    </div>
                     <label class="username-label">
                             <span class="label">
                                 <span class="tip">*</span>电子邮箱：
                             </span>
                     </label>
-                    <div class="ui left icon input" style="width: 100%">
-                        <input type="text" class="email" placeholder="请输入电子邮箱">
-                        <i class="envelope outline icon"></i>
+                    <div class="emailLabel">
+                        <div class="field">
+                            <div class="ui left icon input" style="width: 100%">
+                                <input type="text" class="userEmail required" id="registerUserEmail" placeholder="请输入电子邮箱">
+                                <i class="envelope outline icon"></i>
+                            </div>
+                        </div>
+                        <div id="registerUserEmailError" class="error">
+                            <div class="ui basic red pointing prompt label transition">电子邮箱不能为空</div>
+                        </div>
                     </div>
                     <label class="username-label">
                             <span class="label">
                                 <span class="tip">*</span>邮箱验证码：
                             </span>
                     </label>
-                    <div class="ui right labeled left icon input" style="width: 100%">
-                        <i class="calendar check icon"></i>
-                        <input id="code" type="text" placeholder="请输入邮箱验证码">
-                        <a class="ui tag blue label" id="btn" onclick="sendemail()" style="width: 100px; text-align: center">点击发送</a>
+                    <div class="codeLabel">
+                        <div class="field">
+                            <div class="ui right labeled input" style="width: 100%">
+                                <input type="text" class="code required" id="code" placeholder="请输入邮箱验证码">
+                                <a class="ui basic label" id="sendBtn">点击发送</a>
+                            </div>
+                        </div>
+                        <div id="codeError" class="error">
+                            <div class="ui basic red pointing prompt label transition">邮箱验证码不能为空</div>
+                        </div>
                     </div>
                     <label class="password-label">
                             <span class="label">
                                 <span class="tip">*</span>密码：
                             </span>
                     </label>
-                    <div class="ui left icon input" style="width: 100%">
-                        <input type="password" id="password" placeholder="请输入密码">
-                        <i class="lock icon"></i>
+                    <div class="pwdLabel">
+                        <div class="field">
+                            <div class="ui left icon input" style="width: 100%">
+                                <input type="password" class="userPwd required" id="registerUserPwd" placeholder="请输入密码">
+                                <i class="lock icon"></i>
+                            </div>
+                        </div>
+                        <div id="registerUserPwdError" class="error">
+                            <div class="ui basic red pointing prompt label transition">密码不能为空</div>
+                        </div>
                     </div>
                 </form>
                 <div class="btn-box">
@@ -144,21 +180,32 @@
                                 <span class="tip">*</span>电子邮箱：
                             </span>
                     </label>
-                    <div class="ui left icon input" style="width: 100%">
-                        <input type="text" placeholder="请输入电子邮箱">
-                        <i class="envelope outline icon"></i>
+                    <div class="emailLabel">
+                        <div class="field">
+                            <div class="ui left icon input" style="width: 100%">
+                                <input type="text" class="userEmail required" id="userRetrievePasEmail" placeholder="请输入电子邮箱">
+                                <i class="envelope outline icon"></i>
+                            </div>
+                        </div>
+                        <div id="userRetrievePasEmailError" class="error">
+                            <div class="ui basic red pointing prompt label transition">电子邮箱不能为空</div>
+                        </div>
                     </div>
                     <label class="username-label">
                             <span class="label">
                                 <span class="tip">*</span>邮箱验证码：
                             </span>
                     </label>
-                    <div class="ui right labeled left icon input" style="width: 100%">
-                        <i class="calendar check icon"></i>
-                        <input type="text" placeholder="请输入邮箱验证码">
-                        <a class="ui tag label">
-                            点击发送
-                        </a>
+                    <div class="codeLabel">
+                        <div class="field">
+                            <div class="ui right labeled input" style="width: 100%">
+                                <input type="text" class="code required" id="emailCode" placeholder="请输入邮箱验证码">
+                                <a class="ui basic label" id="sendCodeBtn">点击发送</a>
+                            </div>
+                        </div>
+                        <div id="emailCodeError" class="error">
+                            <div class="ui basic red pointing prompt label transition">邮箱验证码不能为空</div>
+                        </div>
                     </div>
                     <label class="password-label">
                             <span class="label">

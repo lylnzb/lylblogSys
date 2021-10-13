@@ -129,26 +129,14 @@ layui.use(['form', 'table','tree'], function(){
              {checkbox: true, id:"idTest", width:'2%'}
             ,{field:'permId', title:'编号', width:'6%', align:'center'}
             ,{field:'permname', title:'权限名称', width:'20%', align:'center'}
-            ,{field:'permType', title:'类型', width:'15%', align:'center',
-                templet : function(data) {// 替换数据
-                    if(data.permType == 0){
-                        return "目录";
-                    }else if(data.permType == 1){
-                        return "菜单";
-                    }else{
-                        return "按钮";
-                    }
+            ,{field:'permType', title:'类型', width:'15%', align:'center', templet : function(data){
+                    return selectDictLabel('sys_perm_type', data.permType);
                 }
-             }
-            ,{field:'valid', title:'有效标识', width:'18%', align:'center',
-                templet : function(data) {// 替换数据
-                    if(data.valid == 0){
-                        return "无效";
-                    }else if(data.valid == 1){
-                        return "有效";
-                    }
+            }
+            ,{field:'valid', title:'状态', width:'18%', align:'center', templet : function(data){
+                    return selectDictLabel('sys_status', data.valid);
                 }
-             }
+            }
             ,{field:'permdesc', title:'描述', width:'39%', align:'center'}
         ]]
         ,id:"idTest"

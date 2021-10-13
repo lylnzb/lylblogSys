@@ -9,9 +9,9 @@
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../common/semantic-ui/dist/semantic.min.css">
     <link rel="stylesheet" href="../common/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../common/css/style.css">
     <link rel="stylesheet" href="../common/css/tx.css">
     <link rel="stylesheet" href="../common/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../common/css/style.css">
     <link rel="stylesheet" href="../common/qqFace/css/reset.css">
     <link rel="stylesheet" href="../common/css/index.css">
     <link rel="stylesheet" href="../common/css/mplayer.css">
@@ -53,124 +53,88 @@
 <div id="main">
     <div class="m-padded-tb-max">
         <div class="ui container">
-            <div class="leave_position" style="font-size: 14px;font-weight: bold;margin-bottom: -10px;">
+            <div class="leave_position" style="font-size: 14px;font-weight: bold;margin-bottom: -10px;margin-left: 28px;color: white">
                 <i class="fa fa-map-marker"></i>
-                &nbsp;您现在的位置是：<a style="font-size: 14px;font-weight: bold;">首页</a>&nbsp;>&nbsp;<a style="font-size: 14px;font-weight: bold;">留言反馈</a>
+                &nbsp;您现在的位置是：<a style="font-size: 14px;font-weight: bold;color: white">首页</a>&nbsp;>&nbsp;<a style="font-size: 14px;font-weight: bold;color: white">留言反馈</a>
             </div>
-            <div class="ui stackable grid">
+            <div class="ui stackable grid" style="margin-left: 8px">
                 <!--左边-->
-                <div class="eleven wide column">
-                    <div class="ui attached segment form">
-                        <div class="field">
-                            <div class="ui secondary pointing menu">
-                                <a class="item active" data-tab="tab-name">留言板</a>
+                <div class="twelve wide column">
+                    <section class="sideTab">
+                        <h3 class="sideTab-title">
+                            留言板
+                        </h3>
+                        <div id="editor" class="editor" placeholder="对我说点什么吧...." contenteditable="true"></div>
+                        <input id="saytext" name="saytext" type="text" style="display: none"/>
+                        <div class="app">
+                            <div id="emoji" style="display:inline-block;">
+                                <i id="emotion" style="font-size: 30px;cursor:pointer;" class="smile icon"></i>
+                            </div>&nbsp;
+                            <div id="image" style="display:inline-block;margin-left:10px;">
+                                <div id="imageBox1" style="display: none">
+                                    <img id="showimg1" src="" alt=""/>
+                                    <i id="close1" class="close icon" onclick="$('#imageBox1').hide();" style="margin-top: -140px;margin-left: 125px;position: absolute;"></i>
+                                    <i class="caret up"></i>
+                                </div>
+                                <div id="uploadImg">
+                                    <input type="file" accept="image/*" onchange="showImg(1,this)"/>
+                                </div>
+                                <i style="font-size: 30px;cursor:pointer;" class="image icon"></i>
                             </div>
-                            <div class="ui tab active" data-tab="tab-name">
-                                <div id="editor" class="editor" placeholder="对我说点什么吧...." contenteditable="true"></div>
-                                <input id="saytext" name="saytext" type="text" style="display: none"/>
-                                <div class="app">
-                                    <div id="emoji" style="display:inline-block;">
-                                        <i id="emotion" style="font-size: 30px;cursor:pointer;" class="smile icon"></i>
-                                    </div>&nbsp;
-                                    <div id="image" style="display:inline-block;margin-left:10px;">
-                                        <div id="imageBox1" style="display: none">
-                                            <img id="showimg1" src="" alt=""/>
-                                            <i id="close1" class="close icon" onclick="$('#imageBox1').hide();"></i>
-                                            <i class="caret up"></i>
-                                        </div>
-                                        <div id="uploadImg">
-                                            <input type="file" accept="image/*" onchange="showImg(1,this)"/>
-                                        </div>
-                                        <i style="font-size: 30px;cursor:pointer;" class="image icon"></i>
-                                    </div>
-                                    <div class="submit" >
-                                        <button class="ui primary button" id="sub_btn" onclick="releaseMessage(1, '')">发布评论</button>
-                                    </div>
-                                </div>
-                                <div class="ui divider" style="margin-top: 25px"></div>
-                                <div class="message">
-                                    <span style="font-size: 20px">留言列表(<span id="totalCommentCount" style="color:#E1171B" th:text="${totalCommentCount}">0</span>)</span>
-                                </div>
-                                <div class="ui divider"></div>
-                                <div id="noComment" style="display: none">
-                                    <h2 class="comment-text-center">
-                                        <i class="frown outline icon"></i>还没有评论，来说两句吧...
-                                    </h2>
-                                </div>
-                                <div class="ui comments" id="commentList"></div>
-                                <div id="page" style="text-align: right;"></div>
+                            <div class="submit" >
+                                <button class="ui primary button" id="sub_btn" onclick="releaseMessage(1, '')">发布评论</button>
                             </div>
                         </div>
-                    </div>
+                    </section>
+                    <section class="sideTab" style="overflow: inherit;">
+                        <h3 class="sideTab-title">
+                            <span>留言列表(<span id="totalCommentCount" style="color:#E1171B" th:text="${totalCommentCount}">0</span>)</span>
+                        </h3>
+                        <div id="noComment" style="display: none">
+                            <h2 class="comment-text-center">
+                                <i class="frown outline icon"></i>还没有评论，来说两句吧...
+                            </h2>
+                        </div>
+                        <div class="ui comments" id="commentList">
+                            <div class="loading" style="text-align: center;">
+                                <span style="color: darkcyan;">留言加载中<span class="ani_dot">...</span></span>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="sideTab pagePlug" style="display: none">
+                        <div id="page" style="text-align: right;margin-top: -10px;margin-bottom: -15px;"></div>
+                    </section>
                 </div>
                 <!--右边-->
-                <div class="five wide column">
-                    <!--标签-->
-                    <div class="ui segments">
-                        <div class="ui secondary segment">
-                            <div class="ui two column grid">
-                                <div class="column">
-                                    <i class="tags icon"></i>最新书籍
+                <div class="four wide column">
+                    <!-- 站长推荐 -->
+                    <section class="sideTab" id="side_random">
+                        <h3 class="sideTab-title">
+                            站长推荐
+                        </h3>
+                        <div class="newsitem">
+                            <ul class="newslist">
+                                <div class="loading" style="text-align: center;">
+                                    <span style="color: darkcyan;">文章加载中<span class="ani_dot">...</span></span>
                                 </div>
-                                <div class="right aligned column">
-                                    <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#">更多 &gt;&gt;</a>
-                                </div>
-                            </div>
+                            </ul>
                         </div>
-                        <div class="ui teal segment">
-                            <div class="ui items">
-                                <div class="item">
-                                    <a class="ui small image" style="width: 90px;height: 130px">
-                                        <img src="../img/thumb.png">
-                                    </a>
-                                    <div class="content">
-                                        <a class="header">JSP动态网站技术入...</a>
-                                        <div class="description">
-                                            <p>Java在Internet领域内发展出来的JSP(Java Server Page)和Servlet技术是...</p>
-                                        </div>
-                                        <div class="extra">
-                                            <div class="ui label">作者：太阳工作室</div>
-                                            <div class="ui label"><i class="eye icon"></i>10</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="ui divider"></div>
-                                <div class="item">
-                                    <a class="ui small image" style="width: 90px;height: 130px">
-                                        <img src="../img/biancheng.jpg">
-                                    </a>
-                                    <div class="content">
-                                        <a class="header">Java编程思想(第4版)</a>
-                                        <div class="description">
-                                            <p>编辑推荐《Java编程思想(第4版)》获奖历史：·2003年《Software Development》...</p>
-                                        </div>
-                                        <div class="extra">
-                                            <div class="ui label">作者：埃史尔</div>
-                                            <div class="ui label"><i class="eye icon"></i>10</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="ui divider"></div>
-                                <div class="item">
-                                    <a class="ui small image" style="width: 90px;height: 130px">
-                                        <img src="../img/javahx.jpg">
-                                    </a>
-                                    <div class="content">
-                                        <a class="header">Java核心技术(卷1):基...</a>
-                                        <div class="description">
-                                            <p>Java领域最有影响力和价值的著作之一，与《Java编程思想》齐名，10余年全球...</p>
-                                        </div>
-                                        <div class="extra">
-                                            <div class="ui label">作者：霍斯特曼</div>
-                                            <div class="ui label"><i class="eye icon"></i>10</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="ui divider"></div>
-                            </div>
-
-                        </div>
-                    </div>
+                    </section>
+                    <!--网站统计-->
+                    <section class="sideTab">
+                        <h3 class="sideTab-title">
+                            网站统计
+                        </h3>
+                        <ul class="tj">
+                            <li><label>网站名称：</label><span th:text="${webSiteTj.webName}">羅氏博客</span></li>
+                            <li><label>文章总数：</label><span th:text="${webSiteTj.blogNum} + '篇'">10篇</span></li>
+                            <li><label>留言总数：</label><span th:text="${webSiteTj.messageNum} + '条'">10条</span></li>
+                            <li><label>总浏览量：</label><span th:text="${webSiteTj.browseNum} + '次'">18652次</span></li>
+                            <li><label>今日访问量：</label><span th:text="${webSiteTj.toDaybrowseNum} + '次'">176次</span></li>
+                            <li><label>当前访客来源：</label><span id="city"></span></li>
+                            <li><label>网站运行：</label><span id="sitetime"></span></li>
+                        </ul>
+                    </section>
                 </div>
             </div>
         </div>
@@ -185,6 +149,9 @@
 </html>
 <!--<script src="../common/jquery/jquery-1.11.1.js"></script>-->
 <script src="../common/qqFace/js/jquery.min.js"></script>
+<!-- 引入获得ip和城市名的js -->
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script src="https://ip.ws.126.net/ipquery"></script>
 <script src="/common/coco-message.js"></script>
 <script src="../common/util.js"></script>
 <script src="../common/qqFace/js/jquery.qqFace.js"></script>
@@ -200,6 +167,8 @@
 <script type="text/javascript" src="/common/demo.js"></script>
 <script type="text/javascript" src="/common/zoom.js"></script>
 <script>
+    var uploadFile = new Object();
+
     $(document).ready(function(){
         messageList();
 
@@ -231,10 +200,10 @@
             html += '        <div class="emoji" style="display:inline-block;">';
             html += '            <i style="font-size: 30px;cursor:pointer;" class="smile icon emotion"></i>';
             html += '        </div>';
-            html += '        <div class="image" style="display:inline-block;">';
+            html += '        <div style="display:inline-block;">';
             html += '            <div id="imageBox2" style="display: none">';
             html += '                <img id="showimg2" src="" alt=""/>';
-            html += '                <i id="close2" class="close icon" onclick="$(\'#imageBox2\').hide()"></i>';
+            html += '                <i id="close2" class="close icon" onclick="$(\'#imageBox2\').hide()" style="margin-top: -135px;margin-left: 130px;position: absolute;"></i>';
             html += '                <i class="caret up"></i>';
             html += '            </div>';
             html += '            <div id="uploadImg">';
@@ -277,45 +246,63 @@
         }else if(id == 2){
             $("#imageBox2").show();
         }
+
+        uploadFile = file.files[0];
     }
 
     /**
      * 评论发布
      */
     function releaseMessage(type, commentId){
-        var paramData = new Object();
-        if(type == 1){
-            paramData.commentContent = $("#editor").html();
-        }else if(type == 2){
-            paramData.replyId = commentId;
-            paramData.commentContent = $("#reply").html();
-        }
-        $.ajax({
-            url: basePath + "message/releaseMessage",
-            type:"POST",
-            data:JSON.stringify(paramData),
-            dataType:"json",
-            contentType : 'application/json;charset=utf-8',
-            //设置ajax请求结束后的执行动作
-            complete : function(XMLHttpRequest) {
-                // 通过XMLHttpRequest取得响应头
-                var redirect = XMLHttpRequest.getResponseHeader("isLogin");//未登录
-                if (redirect == 'false') {
-                    localRefresh('/common/headerRefresh', '#header');
-                    messageList();
-                }
-            },
-            success:function(resultData){
-                if(resultData.code==0){
-                    cocoMessage.success(resultData.msg, 3000); //duration为0时显示关闭按钮
-                    messageList();
-                    $("#totalCommentCount").text(parseInt($("#totalCommentCount").text())+ 1);//总评论数+1
-                    $("#editor").html("");//文本清空
-                }else{
-                    cocoMessage.error(resultData.msg, 3000); //loading可以选择是否展示关闭按钮
-                }
+        var isLogin = $("#isAuthenticated").val();
+        if(isLogin == 'false'){
+            $(".bg").show();
+            $(".login").show();
+            $(".userLogin").show();
+            $(".userRegister").hide();
+            $(".userRetrievePas").hide();
+
+            autoCenter();
+        }else {
+            var paramData = new Object();
+            if (type == 1) {
+                paramData.commentContent = $("#editor").html();
+            } else if (type == 2) {
+                paramData.replyId = commentId;
+                paramData.commentContent = $("#reply").html();
             }
-        });
+            var formData=new FormData();
+            formData.append("file", uploadFile);
+            formData.append("paramData", JSON.stringify(paramData));
+            $.ajax({
+                url: basePath + "message/releaseMessage",
+                type:"POST",
+                data:formData,
+                dataType:"json",
+                processData:false,//对data参数进行序列化处理
+                contentType:false,//内容编码类型
+                cache:false,//不使用缓存
+                //设置ajax请求结束后的执行动作
+                complete: function (XMLHttpRequest) {
+                    // 通过XMLHttpRequest取得响应头
+                    var redirect = XMLHttpRequest.getResponseHeader("isLogin");//未登录
+                    if (redirect == 'false') {
+                        localRefresh('/common/headerRefresh', '#header');
+                        messageList();
+                    }
+                },
+                success: function (resultData) {
+                    if (resultData.code == 0) {
+                        cocoMessage.success(resultData.msg, 3000); //duration为0时显示关闭按钮
+                        messageList();
+                        $("#totalCommentCount").text(parseInt($("#totalCommentCount").text()) + 1);//总评论数+1
+                        $("#editor").html("");//文本清空
+                    } else {
+                        cocoMessage.error(resultData.msg, 3000); //loading可以选择是否展示关闭按钮
+                    }
+                }
+            });
+        }
     }
 
     //悬浮变色事件
@@ -359,10 +346,16 @@
                             count: resultData.count,
                             curr: paramData.page,
                             limit: paramData.limit,
+                            theme: '#108EE9',
+                            first: '<em>首页</em>',
+                            last: '<em>尾页</em>',
+                            prev: '<em>上页</em>',
+                            next: '<em>下页</em>',
                             jump: function (obj, first) {
                                 if (!first) {
                                     messageList(obj.curr, obj.limit)
                                 }
+                                $(".pagePlug").show();
                             }
                         });
                         for(var i = 0;i < data.length;i++){
@@ -370,7 +363,11 @@
                             if(data[i].giveLike){
                                 style = "color: red";
                             }
-                            htmlStr += '<div class="comment">';
+                            var bottom = "";
+                            if(i == data.length - 1){
+                                bottom = "style='margin-bottom: 20px;'";
+                            }
+                            htmlStr += '<div class="comment" ' + bottom + '>';
                             htmlStr += '    <a class="avatar">';
                             htmlStr += '        <img src="/profile/' + data[i].iconUrl + '">';
                             htmlStr += '    </a>';
@@ -380,13 +377,20 @@
                             htmlStr += '            <span class="date">' + data[i].time + '</span>';
                             htmlStr += '        </div>';
                             htmlStr += '        <div class="text" style="margin-top: 7px">' + data[i].content + '</div>';
+                            if(null != data[i].imgPath && "" != data[i].imgPath){
+                                htmlStr += '    <div class="imgShow">';
+                                htmlStr += '        <img class="comment-item-img" style="display: block;width: 75pt;margin-top: 5px;transition: .3s;margin-bottom: 5px;" src="' + '/articlefile/' + data[i].imgPath + '" data-action="zoom">';
+                                htmlStr += '    </div>';
+                            }
                             htmlStr += '        <div class="actions">';
                             htmlStr += '            <a class="reply" data-id="'+ data[i].id +'" data-name="' + data[i].commitName + '" style="display:inline-block;font-size: 15px;font-weight: bold;">回复</a>';
                             htmlStr += '            <div class="like" style="display:inline-block;margin-left: -10px;">';
                             htmlStr += '                <button class="icobutton icobutton--thumbs-up" style="' + style + '"><span data-id="'+ data[i].id +'" data-text="' + data[i].giveLike + '" class="fa fa fa-thumbs-o-up" id="effect-' + i + '" style="font-size: 14px;font-weight: bold;"></span></button><span class="num" style="color: #666;font-size: 14px;font-weight: bold;display: inline-block;margin-left: 2px;">' + data[i].praiseNum + '</span>';
                             htmlStr += '            </div>';
                             htmlStr += '        </div>';
-                            htmlStr += '        <div class="ui divider" style="margin-top: 10px"></div>';
+                            if(i != (data.length - 1) || data[i].childCommentList.length != 0){
+                                htmlStr += '    <div class="ui divider" style="margin-top: 10px"></div>';
+                            }
                             htmlStr += '    </div>';
                             htmlStr += '    <div class="comments" style="margin-top: -15px;margin-bottom: -28px;">';
                             for(var j = 0;j < data[i].childCommentList.length;j++){
@@ -402,13 +406,20 @@
                                 htmlStr += '                  <span class="date">' + data[i].childCommentList[j].time + '</span>';
                                 htmlStr += '              </div>';
                                 htmlStr += '              <div class="text" style="margin-top: 7px">' + data[i].childCommentList[j].content + '</div>';
+                                if(null != data[i].childCommentList[j].imgPath && "" != data[i].childCommentList[j].imgPath){
+                                    htmlStr += '          <div class="imgShow">';
+                                    htmlStr += '              <img class="comment-item-img" style="display: block;width: 75pt;margin-top: 5px;transition: .3s;margin-bottom: 5px;" src="' + '/articlefile/' + data[i].childCommentList[j].imgPath + '" data-action="zoom">';
+                                    htmlStr += '          </div>';
+                                }
                                 htmlStr += '              <div class="actions">';
                                 htmlStr += '                  <a class="reply" data-id="'+ data[i].childCommentList[j].id +'" data-name="' + data[i].childCommentList[j].commitName + '" style="display:inline-block;font-size: 15px;font-weight: bold;">回复</a>';
                                 htmlStr += '                  <div class="like" style="display:inline-block;margin-left: -10px;">';
                                 htmlStr += '                      <button class="icobutton icobutton--thumbs-up" style="' + style + '"><span data-id="'+ data[i].childCommentList[j].id +'" data-text="' + data[i].childCommentList[j].giveLike + '" class="fa fa fa-thumbs-o-up" id="effect-' + i + '-' + j + '" style="font-size: 14px;font-weight: bold"></span></button><span class="num" style="color: #666;font-size: 14px;font-weight: bold;display: inline-block;margin-left: 2px;">' + data[i].childCommentList[j].praiseNum + '</span>';
                                 htmlStr += '                  </div>';
                                 htmlStr += '              </div>';
-                                htmlStr += '              <div class="ui divider" style="margin-top: 10px"></div>';
+                                if(i != (data.length - 1) || j != data[i].childCommentList.length -1){
+                                    htmlStr += '       <div class="ui divider" style="margin-top: 10px"></div>';
+                                }
                                 htmlStr += '           </div>';
                                 htmlStr += '        </div>';
                             }

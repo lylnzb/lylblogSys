@@ -1,0 +1,111 @@
+.accountCancel {
+    display: none;
+    width: 380px!important;
+    margin-left: auto;
+    margin-right: auto;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.3);
+    box-sizing: border-box;
+    z-index: 9997;
+    top: 100px;
+    overflow:auto;
+    position:fixed;
+    top:45%;
+    left:50%;
+    transform:translateX(-50%) translateY(-50%);
+}
+
+.accountCancel .close.icon{
+    margin-top: 10px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-size: 14px;
+    color: #666;
+    cursor: url(../../img/cur/link.cur), pointer;
+}
+
+.dialog-body-class {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.dialog-body {
+    color: #333;
+    font-size: 14px;
+    position: relative;
+    z-index: 666;
+    background: #fff;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.account-wrap-box {
+    padding: 5px 20px;
+}
+
+.account-wrap-box .title {
+    position: relative;
+    color: #363940;
+    font-size: 1pc;
+    border-bottom: 1px solid #e8eaec;
+    padding: 14px 1pc;
+    line-height: 1;
+}
+
+.account-wrap-box .content-box {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.warning-label {
+    font-weight: bolder;
+    color: red;
+    margin-left: 14px;
+    font-size: 16px;
+}
+
+.warning-header, .warning-content {
+    margin-top: 12px;
+}
+
+.warning-ul {
+    margin-left: 12px;
+}
+
+.warning-li {
+    margin-top: 10px;
+}
+
+.warning-li span{
+    font-size: 18px;
+    margin-left: 8px;
+}
+
+.warning-li .warning-desc {
+    margin-left: 17px;
+    margin-top: 10px;
+    line-height: 25px;
+    color: #888;
+}
+
+.warning-btn {
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+.warning-btn button {
+    width: 85%;
+}
+
+.marker {
+    width: 10px;
+    height: 10px;
+    border: 1px solid #088;
+    border-radius: 100px;
+    background-color: blue;
+    opacity: 0.5;
+    display: inline-block;
+}

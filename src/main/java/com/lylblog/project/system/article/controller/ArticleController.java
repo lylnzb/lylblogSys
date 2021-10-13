@@ -124,4 +124,30 @@ public class ArticleController {
     public ResultObj deleteLabelInfo(@RequestBody List<String> deleteIds){
         return articleService.deleteLabelInfo(deleteIds);
     }
+
+    /**
+     * 设置文章是否置顶
+     * @param wznm
+     * @param value
+     * @return
+     */
+    @Log(moduleName = "文章管理", functionName = "标签管理-设置文章是否置顶")
+    @RequestMapping("/updateArticleToOnTop")
+    @ResponseBody
+    public ResultObj updateArticleToOnTop(String wznm, String value){
+        return articleService.updateArticleToOnTop(wznm, value);
+    }
+
+    /**
+     * 设置文章是否推荐
+     * @param wznm
+     * @param value
+     * @return
+     */
+    @Log(moduleName = "文章管理", functionName = "标签管理-设置文章是否推荐")
+    @RequestMapping("/updateArticleToIselite")
+    @ResponseBody
+    public ResultObj updateArticleToIselite(String wznm, String value) {
+        return articleService.updateArticleToIselite(wznm, value);
+    }
 }

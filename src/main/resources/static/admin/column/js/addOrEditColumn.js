@@ -58,7 +58,7 @@ layui.use(['form', 'layer'], function(){
             contentType : 'application/json;charset=utf-8',
             success:function(resultData){
                 console.log(resultData);
-                var data = resultData.data[0];
+                var data = resultData.obj;
                 $("#iconUrl").val(data.columnIcon);
                 $("#parentId").siblings("div.layui-form-select").find('dl').find('dd[lay-value=' + data.parentId + ']').click();
                 $("#columnName").val(data.columnName);
@@ -159,6 +159,6 @@ $("#iconUrl").on("click", function () {
         closeBtn:1,
         maxmin: true,
         area: ['100%', '100%'],
-        content: '../semantic-ui/icon.html'
+        content: '../common/semantic-ui/icon.html'
     });
 });

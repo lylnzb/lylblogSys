@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!-- 展示网站首页轮播图信息 -->
     <select id="showBannerInfo" resultType="com.lylblog.project.system.banner.bean.BannerBean" parameterType="String">
-        select * from sys_banner limit 0, ${page}
+        select * from sys_banner where valid = '1' limit 0, ${page}
     </select>
 
     <!-- 获取选项卡信息 -->
@@ -39,9 +39,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             (select nickname from m_user where yhnm = t.createBy and valid = '1') as releasePeople,
             DATE_FORMAT(createTime,'%Y-%m-%d') as releaseTime,
             hits,
-            postNum,
+            ( SELECT count( 1 ) FROM sys_comment WHERE wznm = t.wznm ) AS postNum,
             (select columnName from sys_column where columnId = t.columnId) as articleForm
-        FROM sys_article t order by createTime desc
+        FROM sys_article t where articleStatus = '2' order by createTime desc
         limit 0, ${page}
     </select>
 </mapper>

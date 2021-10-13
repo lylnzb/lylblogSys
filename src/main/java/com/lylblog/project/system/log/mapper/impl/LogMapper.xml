@@ -4,6 +4,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lylblog.project.system.log.mapper.LogMapper">
 
+    <!-- 新增博客浏览日志记录 -->
+    <insert id="insertBlogBrowseLogInfo" parameterType="com.lylblog.project.system.log.bean.BrowseLogBean">
+        insert into sys_blogBrowe_log (
+            clientPlatform,
+            clientUserAgent,
+            clientBrowsePlatform,
+            clientBrowseName,
+            clientBrowsVersion,
+            clientBrowseIp,
+            clientBrowseCity,
+            clientBrowseAppAndPc,
+            clientBrowseUrl,
+            createTime
+        )values (
+            #{clientPlatform,jdbcType=VARCHAR},
+            #{clientUserAgent,jdbcType=VARCHAR},
+            #{clientBrowsePlatform,jdbcType=VARCHAR},
+            #{clientBrowseName,jdbcType=VARCHAR},
+            #{clientBrowsVersion,jdbcType=VARCHAR},
+            #{clientBrowseIp,jdbcType=VARCHAR},
+            #{clientBrowseCity,jdbcType=VARCHAR},
+            #{clientBrowseAppAndPc,jdbcType=VARCHAR},
+            #{clientBrowseUrl,jdbcType=VARCHAR},
+            SYSDATE()
+        )
+    </insert>
+
     <!-- 新增用户登录日志记录 -->
     <insert id="insertLoginLogInfo" parameterType="com.lylblog.project.system.log.bean.LoginLogBean">
         insert into m_user_login_log (

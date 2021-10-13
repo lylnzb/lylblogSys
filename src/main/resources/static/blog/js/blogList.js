@@ -24,6 +24,7 @@ function initBlogInfo(page, limit){
     var obj = new Object();
     obj.columnId = columnId;
     obj.labelId = labelId;
+    obj.blogType = $("#blogType").val();
     obj.articleTitle = $("#articleTitle").val();
     obj.page = page;
     obj.limit = limit;
@@ -43,10 +44,17 @@ function initBlogInfo(page, limit){
                     count: resultData.count,
                     curr: obj.page,
                     limit: obj.limit,
+                    theme: '#108EE9',
+                    first: '<em>首页</em>',
+                    last: '<em>尾页</em>',
+                    prev: '<em>上页</em>',
+                    next: '<em>下页</em>',
                     jump: function (obj, first) {
+                        document.body.scrollTop = document.documentElement.scrollTop = 0;
                         if (!first) {
                             initBlogInfo(obj.curr, obj.limit)
                         }
+                        $(".pagePlug").show();
                     }
                 });
             });
@@ -55,6 +63,9 @@ function initBlogInfo(page, limit){
                     var style = '';
                     if(i == 0){
                         style = 'style="margin-top: -14px"';
+                    }
+                    if(i == data.length -1) {
+                        style = 'style="border: aliceblue;"';
                     }
                     htmlStr += '<article class="post_box" ' + style + '>';
                     htmlStr += '    <div class="post-img col-xs-4 backc2">';
@@ -70,21 +81,21 @@ function initBlogInfo(page, limit){
                     htmlStr += '           </a>';
                     htmlStr += '        </h3>';
                     htmlStr += '        <div class="post-con">';
-                    htmlStr += '            <span class="title-l"></span>';
+                    // htmlStr += '            <span class="title-l"></span>';
                     htmlStr += '            ' + data[i].articleDec + '';
                     htmlStr += '        </div>';
-                    htmlStr += '        <aside class="item-meta" style="margin-right: 10px;">';
+                    htmlStr += '        <aside class="item-meta" style="margin-right: 10px;margin-top: -5px;">';
                     htmlStr += '            <div class="ui horizontal link list">';
-                    htmlStr += '                <div class="item">';
+                    htmlStr += '                <div class="item" style="font-size: 12px;">';
                     htmlStr += '                    <i class="user icon"></i>' + data[i].releasePeople;
                     htmlStr += '                </div>';
-                    htmlStr += '                <div class="item">';
-                    htmlStr += '                    <i class="calendar icon"></i>' + data[i].releaseTime;
+                    htmlStr += '                <div class="item" style="font-size: 12px;">';
+                    htmlStr += '                    <i class="clock outline icon"></i>' + data[i].releaseTime;
                     htmlStr += '                </div>';
-                    htmlStr += '               <div class="item">';
+                    htmlStr += '               <div class="item" style="font-size: 12px;">';
                     htmlStr += '                   <i class="eye icon"></i> 浏览(' + data[i].hits + ')';
                     htmlStr += '               </div>';
-                    htmlStr += '               <div class="item">';
+                    htmlStr += '               <div class="item" style="font-size: 12px;">';
                     htmlStr += '                    <i class="comment icon"></i> 评论(' + data[i].postNum + ')';
                     htmlStr += '                </div>';
                     htmlStr += '            </div>';
@@ -93,16 +104,20 @@ function initBlogInfo(page, limit){
                     htmlStr += '</article>';
                 }
             }else {
-                htmlStr += '<div>未查询到文章信息</div>';
-                $("#page").hide();
+                htmlStr += "   <div style='margin-top: 80px;margin-bottom: 80px;text-align: center;'>";
+                htmlStr += "       <img style='width: 200px;' src='/img/noData.png'><br/><br/>";
+                htmlStr += "       <span style='color: darkcyan;'>没有搜到相关内容哦，请换一个关键词吧~</span>";
+                htmlStr += "   <div>";
+                $(".pagePlug").hide();
             }
             $(".blogList").html(htmlStr);
 
             var val = $("#articleTitle").val();
             if(val != null && val != ''){
                 $(".blogTitle").textSearch(val,{markColor: "red"});
+                $(".post-con").textSearch(val,{markColor: "red"});
+                $("#num").text(data.length);
             }
-
         },
         error: function () {
 

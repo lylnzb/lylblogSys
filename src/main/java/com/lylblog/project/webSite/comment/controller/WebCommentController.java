@@ -1,5 +1,6 @@
 package com.lylblog.project.webSite.comment.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.common.service.CommonService;
 import com.lylblog.project.system.comment.bean.CommentBean;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @Author: lyl
@@ -29,14 +32,18 @@ public class WebCommentController {
 
     /**
      * 评论发布
-     * @param commentBean
+     * @param file
+     * @param paramData
      * @return
      */
     @RequestMapping("/releaseComment")
     @ResponseBody
-    public ResultObj addComment(@Validated @RequestBody CommentBean commentBean){
+    public ResultObj addComment(@RequestParam(value = "file", required = false) MultipartFile file,
+                                @RequestParam(value = "paramData", required = false) String paramData
+                                ){
         try{
-            return webCommentService.addComment(commentBean);
+            CommentBean comment = JSON.parseObject(paramData, CommentBean.class);
+            return webCommentService.addComment(comment, file);
         }catch(Exception e){
             e.printStackTrace();
         }

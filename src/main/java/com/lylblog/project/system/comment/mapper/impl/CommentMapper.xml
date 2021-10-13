@@ -12,6 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="commentContent != null and commentContent != ''">commentContent,</if>
             <if test="commentType != null and commentType != ''">commentType,</if>
             <if test="praiseNum != null and praiseNum != ''">praiseNum,</if>
+            <if test="imgPath != null and imgPath != ''">imgPath,</if>
             <if test="submitPerson != null and submitPerson != ''">submitPerson,</if>
             <if test="auditPerson != null and auditPerson != ''">auditPerson,</if>
             <if test="auditStatus != null and auditStatus != ''">auditStatus,</if>
@@ -24,6 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="commentContent != null and commentContent != ''">#{commentContent},</if>
             <if test="commentType != null and commentType != ''">#{commentType},</if>
             <if test="praiseNum != null and praiseNum != ''">#{praiseNum},</if>
+            <if test="imgPath != null and imgPath != ''">#{imgPath},</if>
             <if test="submitPerson != null and submitPerson != ''">#{submitPerson},</if>
             <if test="auditPerson != null and auditPerson != ''">#{auditPerson},</if>
             <if test="auditStatus != null and auditStatus != ''">#{auditStatus},</if>
@@ -57,6 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 user.nickname as commitName,
                 comment.commentContent as content,
                 comment.praiseNum,
+                comment.imgPath,
                 (case when great.status = '1' then true else false end) as isGiveLike,
                 DATE_FORMAT(comment.submitTime,'%Y-%m-%d') as time
                 from sys_comment comment
@@ -83,6 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             user.nickname as commitName,
             comment.commentContent as content,
             comment.praiseNum,
+            comment.imgPath,
             (case when great.status = '1' then true else false end) as isGiveLike,
             DATE_FORMAT(comment.submitTime,'%Y-%m-%d') as time
         from sys_comment comment

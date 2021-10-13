@@ -1,22 +1,25 @@
 package com.lylblog.project.login.controller;
 
-import com.lylblog.common.api.properties.QQ.OAuthProperties;
+import com.lylblog.common.api.QQ.properties.OAuthProperties;
 import com.lylblog.common.util.CodeUtil;
 import com.lylblog.common.util.redis.RedisUtil;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.login.bean.UserLoginBean;
 import com.lylblog.project.login.service.LoginService;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 @Controller
 @RequestMapping("/")
@@ -37,8 +40,9 @@ public class LoginController {
      */
     @RequestMapping("/registerUser")
     @ResponseBody
-    public ResultObj registerUser(@RequestBody UserLoginBean userBean, HttpServletRequest request){
+    public ResultObj registerUser(@RequestBody UserLoginBean userBean) throws Exception{
         String code = (String) redisUtil.get(userBean.getEmail() + "_smslogin");   //从redis取出验证码
+        String possword = userBean.getPassword();
 
         if(null != code && null != userBean.getvCode()){
             if(code.equals(userBean.getvCode())){
@@ -46,9 +50,10 @@ public class LoginController {
                 if(i == 0){
                     return ResultObj.fail(1,"该邮箱已被注册！");
                 }else if(i == 1){
+                    userBean.setPassword(possword);
+                    loginService.login(userBean);
                     return ResultObj.ok();
-                }
-                else if(i == 2){
+                }else if(i == 2){
                     return ResultObj.fail(2,"注册失败");
                 }
             }else{
@@ -62,44 +67,13 @@ public class LoginController {
 
     /**
      * 用户登录
-     * @param userBean
+     * @param user
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResultObj login(@RequestBody UserLoginBean userBean) {
-        if(userBean.getEmail() == null || "".equals(userBean.getEmail())){
-            return ResultObj.fail(2,"电子邮箱不能为空");
-        }
-
-        if(userBean.getPassword() == null || "".equals(userBean.getPassword())){
-            return ResultObj.fail(2,"密码不能为空");
-        }
-
-        // 从SecurityUtils里边创建一个 subject
-        Subject subject = SecurityUtils.getSubject();
-        // 在认证提交前准备 token（令牌）
-        UsernamePasswordToken token = new UsernamePasswordToken(userBean.getEmail(), userBean.getPassword());
-        // 执行认证登陆
-        try {
-            subject.login(token);
-        } catch (UnknownAccountException uae) {
-            return ResultObj.fail(1,"未知账户");
-        } catch (IncorrectCredentialsException ice) {
-            return ResultObj.fail(1,"密码不正确");
-        } catch (LockedAccountException lae) {
-            return ResultObj.fail(1,"账户已锁定");
-        } catch (ExcessiveAttemptsException eae) {
-            return ResultObj.fail(1,"用户名或密码错误次数过多");
-        } catch (AuthenticationException ae) {
-            return ResultObj.fail(1,"用户名或密码不正确");
-        }
-        if (subject.isAuthenticated()) {
-            return ResultObj.ok("登录成功");
-        } else {
-            token.clear();
-            return ResultObj.fail(1,"登录失败");
-        }
+    public ResultObj login(@RequestBody UserLoginBean user) {
+        return loginService.login(user);
     }
 
     /**
@@ -107,7 +81,7 @@ public class LoginController {
      * @param newEmail
      * @return
      */
-    @RequestMapping(value = "/user/validationEmail", method = RequestMethod.POST)
+    @RequestMapping(value = "/validationEmail", method = RequestMethod.POST)
     @ResponseBody
     public ResultObj validationEmail(String newEmail){
         return loginService.validationEmail(newEmail);
@@ -152,5 +126,18 @@ public class LoginController {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
         return ResultObj.ok();
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    @ResponseBody
+    public void test() throws Exception{
+        String filePath = this.getClass().getResource("/static/admin/img/icon.png").getPath();
+        File file = new File(filePath);
+        if (file.exists()) {
+            InputStream inputStream = new FileInputStream(file);
+            MultipartFile multipartFile = new MockMultipartFile(file.getName(), inputStream);
+            System.out.println(multipartFile);
+        }
+        System.out.println(file);
     }
 }

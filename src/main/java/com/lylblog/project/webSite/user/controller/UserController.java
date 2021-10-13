@@ -175,4 +175,14 @@ public class UserController {
     public ResultObj queryDynamicInfo(@RequestBody DynamicBean dynamic){
         return userService.queryDynamicInfo(dynamic);
     }
+
+    /**
+     * 账号注销
+     * @return
+     */
+    @RequestMapping("/accountCancel")
+    @ResponseBody
+    public ResultObj accountCancel() {
+        return userService.accountCancel();
+    }
 }

@@ -152,7 +152,10 @@ layui.config({base: '/admin/layuiTablePlug/test/js/'}).use(['testTablePlug'], fu
                     }
                 }
             }
-            ,{field:'valid', title:'账号状态', width:'10%', align:'center', templet:'#valId'}
+            ,{field:'valid', title:'账号状态', width:'10%', align:'center', templet : function(data){
+                    return selectDictLabel('sys_status', data.valid);
+                }
+            }
             ,{field:'toolses', title:'操作', width:'17.4%', align:'center', toolbar: '#barDemo'}
         ]]
         ,id:"idTest"

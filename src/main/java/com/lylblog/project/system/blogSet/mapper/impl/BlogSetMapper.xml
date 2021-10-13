@@ -10,6 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="basicsetTitle"   column="basicset_title"   />
         <result property="basicsetWebsiteIco"   column="basicset_website_ico"   />
         <result property="basicsetDes"     column="basicset_des"      />
+        <result property="basicsetWebSiteOnlineTime"     column="basicset_webSite_online_time"      />
         <result property="basicsetGlobalAllowComment"   column="basicset_global_allow_comment"   />
         <result property="basicsetGlobalShowComment" column="basicset_global_show_comment" />
         <result property="basicsetGlobalAllowReprint"   column="basicset_global_allow_reprint"   />
@@ -64,6 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="basicsetTitle != null and basicsetTitle != ''">basicset_title,</if>
             <if test="basicsetWebsiteIco != null and basicsetWebsiteIco != ''">basicset_website_ico,</if>
             <if test="basicsetDes != null and basicsetDes != ''">basicset_des,</if>
+            <if test="basicsetWebSiteOnlineTime != null and basicsetWebSiteOnlineTime != ''">basicset_webSite_online_time,</if>
             <if test="basicsetGlobalAllowComment != null and basicsetGlobalAllowComment != ''">basicset_global_allow_comment,</if>
             <if test="basicsetGlobalShowComment != null and basicsetGlobalShowComment != ''">basicset_global_show_comment,</if>
             <if test="basicsetGlobalAllowReprint != null and basicsetGlobalAllowReprint != ''">basicset_global_allow_reprint,</if>
@@ -103,6 +105,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="basicsetTitle != null and basicsetTitle != ''">#{basicsetTitle},</if>
             <if test="basicsetWebsiteIco != null and basicsetWebsiteIco != ''">#{basicsetWebsiteIco},</if>
             <if test="basicsetDes != null and basicsetDes != ''">#{basicsetDes},</if>
+            <if test="basicsetWebSiteOnlineTime != null and basicsetWebSiteOnlineTime != ''">#{basicsetWebSiteOnlineTime},</if>
             <if test="basicsetGlobalAllowComment != null and basicsetGlobalAllowComment != ''">#{basicsetGlobalAllowComment},</if>
             <if test="basicsetGlobalShowComment != null and basicsetGlobalShowComment != ''">#{basicsetGlobalShowComment},</if>
             <if test="basicsetGlobalAllowReprint != null and basicsetGlobalAllowReprint != ''">#{basicsetGlobalAllowReprint},</if>
@@ -147,6 +150,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="basicsetTitle != null and basicsetTitle != ''">basicset_title = #{basicsetTitle},</if>
             <if test="basicsetWebsiteIco != null and basicsetWebsiteIco != ''">basicset_website_ico = #{basicsetWebsiteIco},</if>
             <if test="basicsetDes != null and basicsetDes != ''">basicset_des = #{basicsetDes},</if>
+            <if test="basicsetWebSiteOnlineTime != null and basicsetWebSiteOnlineTime != ''">basicset_webSite_online_time = #{basicsetWebSiteOnlineTime},</if>
             <if test="basicsetGlobalAllowComment != null and basicsetGlobalAllowComment != ''">basicset_global_allow_comment = #{basicsetGlobalAllowComment},</if>
             <if test="basicsetGlobalShowComment != null and basicsetGlobalShowComment != ''">basicset_global_show_comment = #{basicsetGlobalShowComment},</if>
             <if test="basicsetGlobalAllowReprint != null and basicsetGlobalAllowReprint != ''">basicset_global_allow_reprint = #{basicsetGlobalAllowReprint},</if>

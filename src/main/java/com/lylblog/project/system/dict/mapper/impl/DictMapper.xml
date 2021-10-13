@@ -23,6 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="dictLabel"  column="dict_label"  />
         <result property="dictValue"  column="dict_value"  />
         <result property="dictType"   column="dict_type"   />
+        <result property="dictStyle"   column="dict_style" />
         <result property="cssClass"   column="css_class"   />
         <result property="listClass"  column="list_class"  />
         <result property="isDefault"  column="is_default"  />
@@ -126,6 +127,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="dictLabel != null and dictLabel != ''">dict_label,</if>
             <if test="dictValue != null and dictValue != ''">dict_value,</if>
             <if test="dictType != null and dictType != ''">dict_type,</if>
+            <if test="dictStyle != null and dictStyle != ''">dict_style,</if>
             <if test="isDefault != null and isDefault != ''">is_default,</if>
             <if test="valId != null">valId,</if>
             <if test="remark != null and remark != ''">remark,</if>
@@ -136,6 +138,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="dictLabel != null and dictLabel != ''">#{dictLabel},</if>
             <if test="dictValue != null and dictValue != ''">#{dictValue},</if>
             <if test="dictType != null and dictType != ''">#{dictType},</if>
+            <if test="dictStyle != null and dictStyle != ''">#{dictStyle},</if>
             <if test="isDefault != null and isDefault != ''">#{isDefault},</if>
             <if test="valId != null">#{valId},</if>
             <if test="remark != null and remark != ''">#{remark},</if>
@@ -152,6 +155,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="dictLabel != null and dictLabel != ''">dict_label = #{dictLabel},</if>
             <if test="dictValue != null and dictValue != ''">dict_value = #{dictValue},</if>
             <if test="dictType != null and dictType != ''">dict_type = #{dictType},</if>
+            <if test="dictStyle != null and dictStyle != ''">dict_style = #{dictStyle},</if>
             <if test="isDefault != null and isDefault != ''">is_default = #{isDefault},</if>
             <if test="valId != null">valId = #{valId},</if>
             <if test="remark != null and remark != ''">remark = #{remark},</if>

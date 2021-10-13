@@ -1,22 +1,22 @@
 layui.use(['carousel', 'form'], function(){
     var carousel = layui.carousel;
 
-    //卡片渲染方法
-    showCardInfo();
-    //最新文章渲染方法
+    // 卡片渲染方法
+    // showCardInfo();
+    // 最新文章渲染方法
     showArticleInfo();
-    //轮播图渲染方法
+    // 轮播图渲染方法
     showBannerInfo(carousel);
 
-    //悬浮变色事件
-    $('.newslist li').mouseover(function(){
-        $(this).addClass("active");
-        $(this).siblings(".active").removeClass("active");
-    });
-    $('.newslist li').mouseout(function(){
-        $(this).removeClass("active");
-        $('.newslist li:first-child').addClass("active");
-    });
+    // //悬浮变色事件
+    // $('.newslist li').mouseover(function(){
+    //     $(this).addClass("active");
+    //     $(this).siblings(".active").removeClass("active");
+    // });
+    // $('.newslist li').mouseout(function(){
+    //     $(this).removeClass("active");
+    //     $('.newslist li:first-child').addClass("active");
+    // });
 
     //悬浮变色事件
     $('.post_box').mouseover(function(){
@@ -63,60 +63,60 @@ function showBannerInfo(carousel){
     });
 }
 
-function showCardInfo(){
-    $.ajax({
-        url: basePath + 'showCardInfo?articleType=102',
-        type: "POST",
-        //async:false,
-        contentType: 'application/json;charset=utf-8',
-        success: function (resultData) {
-            console.log(resultData);
-            var data = resultData.data;
-            var htmlStr = '<div class="ui secondary pointing menu">';
-            for(var i = 0;i < data.length;i++){
-                var active = '';
-                if(i ==0){
-                    active = ' active';
-                }
-                htmlStr += '   <a class="item' + active + '" data-tab="tab-name-' + (i + 1) + '">' + data[i].tabName + '</a> ';
-            }
-            htmlStr += '   </div>';
-            for(var i = 0;i < data.length;i++){
-                var active = '';
-                if(i ==0){
-                    active = ' active';
-                }
-                htmlStr += '<div class="ui tab' + active + '" data-tab="tab-name-' + (i + 1) + '">';
-                htmlStr += '    <div class="ui link cards">';
-                for(var j = 0;j < data[i].cardList.length;j++){
-                    htmlStr += '        <div class="ui card" style="max-width: 235px;height:300px;width: auto">';
-                    htmlStr += '            <div class="image">';
-                    htmlStr += '                <i class="ztpic"><img src="' + data[i].cardList[j].articleImg + '"></i>';
-                    htmlStr += '            </div>';
-                    htmlStr += '            <div class="content">';
-                    htmlStr += '                <a class="header" style="font-size: 14px;white-space: nowrap" href="' + data[i].cardList[j].articleUrl + '" target="_blank">' + data[i].cardList[j].articleTitle + '</a>';
-                    htmlStr += '                <div class="description">';
-                    htmlStr +=                      data[i].cardList[j].articleDec;
-                    htmlStr += '                </div>';
-                    htmlStr += '            </div>';
-                    htmlStr += '            <div class="extra content" style="font-size: 10px">';
-                    htmlStr += '                <a><i class="user icon"></i>' + data[i].cardList[j].releasePeople + '</a>';
-                    htmlStr += '                <spen style="float: right">' + data[i].cardList[j].releaseTime + '</spen>';
-                    htmlStr += '            </div> ';
-                    htmlStr += '        </div>';
-                }
-                htmlStr += '    </div> ';
-                htmlStr += '</div>';
-            }
-            $("#cardTab").html(htmlStr);
-            //tab切换动态实现
-            $('.pointing.menu .item').tab();
-        },
-        error: function () {
-
-        }
-    });
-}
+// function showCardInfo(){
+//     $.ajax({
+//         url: basePath + 'showCardInfo?articleType=102',
+//         type: "POST",
+//         //async:false,
+//         contentType: 'application/json;charset=utf-8',
+//         success: function (resultData) {
+//             console.log(resultData);
+//             var data = resultData.data;
+//             var htmlStr = '<div class="ui secondary pointing menu">';
+//             for(var i = 0;i < data.length;i++){
+//                 var active = '';
+//                 if(i ==0){
+//                     active = ' active';
+//                 }
+//                 htmlStr += '   <a class="item' + active + '" data-tab="tab-name-' + (i + 1) + '">' + data[i].tabName + '</a> ';
+//             }
+//             htmlStr += '   </div>';
+//             for(var i = 0;i < data.length;i++){
+//                 var active = '';
+//                 if(i ==0){
+//                     active = ' active';
+//                 }
+//                 htmlStr += '<div class="ui tab' + active + '" data-tab="tab-name-' + (i + 1) + '">';
+//                 htmlStr += '    <div class="ui link cards">';
+//                 for(var j = 0;j < data[i].cardList.length;j++){
+//                     htmlStr += '        <div class="ui card" style="max-width: 235px;height:300px;width: auto">';
+//                     htmlStr += '            <div class="image">';
+//                     htmlStr += '                <i class="ztpic"><img src="' + data[i].cardList[j].articleImg + '"></i>';
+//                     htmlStr += '            </div>';
+//                     htmlStr += '            <div class="content">';
+//                     htmlStr += '                <a class="header" style="font-size: 14px;white-space: nowrap" href="' + data[i].cardList[j].articleUrl + '" target="_blank">' + data[i].cardList[j].articleTitle + '</a>';
+//                     htmlStr += '                <div class="description">';
+//                     htmlStr +=                      data[i].cardList[j].articleDec;
+//                     htmlStr += '                </div>';
+//                     htmlStr += '            </div>';
+//                     htmlStr += '            <div class="extra content" style="font-size: 10px">';
+//                     htmlStr += '                <a><i class="user icon"></i>' + data[i].cardList[j].releasePeople + '</a>';
+//                     htmlStr += '                <spen style="float: right">' + data[i].cardList[j].releaseTime + '</spen>';
+//                     htmlStr += '            </div> ';
+//                     htmlStr += '        </div>';
+//                 }
+//                 htmlStr += '    </div> ';
+//                 htmlStr += '</div>';
+//             }
+//             $("#cardTab").html(htmlStr);
+//             //tab切换动态实现
+//             $('.pointing.menu .item').tab();
+//         },
+//         error: function () {
+//
+//         }
+//     });
+// }
 
 function showArticleInfo(){
     $.ajax({
@@ -130,10 +130,10 @@ function showArticleInfo(){
             var htmlStr = '';
             for(var i = 0;i < data.length;i++){
                 var style = '';
-                if(i == 0){
-                    style = 'style="margin-top: -14px"';
+                if(i == data.length -1) {
+                    style = 'style="border: aliceblue;"';
                 }
-                htmlStr += '<article class="post_box" ' + style + '>';
+                htmlStr += '<article class="post_box" '  + style + '>';
                 htmlStr += '    <div class="post-img col-xs-4 backc2">';
                 htmlStr += '        <a>';
                 htmlStr += '            <img class="img-responsive img-rounded imgs" src="' + data[i].articleImg + '" style="display: block;">';
@@ -143,26 +143,26 @@ function showArticleInfo(){
                 htmlStr += '    <div class="post-left">';
                 htmlStr += '        <h3>';
                 htmlStr += '           <a class="blogTitle" href="' + data[i].articleUrl + '" target="_blank">';
-                htmlStr += '              <span class="recommend-flag">新</span>';
-                htmlStr += '              ' + data[i].articleTitle;
+                // htmlStr += '              <span class="recommend-flag">新</span>';
+                htmlStr += '              ' + data[i].articleTitle + "";
                 htmlStr += '           </a>';
                 htmlStr += '        </h3>';
                 htmlStr += '        <div class="post-con">';
                 htmlStr += '            <span class="title-l"></span>';
                 htmlStr += '            ' + data[i].articleDec + '';
                 htmlStr += '        </div>';
-                htmlStr += '        <aside class="item-meta" style="margin-right: 10px;">';
+                htmlStr += '        <aside id="blogDec" class="item-meta" style="margin-right: 10px;margin-top: -10px">';
                 htmlStr += '            <div class="ui horizontal link list">';
-                htmlStr += '                <div class="item">';
+                htmlStr += '                <div class="item" style="font-size: 12px">';
                 htmlStr += '                    <i class="user icon"></i>' + data[i].releasePeople;
                 htmlStr += '                </div>';
-                htmlStr += '                <div class="item">';
+                htmlStr += '                <div class="item" style="font-size: 12px">';
                 htmlStr += '                    <i class="calendar icon"></i>' + data[i].releaseTime;
                 htmlStr += '                </div>';
-                htmlStr += '               <div class="item">';
-                htmlStr += '                   <i class="eye icon"></i> 浏览(' + data[i].hits + ')';
-                htmlStr += '               </div>';
-                htmlStr += '               <div class="item">';
+                htmlStr += '                <div class="item" style="font-size: 12px">';
+                htmlStr += '                    <i class="eye icon"></i> 浏览(' + data[i].hits + ')';
+                htmlStr += '                </div>';
+                htmlStr += '                <div class="item" style="font-size: 12px">';
                 htmlStr += '                    <i class="comment icon"></i> 评论(' + data[i].postNum + ')';
                 htmlStr += '                </div>';
                 htmlStr += '            </div>';

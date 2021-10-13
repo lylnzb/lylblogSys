@@ -4,6 +4,10 @@ import com.lylblog.project.common.bean.AreaBean;
 import com.lylblog.project.common.bean.LabelBean;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.common.service.CommonService;
+import com.lylblog.project.system.blogSet.bean.BlogSetBean;
+import com.lylblog.project.system.dict.bean.DictDataBean;
+import com.lylblog.project.system.log.bean.BrowseLogBean;
+import com.lylblog.project.webSite.index.bean.ArticleListBean;
 import io.swagger.models.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +32,22 @@ public class CommonController {
     public ResultObj queryCodeValue(String dictType){
         try {
             return commonService.queryCodeValue(dictType);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return ResultObj.fail();
+    }
+
+    /**
+     * 根据编码类别和字典值查询字典
+     * @param dictType
+     * @return
+     */
+    @RequestMapping(value="/queryCodeValueByCode",method= RequestMethod.POST)
+    @ResponseBody
+    public ResultObj queryCodeValueByCode(String dictType, String values) {
+        try {
+            return commonService.queryCodeValueByCode(dictType, values);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -61,7 +81,22 @@ public class CommonController {
         } catch (Exception e){
             e.printStackTrace();
         }
-        return null;
+        return ResultObj.fail();
+    }
+
+    /**
+     * 获取站长推荐文章信息
+     * @return
+     */
+    @RequestMapping(value="/getBlogRecommended")
+    @ResponseBody
+    public ResultObj getBlogRecommended() {
+        try {
+            return commonService.getBlogRecommended();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return ResultObj.fail();
     }
 
     /**
@@ -77,7 +112,7 @@ public class CommonController {
         } catch (Exception e){
             e.printStackTrace();
         }
-        return null;
+        return ResultObj.fail();
     }
 
     @RequestMapping(value="/headerRefresh",method=RequestMethod.GET)
@@ -115,5 +150,16 @@ public class CommonController {
     @ResponseBody
     public ResultObj getAreaByCityCode(String code){
         return commonService.getAreaByCityCode(code);
+    }
+
+    /**
+     * 新增博客浏览日志记录
+     * @param browseLog
+     * @return
+     */
+    @RequestMapping(value="/insertBlogBrowseLogInfo")
+    @ResponseBody
+    public ResultObj insertBlogBrowseLogInfo(@RequestBody BrowseLogBean browseLog){
+        return commonService.insertBlogBrowseLogInfo(browseLog);
     }
 }

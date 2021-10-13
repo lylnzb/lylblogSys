@@ -72,7 +72,10 @@ layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], functi
             ,{field:'rk',title: '序号',width:'6%', align:'center',templet: function(d){  return (d.LAY_INDEX); }}
             ,{field:'bannerTitle', title:'轮播图标题', width:'27%', align:'center'}
             ,{field:'bannerUrl', title:'url地址', width:'34%', align:'center'}
-            ,{field:'valid', title:'状态', width:'12%', align:'center', templet : '#valId'}
+            ,{field:'valid', title:'状态', width:'12%', align:'center', templet : function(data){
+                    return selectDictLabel('sys_banner_show', data.valid);
+                }
+            }
             ,{field:'right', title:'操作', width:'18.4%', align:'center', toolbar: '#barDemo'},
         ]]
         ,id:"idTest"

@@ -12,6 +12,13 @@ import org.apache.ibatis.annotations.Param;
 public interface BlogService {
 
     /**
+     * 查询文章详细信息
+     * @param wznm
+     * @return
+     */
+    ArticleBean getArticleInfoByWznm(String wznm);
+
+    /**
      * 查询当前文章的上一篇文章
      * @param articleId
      * @param columnId
@@ -47,4 +54,11 @@ public interface BlogService {
      * @return
      */
     String getLabelName(String labelId);
+
+    /**
+     * 文章浏览量加一
+     * @param wznm
+     * @return
+     */
+    int updateHitsByWznm(String wznm);
 }

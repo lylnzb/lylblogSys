@@ -15,7 +15,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             t.*,
             ( SELECT columnName FROM sys_column WHERE columnId = t.columnId ) AS columnName,
             (SELECT nickname FROM m_user WHERE yhnm = t.createBy AND valid = '1') as nickName,
-            ( SELECT dict_label FROM sys_dict_data WHERE dict_type = 'sys_article_status' AND dict_value = t.articleStatus ) AS articleStatusName,
             ( SELECT dict_label FROM sys_dict_data WHERE dict_type = 'sys_article_form' AND dict_value = t.fromWay ) AS fromWayName
         FROM
             sys_article t,
@@ -25,7 +24,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="articleId != null and articleId != ''"> and articleId = #{articleId}</if>
             <if test="columnId != null and columnId != ''"> and columnId = #{columnId}</if>
             <if test="wznm != null and wznm != ''"> and wznm = #{wznm}</if>
-            ) AS article
+            <if test="articleTitle != null and articleTitle != ''"> and articleTitle like concat('%',#{articleTitle},'%')</if>
+            <if test="articleStatus != null and articleStatus != ''"> and articleStatus = #{articleStatus}</if>
+        ) AS article
         <if test="limit != null and limit != ''">
             limit #{page}, #{limit}
         </if>
@@ -33,7 +34,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!-- 查询文章详细信息 -->
     <select id="getArticleInfoByWznm" parameterType="String" resultType="com.lylblog.project.system.article.bean.ArticleBean">
-        select * from sys_article where wznm = #{wznm}
+        SELECT
+            articleId,
+            wznm,
+            columnId,
+            articleTitle,
+            abstracts,
+            content,
+            copyFrom,
+            fromWay,
+            fromUrl,
+            articleLabel,
+            hits,
+            (SELECT nickname FROM m_user WHERE yhnm = t.createBy AND valid = '1') as nickName,
+            (SELECT count( 1 ) FROM sys_comment WHERE wznm = t.wznm) AS postNum,
+            onTop,
+            iselite,
+            openIntroduce,
+            allowComment,
+            allowReprinted,
+            thumb,
+            collectNum,
+            createTime
+        FROM
+            sys_article t where wznm = #{wznm}
     </select>
 
     <!-- 查询文章列表信息 -->
@@ -42,6 +66,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test="articleId != null and articleId != ''"> and articleId = #{articleId}</if>
         <if test="columnId != null and columnId != ''"> and columnId = #{columnId}</if>
         <if test="wznm != null and wznm != ''"> and wznm = #{wznm}</if>
+        <if test="articleTitle != null and articleTitle != ''"> and articleTitle like concat('%',#{articleTitle},'%')</if>
+        <if test="articleStatus != null and articleStatus != ''"> and articleStatus = #{articleStatus}</if>
     </select>
 
     <!-- 查询网站前端博客列表信息 -->
@@ -55,12 +81,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 CONCAT('/blog/detail/', wznm) as articleUrl,
                 abstracts as articleDec,
                 (select nickname from m_user where yhnm = t.createBy and valid = '1') as releasePeople,
-                DATE_FORMAT(createTime,'%Y-%m-%d') as releaseTime,
+                createTime as releaseTime,
                 hits,
-                postNum,
+                (select count(1) from sys_comment where wznm = t.wznm) as postNum,
                 (select columnName from sys_column where columnId = t.columnId) as articleForm
             FROM sys_article t, ( SELECT @i := 0 ) rk
-            WHERE 1 = 1
+            WHERE 1 = 1 and articleStatus = '2'
+            <if test="blogType != null and blogType == 'learn'">
+                and columnId != '112'
+            </if>
             <if test="articleTitle != null and articleTitle != ''"> and articleTitle like concat('%', #{articleTitle}, '%')</if>
             <if test="columnId != null and columnId != ''"> and columnId = #{columnId}</if>
             <if test="labelId != null and labelId != ''"> and articleLabel like concat('%', #{labelId}, '%') </if>
@@ -73,7 +102,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!-- 查询网站前端博客列表信息总数 -->
     <select id="queryBlogInfoCount" parameterType="com.lylblog.project.system.article.bean.ArticleBean" resultType="int">
-        SELECT count(1) FROM sys_article WHERE 1 = 1
+        SELECT count(1) FROM sys_article WHERE 1 = 1 and articleStatus = '2'
+        <if test="blogType != null and blogType == 'learn'">
+            and columnId != '112'
+        </if>
         <if test="columnId != null and columnId != ''"> and columnId = #{columnId}</if>
         <if test="labelId != null and labelId != ''"> and articleLabel like concat('%', #{labelId}, '%') </if>
         <if test="articleTitle != null and articleTitle != ''"> and articleTitle like concat('%', #{articleTitle}, '%')</if>
@@ -250,13 +282,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 查询当前文章的上一篇文章 -->
     <select id="getOnArticle" parameterType="String" resultType="com.lylblog.project.webSite.blog.bean.WebArticleBean">
         select wznm, articleTitle from sys_article t where articleid =
-        (SELECT max(articleid) FROM sys_article WHERE articleid <![CDATA[ < ]]> #{articleId} AND columnId = #{columnId});
+        (SELECT max(articleid) FROM sys_article WHERE articleid <![CDATA[ < ]]> #{articleId} AND columnId = #{columnId}) and articleStatus = '2'
     </select>
 
     <!-- 查询当前文章的下一篇文章 -->
     <select id="getUnderArticle" parameterType="String" resultType="com.lylblog.project.webSite.blog.bean.WebArticleBean">
         select wznm, articleTitle from sys_article t where articleid =
-        (SELECT min(articleid) FROM sys_article WHERE articleid <![CDATA[ > ]]> #{articleId} AND columnId = #{columnId})
+        (SELECT min(articleid) FROM sys_article WHERE articleid <![CDATA[ > ]]> #{articleId} AND columnId = #{columnId}) and articleStatus = '2'
     </select>
 
     <select id="getCommentCountByWznm" parameterType="String" resultType="int">
@@ -268,6 +300,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update sys_article set postNum = #{postNum} where wznm = #{wznm}
     </update>
 
+    <!-- 文章浏览量加一 -->
+    <update id="updateHitsByWznm">
+        update sys_article set hits = (hits + 1) where wznm = #{wznm}
+    </update>
+
     <!-- 获取栏目名称 -->
     <select id="getColumnName" parameterType="String" resultType="String">
         select columnName from sys_column where columnId = #{columnId}
@@ -277,4 +314,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="getLabelName" parameterType="String" resultType="String">
         select labelName from sys_label where labelId = #{labelId}
     </select>
+
+    <!-- 设置文章是否置顶 -->
+    <update id="updateArticleToOnTop" parameterType="String">
+        update sys_article set onTop = #{value} where wznm = #{wznm}
+    </update>
+
+    <!-- 设置文章是否推荐 -->
+    <update id="updateArticleToIselite" parameterType="String">
+        update sys_article set iselite = #{value} where wznm = #{wznm}
+    </update>
 </mapper>

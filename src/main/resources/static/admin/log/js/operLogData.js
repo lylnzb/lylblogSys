@@ -58,15 +58,10 @@ layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], functi
             ,{field:'title', title:'模块', width:'10%', align:'center'}
             ,{field:'action', title:'功能请求', width:'19.5%', align:'center'}
             ,{field:'operIp', title:'主机IP', width:'14%', align:'center'}
-            ,{field:'status', title:'状态', width:'7%', align:'center'
-                , templet:function(value){
-                    if (value.status == '1') {
-                        return '<span class="badge progress-bar-success" style="margin-top: 5px;">成功</span>';
-                    } else if (value.status == '2') {
-                        return '<span class="badge badge-primary" style="margin-top: 5px;">失败</span>';
-                    }
+            ,{field:'status', title:'状态', width:'7%', align:'center', templet : function(data){
+                    return selectDictLabel('sys_successOrFail', data.status);
                 }
-             }
+            }
             ,{field:'operTime', title:'操作时间', width:'12%', align:'center'}
             ,{fixed:'right', title:'操作', width:'7%', align:'center', toolbar: '#barDemo'},
         ]]

@@ -1,11 +1,50 @@
 var ind;
 var nowPage;
 
-layui.use(['form', 'table','tree'], function(){
+layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], function () {
     var table = layui.table,
         form = layui.form;
 
     findCodeValue(form);
+
+    //触发switch开关
+    form.on('switch(encrypt)', function(data){
+        var url = "";
+        var wznm = $(data.elem).attr("data-value");
+        var value = (data.elem.checked)?'Y':'N';
+        if($(data.elem).attr("class") == 'onTop') {
+            url = basePath + "admin/article/updateArticleToOnTop";
+        }else if($(data.elem).attr("class") == 'iselite') {
+            url = basePath + "admin/article/updateArticleToIselite";
+        }
+        $.ajax({
+            url:url + "?wznm=" + wznm + "&value=" + value,
+            type:"POST",
+            asyns:false,
+            success:function(resultData){
+                if(resultData.code == '0') {
+                    top.layer.alert("设置成功！");
+                }else {
+                    top.layer.alert("设置失败！");
+                    if(value == "Y") {
+                        data.elem.checked= false;
+                    }else if(value == "N") {
+                        data.elem.checked= true;
+                    }
+                    form.render();
+                }
+            },
+            error:function () {
+                top.layer.alert("系统异常！");
+                if(value == "Y") {
+                    data.elem.checked= false;
+                }else if(value == "N") {
+                    data.elem.checked= true;
+                }
+                form.render();
+            }
+        });
+    });
 
     //监听工具条
     table.on('tool(tableEvent)', function(obj){
@@ -74,12 +113,36 @@ layui.use(['form', 'table','tree'], function(){
             {checkbox: true, id:"idTest", width:'2%'}
             ,{field:'rk', title:'序号', width:'6%', align:'center'}
             ,{field:'articleTitle', title:'文章名称', width:'20%', align:'center'}
-            ,{field:'columnName', title:'所属专栏', width:'13%', align:'center'}
-            ,{field:'fromWayName', title:'来源方式', width:'13%', align:'center'}
-            ,{field:'articleStatusName', title:'文章状态', width:'13%', align:'center'}
-            ,{field:'nickName', title:'发布人', width:'16%', align:'center'}
-            ,{field:'createTime', title:'发布时间', width:'15%', align:'center'}
-            ,{fixed:'right', title:'操作', width:'15.4%', align:'center', toolbar: '#barDemo'},
+            ,{field:'columnName', title:'所属专栏', width:'10%', align:'center'}
+            ,{field:'onTop', title:'是否置顶', width:'7%', align:'center', templet : function(data){
+                    var check = '';
+                    if(data.onTop == 'Y') {
+                        check = 'checked="checked"';
+                    }
+                    var htmlStr = '<input class="onTop" type="checkbox" lay-skin="switch" lay-filter="encrypt" data-value="' + data.wznm + '" lay-text="是|否" ' + check + '>';
+                    return htmlStr;
+                }
+            }
+            ,{field:'iselite', title:'是否推荐', width:'7%', align:'center', templet : function(data){
+                    var check = '';
+                    if(data.iselite == 'Y') {
+                        check = 'checked="checked"';
+                    }
+                    var htmlStr = '<input class="iselite" type="checkbox" lay-skin="switch" lay-filter="encrypt" data-value="' + data.wznm + '" lay-text="是|否" ' + check + '>';
+                    return htmlStr;
+                }
+            }
+            ,{field:'fromWayName', title:'来源方式', width:'7%', align:'center', templet : function(data){
+                    return selectDictLabel('sys_article_form', data.fromWay);
+                }
+            }
+            ,{field:'articleStatusName', title:'文章状态', width:'8%', align:'center', templet : function(data){
+                    return selectDictLabel('sys_article_status', data.articleStatus);
+                }
+             }
+            ,{field:'nickName', title:'发布人', width:'13%', align:'center'}
+            ,{field:'createTime', title:'发布时间', width:'13%', align:'center'}
+            ,{fixed:'right', title:'操作', width:'15.6%', align:'center', toolbar: '#barDemo'},
         ]]
         ,id:"idTest"
         ,done:function(res,curr,count){

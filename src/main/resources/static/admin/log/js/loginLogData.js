@@ -32,15 +32,10 @@ layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], functi
             ,{field:'loginAddress', title:'登录地址', width:'9%', align:'center'}
             ,{field:'browser', title:'浏览器', width:'12%', align:'center'}
             ,{field:'loginSystem', title:'操作系统', width:'12%', align:'center'}
-            ,{field:'loginType', title:'状态', width:'7%', align:'center'
-                , templet:function(value){
-                    if (value.loginType == '1') {
-                        return '<span class="badge progress-bar-success" style="margin-top: 5px;">成功</span>';
-                    } else if (value.loginType == '2') {
-                        return '<span class="badge badge-primary" style="margin-top: 5px;">失败</span>';
-                    }
+            ,{field:'loginType', title:'状态', width:'7%', align:'center', templet : function(data){
+                    return selectDictLabel('sys_successOrFail', data.loginType);
                 }
-             }
+            }
             ,{field:'loginMsg', title:'操作消息', width:'20%', align:'center'}
             ,{field:'loginTime', title:'登录时间', width:'13%', align:'center'}
         ]]

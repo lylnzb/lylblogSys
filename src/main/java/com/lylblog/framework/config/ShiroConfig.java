@@ -70,6 +70,11 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/toEmail", "anon");
         //网站首页URL
         filterChainDefinitionMap.put("/index", "anon");
+
+        filterChainDefinitionMap.put("/weixin/**", "anon");
+        //文章投稿URL
+        filterChainDefinitionMap.put("/blogTouGao", "anon");
+        filterChainDefinitionMap.put("/swagger-ui.html", "anon");
         //网站首页轮播图URL
         filterChainDefinitionMap.put("/showBannerInfo", "anon");
         //网站首页卡片推荐URL
@@ -107,6 +112,7 @@ public class ShiroConfig {
         //anon表示可以匿名访问
         filterChainDefinitionMap.put("/authorize/qq", "anon");
 
+        filterChainDefinitionMap.put("/validationEmail", "anon");
         filterChainDefinitionMap.put("/registerUser", "anon");
         filterChainDefinitionMap.put("/login", "anon");
 

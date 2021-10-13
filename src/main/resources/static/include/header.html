@@ -8,15 +8,17 @@
 <nav id="myHeader" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" th:fragment="myHeader">
     <!-- 判断用户是否登录 -->
     <input type="hidden" id="isAuthenticated" th:value="${isAuthenticated}"/>
+    <!-- 获取博客上线时间 -->
+    <input type="hidden" id="onlineTime" th:value="${blogSet.basicsetWebSiteOnlineTime}"/>
     <div class="ui container">
-        <div class="ui inverted secondary stackable menu">
-            <h2 class="ui teal header item">羅氏博客</h2>
+        <div class="ui inverted secondary stackable menu" style="margin-left: 8px">
+            <h2 class="ui teal header item" id="blogName">羅氏博客</h2>
             <div id="menu" class="wrapper wrapper-content animated fadeInRight ibox-content" style="display: contents;"></div>
             <div class="m-item right item m-mobile-hide">
-                <div class="item" shiro:notAuthenticated="">
-                    <a class="m-mobile-hide" id="adminlogin">登录</a>&nbsp;/&nbsp;<a class="m-mobile-hide" id="registerlogin">注册</a>
+                <div class="item" style="margin-right: 10px" shiro:notAuthenticated="">
+                    <a class="m-mobile-hide adminlogin">登录</a><label class="m-mobile-hide">&nbsp;/&nbsp;</label><a class="m-mobile-hide registerlogin">注册</a>
                 </div>
-                <div class="item" shiro:authenticated="">
+                <div class="item" style="margin-right: 25px" shiro:authenticated="">
                     <div class="ui pointing dropdown link item" id="hybrid">
                         <a title="回忆里依稀" class="userIcon">
                             <img class="widget_avatar" th:src="@{${icon}}" alt="回忆里依稀">
@@ -25,7 +27,7 @@
                         <div class="menu" id="userMenu" data-filtered="filtered" style="margin-top: 25px;margin-left: -20px;">
                             <div class="item isLogin" data-filtered="filtered"><a style="color: #0C0C0C">个人中心</a></div>
                             <div class="item background" shiro:hasRole="博主" data-filtered="filtered"><a style="color: #0C0C0C" href="http://www.lylBlog.com/admin/index" target="_blank">后台管理</a></div>
-                            <div class="item updatePwd" data-filtered="filtered"><a style="color: #0C0C0C">修改密码</a></div>
+                            <!--<div class="item updatePwd" data-filtered="filtered"><a style="color: #0C0C0C">修改密码</a></div>-->
                             <div class="item loginOut" data-filtered="filtered"><a style="color: #0C0C0C">退出登录</a></div>
                         </div>
                     </div>
@@ -33,7 +35,26 @@
             </div>
         </div>
     </div>
-    <a href="https://www.17sucai.com/preview/2137395/2020-07-07/templates/index.html#" class="ui menu toggle black icon button m-top-right m-hide">
+    <div class="ui menu black icon button m-top-right m-hide">
+        <div shiro:notAuthenticated="">
+            <a style="color: white" class="adminlogin">登录</a><label>&nbsp;/&nbsp;</label><a style="color: white" class="registerlogin">注册</a>
+        </div>
+        <div shiro:authenticated="">
+            <div class="ui pointing dropdown link item" id="hybrid">
+                <a title="回忆里依稀" class="userIcon">
+                    <img class="widget_avatar" th:src="@{${icon}}" alt="回忆里依稀">
+                </a>
+                <!--<i class="dropdown icon"></i>-->
+                <div class="menu userMenu" data-filtered="filtered" style="margin-top: 25px;margin-left: -20px;">
+                    <div class="item isLogin" data-filtered="filtered"><a style="color: #0C0C0C">个人中心</a></div>
+                    <div class="item background" shiro:hasRole="博主" data-filtered="filtered"><a style="color: #0C0C0C" href="http://www.lylBlog.com/admin/index" target="_blank">后台管理</a></div>
+                    <!--<div class="item updatePwd" data-filtered="filtered"><a style="color: #0C0C0C">修改密码</a></div>-->
+                    <div class="item loginOut" data-filtered="filtered"><a style="color: #0C0C0C">退出登录</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-top-right m-hide" style="right: 90px;">
         <i class="sidebar icon"></i>
     </a>
 </nav>
