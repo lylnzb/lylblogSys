@@ -106,8 +106,20 @@ $("body").delegate(".menu-item","click", function(){
         $(this).siblings().removeClass("active-menu-item");
         $(this).addClass("active-menu-item");
     }
-})
+});
 
+$(".personData span").on('click', function() {
+    switchTab(this, 'myProfileTab', 2);
+});
+
+$(".return").on('click', function() {
+    switchTab(this, 'myAccountTab', 2);
+    $(".loginRecord").hide();
+});
+
+/**
+ * 个人资料信息保存点击事件
+ */
 $("#save").on('click', function() {
     var area = $("#province").children(".active").attr("data-value") + ',' + $("#city").children(".active").attr("data-value") + ',' + $("#area").children(".active").attr("data-value");
     var paramDate = new Object();
@@ -153,7 +165,7 @@ $("#updatePwdForm .required").blur(function(){
         }
         if(falg == 0){
             $(this).attr("style", "width: 280px;");
-            $(this).siblings(".error").hide();
+            $(this).parents(".input").siblings(".error").hide();
         }
     }
 });
@@ -173,8 +185,8 @@ function validationOldPwd(elem, oldPwd) {
         success:function(resultData){
             if(resultData.code!=0){
                 $(elem).attr("style", "width: 280px;border-style:solid;border-color:red;");
-                $(elem).siblings(".error").text(resultData.msg);
-                $(elem).siblings(".error").show();
+                $(elem).parents(".input").siblings(".error").text(resultData.msg);
+                $(elem).parents(".input").siblings(".error").show();
                 falg = 1;
             }else {
                 falg = 0;
@@ -194,8 +206,8 @@ function validationNewPwd(elem, newPwd) {
     var patrn=/^(\w){8,20}$/;
     if (!patrn.exec(newPwd)) {
         $(elem).attr("style", "width: 280px;border-style:solid;border-color:red;");
-        $(elem).siblings(".error").text("请输入8~20位字母和数字组合的密码");
-        $(elem).siblings(".error").show();
+        $(elem).parents(".input").siblings(".error").text("请输入8~20位字母和数字组合的密码");
+        $(elem).parents(".input").siblings(".error").show();
         return 1;
     }
     return 0;
@@ -211,8 +223,8 @@ function validationConfirmNewPwd(elem, confirmNewPwd) {
     var newPwd = $("#newPwd").val();
     if(newPwd != confirmNewPwd){
         $(elem).attr("style", "width: 280px;border-style:solid;border-color:red;");
-        $(elem).siblings(".error").text("与输入的新密码不一致");
-        $(elem).siblings(".error").show();
+        $(elem).parents(".input").siblings(".error").text("与输入的新密码不一致");
+        $(elem).parents(".input").siblings(".error").show();
         return 1;
     }
     return 0;
@@ -229,14 +241,14 @@ $("#updatePwd").click(function() {
         var value = $(this).val();
         if(value == null || value == ''){
             if($(this).attr("id") == 'oldPwd'){
-                $(this).siblings(".error").text("请输入旧密码");
+                $(this).parents(".input").siblings(".error").text("请输入旧密码");
             }else if($(this).attr("id") == 'newPwd') {
-                $(this).siblings(".error").text("请输入新密码");
+                $(this).parents(".input").siblings(".error").text("请输入新密码");
             }else if($(this).attr("id") == 'confirmNewPwd') {
-                $(this).siblings(".error").text("请确认新密码");
+                $(this).parents(".input").siblings(".error").text("请确认新密码");
             }
             $(this).attr("style", "width: 280px;border-style:solid;border-color:red;");
-            $(this).siblings(".error").show();
+            $(this).parents(".input").siblings(".error").show();
             traverse += 1;
         }else{
             if($(this).attr("id") == 'oldPwd'){
@@ -278,7 +290,7 @@ $("#bindingEmailForm .required").blur(function(){
         }
         if(falg == 0){
             //$(this).attr("style", "width: 280px;");
-            $(this).siblings(".error").hide();
+            $(this).parents(".input").siblings(".error").hide();
         }
     }
 });
@@ -295,8 +307,8 @@ function vailEmail(elem,value){
     var myreg = /^([\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
     if(!myreg.test(value)){
         $(elem).attr("style", "width: 280px;border-style:solid;border-color:red;");
-        $(elem).siblings(".error").text("邮箱格式错误");
-        $(elem).siblings(".error").show();
+        $(elem).parents(".input").siblings(".error").text("邮箱格式错误");
+        $(elem).parents(".input").siblings(".error").show();
         $("#getCode").attr("style", "color: darkgray;width: 110px;text-align: center;");
         $("#getCode").text("获取验证码");
         $("#getCode").removeAttr('onclick');
@@ -309,8 +321,8 @@ function vailEmail(elem,value){
             success:function(resultData){
                 if(resultData.code!=0){
                     $(elem).attr("style", "width: 280px;border-style:solid;border-color:red;");
-                    $(elem).siblings(".error").text(resultData.msg);
-                    $(elem).siblings(".error").show();
+                    $(elem).parents(".input").siblings(".error").text(resultData.msg);
+                    $(elem).parents(".input").siblings(".error").show();
                     $("#getCode").attr("style", "color: darkgray;width: 110px;text-align: center;");
                     $("#getCode").text("获取验证码");
                     $("#getCode").removeAttr('onclick');
@@ -1043,7 +1055,6 @@ function queryDynamicInfo(pageNum, limit) {
                     contentType: 'application/json;charset=utf-8',
                     success:function(resultData){
                         if(resultData.code==0){
-                            console.log(resultData.data);
                             var data = resultData.data;
                             var total = pageTotal(resultData.count, limit);
                             var lis = [];
@@ -1093,6 +1104,84 @@ function queryDynamicInfo(pageNum, limit) {
     });
 }
 
+/**
+ * 是否已绑定第三方账号
+ */
+function queryUserAuthsInfoByYhnm() {
+    $.ajax({
+        url: basePath + 'user/queryUserAuthsInfoByYhnm',
+        type: "POST",
+        asyns: false,
+        success: function (resultData) {
+            if(resultData.code == '0'){
+                var data = resultData.data;
+                $(".bind_list li").each(function() {
+                    var $elem = $(this);
+                    if(data.length != 0) {
+                        for(var i = 0;i < data.length;i++){
+                            if($elem.attr("data-type") == data[i].appType) {
+                                $elem.find(".handle_text").addClass("remove_text");
+                                $elem.find(".handle_text").text("解绑");
+                                $elem.find(".handle_text").attr("onClick", "bindUserAuths(" + $elem.attr("data-type") + " ,'unbund', '" + data[i].appUserId + "')");
+                            }else {
+                                $elem.find(".handle_text").removeClass("remove_text");
+                                $elem.find(".handle_text").text("绑定");
+                                $elem.find(".handle_text").attr("onClick", "bindUserAuths(" + $elem.attr("data-type") + " ,'bind', '')");
+                            }
+                        }
+                    }else {
+                        $elem.find(".handle_text").removeClass("remove_text");
+                        $elem.find(".handle_text").text("绑定");
+                        $elem.find(".handle_text").attr("onClick", "bindUserAuths(" + $elem.attr("data-type") + " ,'bind', '')");
+                    }
+                });
+            }
+        },
+        error: function () {
+
+        }
+    });
+}
+
+/**
+ * 第三方账号绑定与解绑
+ * @param loginType
+ * @param bindType
+ * @param openId
+ */
+function bindUserAuths(loginType, bindType, openId) {
+    if(bindType == 'unbund') {
+        confirm({
+            title: '提示',
+            content: '是否确定要解除绑定？'
+        }).then(() => {
+            $.ajax({
+                url: basePath + 'user/unbundUserAuths?openId=' + openId,
+                type: "POST",
+                asyns: false,
+                success: function (resultData) {
+                    if(resultData.code == 0) {
+                        queryUserAuthsInfoByYhnm();
+                        cocoMessage.success(resultData.msg, 3000); //duration为0时显示关闭按钮
+                    }else {
+                        cocoMessage.error(resultData.msg, 3000); //duration为0时显示关闭按钮
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }).catch(() => {
+
+        });
+    }else {
+        if(loginType == '1') {
+            window.open('/api/qq/bindQQ', 'QQ登录', 'left=0,top=0,width=' + (screen.availWidth - 10) + ',height=' + (screen.availHeight - 55) + ',toolbar=no, menubar=yes, scrollbars=yes, resizable=yes,location=yes, status=yes');
+        }else if(loginType == '2') {
+            cocoMessage.warning("敬请期待。。。");
+        }
+    }
+}
 
 /**
  * 总页数@param（总条数，每页总条数）
@@ -1112,3 +1201,4 @@ function pageTotal(rowCount, pageSize) {
         }
     }
 }
+

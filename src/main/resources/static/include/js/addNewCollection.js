@@ -6,6 +6,8 @@ $("#collectionClick").on('click', function() {
         $(".userLogin").show();
         $(".userRegister").hide();
         $(".userRetrievePas").hide();
+
+        autoCenter();
     }else {
         initCollection();
         $(".bg").show();

@@ -29,11 +29,9 @@ a:hover, a:focus, a:active, a.active {
     color: #666;
     cursor: url(../../img/cur/link.cur), pointer;
 }
-.dialog--400 {
-    width: 25pc;
-}
 .linkdialog {
-    width: 568px!important;
+    width: 350px !important;
+    height: 400px!important;
     margin-left: auto;
     margin-right: auto;
     background: #fff;
@@ -47,6 +45,19 @@ a:hover, a:focus, a:active, a.active {
     top:50%;
     left:50%;
     transform:translateX(-50%) translateY(-50%);
+}
+
+.linkdialog .input {
+    width: 100% !important;
+}
+
+.linkdialog .btn-box {
+    margin-top: 20px!important;
+}
+
+#linkdialog .from-box .error {
+    margin-top: -4px!important;
+    margin-left: 0!important;
 }
 
 .layui-form-item{margin-top: 10px}
@@ -248,4 +259,9 @@ a:hover, a:focus, a:active, a.active {
     display: none;
     margin-left: 120px;
     margin-top: -25px;
+}
+
+@media screen and (max-width: 767px) {
+
+
 }

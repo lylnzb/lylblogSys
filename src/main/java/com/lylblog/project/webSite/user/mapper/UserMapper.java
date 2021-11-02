@@ -1,6 +1,7 @@
 package com.lylblog.project.webSite.user.mapper;
 
 import com.lylblog.project.common.bean.DynamicBean;
+import com.lylblog.project.login.bean.UserAuthsBean;
 import com.lylblog.project.webSite.user.bean.UserCommentBean;
 import com.lylblog.project.webSite.user.bean.UserLinkBean;
 import com.lylblog.project.webSite.user.bean.UserLoginRecordBean;
@@ -44,6 +45,13 @@ public interface UserMapper {
      * @return
      */
     int isSetupPwd(@Param("yhnm") String yhnm);
+
+    /**
+     * 是否绑定第三方账号
+     * @param yhnm
+     * @return
+     */
+    int isUserAuths(@Param("yhnm") String yhnm);
 
     /**
      * 我的评论列表
@@ -116,5 +124,18 @@ public interface UserMapper {
      */
     List<DynamicBean> queryDynamicInfo(DynamicBean dynamic);
 
+    /**
+     * 查询已绑定第三方账号
+     * @param yhnm
+     * @return
+     */
+    List<UserAuthsBean> queryUserAuthsInfoByYhnm(@Param("yhnm") String yhnm);
 
+    /**
+     * 解绑第三方账号
+     * @param openId
+     * @param yhnm
+     * @return
+     */
+    int unbundUserAuths(@Param("openId") String openId, @Param("yhnm") String yhnm);
 }

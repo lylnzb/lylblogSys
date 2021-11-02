@@ -9,6 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into m_user(
 			<if test="yhnm != null and yhnm != ''">yhnm,</if>
 			<if test="nickname != null and nickname != ''">nickname,</if>
+			<if test="sex != null and sex != ''">sex,</if>
 			<if test="email != null and email != ''">email,</if>
 			<if test="password != null and password != ''">password,</if>
 			<if test="salt != null and salt != ''">salt,</if>
@@ -17,6 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		)values(
 			<if test="yhnm != null and yhnm != ''">#{yhnm},</if>
 			<if test="nickname != null and nickname != ''">#{nickname},</if>
+			<if test="sex != null and sex != ''">#{sex},</if>
 			<if test="email != null and email != ''">#{email},</if>
 			<if test="password != null and password != ''">#{password},</if>
 			<if test="salt != null and salt != ''">#{salt},</if>
@@ -26,10 +28,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 
 	<!--通过邮箱查询用户是否存在-->
-	<select id="findUserByEmail" resultType="com.lylblog.project.login.bean.UserLoginBean" parameterType="String">
+	<select id="findUserByUsername" resultType="com.lylblog.project.login.bean.UserLoginBean" parameterType="String">
 		SELECT t.*,
 		       (select iconUrl from m_user_icon where yhnm = t.yhnm and isActivity = '1') as iconUrl
-		FROM m_user t where email = #{email}
+		FROM m_user t where email = #{username} or yhnm = #{username}
 	</select>
 
 	<!-- 新增角色与用户关联表数据 -->
@@ -62,7 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			LEFT JOIN m_user_role ur ON r.roleid = ur.roleid
 			LEFT JOIN m_user u ON u.yhnm = ur.yhnm
 		WHERE
-			email = #{email}
+			u.yhnm = #{yhnm}
 	</select>
 
 	<!-- 查询用户所属的权限信息 -->
@@ -74,7 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			LEFT JOIN m_user_role ur ON rm.roleid = ur.roleid
 			LEFT JOIN m_user u ON ur.yhnm = u.yhnm
 		WHERE
-			u.email = #{email}
+			u.yhnm = #{yhnm}
 	</select>
 
 	<!-- 修改密码 -->
@@ -91,4 +93,57 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getRoleId" resultType="String" parameterType="String">
 		select roleid from m_role where rolekey = #{roleKey}
 	</select>
+
+	<!-- 获取accessToken -->
+	<select id="getAccessToken" parameterType="String" resultType="com.lylblog.project.login.bean.AccessTokenBean">
+		select * from m_access_token where tokenType = #{type}
+	</select>
+
+	<!-- 新增accessToken值 -->
+	<insert id="addAccessToken" parameterType="com.lylblog.project.login.bean.AccessTokenBean">
+		insert into m_access_token (
+			accessToken,
+			tokenType,
+			expiresIn,
+			createDate
+		)values (
+			#{accessToken, jdbcType=VARCHAR},
+			#{tokenType, jdbcType=VARCHAR},
+			#{expiresIn, jdbcType=VARCHAR},
+			SYSDATE()
+		)
+	</insert>
+
+	<!-- 修改accessToken值 -->
+	<update id="updateAccessToken" parameterType="com.lylblog.project.login.bean.AccessTokenBean">
+		update m_access_token set
+			accessToken = #{accessToken, jdbcType=VARCHAR},
+			expiresIn = #{expiresIn, jdbcType=VARCHAR},
+			createDate = SYSDATE()
+		where tokenType = #{tokenType}
+	</update>
+
+	<select id="getUserAuthsByOpenId" parameterType="String" resultType="com.lylblog.project.login.bean.UserAuthsBean">
+		select
+			a.yhnm, appType, appUserId
+		from m_user a left join m_user_auths m on a.yhnm = m.yhnm
+		where appUserId = #{openId} and bindFlag = '1'
+	</select>
+
+	<!-- 新增第三方用户信息 -->
+	<insert id="addUserAuths" parameterType="com.lylblog.project.login.bean.UserLoginBean">
+		insert into m_user_auths (
+			yhnm,
+			appType,
+			appUserId,
+			bindFlag,
+			createDate
+		)values (
+			#{yhnm, jdbcType=VARCHAR},
+			#{appType, jdbcType=VARCHAR},
+			#{appUserId, jdbcType=VARCHAR},
+			#{bindFlag, jdbcType=VARCHAR},
+			SYSDATE()
+		)
+	</insert>
 </mapper>

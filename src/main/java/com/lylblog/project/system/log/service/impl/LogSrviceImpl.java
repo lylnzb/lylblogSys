@@ -56,8 +56,8 @@ public class LogSrviceImpl implements LogService {
             loginLog.setLoginType("2");//登录失败
         }
 
-        loginLog.setLoginMsg(msg);  //操作消息
-        loginLog.setLoginWay("0");  //登录方式
+        loginLog.setLoginMsg(msg);                 // 操作消息
+        loginLog.setLoginWay(user.getAppType());   // 登录方式
 
         logMapper.insertLoginLogInfo(loginLog);
     }

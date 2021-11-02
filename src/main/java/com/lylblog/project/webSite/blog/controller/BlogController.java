@@ -65,7 +65,7 @@ public class BlogController {
     }
 
     @RequestMapping("/detail/{wznm}")
-    public String previewArtilce(Model model, @PathVariable String wznm) throws Exception{
+    public String detail(Model model, @PathVariable String wznm) throws Exception{
         ArticleBean article = blogService.getArticleInfoByWznm(wznm);
         model.addAttribute("type","preview");
         model.addAttribute("article", article);
@@ -88,6 +88,17 @@ public class BlogController {
         //判断该用户是否已收藏文章(0.未收藏  1.已收藏)
         model.addAttribute("isCollection", collectionService.isCollectionByYhnm(article.getWznm()));
 
+        return "/blog/details";
+    }
+
+    @RequestMapping("/previewArticle/{wznm}")
+    public String previewArtilce(Model model, @PathVariable String wznm){
+        ArticleBean articleBean = new ArticleBean();
+        articleBean.setWznm(wznm);
+        ArticleBean article = blogService.getArticleInfoByWznm(wznm);
+        model.addAttribute("type","preview");
+        System.out.println(article);
+        model.addAttribute("article", article);
         return "/blog/details";
     }
 

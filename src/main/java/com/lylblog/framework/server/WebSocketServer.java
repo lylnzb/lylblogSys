@@ -121,7 +121,7 @@ public class WebSocketServer {
     /**
      * 实现服务器主动推送
      */
-    public void sendMessage(String message) throws IOException {
+    public void sendMessage(String message) throws IOException, EncodeException {
         this.session.getBasicRemote().sendText(message);
     }
 
@@ -129,7 +129,7 @@ public class WebSocketServer {
     /**
      * 发送自定义消息
      */
-    public static void sendInfo(String message, @PathParam("userId") String userId) throws IOException {
+    public static void sendInfo(String message, @PathParam("userId") String userId) throws IOException, EncodeException {
         log.info("发送消息到:" + userId + "，报文:" + message);
         if (StringUtils.isNotBlank(userId) && webSocketMap.containsKey(userId)) {
             webSocketMap.get(userId).sendMessage(message);

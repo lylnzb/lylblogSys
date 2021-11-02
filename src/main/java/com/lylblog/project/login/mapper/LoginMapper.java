@@ -1,6 +1,6 @@
 package com.lylblog.project.login.mapper;
 
-import com.lylblog.project.login.bean.UserLoginBean;
+import com.lylblog.project.login.bean.*;
 import com.lylblog.project.system.admin.bean.PermissionBean;
 import com.lylblog.project.system.admin.bean.RoleBean;
 import org.apache.ibatis.annotations.Mapper;
@@ -17,11 +17,11 @@ public interface LoginMapper {
     int registerUser(UserLoginBean userBean);
 
     /**
-     * 通过邮箱查询用户是否存在
-     * @param email
+     * 通过用户名查询用户信息
+     * @param username
      * @return
      */
-    UserLoginBean findUserByEmail(String email);
+    UserLoginBean findUserByUsername(String username);
 
     /**
      * 新增角色与用户关联表数据
@@ -39,17 +39,17 @@ public interface LoginMapper {
 
     /**
      * 查询用户所属的角色信息
-     * @param email
+     * @param yhnm
      * @return
      */
-    List<RoleBean> queryRoles(String email);
+    List<RoleBean> queryRoles(String yhnm);
 
     /**
      * 查询用户所属的权限信息
-     * @param email
+     * @param yhnm
      * @return
      */
-    List<PermissionBean> queryPerms(String email);
+    List<PermissionBean> queryPerms(String yhnm);
 
     /**
      * 修改密码
@@ -73,4 +73,39 @@ public interface LoginMapper {
      * @return
      */
     String getRoleId(@Param("roleKey") String roleKey);
+
+    /**
+     * 获取accessToken
+     * @param type
+     * @return
+     */
+    AccessTokenBean getAccessToken(@Param("type") String type);
+
+    /**
+     * 新增accessToken值
+     * @param accessToken
+     * @return
+     */
+    int addAccessToken(AccessTokenBean accessToken);
+
+    /**
+     * 修改accessToken值
+     * @param accessToken
+     * @return
+     */
+    int updateAccessToken(AccessTokenBean accessToken);
+
+    /**
+     * 通过第三方登录唯一标识查询用户信息
+     * @param openId
+     * @return
+     */
+    UserAuthsBean getUserAuthsByOpenId(@Param("openId") String openId);
+
+    /**
+     * 新增第三方用户信息
+     * @param userAuths
+     * @return
+     */
+    int addUserAuths(UserAuthsBean userAuths);
 }

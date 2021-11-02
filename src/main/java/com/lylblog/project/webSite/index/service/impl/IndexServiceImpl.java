@@ -1,9 +1,11 @@
 package com.lylblog.project.webSite.index.service.impl;
 
+import com.lylblog.common.util.DateUtil;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.system.banner.bean.BannerBean;
 import com.lylblog.project.system.blogSet.bean.BlogSetBean;
 import com.lylblog.project.system.blogSet.mapper.BlogSetMapper;
+import com.lylblog.project.webSite.blog.bean.WebArticleBean;
 import com.lylblog.project.webSite.index.bean.ArticleListBean;
 import com.lylblog.project.webSite.index.bean.CardBean;
 import com.lylblog.project.webSite.index.bean.TabBean;
@@ -78,6 +80,13 @@ public class IndexServiceImpl implements IndexService {
             page = blogSetList.get(0).getBlogsetLatestShowNum().toString();
         }
         List<ArticleListBean> articleList = indexMapper.showArticleInfo(page);
+        for(ArticleListBean webArticle : articleList) {
+            try {
+                webArticle.setReleaseTime(DateUtil.format(webArticle.getReleaseTime()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         return ResultObj.ok(articleList);
     }
 }

@@ -3,15 +3,18 @@ package com.lylblog.common.util.file;
 import com.lylblog.framework.config.LylBlogConfig;
 import com.lylblog.common.exception.file.FileNameLengthLimitExceededException;
 import com.mysql.cj.util.Base64Decoder;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.http.entity.ContentType;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * 文件上传工具类
@@ -217,6 +220,45 @@ public class FileUploadUtil {
         {
             throw new FileSizeLimitExceededException("not allowed upload upload", size, DEFAULT_MAX_SIZE);
         }
+    }
+
+    /**
+     * url转变为 MultipartFile对象
+     * @param url
+     * @param fileName
+     * @return
+     * @throws Exception
+     */
+    public static MultipartFile createFileItem(String url, String fileName) throws Exception{
+        FileItem item = null;
+        try {
+            HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+            conn.setReadTimeout(30000);
+            conn.setConnectTimeout(30000);
+            //设置应用程序要从网络连接读取数据
+            conn.setDoInput(true);
+            conn.setRequestMethod("GET");
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                InputStream is = conn.getInputStream();
+
+                FileItemFactory factory = new DiskFileItemFactory(16, null);
+                String textFieldName = "uploadfile";
+                item = factory.createItem(textFieldName, ContentType.APPLICATION_OCTET_STREAM.toString(), false, fileName);
+                OutputStream os = item.getOutputStream();
+
+                int bytesRead = 0;
+                byte[] buffer = new byte[8192];
+                while ((bytesRead = is.read(buffer, 0, 8192)) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                }
+                os.close();
+                is.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("文件下载失败", e);
+        }
+
+        return new CommonsMultipartFile(item);
     }
 
 }

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>页面跳转中。。。</title>
+</head>
+<body>
+</body>
+<script src="/common/jquery/jquery-1.11.1.js"></script>
+<script src="/common/util.js"></script>
+<script>
+    $(function() {
+        close_page();
+    });
+    function close_page() {
+        var userAgent = navigator.userAgent;
+        if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") !=-1) {
+            window.history.back();
+            window.close();
+        }else if(userAgent.indexOf('Android') > -1 || userAgent.indexOf('Linux') > -1){
+            window.location.href = basePath;
+        }else {
+            window.opener = null;
+            window.close();
+        }
+    }
+</script>
+</html>

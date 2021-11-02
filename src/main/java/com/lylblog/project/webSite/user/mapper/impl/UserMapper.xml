@@ -10,9 +10,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             (select dict_label from sys_dict_data where dict_type = 'login_way' and dict_value = log.loginWay) as loginWay,
             loginAddress as address,
             loginSystem as loginSystem,
+            onlineIp as ip,
             loginTime
         FROM m_user_login_log as log
-        where yhnm = #{yhnm} and logintype  = '1'
+        where yhnm = #{yhnm}
         order by loginTime desc
         <if test="limit != null and limit != ''">
             limit #{page}, #{limit}
@@ -23,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="queryLoginRecordCount" parameterType="com.lylblog.project.webSite.user.bean.UserLoginRecordBean" resultType="int">
         SELECT count(1)
         FROM m_user_login_log as log
-        where yhnm = #{yhnm} and logintype  = '1'
+        where yhnm = #{yhnm}
     </select>
 
     <!-- 是否已绑定邮箱 -->
@@ -34,6 +35,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 是否已设置密码 -->
     <select id="isSetupPwd" resultType="int" parameterType="String">
         select count(1) from m_user where yhnm = #{yhnm} and password is not null
+    </select>
+
+    <!-- 是否绑定第三方账号 -->
+    <select id="isUserAuths" resultType="int" parameterType="String">
+        select count(1) from m_user_auths where yhnm = #{yhnm} and bindFlag = '1'
     </select>
 
     <!--  我的评论列表  -->
@@ -143,4 +149,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             limit #{page}, #{limit}
         </if>
     </select>
+
+    <!-- 查询已绑定第三方账号 -->
+    <select id="queryUserAuthsInfoByYhnm" resultType="com.lylblog.project.login.bean.UserAuthsBean" parameterType="String">
+        select * from m_user_auths where yhnm = #{yhnm} and bindFlag = '1'
+    </select>
+
+    <!-- 解绑第三方账号 -->
+    <update id="unbundUserAuths" parameterType="String">
+        update m_user_auths set bindFlag = '0' where yhnm = #{yhnm} and appUserId = #{openId}
+    </update>
 </mapper>

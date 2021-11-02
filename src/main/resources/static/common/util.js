@@ -1,5 +1,4 @@
-var basePath="http://www.lylblog.com/";//业务系统basePath
-// var basePath="http://289755ii86.wicp.vip/";//业务系统basePath
+var basePath="http://www.lylblog.com.cn/";//业务系统basePath
 
 var dialog = document.getElementById("loginPage");
 var diatitle1 = document.getElementById("title1");
@@ -9,6 +8,10 @@ var isDraging = false; //是否可拖拽的标记
 
 $(function() {
     getBlogRecommended();
+
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide')
+    })
 });
 
 $(window).scroll(function() {

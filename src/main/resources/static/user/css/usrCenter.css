@@ -14,11 +14,6 @@ a {
     background: #fff;
     box-shadow: 0 2px 6px 0 rgba(0,0,0,.17);
 }
-#main {
-    width: 885pt;
-    margin: 0 auto 20px;
-    padding-top: 65px;
-}
 .separated p {
     margin: 16px 0px;
     color: #8c8c8c;
@@ -116,7 +111,12 @@ a {
     width: 100px;
     height: 100px;
     border-radius: 100%;
-    /*margin-top: 10px;*/
+}
+
+.head_portrait_android {
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
 }
 
 .zw {
@@ -1100,4 +1100,270 @@ a {
     height: 270px;
     border: 1px solid rgba(34,36,38,.15);
     box-shadow: 0 1px 2px 0 rgba(34,36,38,.15);
+}
+
+.personInfo {
+    float: left;
+    display: inline;
+    margin-top: -55px;
+    margin-left: 65px;
+}
+
+.usertype {
+    display: inline-block;
+    height: 16px;
+    line-height: 16px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #fff;
+    padding: 0 5px;
+    background-color: #f45a8d;
+    vertical-align: middle;
+    margin-right: 5px;
+    cursor:url('../../img/cur/link.cur'), pointer;
+}
+
+.personData {
+    float: right;
+    margin-top: -40px;
+    font-size: 14px;
+    color: #888;
+}
+
+.m-space-detail {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+}
+
+.info-card {
+    margin-top: 3.2vw;
+    width: 100%;
+    background: #fff;
+    border-collapse: collapse;
+    font-size: 4vw;
+}
+
+.m-space-detail .info-card tr td img {
+    width: 12.26667vw;
+    height: 12.26667vw;
+    border-radius: 6.13333vw;
+    vertical-align: middle;
+}
+
+.m-space-detail .info-card tr {
+    border-bottom: 1px solid #eee;
+}
+
+.m-space-detail .info-card tr td:first-child {
+    padding-left: 3.2vw;
+    text-align: left;
+    color: #505050;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.m-space-detail .info-card tr td:nth-child(2) {
+    padding-right: 3.2vw;
+    text-align: right;
+    color: #999;
+    max-width: 48vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.m-space-detail .info-card tr td {
+    padding: 2.66667vw 0;
+}
+
+.android {
+    display: none;
+}
+
+.android-index {
+    display: none;
+}
+
+@media screen and (max-width: 767px) {
+    #module, .bindingEmailTab, .updatePwdTab, .accountSetTab {
+        min-height: 450px!important;
+    }
+
+    .loginRecord {
+        display: none!important;
+    }
+
+    .return {
+        display: block!important;
+    }
+
+    .pc-ucenter-top .mod-ucenter-score-btn {
+        width: 75px;
+        height: 20px;
+        /*margin-top: -49px;*/
+        padding: 1px;
+        font-size: 10px;
+    }
+
+    .ucenter-list .open {
+        border: 1px solid #DDE6F4!important;
+    }
+
+    .ucenter-list ul .ucenter-body .title {
+        font-size: 10px!important;
+        padding: 11px 0 0 12px!important;
+    }
+
+    .ucenter-list ul .ucenter-body .content {
+        font-size: 10px!important;
+        line-height: 18px!important;
+        padding: 3px 0 0 12px!important;
+        white-space: inherit!important;
+        text-overflow: ellipsis!important;
+        width: 96% !important;
+        height: 35px!important;
+    }
+
+    .ucenter-list ul .ucenter-body .link {
+        font-size: 12px!important;
+        padding: 7px 0 0 12px!important;
+    }
+
+    .ucenter-list ul .ucenter-body .title .icon {
+        width: 10px!important;
+        height: 10px!important;
+        background-size: 10px 10px!important;
+    }
+
+    .widget_avatar_head {
+        width: 50px!important;
+        height: 50px!important;
+        margin-top: 0;
+        margin-left: 0;
+    }
+
+    .pc {
+        display: none;
+    }
+
+    .android {
+        display: block!important;
+    }
+
+    .android-index {
+        display: block!important;
+    }
+
+    .mod-ucenter-score-number {
+        font-size: 40px!important;
+    }
+
+    .pc-ucenter-top .mod-ucenter-score {
+        height: 82px!important;
+    }
+
+    .mod-ucenter-score-main {
+        margin-top: 10px!important;
+    }
+
+    .mod-ucenter-score-desc p {
+        font-size: 10px!important;
+    }
+
+    #bindingEmailForm, #updatePwdForm {
+        margin-left: 0!important;
+    }
+
+    .user-center-bread {
+        margin-bottom: 10px!important;
+    }
+
+    .acc_pass_con .form .field {
+        margin-left: 0!important;
+        font-weight: normal!important;
+        font-size: 13px!important;
+    }
+
+    .acc_pass_con .form .field .input {
+        width: 100% !important;
+    }
+
+    .acc_pass_con .form .field label {
+        margin-bottom: 5px!important;
+    }
+
+    .help-block.m-b-none.error {
+        float: left!important;
+        margin-left: 0!important;
+        margin-top: 5px;
+    }
+
+    .confirmBtn {
+        margin-left: 0!important;
+        margin-top: 200px!important;
+    }
+
+    .confirmBtn button {
+        width: 100%!important;
+    }
+}
+
+.record-ul {
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+.record-li {
+    position: relative;
+    height: 45px;
+    overflow: hidden;
+    padding-left: .32rem;
+    padding-right: .28rem;
+    margin-top: 6px;
+    border-bottom: 1px solid #eee;
+}
+
+.record-li .loginType {
+    line-height: 1.12rem;
+}
+
+.record-li span {
+    float: left;
+    font-size: 12px;
+    line-height: .36rem;
+    color: #4f4f4f;
+    height: 20px;
+}
+
+.record-li .place {
+    text-align: right;
+    float: right;
+    margin-top: .3rem;
+    margin-right: .1rem;
+    display: inline-block;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.tip {
+    background: #fff;
+    height: 30px;
+    line-height: .94rem;
+    font-size: 12px;
+    padding-left: .32rem;
+    color: #6b6b6b;
+    position: relative;
 }

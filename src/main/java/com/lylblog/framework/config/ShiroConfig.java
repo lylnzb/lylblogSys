@@ -1,6 +1,7 @@
 package com.lylblog.framework.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import com.lylblog.framework.shiro.authc.credential.MyRetryLimitCredentialsMatcher;
 import com.lylblog.framework.shiro.filter.LoginFormFilter;
 import com.lylblog.framework.shiro.filter.OnlineSessionFilter;
 import com.lylblog.framework.shiro.filter.SyncOnlineSessionFilter;
@@ -70,8 +71,10 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/toEmail", "anon");
         //网站首页URL
         filterChainDefinitionMap.put("/index", "anon");
-
-        filterChainDefinitionMap.put("/weixin/**", "anon");
+        //第三方账号登录URL
+        filterChainDefinitionMap.put("/api/**", "anon");
+        //WebSocket调用URL
+        filterChainDefinitionMap.put("/imserver/**", "anon");
         //文章投稿URL
         filterChainDefinitionMap.put("/blogTouGao", "anon");
         filterChainDefinitionMap.put("/swagger-ui.html", "anon");
@@ -301,8 +304,8 @@ public class ShiroConfig {
 
 
     @Bean(name = "credentialsMatcher")
-    public HashedCredentialsMatcher hashedCredentialsMatcher() {
-        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+    public MyRetryLimitCredentialsMatcher hashedCredentialsMatcher() {
+        MyRetryLimitCredentialsMatcher hashedCredentialsMatcher = new MyRetryLimitCredentialsMatcher();
         // 散列算法:这里使用MD5算法;
         hashedCredentialsMatcher.setHashAlgorithmName("md5");
         // 散列的次数，比如散列两次，相当于 md5(md5(""));

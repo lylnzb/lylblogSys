@@ -76,7 +76,7 @@ public class AdminController {
     @RequestMapping("/index")
     public String index(Model model){
         //获取当前用户信息
-        UserLoginBean user = loginService.findUserByEmail(ShiroUtils.getUserInfo().getEmail());
+        UserLoginBean user = loginService.findUserByUsername(ShiroUtils.getUserInfo().getYhnm());
         user.setIconUrl("/profile/" + user.getIconUrl());
         model.addAttribute("userInfo", user);
         model.addAttribute("sessionId", ShiroUtils.getSessionId());

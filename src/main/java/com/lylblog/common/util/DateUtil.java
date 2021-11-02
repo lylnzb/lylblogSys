@@ -356,6 +356,27 @@ public class DateUtil {
         return toMonths(date) / 365L;
     }
 
+    public static long dateDiff(String startTime, String endTime, String format) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+
+        long nd = 1000 * 24 * 60 * 60;
+        long nh = 1000 * 60 * 60;
+        long nm = 1000 * 60;
+        long ns = 1000;
+        // 获得两个时间的毫秒时间差异
+        long diff =sdf.parse(endTime).getTime() - sdf.parse(startTime).getTime();
+        // 计算差多少天
+        long day = diff / nd;
+        // 计算差多少小时
+        long hour = diff % nd / nh;
+        // 计算差多少分钟
+        long min = diff % nd % nh / nm;
+        // 计算差多少秒
+        long s = diff % nd % nh % nm / ns;
+        // 输出结果
+        return s;
+    }
+
     public static void main(String[] args) {
         Date now = new Date();
         String nowStr = dateTimeToStr(now);

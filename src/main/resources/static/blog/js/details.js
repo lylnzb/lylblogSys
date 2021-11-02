@@ -41,7 +41,7 @@ $(document).on('click','.reply',function(){
     html += '                <i class="caret up"></i>';
     html += '            </div>';
     html += '            <div id="uploadImg">';
-    html += '                <input type="file" accept="image/*" style="cursor:pointer;" onchange="showImg(2,this)"/>';
+    html += '                <input type="file" accept="image/*" style="cursor:pointer;width: 35px;height: 30px" onchange="showImg(2,this)"/>';
     html += '            </div>';
     html += '            <i style="font-size: 30px;" class="image icon"></i>';
     html += '        </div>';
@@ -190,12 +190,14 @@ function commentList(wznm, page, limit){
                         htmlStr += '    <a class="avatar">';
                         htmlStr += '        <img src="/profile/' + data[i].iconUrl + '">';
                         htmlStr += '    </a>';
-                        htmlStr += '    <div class="content" style="width: 100%;">';
-                        htmlStr += '        <a class="author" style="font-size: 14px;font-weight: bold">' + data[i].commitName + '</a>';
-                        htmlStr += '        <div class="metadata" style="float: right;font-size: 14px;color: #8590a6;">';
+                        htmlStr += '    <div class="content">';
+                        htmlStr += '        <div class="author">';
+                        htmlStr += '            <a style="font-size: 14px;font-weight: bold">' + data[i].commitName + '</a>';
+                        htmlStr += '        </div>';
+                        htmlStr += '        <div class="metadata" style="float: right;font-size: 14px;color: #8590a6;margin-top: -16px;">';
                         htmlStr += '            <span class="date">' + data[i].time + '</span>';
                         htmlStr += '        </div>';
-                        htmlStr += '        <div class="text" style="margin-top: 7px">' + data[i].content + '</div>';
+                        htmlStr += '        <div class="content-text" style="width: 100%">' + data[i].content + '</div>';
                         if(null != data[i].imgPath && "" != data[i].imgPath){
                             htmlStr += '    <div class="imgShow">';
                             htmlStr += '        <img class="comment-item-img" style="display: block;width: 75pt;margin-top: 5px;transition: .3s;margin-bottom: 5px;" src="' + '/articlefile/' + data[i].imgPath + '" data-action="zoom">';
@@ -208,41 +210,45 @@ function commentList(wznm, page, limit){
                         htmlStr += '            </div>';
                         htmlStr += '        </div>';
                         if(i != (data.length - 1) || data[i].childCommentList.length != 0){
-                            htmlStr += '    <div class="ui divider" style="margin-top: 10px"></div>';
+                            htmlStr += '    <div class="ui divider textButtom" style="margin-top: 10px"></div>';
                         }
                         htmlStr += '    </div>';
-                        htmlStr += '    <div class="comments" style="margin-top: -15px;margin-bottom: -28px;">';
-                        for(var j = 0;j < data[i].childCommentList.length;j++){
-                            var style = "";
-                            if(data[i].childCommentList[j].giveLike){
-                                style = "color: red";
+                        if(data[i].childCommentList.length != 0) {
+                            htmlStr += '    <div class="comments" style="margin-top: -15px;margin-bottom: -28px;">';
+                            for(var j = 0;j < data[i].childCommentList.length;j++){
+                                var style = "";
+                                if(data[i].childCommentList[j].giveLike){
+                                    style = "color: red";
+                                }
+                                htmlStr += '       <div class="comment">';
+                                htmlStr += '          <a class="avatar"><img src="/profile/' + data[i].childCommentList[j].iconUrl + '"></a>';
+                                htmlStr += '          <div class="content">';
+                                htmlStr += '              <div class="author">';
+                                htmlStr += '                  <a style="font-size: 14px;font-weight: bold">' + data[i].childCommentList[j].commitName + '</a><span style="margin-left: 5px;margin-right: 5px;color: #8590a6;">回复</span><a style="font-size: 14px;font-weight: bold">' + data[i].childCommentList[j].replyName + '</a>';
+                                htmlStr += '              </div>';
+                                htmlStr += '              <div class="metadata" style="float: right;font-size: 14px;color: #8590a6;margin-top: -16px;">';
+                                htmlStr += '                  <span class="date">' + data[i].childCommentList[j].time + '</span>';
+                                htmlStr += '              </div>';
+                                htmlStr += '              <div class="content-text" style="width: 100%">' + data[i].childCommentList[j].content + '</div>';
+                                if(null != data[i].childCommentList[j].imgPath && "" != data[i].childCommentList[j].imgPath){
+                                    htmlStr += '          <div class="imgShow">';
+                                    htmlStr += '              <img class="comment-item-img" style="display: block;width: 75pt;margin-top: 5px;transition: .3s;margin-bottom: 5px;" src="' + '/articlefile/' + data[i].childCommentList[j].imgPath + '" data-action="zoom">';
+                                    htmlStr += '          </div>';
+                                }
+                                htmlStr += '              <div class="actions">';
+                                htmlStr += '                  <a class="reply" data-id="'+ data[i].childCommentList[j].id +'" style="display:inline-block;font-size: 15px;font-weight: bold;">回复</a>';
+                                htmlStr += '                  <div class="like" style="display:inline-block;margin-left: -10px;">';
+                                htmlStr += '                      <button class="icobutton icobutton--thumbs-up" style="' + style + '"><span data-id="'+ data[i].childCommentList[j].id +'" data-text="' + data[i].childCommentList[j].giveLike + '" class="fa fa fa-thumbs-o-up" id="effect-' + i + '-' + j + '" style="font-size: 14px;font-weight: bold"></span></button><span class="num" style="color: #666;font-size: 14px;font-weight: bold;display: inline-block;margin-left: 2px;">' + data[i].childCommentList[j].praiseNum + '</span>';
+                                htmlStr += '                  </div>';
+                                htmlStr += '              </div>';
+                                if(i != (data.length - 1) || j != data[i].childCommentList.length -1){
+                                    htmlStr += '    <div class="ui divider textButtom" style="margin-top: 10px"></div>';
+                                }
+                                htmlStr += '           </div>';
+                                htmlStr += '        </div>';
                             }
-                            htmlStr += '       <div class="comment">';
-                            htmlStr += '          <a class="avatar"><img src="/profile/' + data[i].childCommentList[j].iconUrl + '"></a>';
-                            htmlStr += '          <div class="content" style="width: 100%;">';
-                            htmlStr += '              <a style="font-size: 14px;font-weight: bold">' + data[i].childCommentList[j].commitName + '</a><span style="margin-left: 5px;margin-right: 5px;color: #8590a6;">回复</span><a style="font-size: 14px;font-weight: bold">' + data[i].childCommentList[j].replyName + '</a>';
-                            htmlStr += '              <div class="metadata" style="float: right;font-size: 14px;color: #8590a6;">';
-                            htmlStr += '                  <span class="date">' + data[i].childCommentList[j].time + '</span>';
-                            htmlStr += '              </div>';
-                            htmlStr += '              <div class="text" style="margin-top: 7px">' + data[i].childCommentList[j].content + '</div>';
-                            if(null != data[i].childCommentList[j].imgPath && "" != data[i].childCommentList[j].imgPath){
-                                htmlStr += '          <div class="imgShow">';
-                                htmlStr += '              <img class="comment-item-img" style="display: block;width: 75pt;margin-top: 5px;transition: .3s;margin-bottom: 5px;" src="' + '/articlefile/' + data[i].childCommentList[j].imgPath + '" data-action="zoom">';
-                                htmlStr += '          </div>';
-                            }
-                            htmlStr += '              <div class="actions">';
-                            htmlStr += '                  <a class="reply" data-id="'+ data[i].childCommentList[j].id +'" style="display:inline-block;font-size: 15px;font-weight: bold;">回复</a>';
-                            htmlStr += '                  <div class="like" style="display:inline-block;margin-left: -10px;">';
-                            htmlStr += '                      <button class="icobutton icobutton--thumbs-up" style="' + style + '"><span data-id="'+ data[i].childCommentList[j].id +'" data-text="' + data[i].childCommentList[j].giveLike + '" class="fa fa fa-thumbs-o-up" id="effect-' + i + '-' + j + '" style="font-size: 14px;font-weight: bold"></span></button><span class="num" style="color: #666;font-size: 14px;font-weight: bold;display: inline-block;margin-left: 2px;">' + data[i].childCommentList[j].praiseNum + '</span>';
-                            htmlStr += '                  </div>';
-                            htmlStr += '              </div>';
-                            if(i != (data.length - 1) || j != data[i].childCommentList.length -1){
-                                htmlStr += '    <div class="ui divider" style="margin-top: 10px"></div>';
-                            }
-                            htmlStr += '           </div>';
-                            htmlStr += '        </div>';
+                            htmlStr += '    </div>';
                         }
-                        htmlStr += '    </div>';
                         htmlStr += '</div>';
                     }
                     htmlStr += '    </div>';

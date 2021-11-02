@@ -134,7 +134,7 @@ function showArticleInfo(){
                     style = 'style="border: aliceblue;"';
                 }
                 htmlStr += '<article class="post_box" '  + style + '>';
-                htmlStr += '    <div class="post-img col-xs-4 backc2">';
+                htmlStr += '    <div class="post-img">';
                 htmlStr += '        <a>';
                 htmlStr += '            <img class="img-responsive img-rounded imgs" src="' + data[i].articleImg + '" style="display: block;">';
                 htmlStr += '            <em></em>';
@@ -157,12 +157,12 @@ function showArticleInfo(){
                 htmlStr += '                    <i class="user icon"></i>' + data[i].releasePeople;
                 htmlStr += '                </div>';
                 htmlStr += '                <div class="item" style="font-size: 12px">';
-                htmlStr += '                    <i class="calendar icon"></i>' + data[i].releaseTime;
+                htmlStr += '                    <i class="clock outline icon"></i>' + data[i].releaseTime;
                 htmlStr += '                </div>';
-                htmlStr += '                <div class="item" style="font-size: 12px">';
+                htmlStr += '                <div id="browse" class="item" style="font-size: 12px">';
                 htmlStr += '                    <i class="eye icon"></i> 浏览(' + data[i].hits + ')';
                 htmlStr += '                </div>';
-                htmlStr += '                <div class="item" style="font-size: 12px">';
+                htmlStr += '                <div id="comments" class="item" style="font-size: 12px">';
                 htmlStr += '                    <i class="comment icon"></i> 评论(' + data[i].postNum + ')';
                 htmlStr += '                </div>';
                 htmlStr += '            </div>';

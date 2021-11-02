@@ -201,7 +201,7 @@ $("#login").click(function(){
                     $(".login").hide();
                     $(".bg").hide();
                 }else{
-                    layui.layer.msg(resultData.msg);
+                    cocoMessage.error(resultData.msg);
                 }
             },
             error: function () {
@@ -209,10 +209,6 @@ $("#login").click(function(){
             }
         });
     }
-});
-
-$(".loginOut").click(function(){
-    loginOut();
 });
 
 $(document).on('click','.adminlogin',function(){
@@ -272,6 +268,16 @@ $(".userLogin .close.icon, .userRegister .close.icon, .userRetrievePas .close.ic
     $(".bg").hide();
     $(".login").hide();
 });
+
+/**
+ * 第三方账号登录
+ * @param loginType
+ */
+function thirdPartyLogin(loginType) {
+    if(loginType == 'QQ') {
+        window.open('/login/qq', 'QQ登录', 'left=0,top=0,width=' + (screen.availWidth - 10) + ',height=' + (screen.availHeight - 55) + ',toolbar=no, menubar=yes, scrollbars=yes, resizable=yes,location=yes, status=yes');
+    }
+}
 
 $(function(){
     menuInit();
@@ -339,5 +345,24 @@ function mousePosition(evt) {
     return {
         x: xPos,
         y: yPos
+    }
+}
+
+function custom_close(type, result) {
+    if(type == 'bind') {
+        if(result.code == '0') {
+            queryUserAuthsInfoByYhnm();
+            cocoMessage.success(result.msg, 3000);
+        }else {
+            cocoMessage.error(result.msg, 3000);
+        }
+    }else if(type == 'login') {
+        if(result.code == '0') {
+            localRefresh('/common/headerRefresh', '#header');
+            $(".login").hide();
+            $(".bg").hide();
+        }else {
+            cocoMessage.error(result.msg, 3000);
+        }
     }
 }

@@ -44,17 +44,6 @@ public class ArticleController {
         return BASEPATH + "/saveOrEditLabel";
     }
 
-    @RequestMapping("/previewArticle/{wznm}")
-    public String previewArtilce(Model model, @PathVariable String wznm){
-        ArticleBean articleBean = new ArticleBean();
-        articleBean.setWznm(wznm);
-        ResultObj resultObj = articleService.queryArticleInfo(articleBean);
-        model.addAttribute("type","preview");
-        System.out.println(resultObj.getData().get(0).toString());
-        model.addAttribute("article", resultObj.getData().get(0));
-        return "/blog/details";
-    }
-
     /**
      * 查询文章列表信息
      * @param articleBean

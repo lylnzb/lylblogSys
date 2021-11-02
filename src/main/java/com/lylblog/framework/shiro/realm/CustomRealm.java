@@ -1,8 +1,11 @@
 package com.lylblog.framework.shiro.realm;
 
 import com.lylblog.common.support.CommonConstant;
+import com.lylblog.common.support.LoginTypeConstant;
 import com.lylblog.common.util.MessageUtil;
 import com.lylblog.common.util.shiro.ShiroUtils;
+import com.lylblog.framework.shiro.authc.CustomToken;
+import com.lylblog.project.login.bean.UserAuthsBean;
 import com.lylblog.project.login.bean.UserLoginBean;
 import com.lylblog.project.login.service.LoginService;
 import com.lylblog.project.system.admin.bean.PermissionBean;
@@ -35,8 +38,11 @@ public class CustomRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //获取当前用户信息
-
-        UserLoginBean user = loginServer.findUserByEmail(ShiroUtils.getUserInfo().getEmail());
+        UserLoginBean user = ShiroUtils.getUserInfo();
+        //获取角色信息
+        user.setRoles(loginServer.queryRoles(user.getYhnm()));
+        //获取权限信息
+        user.setPerms(loginServer.queryPerms(user.getYhnm()));
         for(RoleBean role : user.getRoles()){
             info.addRole(role.getRolename());
         }
@@ -52,24 +58,38 @@ public class CustomRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         System.out.println("-------身份认证方法--------");
-        String userName = (String) authenticationToken.getPrincipal();
-        String userPwd = new String((char[]) authenticationToken.getCredentials());
-        //根据用户名从数据库获取密码
-        UserLoginBean user = loginServer.findUserByEmail(userName);
-        if (user == null) {
-            UserLoginBean userLoginBean = new UserLoginBean();
-            userLoginBean.setNickname(userName);
-            logService.insertLoginLogInfo(userLoginBean, CommonConstant.LOGIN_FAIL, MessageUtil.message("user.not.exists"));
-            throw new AccountException("找不到该用户信息");
+        CustomToken tk = (CustomToken) authenticationToken;
+        String loginType = tk.getLoginType();
+        String userName = (String) tk.getPrincipal();
+        String userPwd = new String((char[]) tk.getCredentials());
+        if(loginType.equals(LoginTypeConstant.PASSWORD)) {//如果是账号密码登录，则无需验证密码
+            //根据用户名从数据库获取用户信息
+            UserLoginBean user = loginServer.findUserByUsername(userName);
+            if (user == null) {
+                UserLoginBean userLoginBean = new UserLoginBean();
+                userLoginBean.setNickname(userName);
+                logService.insertLoginLogInfo(userLoginBean, CommonConstant.LOGIN_FAIL, MessageUtil.message("user.not.exists"));
+                throw new AccountException("找不到该用户信息");
+            }
+            user.setAppType("0");
+            String md5Pwd = new SimpleHash("MD5", userPwd,
+                    ByteSource.Util.bytes(user.getEmail() + ((user.getSalt() == null)?"":user.getSalt())), 2).toHex();
+            if (!md5Pwd.equals(user.getPassword())) {
+                logService.insertLoginLogInfo(user, CommonConstant.LOGIN_FAIL, MessageUtil.message("user.password.not.match"));
+                throw new AccountException("密码不正确");
+            }
+            logService.insertLoginLogInfo(user, CommonConstant.LOGIN_SUCCESS, MessageUtil.message("user.login.success"));
+            return new SimpleAuthenticationInfo(user, user.getPassword(),
+                    ByteSource.Util.bytes(userName + user.getSalt()), getName());
+        }else if(loginType.equals(LoginTypeConstant.NOPASSWORD)) {//如果是免密登录，则无需验证密码
+            //根据第三方唯一ID查询第三方登录信息
+            UserAuthsBean userAuths = loginServer.getUserAuthsByOpenId(userName);
+            //根据用户内码查询用户信息
+            UserLoginBean user = loginServer.findUserByUsername(userAuths.getYhnm());
+            user.setAppType(userAuths.getAppType());
+            logService.insertLoginLogInfo(user, CommonConstant.LOGIN_SUCCESS, MessageUtil.message("user.login.success"));
+            return new SimpleAuthenticationInfo(user, "","");
         }
-        String md5Pwd = new SimpleHash("MD5", userPwd,
-                ByteSource.Util.bytes(user.getEmail() + ((user.getSalt() == null)?"":user.getSalt())), 2).toHex();
-        if (!md5Pwd.equals(user.getPassword())) {
-            logService.insertLoginLogInfo(user, CommonConstant.LOGIN_FAIL, MessageUtil.message("user.password.not.match"));
-            throw new AccountException("密码不正确");
-        }
-        logService.insertLoginLogInfo(user, CommonConstant.LOGIN_SUCCESS, MessageUtil.message("user.login.success"));
-        return new SimpleAuthenticationInfo(user, user.getPassword(),
-                ByteSource.Util.bytes(userName + user.getSalt()), getName());
+        return null;
     }
 }

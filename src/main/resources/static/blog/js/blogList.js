@@ -64,7 +64,7 @@ function initBlogInfo(page, limit){
                     if(i == 0){
                         style = 'style="margin-top: -14px"';
                     }
-                    if(i == data.length -1) {
+                    if(i == data.length -1 && data.length != '1') {
                         style = 'style="border: aliceblue;"';
                     }
                     htmlStr += '<article class="post_box" ' + style + '>';
@@ -92,10 +92,10 @@ function initBlogInfo(page, limit){
                     htmlStr += '                <div class="item" style="font-size: 12px;">';
                     htmlStr += '                    <i class="clock outline icon"></i>' + data[i].releaseTime;
                     htmlStr += '                </div>';
-                    htmlStr += '               <div class="item" style="font-size: 12px;">';
+                    htmlStr += '               <div id="browse" class="item" style="font-size: 12px;">';
                     htmlStr += '                   <i class="eye icon"></i> 浏览(' + data[i].hits + ')';
                     htmlStr += '               </div>';
-                    htmlStr += '               <div class="item" style="font-size: 12px;">';
+                    htmlStr += '               <div id="comments" class="item" style="font-size: 12px;">';
                     htmlStr += '                    <i class="comment icon"></i> 评论(' + data[i].postNum + ')';
                     htmlStr += '                </div>';
                     htmlStr += '            </div>';

@@ -2,6 +2,7 @@ package com.lylblog.project.webSite.user.service;
 
 import com.lylblog.project.common.bean.DynamicBean;
 import com.lylblog.project.common.bean.ResultObj;
+import com.lylblog.project.login.bean.UserAuthsBean;
 import com.lylblog.project.webSite.user.bean.UserCommentBean;
 import com.lylblog.project.webSite.user.bean.UserLinkBean;
 import com.lylblog.project.webSite.user.bean.UserLoginRecordBean;
@@ -34,6 +35,12 @@ public interface UserService {
      * @return
      */
     int isSetupPwd();
+
+    /**
+     * 是否绑定第三方账号
+     * @return
+     */
+    int isUserAuths();
 
     /**
      * 我的评论列表
@@ -87,4 +94,17 @@ public interface UserService {
      * @return
      */
     ResultObj accountCancel();
+
+    /**
+     * 查询已绑定第三方账号
+     * @return
+     */
+    ResultObj queryUserAuthsInfoByYhnm();
+
+    /**
+     * 解绑第三方账号
+     * @param openId
+     * @return
+     */
+    ResultObj unbundUserAuths(String openId);
 }

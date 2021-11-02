@@ -5,10 +5,15 @@ import com.lylblog.common.util.EncryptionUtil;
 import com.lylblog.common.util.IdUtil;
 import com.lylblog.common.util.file.FileUploadUtil;
 import com.lylblog.common.util.shiro.ShiroUtils;
+import com.lylblog.framework.shiro.authc.CustomToken;
 import com.lylblog.project.common.bean.ResultObj;
+import com.lylblog.project.login.bean.AccessTokenBean;
+import com.lylblog.project.login.bean.UserAuthsBean;
 import com.lylblog.project.login.bean.UserLoginBean;
 import com.lylblog.project.login.mapper.LoginMapper;
 import com.lylblog.project.login.service.LoginService;
+import com.lylblog.project.system.admin.bean.PermissionBean;
+import com.lylblog.project.system.admin.bean.RoleBean;
 import com.lylblog.project.system.admin.bean.UserIconBean;
 import com.lylblog.project.system.admin.service.AdminService;
 import org.apache.shiro.SecurityUtils;
@@ -26,6 +31,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -54,7 +60,8 @@ public class LoginServiceImpl implements LoginService {
         // 从SecurityUtils里边创建一个 subject
         Subject subject = SecurityUtils.getSubject();
         // 在认证提交前准备 token（令牌）
-        UsernamePasswordToken token = new UsernamePasswordToken(userBean.getEmail(), userBean.getPassword());
+        // 重写的UsernamePasswordToken类
+        CustomToken token = new CustomToken(userBean.getEmail(), userBean.getPassword());
         // 执行认证登陆
         try {
             subject.login(token);
@@ -81,14 +88,17 @@ public class LoginServiceImpl implements LoginService {
      * @return
      */
     public int registerUser(UserLoginBean userBean) {
-        UserLoginBean user = loginMapper.findUserByEmail(userBean.getEmail());
-        if(user != null){
-            return 0;//该用户已注册
+
+        if(null != userBean.getAppType() && "0".equals(userBean.getAppType())) {//账号密码注册
+            UserLoginBean user = loginMapper.findUserByUsername(userBean.getEmail());
+            if(user != null){
+                return 0;//该用户已注册
+            }
+            Map<String, String> map = EncryptionUtil.MD5Pwd(userBean.getEmail(),userBean.getPassword());
+            userBean.setYhnm(IdUtil.getUUID());
+            userBean.setPassword(map.get("password"));
+            userBean.setSalt(map.get("salt"));
         }
-        Map<String, String> map = EncryptionUtil.MD5Pwd(userBean.getEmail(),userBean.getPassword());
-        userBean.setYhnm(IdUtil.getUUID());
-        userBean.setPassword(map.get("password"));
-        userBean.setSalt(map.get("salt"));
         userBean.setRegtime(DateUtil.dateTimeToStr(new Date()));
         int result = loginMapper.registerUser(userBean);
         if(result > 0){
@@ -100,21 +110,29 @@ public class LoginServiceImpl implements LoginService {
 
             /*****************默认头像赋予******************/
             try {
-                String filePath = this.getClass().getResource("/static/admin/img/icon.png").getPath();
-                File file = new File(filePath);
-                InputStream inputStream = new FileInputStream(file);
-                MultipartFile multipartFile = new MockMultipartFile(file.getName(), inputStream);
-                String avatar = FileUploadUtil.upload(multipartFile);
+                if(null != userBean.getAppType() && "0".equals(userBean.getAppType())) {//账号密码注册
+                    String filePath = this.getClass().getResource("/static/admin/img/icon.png").getPath();
+                    File file = new File(filePath);
+                    InputStream inputStream = new FileInputStream(file);
+                    MultipartFile multipartFile = new MockMultipartFile(file.getName(), inputStream);
+                    String avatar = FileUploadUtil.upload(multipartFile);
 
-                UserIconBean userIcon = new UserIconBean();
-                userIcon.setYhnm(userBean.getYhnm());   //  用户内码
-                userIcon.setIconUrl(avatar);            //  头像url路径
-                adminService.uploadIcon(userIcon);
+                    UserIconBean userIcon = new UserIconBean();
+                    userIcon.setYhnm(userBean.getYhnm());   //  用户内码
+                    userIcon.setIconUrl(avatar);            //  头像url路径
+                    adminService.uploadIcon(userIcon);
+                }else {
+                    MultipartFile file = FileUploadUtil.createFileItem(userBean.getIconUrl(), "test");
+                    String avatar = FileUploadUtil.upload(file);
+                    UserIconBean userIcon = new UserIconBean();
+                    userIcon.setYhnm(userBean.getYhnm());
+                    userIcon.setIconUrl(avatar);
+                    adminService.uploadIcon(userIcon);
+                }
             }catch (Exception e) {
                 e.printStackTrace();
             }
             /*****************默认头像赋予******************/
-
             return 1;
         }else{
             return 2;
@@ -122,17 +140,30 @@ public class LoginServiceImpl implements LoginService {
     }
 
     /**
-     * 通过邮箱查询用户是否存在
-     * @param email
+     * 通过用户名查询用户信息
+     * @param username
      * @return
      */
-    public UserLoginBean findUserByEmail(String email){
-        UserLoginBean user = loginMapper.findUserByEmail(email);
-        if(user != null){
-            user.setRoles(loginMapper.queryRoles(email));
-            user.setPerms(loginMapper.queryPerms(email));
-        }
-        return user;
+    public UserLoginBean findUserByUsername(String username) {
+        return loginMapper.findUserByUsername(username);
+    }
+
+    /**
+     * 查询用户所属的角色信息
+     * @param yhnm
+     * @return
+     */
+    public List<RoleBean> queryRoles(String yhnm) {
+        return loginMapper.queryRoles(yhnm);
+    }
+
+    /**
+     * 查询用户所属的权限信息
+     * @param yhnm
+     * @return
+     */
+    public List<PermissionBean> queryPerms(String yhnm) {
+        return loginMapper.queryPerms(yhnm);
     }
 
     /**
@@ -190,5 +221,50 @@ public class LoginServiceImpl implements LoginService {
             return ResultObj.fail("旧密码与当前账号密码不一致！");
         }
         return ResultObj.ok();
+    }
+
+    /**
+     * 获取accessToken
+     * @param type
+     * @return
+     */
+    public AccessTokenBean getAccessToken(String type) {
+        return loginMapper.getAccessToken(type);
+    }
+
+    /**
+     * 新增accessToken值
+     * @param accessToken
+     * @return
+     */
+    public int addAccessToken(AccessTokenBean accessToken) {
+        return loginMapper.addAccessToken(accessToken);
+    }
+
+    /**
+     * 修改accessToken值
+     * @param accessToken
+     * @return
+     */
+    public int updateAccessToken(AccessTokenBean accessToken) {
+        return loginMapper.updateAccessToken(accessToken);
+    }
+
+    /**
+     * 通过第三方登录唯一标识查询用户信息
+     * @param openId
+     * @return
+     */
+    public UserAuthsBean getUserAuthsByOpenId(String openId) {
+        return loginMapper.getUserAuthsByOpenId(openId);
+    }
+
+    /**
+     * 新增第三方用户信息
+     * @param userAuths
+     * @return
+     */
+    public int addUserAuths(UserAuthsBean userAuths) {
+        return loginMapper.addUserAuths(userAuths);
     }
 }

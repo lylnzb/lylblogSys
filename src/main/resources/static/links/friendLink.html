@@ -5,20 +5,25 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>友情链接 -羅氏博客</title>
+    <title th:text="'友情链接 -' + ${webSiteTj.webName}">友情链接 -羅氏博客</title>
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../common/semantic-ui/dist/semantic.min.css">
+    <link rel="stylesheet" href="../common/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../common/css/style.css">
     <link rel="stylesheet" href="../common/css/tx.css">
-    <link rel="stylesheet" href="../common/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../common/css/index.css">
     <link rel="stylesheet" href="../common/layui/css/layui.css">
     <link rel="stylesheet" href="../common/css/mplayer.css">
     <link rel="stylesheet" href="../include/css/friendLinkApply.css">
     <link rel="stylesheet" href="/login/css/login.css">
+    <style>
+        #main {
+            padding-top: 65px;
+        }
+    </style>
 </head>
 <body>
-<div id="mainBody">>
+<div>
     <!-- 遮盖层 -->
     <div id="bg" class="bg"></div>
 
@@ -78,7 +83,7 @@
                         </section>
                     </div>
                     <!--右边-->
-                    <div class="four wide column">
+                    <div class="four wide column" id="primary">
                         <!-- 站长推荐 -->
                         <section class="sideTab" id="side_random">
                             <h3 class="sideTab-title">
@@ -100,7 +105,7 @@
                             <ul class="tj">
                                 <li><label>网站名称：</label><span th:text="${webSiteTj.webName}">羅氏博客</span></li>
                                 <li><label>文章总数：</label><span th:text="${webSiteTj.blogNum} + '篇'">10篇</span></li>
-                                <li><label>留言总数：</label><span th:text="${webSiteTj.messageNum} + '条'">10条</span></li>
+                                <!--<li><label>留言总数：</label><span th:text="${webSiteTj.messageNum} + '条'">10条</span></li>-->
                                 <li><label>总浏览量：</label><span th:text="${webSiteTj.browseNum} + '次'">18652次</span></li>
                                 <li><label>今日访问量：</label><span th:text="${webSiteTj.toDaybrowseNum} + '次'">176次</span></li>
                                 <li><label>当前访客来源：</label><span id="city"></span></li>
@@ -134,6 +139,7 @@
 <script src="../common/mPlayer/mplayer.js"></script>
 <script src="../common/mPlayer/mplayer-list.js"></script>
 <script src="../common/mPlayer/mplayer-functions.js"></script>
+<script src="../common/WebSocket.js"></script>
 <script src="http://cdn.bootcss.com/jquery-nstslider/1.0.13/jquery.nstSlider.min.js"></script>
 <script type="text/javascript" src="../common/player.js"></script>
 <script type="text/javascript" src="../common/slimscroll/jquery.slimscroll.min.js"></script>

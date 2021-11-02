@@ -3,6 +3,7 @@ package com.lylblog.project.login.controller;
 import com.lylblog.common.api.QQ.properties.OAuthProperties;
 import com.lylblog.common.util.CodeUtil;
 import com.lylblog.common.util.redis.RedisUtil;
+import com.lylblog.common.util.shiro.ShiroUtils;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.login.bean.UserLoginBean;
 import com.lylblog.project.login.service.LoginService;
@@ -15,11 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 @Controller
 @RequestMapping("/")
@@ -44,8 +43,9 @@ public class LoginController {
         String code = (String) redisUtil.get(userBean.getEmail() + "_smslogin");   //从redis取出验证码
         String possword = userBean.getPassword();
 
-        if(null != code && null != userBean.getvCode()){
-            if(code.equals(userBean.getvCode())){
+        if(null != code && null != userBean.getVCode()){
+            if(code.equals(userBean.getVCode())){
+                userBean.setAppType("0");
                 int i = loginService.registerUser(userBean);
                 if(i == 0){
                     return ResultObj.fail(1,"该邮箱已被注册！");
@@ -101,19 +101,25 @@ public class LoginController {
 
     //QQ登陆对外接口，只需将该接口放置html的a标签href中即可
     @GetMapping("/login/qq")
-    public void loginQQ(HttpServletResponse response) {
-        try {
-            response.sendRedirect(oauth.getQq().getCode_callback_uri() + //获取code码地址
-                    "?client_id=" + oauth.getQq().getClient_id()//appid
-                    + "&state=" + CodeUtil.getcode() + //这个说是防攻击的，就给个随机uuid吧
-                    "&redirect_uri=" + oauth.getQq().getRedirect_uri() +//这个很重要，这个是回调地址，即就收腾讯返回的code码
-                    "&response_type=code");//授权模式，授权码模式
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void loginQQ(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        UserLoginBean user = ShiroUtils.getUserInfo();
+        if(user != null) {
+            request.setCharacterEncoding("UTF-8");
+            response.setContentType("text/html;charset=utf-8");
+            PrintWriter printWriter = response.getWriter();
+            printWriter.println("该用户已登录，无需重复登录");
+        }else {
+            try {
+                response.sendRedirect(oauth.getQq().getCode_callback_uri() + //获取code码地址
+                        "?client_id=" + oauth.getQq().getClient_id()//appid
+                        + "&state=" + CodeUtil.getcode() + //这个说是防攻击的，就给个随机uuid吧
+                        "&redirect_uri=" + oauth.getQq().getRedirect_uri() +//这个很重要，这个是回调地址，即就收腾讯返回的code码
+                        "&response_type=code");//授权模式，授权码模式
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
     }
-
 
     /**
      * 用户退出登录

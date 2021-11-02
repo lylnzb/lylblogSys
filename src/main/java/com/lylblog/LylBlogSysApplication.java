@@ -7,9 +7,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
-@MapperScan("com.lylBlog.project.**.mapper")
-@ServletComponentScan
-@EnableTransactionManagement
+@MapperScan("com.lylblog.project.**.mapper")
 public class LylBlogSysApplication {
 
     public static void main(String[] args) {

@@ -134,7 +134,7 @@ public class WebCommentServiceImpl implements WebCommentService {
 
             // 容易忽略的地方：将相对底层的子级放入新建立的集合之后
             // 则表示解除了嵌套关系，对应的其父级的子级应该设为空
-            comment.setChildCommentList(new ArrayList<>());
+            comment.setChildCommentList(new ArrayList<WebCommentBean>());
         }
     }
 

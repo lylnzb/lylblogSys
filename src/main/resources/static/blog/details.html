@@ -5,32 +5,36 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${article.articleTitle} + ' -羅氏博客'">详情 -羅氏博客</title>
+    <title th:text="'详情 -' + ${article.articleTitle}">详情 -羅氏博客</title>
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <link rel="stylesheet" href="/common/semantic-ui/dist/semantic.min.css">
-    <link rel="stylesheet" href="/common/css/tx.css">
     <link rel="stylesheet" href="/common/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/common/layui/css/layui.css">
     <link rel="stylesheet" href="/common/css/style.css">
+    <link rel="stylesheet" href="/common/css/tx.css">
     <link rel="stylesheet" href="/common/css/index.css">
-    <link rel="stylesheet" href="/login/css/login.css">
+    <link rel="stylesheet" href="/common/layui/css/layui.css">
     <link rel="stylesheet" href="/common/css/mplayer.css">
+    <link rel="stylesheet" href="/login/css/login.css">
     <link rel="stylesheet" href="/common/css/icons.css">
     <link rel="stylesheet" href="/common/css/zoom.css">
     <link rel="stylesheet" href="/include/css/addNewCollection.css">
     <link rel="stylesheet" href="/include/css/friendLinkApply.css">
     <style>
-        .content {
-            width: 100%;
+        #content {
             background-color: white;
             margin-top: -20px;
         }
-        .content img{
+        #content img{
             display: inline-block;
             height: auto;
             max-width: 100%;
         }
-        .content p, .content span {
+        a {
+            cursor:url('../../img/cur/link.cur'), pointer;
+            text-decoration: none;
+            color: #333;
+        }
+        #content p, #content span {
             margin: 5px 0 10px;
             color: #666;
             font-size: 15px!important;
@@ -50,7 +54,16 @@
             margin: 0 auto 20px;
             padding-top: 65px;
         }
-        .separated p {
+
+        .nextinfo p {
+            height: 30px;
+            color: #999;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .separated .wzbqsm-p {
             margin: 16px 0px;
             color: #8c8c8c;
             text-align: center;
@@ -93,14 +106,6 @@
             cursor:url('../../img/cur/link.cur'), pointer;
         }
 
-        .nextinfo p {
-            height: 30px;
-            color: #999;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-
         .blogLabels {
             margin-bottom: 6px;
             font-size: 15px;
@@ -137,6 +142,7 @@
         .shareBox .shareUrl a {
             margin-right: 10px;
         }
+
         #noComment {
             content: attr(data-content);
             width: 100%;
@@ -172,10 +178,10 @@
 </div>
 
 <!--中间-->
-<div id="main">
-    <div class="m-padded-tb-max" style="margin-top: -20px;">
+<div id="main" style="padding-top: 65px;width: auto!important;">
+    <div class="m-padded-tb-max">
         <div class="ui container">
-            <div class="leave_position" style="font-size: 14px;font-weight: bold;margin-bottom: -10px;margin-left: 28px;color: white">
+            <div class="leave_position" style="font-size: 14px;font-weight: bold;margin-top: -8px;margin-bottom: -10px;margin-left: 28px;color: white">
                 <i class="fa fa-map-marker"></i>
                 &nbsp;您现在的位置是：
                 <a href="/" style="font-size: 14px;font-weight: bold;color: white">首页</a>
@@ -185,33 +191,38 @@
             <div class="ui stackable grid" style="margin-left: 8px">
                 <!--左边-->
                 <div class="twelve wide column">
-                    <div class="mainBox">
+                    <section class="sideTab">
                         <div class="ui middle aligned one column grid">
                             <div class="column head" id="head">
                                 <div class="title">
                                     <h2 class="ui header" style="margin-bottom: 10px;" th:text="${article.articleTitle}">idea 团队成员修改工程后push推送</h2>
                                     <div id="info">
                                         <span><i class="user icon"></i><label th:text="${article.nickName}">回忆里依稀</label></span>&nbsp;&nbsp;
-                                        <span><i class="clock outline icon"></i><label th:text="${article.judgeLongTime}"></label> ( <span th:text="${article.createTime.substring(0, 10)}"></span> )</span>&nbsp;&nbsp;
+                                        <span><i class="clock outline icon"></i><label th:text="${article.judgeLongTime}"></label></span>&nbsp;&nbsp;
                                         <span><i class="eye icon"></i></span>浏览(<label th:text="${article.hits}">0</label>)&nbsp;&nbsp;
                                         <span><i class="comment icon"></i></span>评论(<label id="postNum" th:text="${article.postNum}">0</label>)&nbsp;&nbsp;
                                         <span id="collectionSpan"><i class="star outline icon" th:style="${(isCollection == 0)?'color: rgb(153, 154, 170);':'color: red;'}"></i></span><span id="collectionClick" th:style="${(isCollection == 0)?'':'color: red;'}">收藏(<label id="collectionNum" th:text="${totalCollectionCount}">0</label>)</span>&nbsp;&nbsp;
                                     </div>
                                 </div>
                             </div>
+                            <div style="padding: 10px 25px;" id="content" class="content" th:utext="${article.content}"></div>
                         </div>
                         <div class="ui m-padded-tb-max vertical segment ">
                             <div class="ui mobile reversed stackable grid" style="padding: 10px 10px;margin-bottom: -40px;">
-                                <div id="content" class="content" th:utext="${article.content}"></div>
                                 <div class="separated" style="width: 100%;">
                                     <div class="ui horizontal divider">文章版权及转载声明</div>
+                                    <p class="wzbqsm-p" th:if="${article.fromWay == '3'}">
+                                        来源：<a href="/" target="_blank" th:text="${webSiteTj.webName}">羅氏博客</a>。本站文章发布于 <label th:text="${article.judgeLongTime}"></label> ( <span th:text="${article.createTime.substring(0, 10)}"></span> )
+                                        <br/>
+                                        文章来源互联网，如有侵权请联系修正或删除。
+                                    </p>
                                     <p class="wzbqsm-p" th:if="${article.fromWay == '2'}">
                                         来源：<a th:href="@{${article.fromUrl}}" th:text="${article.copyFrom}" target="_blank"></a>，版权归原作者所有，转载请保留出处。本站文章发布于 <label th:text="${article.judgeLongTime}"></label> ( <span th:text="${article.createTime.substring(0, 10)}"></span> )
                                         <br/>
-                                        <span>温馨提示：</span>文章内容系作者个人观点，不代表<a>羅氏博客</a>对其观点赞同或支持。
+                                        <span>温馨提示：</span>文章内容系作者个人观点，不代表<a href="/" target="_blank" th:text="${webSiteTj.webName}">羅氏博客</a>对其观点赞同或支持。
                                     </p>
                                     <p class="wzbqsm-p" th:if="${article.fromWay == '1'}">
-                                        来源：<a href="/" target="_blank">羅氏博客</a>，版权归本站所有，转载请保留出处。本站文章发布于 <label th:text="${article.judgeLongTime}"></label> ( <span th:text="${article.createTime.substring(0, 10)}"></span> )
+                                        来源：<a href="/" target="_blank" th:text="${webSiteTj.webName}">羅氏博客</a>，版权归本站所有，转载请保留出处。本站文章发布于 <label th:text="${article.judgeLongTime}"></label> ( <span th:text="${article.createTime.substring(0, 10)}"></span> )
                                         <br/>
                                         <span>温馨提示：</span>未经作者同意，不得用于商业用途及传统媒体。
                                     </p>
@@ -222,34 +233,34 @@
                                     <div class="shareBox">
                                         <label>分享给朋友：</label>
                                         <div class="shareUrl">
-                                            <a class="weibo" th:href="'http://v.t.sina.com.cn/share/share.php?url=http://www.lylblog.com/blog/detail/' + ${article.wznm} + '&title=' +  ${article.articleTitle} + '&&source=http://www.lylblog.com/blog/detail/' + ${article.wznm} + '&sourceUrl=http://www.lylblog.com/blog/detail/' + ${article.wznm} + '&content=' + ${article.abstracts} + '&pic=http://www.lylblog.com/articlefile/blogImg/39c3c1cb88894a0bb13cbe5b1511b63d/546c3dabe24742b5a4657f64c321c00a.jpg'" title="分享到微博" target="_blank"><img src="/img/share/weibo.png" alt="微博logo" /></a>
-                                            <a class="qzone" th:href="'http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?summary=' + ${article.articleTitle} + '&url=http://www.lylblog.com/blog/detail/' + ${article.wznm} + '&desc=' + ${article.abstracts} + '&pics=http://www.lylblog.com/articlefile/blogImg/39c3c1cb88894a0bb13cbe5b1511b63d/546c3dabe24742b5a4657f64c321c00a.jpg'" title="分享到QQ空间" target="_blank"><img src="/img/share/qzone.jpg" alt="QQ空间logo" /></a>
-                                            <a class="qqs" th:href="'http://connect.qq.com/widget/shareqq/index.html?url=http://www.lylblog.com/blog/detail/' + ${article.wznm} + '&desc=' + ${article.abstracts} + '&title=' + ${article.articleTitle}" title="分享到QQ好友" target="_blank"><img src="/img/share/qq.png" alt="QQlogo" /></a>
+                                            <a class="weibo" th:href="'http://v.t.sina.com.cn/share/share.php?url=http://www.lylblog.com.cn/blog/detail/' + ${article.wznm} + '&title=' +  ${article.articleTitle} + '&&source=http://www.lylblog.com.cn/blog/detail/' + ${article.wznm} + '&sourceUrl=http://www.lylblog.com.cn/blog/detail/' + ${article.wznm} + '&content=' + ${article.abstracts} + '&pic=http://www.lylblog.com.cn/articlefile/blogImg/39c3c1cb88894a0bb13cbe5b1511b63d/546c3dabe24742b5a4657f64c321c00a.jpg'" title="分享到微博" target="_blank"><img src="/img/share/weibo.png" alt="微博logo" /></a>
+                                            <a class="qzone" th:href="'http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?summary=' + ${article.articleTitle} + '&url=http://www.lylblog.com.cn/blog/detail/' + ${article.wznm} + '&desc=' + ${article.abstracts} + '&pics=http://www.lylblog.com.cn/articlefile/blogImg/39c3c1cb88894a0bb13cbe5b1511b63d/546c3dabe24742b5a4657f64c321c00a.jpg'" title="分享到QQ空间" target="_blank"><img src="/img/share/qzone.jpg" alt="QQ空间logo" /></a>
+                                            <a class="qqs" th:href="'http://connect.qq.com/widget/shareqq/index.html?url=http://www.lylblog.com.cn/blog/detail/' + ${article.wznm} + '&desc=' + ${article.abstracts} + '&title=' + ${article.articleTitle}" title="分享到QQ好友" target="_blank"><img src="/img/share/qq.png" alt="QQlogo" /></a>
                                         </div>
                                     </div>
                                     <div class="ui divider"></div>
-                                </div>
-                                <div class="nextinfo">
-                                    <p>
-                                        上一篇：
-                                        <a th:if="${upblogcontent != null}" th:href="@{'/blog/detail/'+${upblogcontent.wznm}}" th:text="${upblogcontent.articleTitle}"></a>
-                                        <a th:if="${upblogcontent == null}" style="color: #999">没有文章了！</a>
-                                    </p>
-                                    <p>
-                                        下一篇：
-                                        <a th:if="${downblogcontent != null}" th:href="@{'/blog/detail/'+${downblogcontent.wznm}}" th:text="${downblogcontent.articleTitle}"></a>
-                                        <a th:if="${downblogcontent == null}" style="color: #999">没有文章了！</a>
-                                    </p>
+                                    <div class="nextinfo">
+                                        <p>
+                                            上一篇：
+                                            <a th:if="${upblogcontent != null}" th:href="@{'/blog/detail/'+${upblogcontent.wznm}}" th:text="${upblogcontent.articleTitle}"></a>
+                                            <a th:if="${upblogcontent == null}" style="color: #999">没有文章了！</a>
+                                        </p>
+                                        <p>
+                                            下一篇：
+                                            <a th:if="${downblogcontent != null}" th:href="@{'/blog/detail/'+${downblogcontent.wznm}}" th:text="${downblogcontent.articleTitle}"></a>
+                                            <a th:if="${downblogcontent == null}" style="color: #999">没有文章了！</a>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
 
                         </div>
-                    </div>
-                    <section class="sideTab">
+                    </section>
+                    <section class="sideTab" th:if="${article.allowComment == 'Y'}">
                         <h3 class="sideTab-title">
                             文章评论
                         </h3>
-                        <div th:if="${article.allowComment == 'Y'}" class="comments" style="width: 100%">
+                        <div class="comments" style="width: 100%">
                             <div id="editor1" class="editor" placeholder="对我说点什么吧...." contenteditable="true"></div>
                             <input id="saytext" name="saytext" type="text" style="display: none"/>
                             <div class="app">
@@ -263,7 +274,7 @@
                                         <i class="caret up"></i>
                                     </div>
                                     <div id="uploadImg">
-                                        <input type="file" accept="image/*" onchange="showImg(1,this)"/>
+                                        <input type="file" style="cursor:pointer;width: 35px;height: 30px" accept="image/*" onchange="showImg(1,this)"/>
                                     </div>
                                     <i style="font-size: 30px;cursor:pointer;" class="image icon"></i>
                                 </div>
@@ -273,7 +284,7 @@
                             </div>
                         </div>
                     </section>
-                    <section class="sideTab commentInfo" style="overflow: inherit;">
+                    <section class="sideTab commentInfo" th:if="${article.allowComment == 'Y'}" style="overflow: inherit;">
                         <div class="loading" style="text-align: center;">
                             <span style="color: darkcyan;">评论加载中<span class="ani_dot">...</span></span>
                         </div>
@@ -307,7 +318,7 @@
                                 <ul class="tj">
                                     <li><label>网站名称：</label><span th:text="${webSiteTj.webName}">羅氏博客</span></li>
                                     <li><label>文章总数：</label><span th:text="${webSiteTj.blogNum} + '篇'">10篇</span></li>
-                                    <li><label>留言总数：</label><span th:text="${webSiteTj.messageNum} + '条'">10条</span></li>
+                                    <!--<li><label>留言总数：</label><span th:text="${webSiteTj.messageNum} + '条'">10条</span></li>-->
                                     <li><label>总浏览量：</label><span th:text="${webSiteTj.browseNum} + '次'">18652次</span></li>
                                     <li><label>今日访问量：</label><span th:text="${webSiteTj.toDaybrowseNum} + '次'">176次</span></li>
                                     <li><label>当前访客来源：</label><span id="city"></span></li>
@@ -344,6 +355,7 @@
 <script src="/common/mPlayer/mplayer.js"></script>
 <script src="/common/mPlayer/mplayer-list.js"></script>
 <script src="/common/mPlayer/mplayer-functions.js"></script>
+<script src="/common/WebSocket.js"></script>
 <script src="/common/ueditor1_4_3_3/ueditor.parse.js" type="text/javascript" charset="utf-8"></script>
 <script src="http://cdn.bootcss.com/jquery-nstslider/1.0.13/jquery.nstSlider.min.js"></script>
 <script type="text/javascript" src="/common/player.js"></script>

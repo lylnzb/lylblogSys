@@ -93,7 +93,7 @@ layui.config({base: '../layuiTablePlug/test/js/'}).use(['testTablePlug'], functi
 
             });
         }else if(obj.event == 'preview'){
-            window.open(basePath + "admin/article/previewArticle/" + data.wznm);
+            window.open(basePath + "blog/previewArticle/" + data.wznm);
         }
     });
 

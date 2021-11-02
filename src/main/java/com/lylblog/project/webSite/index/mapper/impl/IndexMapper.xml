@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             CONCAT('/blog/detail/', wznm) as articleUrl,
             abstracts as articleDec,
             (select nickname from m_user where yhnm = t.createBy and valid = '1') as releasePeople,
-            DATE_FORMAT(createTime,'%Y-%m-%d') as releaseTime,
+            createTime as releaseTime,
             hits,
             ( SELECT count( 1 ) FROM sys_comment WHERE wznm = t.wznm ) AS postNum,
             (select columnName from sys_column where columnId = t.columnId) as articleForm

@@ -5,8 +5,10 @@ import com.lylblog.project.common.bean.WebSiteTjBean;
 import com.lylblog.project.common.mapper.CommonMapper;
 import com.lylblog.project.login.bean.UserLoginBean;
 import com.lylblog.project.login.mapper.LoginMapper;
+import com.lylblog.project.login.service.LoginService;
 import com.lylblog.project.system.blogSet.bean.BlogSetBean;
 import com.lylblog.framework.config.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,8 +25,8 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Resource
     private CommonMapper commonMapper;
 
-    @Resource
-    private LoginMapper loginMapper;
+    @Autowired
+    private LoginService loginService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
@@ -32,11 +34,12 @@ public class LoginInterceptor implements HandlerInterceptor {
         try{
             flag = ShiroUtils.isAuthenticated();
             if(flag){
-                UserLoginBean user = loginMapper.findUserByEmail(ShiroUtils.getUserInfo().getEmail());
+                UserLoginBean user = loginService.findUserByUsername(ShiroUtils.getUserInfo().getYhnm());
                 request.setAttribute("icon", "/profile/" + user.getIconUrl());//
             }
             request.setAttribute("isAuthenticated", flag);//判断用户是否登录
             request.setAttribute("basePath", LylBlogConfig.getBasePath());//项目基础路径
+            request.setAttribute("sessionId", ShiroUtils.getSessionId());
 
             /*获取博客配置信息*/
             BlogSetBean blogSet = commonMapper.getBlogConfiguration();

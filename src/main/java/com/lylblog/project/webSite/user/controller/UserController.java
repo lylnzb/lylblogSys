@@ -5,6 +5,7 @@ import com.lylblog.common.util.file.FileUploadUtil;
 import com.lylblog.common.util.shiro.ShiroUtils;
 import com.lylblog.project.common.bean.DynamicBean;
 import com.lylblog.project.common.bean.ResultObj;
+import com.lylblog.project.login.bean.UserAuthsBean;
 import com.lylblog.project.login.bean.UserLoginBean;
 import com.lylblog.project.login.service.LoginService;
 import com.lylblog.project.system.admin.bean.UserIconBean;
@@ -43,14 +44,18 @@ public class UserController {
     @RequestMapping("/userCenter")
     public String blogList(Model model){
         //获取当前用户信息
-        UserLoginBean user = loginService.findUserByEmail(ShiroUtils.getUserInfo().getEmail());
-
+        UserLoginBean user = ShiroUtils.getUserInfo();
+        //获取角色信息
+        user.setRoles(loginService.queryRoles(user.getYhnm()));
         int isbindingEmail = userService.isbindingEmail();
         int isSetupPwd = userService.isSetupPwd();
+        int isUserAuths = userService.isUserAuths();
         //是否已绑定邮箱
         model.addAttribute("isbindingEmail", isbindingEmail == 1?true:false);
         //是否已设置密码
         model.addAttribute("isSetupPwd", isSetupPwd == 1?true:false);
+        //是否绑定第三方账号
+        model.addAttribute("isUserAuths", isUserAuths == 1?true:false);
         //用户昵称
         model.addAttribute("nickName", user.getNickname());
         //性别
@@ -58,7 +63,7 @@ public class UserController {
         //用户角色
         model.addAttribute("roleName", user.getRoles().get(0).getRolename());
 
-        int num = isbindingEmail + isSetupPwd + 0;
+        int num = isbindingEmail + isSetupPwd + isUserAuths;
         if(num == 3) {
             model.addAttribute("num", 100);
         }else if(num == 2) {
@@ -177,6 +182,16 @@ public class UserController {
     }
 
     /**
+     * 查询已绑定第三方账号
+     * @return
+     */
+    @RequestMapping("/queryUserAuthsInfoByYhnm")
+    @ResponseBody
+    public ResultObj queryUserAuthsInfoByYhnm() {
+        return userService.queryUserAuthsInfoByYhnm();
+    }
+
+    /**
      * 账号注销
      * @return
      */
@@ -184,5 +199,16 @@ public class UserController {
     @ResponseBody
     public ResultObj accountCancel() {
         return userService.accountCancel();
+    }
+
+    /**
+     * 解绑第三方账号
+     * @param openId
+     * @return
+     */
+    @RequestMapping("/unbundUserAuths")
+    @ResponseBody
+    public ResultObj unbundUserAuths(String openId) {
+        return userService.unbundUserAuths(openId);
     }
 }

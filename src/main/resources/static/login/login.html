@@ -8,7 +8,7 @@
 <div class="dialog" id="loginPage" style="top: 60px" th:fragment="loginBox">
     <div class="dialog-body dialog-body-class">
         <div class="login-wrap-box userLogin">
-            <h2 class="title" id="title1" style="font-weight: bold">
+            <h2 class="title" id="title1" th:utext="'登录到' + ${webSiteTj.webName} + '<i class=\'close icon\'></i>'" style="font-weight: bold">
                 登录到羅氏博客
                 <i class="close icon"></i>
             </h2>
@@ -59,20 +59,18 @@
                 </div>
                 <ul class="list clearfix" style="text-align: center">
                     <li title="QQ登录" class="list-item">
-                        <a href="/login/qq" target="_blank">
-                            <i class="qq icon"></i>
-                        </a>
+                        <a onclick="thirdPartyLogin('QQ')"><i class="qq icon"></i></a>
                     </li>
-                    <li class="list-item" title="微博登录">
+                    <!--<li class="list-item" title="微博登录">
                         <a href="/api/user/oauth/signin/qq?redirect_uri=https://www.duanliang920.com/" target="_blank">
                             <i class="wechat icon"></i>
                         </a>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
         </div>
         <div class="login-wrap-box userRegister">
-            <h2 class="title" id="title2" style="font-weight: bold">
+            <h2 class="title" id="title2" th:utext="'注册到' + ${webSiteTj.webName} + '<i class=\'close icon\'></i>'" style="font-weight: bold">
                 注册到羅氏博客
                 <i class="close icon"></i>
             </h2>
@@ -152,19 +150,15 @@
                 <div class="separated">
                     <div class="ui horizontal divider">第三方登录</div>
                 </div>
-
-                <!--                    <div class="ui horizontal divider header">第三方登录</div>-->
                 <ul class="list clearfix" style="text-align: center">
                     <li title="QQ登录" class="list-item">
-                        <a href="/api/user/oauth/signin/qq?redirect_uri=https://www.duanliang920.com/" target="_blank">
-                            <i class="qq icon"></i>
-                        </a>
+                        <a onclick="thirdPartyLogin('QQ')"><i class="qq icon"></i></a>
                     </li>
-                    <li class="list-item" title="微博登录">
+                    <!--<li class="list-item" title="微博登录">
                         <a href="/api/user/oauth/signin/qq?redirect_uri=https://www.duanliang920.com/" target="_blank">
                             <i class="wechat icon"></i>
                         </a>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
         </div>
@@ -228,15 +222,13 @@
                 </div>
                 <ul class="list clearfix" style="text-align: center">
                     <li title="QQ登录" class="list-item">
-                        <a href="/api/user/oauth/signin/qq?redirect_uri=https://www.duanliang920.com/" target="_blank">
-                            <i class="qq icon"></i>
-                        </a>
+                        <a onclick="thirdPartyLogin('QQ')"><i class="qq icon"></i></a>
                     </li>
-                    <li class="list-item" title="微博登录">
+                    <!--<li class="list-item" title="微博登录">
                         <a href="/api/user/oauth/signin/qq?redirect_uri=https://www.duanliang920.com/" target="_blank">
                             <i class="wechat icon"></i>
                         </a>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
         </div>

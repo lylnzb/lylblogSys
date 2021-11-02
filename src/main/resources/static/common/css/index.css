@@ -30,6 +30,7 @@ a.userIcon {
     padding: 6px;
     background-color: transparent;
     border-radius: 100%;
+    height: 50px;
 }
 a.userIcon img {
     width: 50px;
@@ -241,11 +242,10 @@ a {
     transform: scale(1.5);
     opacity: 0;
 }
-
 #header {
     position: fixed;
     top: 0;
-    z-index: 101;
+    z-index: 901;
     width: 100%;
     background: #fff;
     box-shadow: 0 2px 6px 0 rgba(0,0,0,.17);
@@ -253,7 +253,7 @@ a {
 #main {
     /*width: 885px;*/
     margin: 0 auto 20px;
-    padding-top: 45px;
+    padding-top: 57px;
 }
 .widget_post_author {
     font-size: 13px;
@@ -649,7 +649,7 @@ h3.slide-title {
 }
 
 .post_box {
-    padding: 10px 20px 10px 232px;
+    padding: 10px 10px 10px 10px;
     border-bottom: 1px solid #ddd;
     position: relative;
     overflow: hidden;
@@ -670,8 +670,10 @@ h3.slide-title {
 }
 
 @media screen and (max-width: 640px) {
-    .post_box {
-        padding: 15px 12px 15px 136px;
+    .post-left h3 {
+        font-size: 16px!important;
+        line-height: 22px!important;
+        margin-bottom: 3px!important;
     }
 
     .post-con {
@@ -680,21 +682,29 @@ h3.slide-title {
         margin-bottom: 3px;
         font-size: 12px;
     }
+
+    #blogDec {
+        margin-top: 0!important;
+        width: 170px!important;
+    }
 }
 
 @media screen and (max-width: 767px) {
-    .post_box {
-        padding: 15px 12px 15px 152px;
+    .post-left h3 {
+        font-size: 16px!important;
+        line-height: 30px!important;
+        margin-bottom: 0!important;
     }
 
     .post-con {
-        height: 45px;
+        height: 37px;
         line-height: 150%;
         margin-bottom: 0;
     }
 
     #blogDec {
-        display: none;
+        margin-top: 0!important;
+        width: 170px!important;
     }
 
     #bannerData {
@@ -704,11 +714,12 @@ h3.slide-title {
 }
 
 .post-img {
-    margin-left: -214px;
     float: left;
     overflow: hidden;
     width: 200px;
-    height: 150px;
+    border-radius: 3px;
+    display: initial;
+    margin-right: 10px;
 }
 
 .post-img img {
@@ -724,18 +735,33 @@ h3.slide-title {
 }
 
 @media screen and (max-width: 640px) {
+    .post-img {
+        width: 90px;
+    }
+
     .post-img img {
         height: 82px;
+    }
+
+    #browse, #comments {
+        display: none;
     }
 }
 
 
 @media screen and (max-width: 767px) {
+    .post-img {
+        width: 100px;
+    }
     .post-img img {
         height: 90px;
     }
 
     #primary {
+        display: none;
+    }
+
+    #browse, #comments {
         display: none;
     }
 }
@@ -744,15 +770,10 @@ em {
     font-style: normal;
 }
 
-.post-left {
-    min-height: 150px;
-}
-
 .post-left h3 {
     font-size: 18px;
     margin-bottom: 4px;
     line-height: 36px;
-    font-weight: bold;
     position: relative;
     white-space: nowrap;
     text-overflow: ellipsis;

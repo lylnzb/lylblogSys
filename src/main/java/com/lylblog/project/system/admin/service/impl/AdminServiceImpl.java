@@ -52,7 +52,7 @@ public class AdminServiceImpl implements AdminService {
         int result = 0;
         if("add".equals(type)){
             //判断用户是否已存在
-            UserLoginBean user = loginMapper.findUserByEmail(userBean.getEmail());
+            UserLoginBean user = loginMapper.findUserByUsername(userBean.getEmail());
             if(user != null){
                 return ResultObj.fail(2, "该用户已注册");//该用户已注册
             }

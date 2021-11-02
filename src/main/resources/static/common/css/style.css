@@ -217,6 +217,16 @@ h3.sideTab-title:before {
     color:#fff;
 }
 
+#commentList {
+    margin-top: 0;
+}
+
+.content-text {
+    line-height: 26px;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
 .layui-laypage a, .layui-laypage span{
     cursor: pointer;
     -webkit-user-select: none;
@@ -240,4 +250,96 @@ h3.sideTab-title:before {
 
 .layui-laypage a:hover {
     color:#108EE9;
+}
+
+
+@media screen and (max-width: 640px) {
+    #loginModule {
+        display: none;
+    }
+
+    .leave_position {
+        margin-left: 0!important;
+    }
+
+    #commentList {
+        margin-top: 20px!important;
+    }
+
+    .author {
+        width: 100%!important;
+        float: left!important;
+        display: inline!important;
+        margin-top: 3px!important;
+        margin-left: -8px!important;
+    }
+
+    .metadata {
+        width: 100%!important;
+        float: left!important;
+        display: inline!important;
+        margin-left: -8px!important;
+        margin-top: 3px!important;
+    }
+
+    .content .content-text, .content .imgShow, .actions, .textButtom {
+        margin-left: -50px!important;
+    }
+
+    .comments {
+        margin-top: -10px!important;
+    }
+
+    .backtop {
+        margin-right: 14px!important;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    #music {
+        display: none;
+    }
+
+    #loginModule {
+        display: none;
+    }
+
+    .addCollection {
+        width: 350px!important;
+    }
+
+    .leave_position {
+        margin-left: 0!important;
+    }
+
+    #commentList {
+        margin-top: 20px!important;
+    }
+
+    .author {
+        width: 100%!important;
+        float: left!important;
+        display: inline!important;
+        margin-top: 3px!important;
+        margin-left: -8px!important;
+    }
+
+    .metadata {
+        float: left!important;
+        display: inline!important;
+        margin-left: -8px!important;
+        margin-top: 3px!important;
+    }
+
+    .comment {
+        margin-top: -15px!important;
+    }
+
+    .comments {
+        margin-top: -10px!important;
+    }
+
+    .content .content-text, .content .imgShow, .actions, .textButtom {
+        margin-left: -50px!important;
+    }
 }

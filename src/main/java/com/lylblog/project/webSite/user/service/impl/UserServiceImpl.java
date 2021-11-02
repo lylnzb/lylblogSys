@@ -1,10 +1,12 @@
 package com.lylblog.project.webSite.user.service.impl;
 
+import com.lylblog.common.util.StringUtil;
 import com.lylblog.common.util.shiro.ShiroUtils;
 import com.lylblog.project.common.bean.AreaBean;
 import com.lylblog.project.common.bean.DynamicBean;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.common.mapper.CommonMapper;
+import com.lylblog.project.login.bean.UserAuthsBean;
 import com.lylblog.project.login.bean.UserLoginBean;
 import com.lylblog.project.system.comment.mapper.CommentMapper;
 import com.lylblog.project.webSite.user.bean.UserCommentBean;
@@ -67,6 +69,17 @@ public class UserServiceImpl implements UserService {
         //获取当前用户信息
         UserLoginBean user = ShiroUtils.getUserInfo();
         int falg = userMapper.isSetupPwd(user.getYhnm());//是否已设置密码
+        return falg;
+    }
+
+    /**
+     * 是否绑定第三方账号
+     * @return
+     */
+    public int isUserAuths() {
+        //获取当前用户信息
+        UserLoginBean user = ShiroUtils.getUserInfo();
+        int falg = userMapper.isUserAuths(user.getYhnm());//是否绑定第三方账号
         return falg;
     }
 
@@ -212,5 +225,34 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
         return ResultObj.ok();
+    }
+
+    /**
+     * 查询已绑定第三方账号
+     * @return
+     */
+    public ResultObj queryUserAuthsInfoByYhnm() {
+        UserLoginBean user = ShiroUtils.getUserInfo();
+        List<UserAuthsBean> authsList = userMapper.queryUserAuthsInfoByYhnm(user.getYhnm());
+        return ResultObj.ok(authsList.size(), authsList);
+    }
+
+    /**
+     * 解绑第三方账号
+     * @param openId
+     * @return
+     */
+    public ResultObj unbundUserAuths(String openId) {
+        UserLoginBean user = ShiroUtils.getUserInfo();
+        if(user == null) {
+            return ResultObj.fail("你这个杀千刀的东西！");
+        }else if(StringUtil.isEmpty(user.getEmail())) {
+            return ResultObj.fail("这是您最后的登录方式，如果解绑了您就无法登录这个帐号，请先绑定邮箱或绑定其它社交登录方式后再尝试解绑");
+        }
+        int count = userMapper.unbundUserAuths(openId, user.getYhnm());
+        if(count > 0) {
+            return ResultObj.ok("解绑成功!");
+        }
+        return ResultObj.fail("解绑失败!");
     }
 }

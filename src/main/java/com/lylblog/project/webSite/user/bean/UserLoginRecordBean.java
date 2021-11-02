@@ -14,6 +14,7 @@ public class UserLoginRecordBean extends ParaBean {
     private String address;
     private String loginSystem;
     private String loginTime;
+    private String ip;
     private String yhnm;
 
 }

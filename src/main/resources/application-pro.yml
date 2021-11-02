@@ -1,0 +1,79 @@
+# 项目相关配置
+lylblog:
+  # 名称
+  name: LylBlog
+  # 版本
+  version: 2.4.0
+  # 版权年份
+  copyrightYear: 2020
+  # 头像上传路径
+  profile: C:/profile/
+  # 音乐上传路径
+  musicfile: C:/musicfile/
+  # 文章上传路径
+  articlefile: C:/articlefile/
+  # 百度编辑器文件保存路径
+  ueditorfile: C:/ueditorfile/
+  # 获取ip地址开关
+  addressEnabled: false
+  # 项目域名
+  basePath: http://www.lylblog.com.cn/
+server:
+  port: 80
+spring:
+  profiles:
+    active: pro
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+    timeout: 5000
+  # thymeleaf
+  thymeleaf:
+    prefix: classpath:/static/
+    check-template-location: true
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML5
+    cache: false
+    servlet:
+      content-type: text/html
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/rocheblog?useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+  mvc:
+    favicon:
+      enabled: false
+  #文件上传
+  servlet:
+    multipart:
+      max-file-size:  30MB
+      max-request-size:  30MB
+mybatis:
+  mapper-locations: classpath*:com/lylblog/**/**/**/*.xml
+oauth:
+  qq:
+    #你的appid
+    client_id: 101957259
+    #你的appkey
+    client_secret: 120e36a5871060f33d260b52985f5ff2
+    #你接收响应code码地址
+    redirect_uri: http://www.lylblog.com.cn/api/qq/qqCallback
+    #腾讯获取code码地址
+    code_callback_uri: https://graph.qq.com/oauth2.0/authorize
+    #腾讯获取access_token地址
+    access_token_callback_uri: https://graph.qq.com/oauth2.0/token
+    #腾讯获取openid地址
+    openid_callback_uri: https://graph.qq.com/oauth2.0/me
+    #腾讯获取用户信息地址
+    user_info_callback_uri: https://graph.qq.com/user/get_user_info
