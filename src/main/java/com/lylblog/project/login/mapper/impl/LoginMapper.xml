@@ -79,16 +79,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			u.yhnm = #{yhnm}
 	</select>
 
-	<!-- 修改密码 -->
-	<update id="updatePwd" parameterType="String">
-		update m_user set password = #{newPwd}, salt = #{salt} where email = #{email}
-	</update>
-
-	<!-- 验证邮箱是否已注册 -->
-	<select id="validationEmail" parameterType="String" resultType="int">
-		select count(1) from m_user where email = #{newEmail} and valid = '1'
-	</select>
-
 	<!-- 获取角色ID -->
 	<select id="getRoleId" resultType="String" parameterType="String">
 		select roleid from m_role where rolekey = #{roleKey}
@@ -137,12 +127,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			appType,
 			appUserId,
 			bindFlag,
+			appNickname,
 			createDate
 		)values (
 			#{yhnm, jdbcType=VARCHAR},
 			#{appType, jdbcType=VARCHAR},
 			#{appUserId, jdbcType=VARCHAR},
 			#{bindFlag, jdbcType=VARCHAR},
+			#{appNickname, jdbcType=VARCHAR},
 			SYSDATE()
 		)
 	</insert>

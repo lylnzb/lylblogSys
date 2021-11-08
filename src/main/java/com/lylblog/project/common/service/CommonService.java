@@ -93,4 +93,9 @@ public interface CommonService {
      */
     ResultObj insertBlogBrowseLogInfo(BrowseLogBean browseLog);
 
+    /**
+     * 获取RSA算法公钥
+     * @return
+     */
+    String getPublicKey() throws Exception;
 }

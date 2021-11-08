@@ -2,6 +2,8 @@ package com.lylblog.project.common.service.impl;
 
 import com.lylblog.common.util.EntityToArrayUtil;
 import com.lylblog.common.util.FunctionUtil;
+import com.lylblog.common.util.RSAUtil;
+import com.lylblog.common.util.redis.RedisUtil;
 import com.lylblog.common.util.shiro.ShiroUtils;
 import com.lylblog.project.common.bean.*;
 import com.lylblog.project.common.mapper.CommonMapper;
@@ -24,9 +26,13 @@ import org.springframework.stereotype.Service;
 import com.lylblog.framework.config.*;
 
 import javax.annotation.Resource;
+import java.security.KeyPair;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class CommonServiceImpl implements CommonService {
@@ -42,6 +48,9 @@ public class CommonServiceImpl implements CommonService {
 
     @Resource
     private LogMapper logMapper;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     /**
      * 根据编码类别查询字典
@@ -223,5 +232,22 @@ public class CommonServiceImpl implements CommonService {
        }
        return ResultObj.fail();
    }
+
+    /**
+     * 获取RSA算法公钥
+     * @return
+     */
+    public String getPublicKey() throws Exception {
+        KeyPair kp = RSAUtil.generateRSAKeyPair();
+        RSAPublicKey pubk = (RSAPublicKey) kp.getPublic();//生成公钥
+        RSAPrivateKey prik= (RSAPrivateKey) kp.getPrivate();//生成私钥
+        String publicKey = RSAUtil.getKeyString(pubk);
+        String privateKey = RSAUtil.getKeyString(prik);
+
+        //公钥保存进Redis缓存
+        redisUtil.setEx(ShiroUtils.getSessionId() + "_privateKey", privateKey, 10, TimeUnit.SECONDS);
+
+        return publicKey;
+    }
 
 }

@@ -92,7 +92,16 @@ oauth:
     openid_callback_uri: https://graph.qq.com/oauth2.0/me
     #腾讯获取用户信息地址
     user_info_callback_uri: https://graph.qq.com/user/get_user_info
-  weixin:
-    token: lylBlogToken
-    encodingAesKey: 1I9DLf7h1Zor4FPB2PTqtK7UFUI1TJItFGuonm6wh8n
-    appid: wx02272a66a63f92a1
+  weibo:
+    #你的appid
+    client_id: 1888050879
+    #你的appkey
+    client_secret: 58bd59f6c09b49df806f9b9031a5c8e2
+    #你接收响应code码地址
+    redirect_uri: http://www.lylblog.com.cn/api/weibo/weiboCallback
+    #微博获取code码地址
+    code_callback_uri: https://api.weibo.com/oauth2/authorize
+    #微博获取access_token地址
+    access_token_callback_uri: https://api.weibo.com/oauth2/access_token
+    #微博获取用户信息地址
+    user_info_callback_uri: https://api.weibo.com/2/users/show.json

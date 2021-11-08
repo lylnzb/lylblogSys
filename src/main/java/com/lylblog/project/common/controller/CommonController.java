@@ -1,26 +1,40 @@
 package com.lylblog.project.common.controller;
 
-import com.lylblog.project.common.bean.AreaBean;
-import com.lylblog.project.common.bean.LabelBean;
+import com.lylblog.common.util.VerifyCodeUtil;
+import com.lylblog.common.util.redis.RedisUtil;
+import com.lylblog.common.util.shiro.ShiroUtils;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.common.service.CommonService;
-import com.lylblog.project.system.blogSet.bean.BlogSetBean;
-import com.lylblog.project.system.dict.bean.DictDataBean;
 import com.lylblog.project.system.log.bean.BrowseLogBean;
-import com.lylblog.project.webSite.index.bean.ArticleListBean;
-import io.swagger.models.Model;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import java.util.List;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequestMapping("/common")
 public class CommonController {
 
-    @Resource
+    @Autowired
     private CommonService commonService;
+
+    @Autowired
+    private RedisUtil redisUtil;
+
+    /**
+     * 局部刷新网站头部导航栏
+     * @return
+     */
+    @RequestMapping(value="/headerRefresh",method=RequestMethod.GET)
+    public String headerRefresh() {
+        return "include/header :: myHeader";
+    }
 
     /**
      * 根据编码类别查询字典
@@ -115,11 +129,6 @@ public class CommonController {
         return ResultObj.fail();
     }
 
-    @RequestMapping(value="/headerRefresh",method=RequestMethod.GET)
-    public String headerRefresh(Model model) {
-        return "include/header :: myHeader";
-    }
-
     /**
      * 获取所有省份
      * @return
@@ -162,4 +171,28 @@ public class CommonController {
     public ResultObj insertBlogBrowseLogInfo(@RequestBody BrowseLogBean browseLog){
         return commonService.insertBlogBrowseLogInfo(browseLog);
     }
+
+    @RequestMapping(value="/imageCode")
+    public void imageCode(HttpServletResponse response) throws IOException {
+        OutputStream os = response.getOutputStream();
+
+        VerifyCodeUtil vCode = new VerifyCodeUtil();
+        BufferedImage buffImg = vCode.getImage();
+
+        String key = ShiroUtils.getSessionId() + "_code";
+        redisUtil.setEx(key, vCode.getText(), 300, TimeUnit.SECONDS);
+
+        ImageIO.write(buffImg, "JPEG", os);
+    }
+
+    /**
+     * 获取RSA算法公钥
+     * @return
+     */
+    @PostMapping(value="/getPublicKey")
+    @ResponseBody
+    public String getPublicKey() throws Exception {
+        return commonService.getPublicKey();
+    }
+
 }

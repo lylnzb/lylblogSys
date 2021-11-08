@@ -1,7 +1,9 @@
 package com.lylblog.project.webSite.user.service.impl;
 
+import com.lylblog.common.util.EncryptionUtil;
 import com.lylblog.common.util.StringUtil;
 import com.lylblog.common.util.shiro.ShiroUtils;
+import com.lylblog.common.util.validation.ValidatorUtil;
 import com.lylblog.project.common.bean.AreaBean;
 import com.lylblog.project.common.bean.DynamicBean;
 import com.lylblog.project.common.bean.ResultObj;
@@ -15,10 +17,13 @@ import com.lylblog.project.webSite.user.bean.UserLoginRecordBean;
 import com.lylblog.project.webSite.user.bean.UserParamBean;
 import com.lylblog.project.webSite.user.mapper.UserMapper;
 import com.lylblog.project.webSite.user.service.UserService;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: lyl
@@ -80,7 +85,99 @@ public class UserServiceImpl implements UserService {
         //获取当前用户信息
         UserLoginBean user = ShiroUtils.getUserInfo();
         int falg = userMapper.isUserAuths(user.getYhnm());//是否绑定第三方账号
-        return falg;
+        return (falg >= 1?1:0);
+    }
+
+    /**
+     * 修改密码
+     * @param oldPwd
+     * @param newPwd
+     * @return
+     */
+    public ResultObj updatePwd(String oldPwd, String newPwd){
+        UserLoginBean user = ShiroUtils.getUserInfo();
+        //旧密码加密
+        String oldMd5Pwd = new SimpleHash("MD5", oldPwd,
+                ByteSource.Util.bytes(user.getEmail() + ((user.getSalt() == null)?"":user.getSalt())), 2).toHex();
+        if(!oldMd5Pwd.equals(user.getPassword())){
+            return ResultObj.fail("旧密码与当前账号密码不一致！");
+        } else if(!ValidatorUtil.isPassword(newPwd)) {
+            return ResultObj.fail("请输入8~20位字母和数字组合的密码！");
+        }
+        //新密码加密
+        Map<String, String> map = EncryptionUtil.MD5Pwd(user.getEmail(),newPwd);
+        int count = userMapper.updatePwd(map.get("password"), map.get("salt"), user.getEmail());
+        if(count > 0){
+            return ResultObj.ok("密码修改成功，请重新登录！");
+        }
+        return ResultObj.fail("修改密码失败！");
+    }
+
+    /**
+     * 设置密码
+     * @param pwd
+     * @return
+     */
+    public ResultObj setPwd(String pwd) {
+        UserLoginBean user = ShiroUtils.getUserInfo();
+        if(!ValidatorUtil.isPassword(pwd)) {
+            return ResultObj.fail("请输入8~20位字母和数字组合的密码！");
+        }
+        //新密码加密
+        Map<String, String> map = EncryptionUtil.MD5Pwd(user.getEmail(),pwd);
+        int count = userMapper.updatePwd(map.get("password"), map.get("salt"), user.getEmail());
+        if(count > 0){
+            return ResultObj.ok("密码设置成功！");
+        }
+        return ResultObj.fail("修改设置失败！");
+    }
+
+    /**
+     * 验证密码正确性
+     * @param oldPwd
+     * @return
+     */
+    public ResultObj validationPwd(String oldPwd){
+        UserLoginBean user = ShiroUtils.getUserInfo();
+        //旧密码加密
+        String oldMd5Pwd = new SimpleHash("MD5", oldPwd,
+                ByteSource.Util.bytes(user.getEmail() + ((user.getSalt() == null)?"":user.getSalt())), 2).toHex();
+
+        if(!oldMd5Pwd.equals(user.getPassword())){
+            return ResultObj.fail("旧密码与当前账号密码不一致！");
+        }
+        return ResultObj.ok();
+    }
+
+    /**
+     * 验证邮箱是否已注册
+     * @param newEmail
+     * @return
+     */
+    public ResultObj validationEmail(String newEmail){
+        int num = userMapper.validationEmail(newEmail);
+        if(num > 0){
+            return ResultObj.fail("该邮箱已注册");
+        }
+        return ResultObj.ok();
+    }
+
+    /**
+     * 绑定新邮箱
+     * @param newEmail
+     * @return
+     */
+    public ResultObj bindEmail(String newEmail) {
+        UserLoginBean user = ShiroUtils.getUserInfo();
+        int num = userMapper.validationEmail(newEmail);
+        if(num > 0){
+            return ResultObj.fail("该邮箱已注册");
+        }
+        int count = userMapper.bindEmail(newEmail, user.getYhnm());
+        if(count > 0) {
+            return ResultObj.ok("绑定成功！");
+        }
+        return ResultObj.fail("绑定失败！");
     }
 
     /**
@@ -244,10 +341,18 @@ public class UserServiceImpl implements UserService {
      */
     public ResultObj unbundUserAuths(String openId) {
         UserLoginBean user = ShiroUtils.getUserInfo();
+
         if(user == null) {
             return ResultObj.fail("你这个杀千刀的东西！");
-        }else if(StringUtil.isEmpty(user.getEmail())) {
+        }
+        List<UserAuthsBean> authsList = userMapper.queryUserAuthsInfoByYhnm(user.getYhnm());
+        int i1 = userMapper.isbindingEmail(user.getYhnm());
+        if(i1 == 0 && (!authsList.isEmpty() && authsList.size() == 1)) {
             return ResultObj.fail("这是您最后的登录方式，如果解绑了您就无法登录这个帐号，请先绑定邮箱或绑定其它社交登录方式后再尝试解绑");
+        }
+        int i2 = userMapper.isSetupPwd(user.getYhnm());
+        if(i2 == 0 && (!authsList.isEmpty() && authsList.size() == 1)) {
+            return ResultObj.fail("您还没有设置密码，请先设置密码吧！");
         }
         int count = userMapper.unbundUserAuths(openId, user.getYhnm());
         if(count > 0) {

@@ -50,28 +50,6 @@ public interface LoginService {
     List<PermissionBean> queryPerms(String yhnm);
 
     /**
-     * 修改密码
-     * @param oldPwd
-     * @param newPwd
-     * @return
-     */
-    ResultObj updatePwd(String oldPwd, String newPwd);
-
-    /**
-     * 验证邮箱是否已注册
-     * @param newEmail
-     * @return
-     */
-    ResultObj validationEmail(String newEmail);
-
-    /**
-     * 验证密码正确性
-     * @param oldPwd
-     * @return
-     */
-    ResultObj validationPwd(String oldPwd);
-
-    /**
      * 获取accessToken
      * @param type
      * @return

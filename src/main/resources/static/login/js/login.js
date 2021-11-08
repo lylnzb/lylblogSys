@@ -17,6 +17,32 @@ $(document).on('click','.isLogin',function(){
 });
 
 /**
+ * 验证码生成
+ */
+function changeCodeImg() {
+    $("#vImg").attr('src',"/common/imageCode?num=" + Math.ceil(Math.random()*10));//生成一个随机数（防止缓存）
+}
+
+/**
+ * 获取公钥
+ */
+function getPublicKey() {
+    var key = "";
+    $.ajax({
+        url: basePath + '/common/getPublicKey',
+        type: "POST",
+        async: false,
+        success: function (resultData) {
+            key = resultData;
+        },
+        error: function () {
+
+        }
+    });
+    return key;
+}
+
+/**
  * 发送邮箱验证码
  */
 function sendemail() {
@@ -107,7 +133,7 @@ $("#register").click(function(){
                 if(resultData.code == 0){
                     location.reload();
                 }else{
-                    cocoMessage.error(resultData.msg);
+                    cocoMessage.error(resultData.msg, 3000);
                 }
             },
             error: function () {
@@ -184,11 +210,18 @@ $("#login").click(function(){
             }
         }
     });
-
-    var obj = new Object();
-    obj.email = $("#userEmail").val();
-    obj.password = $("#userPwd").val();
     if(traverse == 0){
+        // 公钥
+        var key = getPublicKey();
+        // 创建 JSEncrypt 对象
+        var encrypt = new JSEncrypt();
+        // 获取 publicKey
+        encrypt.setPublicKey(key);
+
+        var obj = new Object();
+        obj.email = $("#userEmail").val();
+        obj.password = encrypt.encrypt($("#userPwd").val());
+        obj.vCode = $("#verCode").val();
         $.ajax({
             url: basePath + 'login',
             type: "POST",
@@ -201,7 +234,7 @@ $("#login").click(function(){
                     $(".login").hide();
                     $(".bg").hide();
                 }else{
-                    cocoMessage.error(resultData.msg);
+                    cocoMessage.error(resultData.msg, 3000);
                 }
             },
             error: function () {
@@ -276,6 +309,8 @@ $(".userLogin .close.icon, .userRegister .close.icon, .userRetrievePas .close.ic
 function thirdPartyLogin(loginType) {
     if(loginType == 'QQ') {
         window.open('/login/qq', 'QQ登录', 'left=0,top=0,width=' + (screen.availWidth - 10) + ',height=' + (screen.availHeight - 55) + ',toolbar=no, menubar=yes, scrollbars=yes, resizable=yes,location=yes, status=yes');
+    }else if(loginType == 'weibo') {
+        window.open('/login/weibo', 'QQ登录', 'left=0,top=0,width=' + (screen.availWidth - 10) + ',height=' + (screen.availHeight - 55) + ',toolbar=no, menubar=yes, scrollbars=yes, resizable=yes,location=yes, status=yes');
     }
 }
 
@@ -284,6 +319,8 @@ $(function(){
 });
 
 function autoCenter() {
+    /* 加载验证码 */
+    changeCodeImg();
 
     diatitle1.onmousedown = down;
     diatitle2.onmousedown = down;

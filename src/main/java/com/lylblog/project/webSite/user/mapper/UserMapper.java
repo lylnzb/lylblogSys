@@ -54,6 +54,30 @@ public interface UserMapper {
     int isUserAuths(@Param("yhnm") String yhnm);
 
     /**
+     * 修改密码
+     * @param newPwd
+     * @param salt
+     * @param email
+     * @return
+     */
+    int updatePwd(@Param("newPwd") String newPwd, @Param("salt") String salt, @Param("email") String email);
+
+    /**
+     * 验证邮箱是否已注册
+     * @param newEmail
+     * @return
+     */
+    int validationEmail(@Param("newEmail") String newEmail);
+
+    /**
+     * 绑定新邮箱
+     * @param newEmail
+     * @param yhnm
+     * @return
+     */
+    int bindEmail(@Param("newEmail") String newEmail, @Param("yhnm") String yhnm);
+
+    /**
      * 我的评论列表
      * @param comment
      * @return

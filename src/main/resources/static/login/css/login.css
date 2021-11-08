@@ -100,10 +100,11 @@ login-wrap-box .password, .login-wrap-box .username {
     position: relative;
     cursor: text;
 }
-.login-wrap-box .password-label, .login-wrap-box .username-label, .login-wrap-box .nickname-label {
+.login-wrap-box .password-label, .login-wrap-box .username-label, .login-wrap-box .nickname-label, .login-wrap-box .verCode-label {
     position: relative;
     display: block;
-    margin-top: 20px;
+    font-weight: bold;
+    margin-top: 15px;
 }
 .login-wrap-box .password-label .dl-icon-password, .login-wrap-box .username-label .dl-icon-password {
     top: 30px;
@@ -141,6 +142,9 @@ login-wrap-box .password, .login-wrap-box .username {
 }
 .login-wrap-box .list-item .qq {
     color: #1a98fc;
+    font-size: 20px;
+}
+.login-wrap-box .list-item .weibo {
     font-size: 20px;
 }
 .login-wrap-box .list-item .wechat {

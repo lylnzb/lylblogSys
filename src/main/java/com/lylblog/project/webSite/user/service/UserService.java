@@ -43,6 +43,42 @@ public interface UserService {
     int isUserAuths();
 
     /**
+     * 修改密码
+     * @param oldPwd
+     * @param newPwd
+     * @return
+     */
+    ResultObj updatePwd(String oldPwd, String newPwd);
+
+    /**
+     * 设置密码
+     * @param pwd
+     * @return
+     */
+    ResultObj setPwd(String pwd);
+
+    /**
+     * 验证密码正确性
+     * @param oldPwd
+     * @return
+     */
+    ResultObj validationPwd(String oldPwd);
+
+    /**
+     * 验证邮箱是否已注册
+     * @param newEmail
+     * @return
+     */
+    ResultObj validationEmail(String newEmail);
+
+    /**
+     * 绑定新邮箱
+     * @param newEmail
+     * @return
+     */
+    ResultObj bindEmail(String newEmail);
+
+    /**
      * 我的评论列表
      * @param comment
      * @return

@@ -52,22 +52,6 @@ public interface LoginMapper {
     List<PermissionBean> queryPerms(String yhnm);
 
     /**
-     * 修改密码
-     * @param newPwd
-     * @param salt
-     * @param email
-     * @return
-     */
-    int updatePwd(@Param("newPwd") String newPwd, @Param("salt") String salt, @Param("email") String email);
-
-    /**
-     * 验证邮箱是否已注册
-     * @param newEmail
-     * @return
-     */
-    int validationEmail(@Param("newEmail") String newEmail);
-
-    /**
      * 获取角色ID
      * @param roleKey
      * @return

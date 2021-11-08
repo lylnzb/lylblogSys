@@ -56,7 +56,7 @@ public class ToEmailController {
             //判断是否缓存该账号验证码
             boolean isExist = redisUtil.hasKey(toEmail.getTos() + "_lylyzm");
             if (!isExist) {
-                redisUtil.setEx(toEmail.getTos() + "_smslogin", code, 60,TimeUnit.SECONDS);   //缓存验证码并设置超时时间
+                redisUtil.setEx(toEmail.getTos() + "_smslogin", code, 60, TimeUnit.SECONDS);   //缓存验证码并设置超时时间
             }
         } catch (MailException e) {
             e.printStackTrace();

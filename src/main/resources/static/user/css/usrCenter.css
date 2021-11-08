@@ -477,12 +477,12 @@ a {
     text-align: left;
     font-size: 1.5456rem;
     color: #333;
+    margin-top: -10px;
 }
 
 .table-wrapper .small thead {
     background: none;
     border: none;
-    border-top: solid 0.1104rem #eee;
     font-family: PingFangSC-Regular;
     font-size: 14px;
     color: #B5B5B5;
@@ -1185,6 +1185,17 @@ a {
 }
 
 .android-index {
+    display: none!important;
+}
+
+#bindingEmailForm #newEmail {
+    width: 280px;
+}
+
+#bindingEmailForm #emailCode {
+    width: 171px;
+}
+#bindingEmailForm .error {
     display: none;
 }
 
@@ -1251,11 +1262,12 @@ a {
     }
 
     .android {
-        display: block!important;
+        display: block;
     }
 
     .android-index {
         display: block!important;
+        margin-bottom: 13px;
     }
 
     .mod-ucenter-score-number {

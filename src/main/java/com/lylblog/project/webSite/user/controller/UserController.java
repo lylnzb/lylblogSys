@@ -1,8 +1,12 @@
 package com.lylblog.project.webSite.user.controller;
 
+import com.lylblog.common.util.EncryptionUtil;
+import com.lylblog.common.util.RSAUtil;
 import com.lylblog.common.util.StringUtil;
 import com.lylblog.common.util.file.FileUploadUtil;
+import com.lylblog.common.util.redis.RedisUtil;
 import com.lylblog.common.util.shiro.ShiroUtils;
+import com.lylblog.common.util.validation.ValidatorUtil;
 import com.lylblog.project.common.bean.DynamicBean;
 import com.lylblog.project.common.bean.ResultObj;
 import com.lylblog.project.login.bean.UserAuthsBean;
@@ -15,14 +19,13 @@ import com.lylblog.project.webSite.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: lyl
@@ -41,6 +44,9 @@ public class UserController {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     @RequestMapping("/userCenter")
     public String blogList(Model model){
         //获取当前用户信息
@@ -55,7 +61,7 @@ public class UserController {
         //是否已设置密码
         model.addAttribute("isSetupPwd", isSetupPwd == 1?true:false);
         //是否绑定第三方账号
-        model.addAttribute("isUserAuths", isUserAuths == 1?true:false);
+        model.addAttribute("isUserAuths", isUserAuths >= 1?true:false);
         //用户昵称
         model.addAttribute("nickName", user.getNickname());
         //性别
@@ -78,12 +84,86 @@ public class UserController {
         return "/user/userCenter";
     }
 
+    @RequestMapping(value = "/validationPwd", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultObj validationPwd(@RequestBody HashMap param) throws Exception {
+        //获取 redis缓存中的 privateKey
+        String privateKey = (String) redisUtil.get(ShiroUtils.getSessionId() + "_privateKey");
+        if(StringUtil.isEmpty(privateKey)) {
+            return ResultObj.fail("公钥已过期，请重新获取！");
+        }
+        String oldPwd = RSAUtil.decodeSecret(privateKey, param.get("oldPwd").toString());
+        return userService.validationPwd(oldPwd);
+    }
+
+    @RequestMapping(value = "/updatePwd", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultObj updatePwd(@RequestBody HashMap param) throws Exception {
+        //获取 redis缓存中的 privateKey
+        String privateKey = (String) redisUtil.get(ShiroUtils.getSessionId() + "_privateKey");
+        if(StringUtil.isEmpty(privateKey)) {
+            return ResultObj.fail("公钥已过期，请重新获取！");
+        }
+        String oldPwd = RSAUtil.decodeSecret(privateKey, param.get("oldPwd").toString());
+        String newPwd = RSAUtil.decodeSecret(privateKey, param.get("newPwd").toString());
+        return userService.updatePwd(oldPwd, newPwd);
+    }
+
+    /**
+     * 设置密码
+     * @param param
+     * @return
+     */
+    @RequestMapping(value = "/setPwd", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultObj setPwd(@RequestBody HashMap param) throws Exception {
+        //获取 redis缓存中的 privateKey
+        String privateKey = (String) redisUtil.get(ShiroUtils.getSessionId() + "_privateKey");
+        if(StringUtil.isEmpty(privateKey)) {
+            return ResultObj.fail("公钥已过期，请重新获取！");
+        }
+        String pwd = RSAUtil.decodeSecret(privateKey, param.get("pwd").toString());
+        return userService.setPwd(pwd);
+    }
+
+    /**
+     * 验证邮箱是否已注册
+     * @param newEmail
+     * @return
+     */
+    @RequestMapping(value = "/validationEmail", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultObj validationEmail(String newEmail){
+        return userService.validationEmail(newEmail);
+    }
+
+    /**
+     * 绑定新邮箱
+     * @param param
+     * @return
+     */
+    @RequestMapping(value = "/bindEmail", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultObj bindEmail(@RequestBody HashMap param) {
+        String newEmail = param.get("newEmail").toString();
+        String vCode = param.get("vCode").toString();
+        String code = (String) redisUtil.get(newEmail + "_smslogin");   //从redis取出验证码
+        if(null != code && null != vCode){
+            if(!code.equals(vCode)){
+                return ResultObj.fail(3,"验证码输入不正确");
+            }
+        }else{
+            return ResultObj.fail(3,"该验证码已失效");
+        }
+        return userService.bindEmail(newEmail);
+    }
+
     /**
      * 查询当前登录用户的登录记录数据
      * @param userLoginRecord
      * @return
      */
-    @RequestMapping("/queryLoginRecord")
+    @PostMapping("/queryLoginRecord")
     @ResponseBody
     public ResultObj queryLoginRecord(@RequestBody UserLoginRecordBean userLoginRecord){
         return userService.queryLoginRecord(userLoginRecord);
@@ -94,7 +174,7 @@ public class UserController {
      * @param comment
      * @return
      */
-    @RequestMapping("/queryMyCommentsByYhnm")
+    @PostMapping("/queryMyCommentsByYhnm")
     @ResponseBody
     public ResultObj queryMyCommentsByYhnm(@RequestBody UserCommentBean comment){
         return userService.queryMyCommentsByYhnm(comment);
@@ -105,7 +185,7 @@ public class UserController {
      * @param linkStatus
      * @return
      */
-    @RequestMapping("/queryMyLinks")
+    @PostMapping("/queryMyLinks")
     @ResponseBody
     public ResultObj queryMyLinks(String linkStatus){
         return userService.queryMyLinks(linkStatus);
@@ -116,7 +196,7 @@ public class UserController {
      * @param linkId
      * @return
      */
-    @RequestMapping("/queryMyLinksById")
+    @PostMapping("/queryMyLinksById")
     @ResponseBody
     public ResultObj queryMyLinksById(String linkId){
         return userService.queryMyLinksById(linkId);
@@ -127,7 +207,7 @@ public class UserController {
      * @param commentId
      * @return
      */
-    @RequestMapping("/delMyComment")
+    @PostMapping("/delMyComment")
     @ResponseBody
     public ResultObj delMyComment(String commentId){
         return userService.delMyComment(commentId);
@@ -165,7 +245,7 @@ public class UserController {
      * 查询个人资料详情
      * @return
      */
-    @RequestMapping("/queryPersonalData")
+    @PostMapping("/queryPersonalData")
     @ResponseBody
     public ResultObj queryPersonalData(){
         return userService.queryPersonalData();
@@ -175,7 +255,7 @@ public class UserController {
      * 查询个人动态信息
      * @return
      */
-    @RequestMapping("/queryDynamicInfo")
+    @PostMapping("/queryDynamicInfo")
     @ResponseBody
     public ResultObj queryDynamicInfo(@RequestBody DynamicBean dynamic){
         return userService.queryDynamicInfo(dynamic);
@@ -185,7 +265,7 @@ public class UserController {
      * 查询已绑定第三方账号
      * @return
      */
-    @RequestMapping("/queryUserAuthsInfoByYhnm")
+    @PostMapping("/queryUserAuthsInfoByYhnm")
     @ResponseBody
     public ResultObj queryUserAuthsInfoByYhnm() {
         return userService.queryUserAuthsInfoByYhnm();
@@ -195,7 +275,7 @@ public class UserController {
      * 账号注销
      * @return
      */
-    @RequestMapping("/accountCancel")
+    @PostMapping("/accountCancel")
     @ResponseBody
     public ResultObj accountCancel() {
         return userService.accountCancel();
@@ -206,9 +286,19 @@ public class UserController {
      * @param openId
      * @return
      */
-    @RequestMapping("/unbundUserAuths")
+    @PostMapping("/unbundUserAuths")
     @ResponseBody
     public ResultObj unbundUserAuths(String openId) {
         return userService.unbundUserAuths(openId);
+    }
+
+    /**
+     * 是否已绑定邮箱
+     * @return
+     */
+    @PostMapping("/isbindingEmail")
+    @ResponseBody
+    public int isbindingEmail() {
+        return userService.isbindingEmail();
     }
 }

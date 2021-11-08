@@ -3,6 +3,8 @@ package com.lylblog.framework.shiro.realm;
 import com.lylblog.common.support.CommonConstant;
 import com.lylblog.common.support.LoginTypeConstant;
 import com.lylblog.common.util.MessageUtil;
+import com.lylblog.common.util.StringUtil;
+import com.lylblog.common.util.redis.RedisUtil;
 import com.lylblog.common.util.shiro.ShiroUtils;
 import com.lylblog.framework.shiro.authc.CustomToken;
 import com.lylblog.project.login.bean.UserAuthsBean;
@@ -20,6 +22,9 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * 描述：
  *
@@ -33,6 +38,9 @@ public class CustomRealm extends AuthorizingRealm {
 
     @Autowired
     private LogService logService;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
@@ -62,7 +70,7 @@ public class CustomRealm extends AuthorizingRealm {
         String loginType = tk.getLoginType();
         String userName = (String) tk.getPrincipal();
         String userPwd = new String((char[]) tk.getCredentials());
-        if(loginType.equals(LoginTypeConstant.PASSWORD)) {//如果是账号密码登录，则无需验证密码
+        if(loginType.equals(LoginTypeConstant.PASSWORD)) {//如果是账号密码登录，则需要验证密码
             //根据用户名从数据库获取用户信息
             UserLoginBean user = loginServer.findUserByUsername(userName);
             if (user == null) {
@@ -72,11 +80,25 @@ public class CustomRealm extends AuthorizingRealm {
                 throw new AccountException("找不到该用户信息");
             }
             user.setAppType("0");
+
+            AtomicInteger errorNum = new AtomicInteger(0);//初始化错误登录次数
+            String value = (String) redisUtil.get("login:error:" + userName);//获取错误登录的次数
+            if (StringUtil.isNotBlank(value)) {
+                errorNum = new AtomicInteger(Integer.parseInt(value));
+            }
+            if (errorNum.get() >= 5) {  //如果用户错误登录次数超过5次
+                throw new ExcessiveAttemptsException(); //抛出账号锁定异常类
+            }
+
             String md5Pwd = new SimpleHash("MD5", userPwd,
                     ByteSource.Util.bytes(user.getEmail() + ((user.getSalt() == null)?"":user.getSalt())), 2).toHex();
             if (!md5Pwd.equals(user.getPassword())) {
+                //存储错误次数到redis中
+                redisUtil.setEx("login:error:" + userName, errorNum.incrementAndGet() + "", 1800, TimeUnit.SECONDS);
                 logService.insertLoginLogInfo(user, CommonConstant.LOGIN_FAIL, MessageUtil.message("user.password.not.match"));
                 throw new AccountException("密码不正确");
+            }else {
+                redisUtil.delete("login:error:" + userName);//移除缓存中用户的错误登录次数
             }
             logService.insertLoginLogInfo(user, CommonConstant.LOGIN_SUCCESS, MessageUtil.message("user.login.success"));
             return new SimpleAuthenticationInfo(user, user.getPassword(),

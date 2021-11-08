@@ -119,22 +119,24 @@
                 </div>
                 <!--左边-->
                 <div class="twelve wide column" id="module" style="min-height: 730px">
-                    <div class="ui top segment android-index" data-id="myAccountTab" style="margin-top: 0;color: #a94442;background-color: #f2dede;border-color: #ebccd1;">
-                        <span>温馨提示：更多功能请前往pc端进行操作。</span>
-                    </div>
-                    <div class="ui top segment android-index" data-id="myAccountTab" style="margin-top: 0;">
-                        <div class="widget_avatar_head">
-                            <img class="head_portrait_android" th:src="@{${icon}}" alt="回忆里依稀">
+                    <div class="android-index">
+                        <div class="ui top segment" data-id="myAccountTab" style="margin-top: 0;color: #a94442;background-color: #f2dede;border-color: #ebccd1;">
+                            <span>温馨提示：更多功能请前往pc端进行操作。</span>
                         </div>
-                        <div class="personInfo">
-                            <h3>
-                                <label th:text="${nickName}" style="font-size: 15px;font-weight: bold">回忆里依稀</label>
-                                <i class="mars icon" style="color: blue;"></i>
-                            </h3>
-                            <div class="usertype" th:text="${roleName}">普通会员</div>
-                        </div>
-                        <div class="personData">
-                            <span>个人资料<i class="angle right icon" style="font-weight: bold;margin-right: -4px;"></i></span>
+                        <div class="ui top segment" data-id="myAccountTab" style="margin-top: 0;">
+                            <div>
+                                <img class="head_portrait_android" th:src="@{${icon}}" alt="回忆里依稀">
+                            </div>
+                            <div class="personInfo">
+                                <h3>
+                                    <label th:text="${nickName}" style="font-size: 15px;font-weight: bold">回忆里依稀</label>
+                                    <i class="mars icon" style="color: blue;"></i>
+                                </h3>
+                                <div class="usertype" th:text="${roleName}">普通会员</div>
+                            </div>
+                            <div class="personData">
+                                <span>个人资料<i class="angle right icon" style="font-weight: bold;margin-right: -4px;"></i></span>
+                            </div>
                         </div>
                     </div>
                     <!-- 我的账号 -->
@@ -241,9 +243,9 @@
                     <div class="ui top segment loginRecord" data-id="myAccountTab" style="margin-top: 0;">
                         <div class="pageWrapper">
                             <div class="pc ucenter-table">
-                                <div class="ucenter-table-top">
-                                    <div class="loginRecord active" style="font-weight: bold">登录记录</div>
-                                </div>
+                                <h3 class="sideTab-title">
+                                    登录记录
+                                </h3>
                                 <div class="ucenter-table-bottom">
                                     <div class="table-wrapper smalltable-wrapper" style="border: none">
                                         <table class="manage-table small">
@@ -277,12 +279,11 @@
                     </div>
                     <!-- 系统消息 -->
                     <div class="ui top segment" data-id="systemMessageTab" style="margin-top: 0;display: none">
-                        <div class="ui secondary pointing menu">
-                            <a class="item active" data-tab="tab-name2">系统消息</a>
-                        </div>
-                        <div class="ui tab active" data-tab="tab-name2">
-                            <div class="main">
-                                <div class="my_msg_list">
+                        <h3 class="sideTab-title">
+                            系统消息
+                        </h3>
+                        <div class="main">
+                            <div class="my_msg_list">
                                 <div class="my_msg_list_view">
                                     <div class="my_msg_list_box">
                                         <div class="my_msg_list_con">
@@ -348,7 +349,6 @@
                                     </div>
                                 </div>
                             </div>
-                            </div>
                         </div>
                     </div>
                     <!-- 账号设置 -->
@@ -363,7 +363,10 @@
                                             <span>密</span>
                                             <span>码</span>
                                         </span>
-                                    <p><a onclick="switchTab(this, 'updatePwdTab', 2)">修改密码</a></p>
+                                    <p>
+                                        <span class="accout-error" th:text="${isSetupPwd == true?'':'存在风险，请设置密码'}"></span>
+                                        <a th:text="${isSetupPwd == true?'修改密码':'设置密码'}" onclick="switchTab(this, 'updatePwdTab', 2)">修改密码</a>
+                                    </p>
                                 </li>
                                 <li class="accout-body-item">
                                     <span>
@@ -388,12 +391,6 @@
                                         <a onclick="switchTab(this, 'loginRecordTab', 2)">查看记录</a>
                                     </p>
                                 </li>
-                                <!--<li class="accout-body-item">
-                                    <span>账号注销</span>
-                                    <p>
-                                        <a onclick="accountCancel()">立即注销</a>
-                                    </p>
-                                </li>-->
                             </ul>
                             <div class="zw return" style="width: 100%;float: none;margin-left: 0;margin-top: 200px;display: none">
                                 <span>返 回</span>
@@ -402,217 +399,209 @@
                     </div>
                     <!-- 我的评论 -->
                     <div class="ui top segment" data-id="myCommentsTab" style="min-height: 580px;margin-top: 0;display: none">
-                        <div class="ui secondary pointing menu">
-                            <a class="item active" data-tab="tab-name4">我的评论</a>
-                        </div>
-                        <div class="ui tab active" data-tab="tab-name4">
-                            <div class="msg-list">
-                                <ul class="commentList"></ul>
-                                <div id="commentPage" style="text-align: right;"></div>
-                            </div>
+                        <h3 class="sideTab-title">
+                            我的评论
+                        </h3>
+                        <div class="msg-list">
+                            <ul class="commentList"></ul>
+                            <div id="commentPage" style="text-align: right;"></div>
                         </div>
                     </div>
                     <!-- 我的收藏 -->
                     <div class="ui top segment" data-id="myCollectionTab" style="min-height: 580px;margin-top: 0;display: none">
-                        <div class="ui secondary pointing menu">
-                            <a class="item active" data-tab="tab-name5">我的收藏</a>
+                        <h3 class="sideTab-title">
+                            我的收藏
+                        </h3>
+                        <div class="collection-left-tab">
+                            <div class="ultab-sub-menu"></div>
                         </div>
-                        <div class="ui tab active" data-tab="tab-name5">
-                            <div class="collection-left-tab">
-                                <div class="ultab-sub-menu"></div>
-                            </div>
-                            <div class="collection-content">
-                                <div>
-                                    <div class="list-wrap"></div>
-                                </div>
+                        <div class="collection-content">
+                            <div>
+                                <div class="list-wrap"></div>
                             </div>
                         </div>
                     </div>
                     <!-- 我的友链申请 -->
                     <div class="ui top segment" data-id="myLinksTab" style="min-height: 580px;margin-top: 0;display: none">
-                        <div class="ui secondary pointing menu">
-                            <a class="item active" data-tab="tab-name3">我的友链申请</a>
-                        </div>
-                        <div class="ui tab active" data-tab="tab-name3">
-                            <div class="main">
-                                <div class="ui basic buttons" style="float: right;margin-bottom: 10px;">
-                                    <button data-id="" class="ui button active">全部</button>
-                                    <button data-id="0" class="ui button">待审核</button>
-                                    <button data-id="2" class="ui button">未通过</button>
-                                    <button data-id="1" class="ui button">已通过</button>
-                                </div>
-                                <hr color="#f4f4f4" style="margin: 1% auto;">
-                                <div id="noLinks" style='margin-top: 20px;text-align: center;'>
-                                    <img style='width: 200px;' src='/img/noData.png'><br/><br/>
-                                    <span style='color: darkcyan;'>您还没有申请过友链哦~</span>
-                                </div>
-                                <table id="linkTable" class="ui celled striped selectable teal five column table" style="text-align: center;display: none">
-                                    <thead>
-                                    <tr>
-                                        <th>友链名称</th>
-                                        <th>友链网址</th>
-                                        <th>审核状态</th>
-                                        <th>反馈信息</th>
-                                        <th>操作</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody class="linkList">
-                                    <tr>
-                                        <td style="width: 250px">张三</td>
-                                        <td>男</td>
-                                        <td>待审核</td>
-                                        <td>菜市场上厕所菜市场上厕所菜市场上厕所菜市场上厕所</td>
-                                        <td><a class="btn btn-success btn-xs"><i class="fa fa-edit"></i> 更新友链</a></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                        <h3 class="sideTab-title">
+                            我的友链申请
+                        </h3>
+                        <div class="main">
+                            <div class="ui basic buttons" style="float: right;margin-bottom: 10px;">
+                                <button data-id="" class="ui button active">全部</button>
+                                <button data-id="0" class="ui button">待审核</button>
+                                <button data-id="2" class="ui button">未通过</button>
+                                <button data-id="1" class="ui button">已通过</button>
                             </div>
+                            <hr color="#f4f4f4" style="margin: 1% auto;">
+                            <div id="noLinks" style='margin-top: 20px;text-align: center;'>
+                                <img style='width: 200px;' src='/img/noData.png'><br/><br/>
+                                <span style='color: darkcyan;'>您还没有申请过友链哦~</span>
+                            </div>
+                            <table id="linkTable" class="ui celled striped selectable teal five column table" style="text-align: center;display: none">
+                                <thead>
+                                <tr>
+                                    <th>友链名称</th>
+                                    <th>友链网址</th>
+                                    <th>审核状态</th>
+                                    <th>反馈信息</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody class="linkList">
+                                <tr>
+                                    <td style="width: 250px">张三</td>
+                                    <td>男</td>
+                                    <td>待审核</td>
+                                    <td>菜市场上厕所菜市场上厕所菜市场上厕所菜市场上厕所</td>
+                                    <td><a class="btn btn-success btn-xs"><i class="fa fa-edit"></i> 更新友链</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <!-- 个人资料 -->
                     <div class="ui top segment" data-id="myProfileTab" style="margin-top: 0;display: none">
                         <div class="pc">
-                            <div class="ui secondary pointing menu">
-                                <a class="item active" data-tab="dataTab">个人资料</a>
+                            <h3 class="sideTab-title">
+                                个人资料
+                            </h3>
+                            <div class="main dataList" >
+                                <ul class="data-ul">
+                                    <li class="data-li">
+                                        <div class="content-show-l">用户昵称</div>
+                                        <div class="content-show-r nickname"></div>
+                                    </li>
+                                    <li class="data-li">
+                                        <div class="content-show-l">真实姓名</div>
+                                        <div class="content-show-r realName"></div>
+                                    </li>
+                                    <li class="data-li">
+                                        <div class="content-show-l">
+                                            <span>性</span>
+                                            <span>别</span>
+                                        </div>
+                                        <div class="content-show-r sex"></div>
+                                    </li>
+                                    <li class="data-li">
+                                        <div class="content-show-l">所在地区</div>
+                                        <div class="content-show-r area"></div>
+                                    </li>
+                                    <li class="data-li">
+                                        <div class="content-show-l">出生日期</div>
+                                        <div class="content-show-r birthday"></div>
+                                    </li>
+                                    <li class="data-li">
+                                        <div class="content-show-l">开始工作</div>
+                                        <div class="content-show-r workTime"></div>
+                                    </li>
+                                    <li class="data-li">
+                                        <div class="content-show-l">
+                                            <span>职</span>
+                                            <span>业</span>
+                                        </div>
+                                        <div class="content-show-r professional"></div>
+                                    </li>
+                                    <li class="data-li">
+                                        <div class="content-show-l">
+                                            <span>公</span>
+                                            <span>司</span>
+                                        </div>
+                                        <div class="content-show-r company"></div>
+                                    </li>
+                                    <li class="data-li">
+                                        <div class="content-show-l">个性签名</div>
+                                        <div class="content-show-r signature"></div>
+                                    </li>
+                                </ul>
+                                <div class="edit-icon"><i class="edit icon"></i>编辑</div>
                             </div>
-                            <div class="ui tab active" data-tab="dataTab">
-                                <div class="main dataList" >
-                                    <ul class="data-ul">
-                                        <li class="data-li">
-                                            <div class="content-show-l">用户昵称</div>
-                                            <div class="content-show-r nickname"></div>
-                                        </li>
-                                        <li class="data-li">
-                                            <div class="content-show-l">真实姓名</div>
-                                            <div class="content-show-r realName"></div>
-                                        </li>
-                                        <li class="data-li">
-                                            <div class="content-show-l">
-                                                <span>性</span>
-                                                <span>别</span>
-                                            </div>
-                                            <div class="content-show-r sex"></div>
-                                        </li>
-                                        <li class="data-li">
-                                            <div class="content-show-l">所在地区</div>
-                                            <div class="content-show-r area"></div>
-                                        </li>
-                                        <li class="data-li">
-                                            <div class="content-show-l">出生日期</div>
-                                            <div class="content-show-r birthday"></div>
-                                        </li>
-                                        <li class="data-li">
-                                            <div class="content-show-l">开始工作</div>
-                                            <div class="content-show-r workTime"></div>
-                                        </li>
-                                        <li class="data-li">
-                                            <div class="content-show-l">
-                                                <span>职</span>
-                                                <span>业</span>
-                                            </div>
-                                            <div class="content-show-r professional"></div>
-                                        </li>
-                                        <li class="data-li">
-                                            <div class="content-show-l">
-                                                <span>公</span>
-                                                <span>司</span>
-                                            </div>
-                                            <div class="content-show-r company"></div>
-                                        </li>
-                                        <li class="data-li">
-                                            <div class="content-show-l">个性签名</div>
-                                            <div class="content-show-r signature"></div>
-                                        </li>
-                                    </ul>
-                                    <div class="edit-icon"><i class="edit icon"></i>编辑</div>
-                                </div>
-                                <div class="main editUser" style="display: none">
-                                    <form class="ui form layui-form" id="editUserForm" autocomplete="off">
-                                        <div class="inline fields">
-                                            <label style="width: 120px;font-weight: bold;text-align: right"><font color='red'>*</font>&nbsp;用户昵称：</label>
-                                            <div class="field">
-                                                <input type="text" class="nickname required" id="nickname" placeholder="请输入昵称" style="width: 580px;">
-                                            </div>
+                            <div class="main editUser" style="display: none">
+                                <form class="ui form layui-form" id="editUserForm" autocomplete="off">
+                                    <div class="inline fields">
+                                        <label style="width: 120px;font-weight: bold;text-align: right"><font color='red'>*</font>&nbsp;用户昵称：</label>
+                                        <div class="field">
+                                            <input type="text" class="nickname required" id="nickname" placeholder="请输入昵称" style="width: 580px;">
                                         </div>
-                                        <div class="inline fields">
-                                            <label style="width: 120px;font-weight: bold;text-align: right">真实姓名：</label>
-                                            <div class="field">
-                                                <input type="text" class="realName required" id="realName" placeholder="请输入姓名" style="width: 580px;">
-                                            </div>
-                                        </div>
-                                        <div class="inline fields">
-                                            <label style="width: 120px;font-weight: bold;text-align: right">性别：</label>
-                                            <div class="field">
-                                                <input name="sex" value="0" type="radio" style="display: none" title="男" checked="">
-                                                <input name="sex" value="1" type="radio" style="display: none" title="女">
-                                            </div>
-                                        </div>
-                                        <div class="inline fields">
-                                            <label style="width: 120px;font-weight: bold;text-align: right">所属地区：</label>
-                                            <div class="field">
-                                                <div class="ui selection dropdown" style="width: 80px">
-                                                    <input type="hidden" name="gender" id="provinceInput">
-                                                    <i class="dropdown icon"></i>
-                                                    <div class="default text" id="provinceText">选择省份</div>
-                                                    <div class="menu" id="province"></div>
-                                                </div>
-                                            </div>
-                                            <div class="field">
-                                                <div class="ui selection dropdown" style="width: 80px">
-                                                    <input type="hidden" name="gender" id="cityInput">
-                                                    <i class="dropdown icon"></i>
-                                                    <div class="default text" id="cityText">选择市州</div>
-                                                    <div class="menu" id="city"></div>
-                                                </div>
-                                            </div>
-                                            <div class="field">
-                                                <div class="ui selection dropdown" style="width: 80px">
-                                                    <input type="hidden" name="gender" id="areaInput">
-                                                    <i class="dropdown icon"></i>
-                                                    <div class="default text" id="areaText">选择区县</div>
-                                                    <div class="menu" id="area"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="inline fields">
-                                            <label style="width: 120px;font-weight: bold;text-align: right">出生日期：</label>
-                                            <div class="field">
-                                                <input type="text" class="birthday required" id="birthday" placeholder="请输入出生日期" style="width: 580px;">
-                                            </div>
-                                        </div>
-                                        <div class="inline fields">
-                                            <label style="width: 120px;font-weight: bold;text-align: right">所属职业：</label>
-                                            <div class="field">
-                                                <input type="text" class="professional required" id="professional" placeholder="请填写 例如：java开发工程师" style="width: 580px;">
-                                            </div>
-                                        </div>
-                                        <div class="inline fields">
-                                            <label style="width: 120px;font-weight: bold;text-align: right">所在公司：</label>
-                                            <div class="field">
-                                                <input type="text" class="company required" id="company" placeholder="请输入当前所在公司" style="width: 580px;">
-                                            </div>
-                                        </div>
-                                        <div class="inline fields">
-                                            <label style="width: 120px;font-weight: bold;text-align: right">开始工作时间：</label>
-                                            <div class="field">
-                                                <input type="text" class="workTime required" id="workTime" placeholder="请输入开始工作时间" style="width: 580px;">
-                                            </div>
-                                        </div>
-                                        <div class="inline fields" style="align-items: end;">
-                                            <label style="width: 120px;font-weight: bold;text-align: right">个性签名：</label>
-                                            <div class="field">
-                                                <textarea class="signature required" id="signature" placeholder="你很懒，还没有添加个性签名" style="width: 580px;"></textarea>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <div style="text-align: center">
-                                        <button class="ui primary button" id="save">保存</button>
-                                        <button class="ui button" id="cancel">取消</button>
                                     </div>
+                                    <div class="inline fields">
+                                        <label style="width: 120px;font-weight: bold;text-align: right">真实姓名：</label>
+                                        <div class="field">
+                                            <input type="text" class="realName required" id="realName" placeholder="请输入姓名" style="width: 580px;">
+                                        </div>
+                                    </div>
+                                    <div class="inline fields">
+                                        <label style="width: 120px;font-weight: bold;text-align: right">性别：</label>
+                                        <div class="field">
+                                            <input name="sex" value="0" type="radio" style="display: none" title="男" checked="">
+                                            <input name="sex" value="1" type="radio" style="display: none" title="女">
+                                        </div>
+                                    </div>
+                                    <div class="inline fields">
+                                        <label style="width: 120px;font-weight: bold;text-align: right">所属地区：</label>
+                                        <div class="field">
+                                            <div class="ui selection dropdown" style="width: 80px">
+                                                <input type="hidden" name="gender" id="provinceInput">
+                                                <i class="dropdown icon"></i>
+                                                <div class="default text" id="provinceText">选择省份</div>
+                                                <div class="menu" id="province"></div>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="ui selection dropdown" style="width: 80px">
+                                                <input type="hidden" name="gender" id="cityInput">
+                                                <i class="dropdown icon"></i>
+                                                <div class="default text" id="cityText">选择市州</div>
+                                                <div class="menu" id="city"></div>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="ui selection dropdown" style="width: 80px">
+                                                <input type="hidden" name="gender" id="areaInput">
+                                                <i class="dropdown icon"></i>
+                                                <div class="default text" id="areaText">选择区县</div>
+                                                <div class="menu" id="area"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="inline fields">
+                                        <label style="width: 120px;font-weight: bold;text-align: right">出生日期：</label>
+                                        <div class="field">
+                                            <input type="text" class="birthday required" id="birthday" placeholder="请输入出生日期" style="width: 580px;">
+                                        </div>
+                                    </div>
+                                    <div class="inline fields">
+                                        <label style="width: 120px;font-weight: bold;text-align: right">所属职业：</label>
+                                        <div class="field">
+                                            <input type="text" class="professional required" id="professional" placeholder="请填写 例如：java开发工程师" style="width: 580px;">
+                                        </div>
+                                    </div>
+                                    <div class="inline fields">
+                                        <label style="width: 120px;font-weight: bold;text-align: right">所在公司：</label>
+                                        <div class="field">
+                                            <input type="text" class="company required" id="company" placeholder="请输入当前所在公司" style="width: 580px;">
+                                        </div>
+                                    </div>
+                                    <div class="inline fields">
+                                        <label style="width: 120px;font-weight: bold;text-align: right">开始工作时间：</label>
+                                        <div class="field">
+                                            <input type="text" class="workTime required" id="workTime" placeholder="请输入开始工作时间" style="width: 580px;">
+                                        </div>
+                                    </div>
+                                    <div class="inline fields" style="align-items: end;">
+                                        <label style="width: 120px;font-weight: bold;text-align: right">个性签名：</label>
+                                        <div class="field">
+                                            <textarea class="signature required" id="signature" placeholder="你很懒，还没有添加个性签名" style="width: 580px;"></textarea>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div style="text-align: center">
+                                    <button class="ui primary button" id="save">保存</button>
+                                    <button class="ui button" id="cancel">取消</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="android" style="display:none;">
+                        <div class="android">
                             <h3 class="sideTab-title">
                                 个人资料
                             </h3>
@@ -667,13 +656,13 @@
                     <!-- 修改密码 -->
                     <div class="ui top segment updatePwdTab" data-id="updatePwdTab" style="min-height: 580px;margin-top: 0;display: none">
                         <div class="pc user-center-bread">
-                            <span onclick="switchTab(this, 'accountSetTab', 2)">账号设置</span><em>/</em><span>修改密码</span>
+                            <span onclick="switchTab(this, 'accountSetTab', 2)">账号设置</span><em>/</em><span th:text="${isSetupPwd == true?'修改密码':'设置密码'}">修改密码</span>
                         </div>
                         <h3 class="android sideTab-title">
-                            <span>修改密码</span>
+                            <span th:text="${isSetupPwd == true?'修改密码':'设置密码'}">修改密码</span>
                         </h3>
                         <div class="acc_pass_con">
-                            <div class="ui small form" id="updatePwdForm" style="margin-left: 15px;">
+                            <div th:if="${isSetupPwd == true}" class="ui small form" id="updatePwdForm" style="margin-left: 15px;">
                                 <div class="inline field">
                                     <label>输入旧密码：</label>
                                     <div class="ui labeled input">
@@ -703,34 +692,57 @@
                                 </div>
 
                             </div>
+                            <div th:if="${isSetupPwd == false}" class="ui small form" id="updatePwdForm" style="margin-left: 15px;">
+                                <div class="inline field">
+                                    <label>输入密码：</label>
+                                    <div class="ui labeled input">
+                                        <input id="newPwd" class="newPwd required" placeholder="8~20位字母和数字组合" type="password" style="width: 280px;">
+                                    </div>
+                                    <span class="help-block m-b-none error" style="margin-left: 5px;color: red;display: none"></span>
+                                </div>
+                                <div class="inline field">
+                                    <label>确认密码：</label>
+                                    <div class="ui labeled input">
+                                        <input id="confirmNewPwd" class="confirmNewPwd required" placeholder="请确认新密码" type="password" style="width: 280px;">
+                                    </div>
+                                    <span class="help-block m-b-none error" style="margin-left: 5px;color: red;display: none"></span>
+                                </div>
+                                <div class="confirmBtn" style="margin-left: 103px;">
+                                    <button class="ui primary button" id="setPwd">
+                                        确认
+                                    </button>
+                                    <div class="android zw" onclick="switchTab(this, 'accountSetTab', 2)" style="width: 100%;float: none;margin-left: 0;"><span>返回</span></div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                     <!-- 绑定邮箱 -->
                     <div class="ui top segment bindingEmailTab" data-id="bindingEmailTab" style="min-height: 580px;margin-top: 0;display: none">
                         <div class="pc user-center-bread">
-                            <span onclick="switchTab(this, 'accountSetTab', 2)">账号设置</span><em>/</em><span>绑定邮箱</span>
+                            <span onclick="switchTab(this, 'accountSetTab', 2)">账号设置</span><em>/</em><span th:text="${isbindingEmail == true?'修改邮箱':'绑定邮箱'}">绑定邮箱</span>
                         </div>
                         <h3 class="android sideTab-title">
-                            <span>绑定邮箱</span>
+                            <span th:text="${isbindingEmail == true?'修改邮箱':'绑定邮箱'}">绑定邮箱</span>
                         </h3>
                         <div class="acc_pass_con">
                             <div class="ui small form" id="bindingEmailForm" style="margin-left: 15px;">
                                 <div class="inline field">
                                     <label>输入新邮箱：</label>
                                     <div class="ui labeled input">
-                                        <input id="newEmail" class="newEmail required" placeholder="请输入新邮箱" type="text" style="width: 280px;">
+                                        <input id="newEmail" class="newEmail required" placeholder="请输入新邮箱" type="text">
                                     </div>
-                                    <span class="help-block m-b-none error" style="margin-left: 5px;color: red;display: none"></span>
+                                    <span class="help-block m-b-none error" style="margin-left: 5px;color: red;display: none">请输入新邮箱</span>
                                 </div>
                                 <div class="inline field">
                                     <label>填写验证码：</label>
                                     <div class="ui right labeled input">
-                                        <input type="text" id="emailCode" class="emailCode required" placeholder="请输入邮箱验证码" style="width: 171px">
-                                        <div class="ui basic label" id="getCode" style="color: darkgray;">
+                                        <input type="text" id="emailCode" class="emailCode required" placeholder="请输入邮箱验证码">
+                                        <div class="ui basic label emailCode" id="getCode" style="color: darkgray;cursor: not-allowed;">
                                             获取验证码
                                         </div>
                                     </div>
-                                    <span class="help-block m-b-none error" style="margin-left: 5px;color: red;"></span>
+                                    <span class="help-block m-b-none error" style="margin-left: 5px;color: red;">请输入邮箱验证码</span>
                                 </div>
                                 <div class="confirmBtn" style="margin-left: 117px;">
                                     <button class="ui primary button" id="bindBtn">
@@ -744,17 +756,14 @@
                     </div>
                     <!-- 帐号关联 -->
                     <div class="ui top segment" data-id="accountAssociatedTab" style="min-height: 580px;margin-top: 0;display: none">
-                        <div class="user-center-bread">
+                        <div class="pc user-center-bread">
                             <span onclick="switchTab(this, 'accountSetTab', 2)">账号设置</span><em>/</em><span>帐号关联</span>
                         </div>
+                        <h3 class="android sideTab-title">
+                            <span>帐号关联</span>
+                        </h3>
                         <div class="acc_pass_con">
                             <ul class="bind_list">
-                                <!--<li class="item_cont">
-                                    <span class="wxIcon"><i class="wechat icon"></i></span>
-                                    <span class="method_name">微信</span>
-                                    <span class="user_name">誓言</span>
-                                    <a class="handle_text remove_text">解绑</a>
-                                </li>-->
                                 <li class="item_cont qq" data-type="1">
                                     <span class="qqIcon"><i class="qq icon"></i></span>
                                     <span class="method_name">QQ</span>
@@ -764,10 +773,11 @@
                                 <li class="item_cont weibo" data-type="2">
                                     <span class="weiboIcon"><i class="weibo icon"></i></span>
                                     <span class="method_name">微博</span>
+                                    <span class="user_name"></span>
                                     <a class="handle_text">绑定</a>
                                 </li>
                             </ul>
-                            <!--<iframe name="myFrame" src="/api/qq/bindQQ"></iframe>-->
+                            <div class="android zw" onclick="switchTab(this, 'accountSetTab', 2)" style="width: 100%;float: none;margin-left: 0;margin-top: 320px;"><span>返回</span></div>
                         </div>
                     </div>
                     <!-- 登录记录 -->
@@ -791,7 +801,7 @@
                                 <div id="loginRecordPage" style="text-align: right;"></div>
                             </div>
                         </div>
-                        <div class="android" style="display: none">
+                        <div class="android">
                             <h3 class="android sideTab-title">
                                 <span>登录日志</span>
                             </h3>
@@ -816,13 +826,14 @@
 <script src="../common/jquery/jquery-1.11.1.js"></script>
 <script src="../common/theia-sticky-sidebar.js"></script>
 <script src="../common/coco-message.js"></script>
+<script src="../common/jsencrypt.min.js"></script>
 <script src="../common/util.js"></script>
+<script src="../common/common.js"></script>
 <script src='../common/snowflakes.min.js'></script>
 <script src="../common/layui/layui.all.js"></script>
 <script src="../common/mPlayer/mplayer.js"></script>
 <script src="../common/mPlayer/mplayer-list.js"></script>
 <script src="../common/mPlayer/mplayer-functions.js"></script>
-<script src="http://cdn.bootcss.com/jquery-nstslider/1.0.13/jquery.nstSlider.min.js"></script>
 <script src="../common/player.js"></script>
 <script src="../common/message.js"></script>
 <script src="../admin/js/bstable/js/bootstrap.min.js"></script>
@@ -885,8 +896,6 @@
         if(tabName == 'myAccountTab') {
             queryDynamicInfo(1, 5);
         }else if(tabName == 'accountAssociatedTab'){
-            // cocoMessage.warning("该功能正在开发中。。。", 3000); //loading可以选择是否展示关闭按钮
-            // return;
             queryUserAuthsInfoByYhnm();
         }else if(tabName == 'myCommentsTab') {
             queryMyCommentList(1, 5);
@@ -898,8 +907,12 @@
             queryPersonalData();
         }else if(tabName == 'myCollectionTab') {
             initCollection()
+        }else if(tabName == 'updatePwdTab') {
+            var falg = isbindingEmail();
+            if(!falg) {
+                return;
+            }
         }
-
         if(number == 1){
             $(".teal.item.active").removeClass("active");
             $(elem).addClass("active");
@@ -915,11 +928,10 @@
             var dataId = $(this).attr("data-id");
             if(tabName == dataId){
                 $(this).show();
-            }else {
+            } else {
                 $(this).hide();
             }
         });
-        $(".android-index").hide();
     }
 
     /**

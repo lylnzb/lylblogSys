@@ -44,4 +44,12 @@ public class UserLoginBean implements Serializable {
     public static boolean isAdmin(String userId) {
         return userId != null && "41545wBXlg7sjt2f".equals(userId);
     }
+
+    public String getvCode() {
+        return vCode;
+    }
+
+    public void setvCode(String vCode) {
+        this.vCode = vCode;
+    }
 }

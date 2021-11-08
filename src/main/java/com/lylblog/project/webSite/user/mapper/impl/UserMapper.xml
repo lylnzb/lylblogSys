@@ -29,18 +29,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!-- 是否已绑定邮箱 -->
     <select id="isbindingEmail" resultType="int" parameterType="String">
-        select count(1) from m_user where yhnm = #{yhnm} and email is not null
+        select count(1) from m_user where yhnm = #{yhnm} and email is not null and email != ''
     </select>
 
     <!-- 是否已设置密码 -->
     <select id="isSetupPwd" resultType="int" parameterType="String">
-        select count(1) from m_user where yhnm = #{yhnm} and password is not null
+        select count(1) from m_user where yhnm = #{yhnm} and password is not null and password != ''
     </select>
 
     <!-- 是否绑定第三方账号 -->
     <select id="isUserAuths" resultType="int" parameterType="String">
         select count(1) from m_user_auths where yhnm = #{yhnm} and bindFlag = '1'
     </select>
+
+    <!-- 修改密码 -->
+    <update id="updatePwd" parameterType="String">
+		update m_user set password = #{newPwd}, salt = #{salt} where email = #{email}
+	</update>
+
+    <!-- 验证邮箱是否已注册 -->
+    <select id="validationEmail" parameterType="String" resultType="int">
+		select count(1) from m_user where email = #{newEmail} and valid = '1'
+	</select>
+
+    <!-- 绑定新邮箱 -->
+    <update id="bindEmail" parameterType="String">
+        update m_user set email = #{newEmail} where yhnm = #{yhnm} and valid = '1'
+    </update>
 
     <!--  我的评论列表  -->
     <select id="queryMyCommentsByYhnm" parameterType="com.lylblog.project.webSite.user.bean.UserCommentBean" resultType="com.lylblog.project.webSite.user.bean.UserCommentBean">

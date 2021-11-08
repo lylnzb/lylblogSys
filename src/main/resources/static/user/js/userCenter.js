@@ -177,11 +177,23 @@ $("#updatePwdForm .required").blur(function(){
  * @returns {number}
  */
 function validationOldPwd(elem, oldPwd) {
+    // 公钥
+    var key = getPublicKey();
+    // 创建 JSEncrypt 对象
+    var encrypt = new JSEncrypt();
+    // 获取 publicKey
+    encrypt.setPublicKey(key);
+
+    var obj = new Object();
+    obj.oldPwd = encrypt.encrypt(oldPwd);
     var falg = 0;
     $.ajax({
-        url: basePath + "user/validationPwd?oldPwd=" + oldPwd,
+        url: basePath + "user/validationPwd",
         type:"POST",
-        asyns:false,
+        async:false,
+        data: JSON.stringify(obj),
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
         success:function(resultData){
             if(resultData.code!=0){
                 $(elem).attr("style", "width: 280px;border-style:solid;border-color:red;");
@@ -203,7 +215,7 @@ function validationOldPwd(elem, oldPwd) {
  * @returns {number}
  */
 function validationNewPwd(elem, newPwd) {
-    var patrn=/^(\w){8,20}$/;
+    var patrn=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/;
     if (!patrn.exec(newPwd)) {
         $(elem).attr("style", "width: 280px;border-style:solid;border-color:red;");
         $(elem).parents(".input").siblings(".error").text("请输入8~20位字母和数字组合的密码");
@@ -234,7 +246,6 @@ function validationConfirmNewPwd(elem, confirmNewPwd) {
 $("#updatePwd").click(function() {
     var oldPwd = $("#oldPwd").val();
     var newPwd = $("#newPwd").val();
-    //var confirmNewPwd = $("#confirmNewPwd").val();
 
     var traverse = 0;
     $("#updatePwdForm .required").each(function(){
@@ -261,14 +272,77 @@ $("#updatePwd").click(function() {
         }
     });
     if(traverse == 0){
+        // 公钥
+        var key = getPublicKey();
+        // 创建 JSEncrypt 对象
+        var encrypt = new JSEncrypt();
+        // 获取 publicKey
+        encrypt.setPublicKey(key);
+
+        var obj = new Object();
+        obj.oldPwd = encrypt.encrypt(oldPwd);
+        obj.newPwd = encrypt.encrypt(newPwd);
         $.ajax({
-            url: basePath + "user/updatePwd?oldPwd=" + oldPwd + "&newPwd=" + newPwd,
+            url: basePath + "user/updatePwd",
             type:"POST",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
             success:function(resultData){
                 if(resultData.code==0){
                     cocoMessage.success("密码修改成功！将在3秒钟后退出系统。。。", 3000); //duration为0时显示关闭按钮
                     setTimeout(function (){
                         loginOut();
+                    }, 3000);
+                }else{
+                    cocoMessage.error(resultData.msg, 3000); //duration为0时显示关闭按钮
+                }
+            }
+        });
+    }
+});
+
+$("#setPwd").click(function() {
+    var newPwd = $("#newPwd").val();
+    var traverse = 0;
+    $("#updatePwdForm .required").each(function(){
+        var value = $(this).val();
+        if(value == null || value == ''){
+            if($(this).attr("id") == 'newPwd') {
+                $(this).parents(".input").siblings(".error").text("请输入新密码");
+            }else if($(this).attr("id") == 'confirmNewPwd') {
+                $(this).parents(".input").siblings(".error").text("请确认新密码");
+            }
+            $(this).attr("style", "width: 280px;border-style:solid;border-color:red;");
+            $(this).parents(".input").siblings(".error").show();
+            traverse += 1;
+        }else{
+            if($(this).attr("id") == 'confirmNewPwd') {
+                traverse += validationConfirmNewPwd(this, value);
+            }
+        }
+    });
+    if(traverse == 0){
+        // 公钥
+        var key = getPublicKey();
+        // 创建 JSEncrypt 对象
+        var encrypt = new JSEncrypt();
+        // 获取 publicKey
+        encrypt.setPublicKey(key);
+
+        var obj = new Object();
+        obj.pwd = encrypt.encrypt(newPwd);
+        $.ajax({
+            url: basePath + "user/setPwd",
+            type:"POST",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success:function(resultData){
+                if(resultData.code==0){
+                    cocoMessage.success("密码设置成功，3秒后刷新页面！", 3000);
+                    setTimeout(function(){
+                        location.reload();
                     }, 3000);
                 }else{
                     cocoMessage.error(resultData.msg, 3000); //duration为0时显示关闭按钮
@@ -289,9 +363,20 @@ $("#bindingEmailForm .required").blur(function(){
             falg = vailEmail(this, value);
         }
         if(falg == 0){
-            //$(this).attr("style", "width: 280px;");
+            $(this).parents(".input").children(".required").attr("style", "border-style:solid;");
+            if($(this).siblings("div").hasClass("emailCode")) {
+                $(this).siblings("#getCode").text("获取验证码");
+                $(this).siblings("#getCode").attr("style", "color: darkgray;cursor: not-allowed;border-style:solid;");
+            }
             $(this).parents(".input").siblings(".error").hide();
         }
+    }else {
+        $(this).attr("style", "border-style:solid;border-color:red;");
+        if($(this).siblings("div").hasClass("emailCode")) {
+            $(this).siblings("#getCode").text("获取验证码");
+            $(this).siblings("#getCode").attr("style", "color: darkgray;cursor: not-allowed;border-style:solid;border-color:red;");
+        }
+        $(this).parents(".input").siblings(".error").show();
     }
 });
 
@@ -306,24 +391,27 @@ function vailEmail(elem,value){
 
     var myreg = /^([\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
     if(!myreg.test(value)){
-        $(elem).attr("style", "width: 280px;border-style:solid;border-color:red;");
+        $(elem).attr("style", "border-style:solid;border-color:red;");
         $(elem).parents(".input").siblings(".error").text("邮箱格式错误");
         $(elem).parents(".input").siblings(".error").show();
-        $("#getCode").attr("style", "color: darkgray;width: 110px;text-align: center;");
+        /*if($(this).siblings("div").hasClass("emailCode")) {
+            $(this).siblings("#getCode").attr("style", "border-style:solid;color: darkgray;");
+        }
+        $("#getCode").attr("style", "border-style:solid;border-color:red;border-style:solid;border-color:red;color: darkgray;width: 110px;text-align: center;cursor: not-allowed;");
         $("#getCode").text("获取验证码");
-        $("#getCode").removeAttr('onclick');
+        $("#getCode").removeAttr('onclick');*/
         falg = 1;
     }else {
         $.ajax({
-            url: basePath + "validationEmail?newEmail=" + value,
+            url: basePath + "user/validationEmail?newEmail=" + value,
             type:"POST",
             async: false,
             success:function(resultData){
                 if(resultData.code!=0){
-                    $(elem).attr("style", "width: 280px;border-style:solid;border-color:red;");
+                    $(elem).attr("style", "border-style:solid;border-color:red;");
                     $(elem).parents(".input").siblings(".error").text(resultData.msg);
                     $(elem).parents(".input").siblings(".error").show();
-                    $("#getCode").attr("style", "color: darkgray;width: 110px;text-align: center;");
+                    $("#getCode").attr("style", "border-style:solid;border-color:red;color: darkgray;width: 110px;text-align: center;cursor: not-allowed;");
                     $("#getCode").text("获取验证码");
                     $("#getCode").removeAttr('onclick');
                     falg = 1;
@@ -380,6 +468,58 @@ function settime(obj) {
         settime(obj);
     }, 1000);
 }
+
+/**
+ * 邮箱绑定
+ */
+$("#bindBtn").on("click", function() {
+    var traverse = 0;
+    $("#bindingEmailForm .required").each(function(){
+        var value = $(this).val();
+        if(value == null || value == ''){
+            $(this).attr("style", "border-style:solid;border-color:red;");
+            if($(this).siblings("div").hasClass("emailCode")) {
+                $(this).siblings("#getCode").text("获取验证码");
+                $(this).siblings("#getCode").attr("style", "color: darkgray;cursor: not-allowed;border-style:solid;border-color:red;");
+            }
+            $(this).parents(".input").siblings(".error").show();
+            traverse += 1;
+        }else{
+            if($(this).attr("id") == 'newEmail'){
+                traverse += vailEmail(this, value);
+            }
+        }
+    });
+    if(traverse == 0) {
+        var obj = new Object();
+        obj.newEmail = $(".newEmail").val();
+        obj.vCode = $(".emailCode").val();
+        $.ajax({
+            url: basePath + 'user/bindEmail',
+            type: "POST",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (resultData) {
+                if(resultData.code == 0) {
+                    cocoMessage.success("邮箱绑定成功，3秒后刷新页面！", 3000);
+                    setTimeout(function(){
+                        location.reload();
+                    }, 3000);
+                }else {
+                    $("#emailCode").attr("style", "border-style:solid;border-color:red;");
+                    $("#emailCode").siblings("#getCode").text("获取验证码");
+                    $("#emailCode").siblings("#getCode").attr("style", "color: darkgray;cursor: not-allowed;border-style:solid;");
+                    $("#emailCode").parents(".input").siblings(".error").text(resultData.msg);
+                    $("#emailCode").parents(".input").siblings(".error").show();
+                }
+            },
+            error: function () {
+
+            }
+        });
+    }
+});
 
 /**
  * 查询我的评论列表
@@ -733,7 +873,7 @@ function getCityByProvinceCode(code) {
     $.ajax({
         url:basePath + "common/getCityByProvinceCode?code=" + code,
         type:"POST",
-        asyns:false,
+        async:false,
         success:function(resultData){
             if(resultData.code==0){
                 var htmlStr = '';
@@ -758,7 +898,7 @@ function getAreaByCityCode(code) {
     $.ajax({
         url:basePath + "common/getAreaByCityCode?code=" + code,
         type:"POST",
-        asyns:false,
+        async:false,
         success:function(resultData){
             if(resultData.code==0){
                 var htmlStr = '';
@@ -1050,7 +1190,7 @@ function queryDynamicInfo(pageNum, limit) {
                 $.ajax({
                     url:basePath + "user/queryDynamicInfo",
                     type:"POST",
-                    asyns: false,
+                    async: false,
                     data: JSON.stringify(paramData),
                     contentType: 'application/json;charset=utf-8',
                     success:function(resultData){
@@ -1111,7 +1251,7 @@ function queryUserAuthsInfoByYhnm() {
     $.ajax({
         url: basePath + 'user/queryUserAuthsInfoByYhnm',
         type: "POST",
-        asyns: false,
+        async: false,
         success: function (resultData) {
             if(resultData.code == '0'){
                 var data = resultData.data;
@@ -1121,16 +1261,20 @@ function queryUserAuthsInfoByYhnm() {
                         for(var i = 0;i < data.length;i++){
                             if($elem.attr("data-type") == data[i].appType) {
                                 $elem.find(".handle_text").addClass("remove_text");
+                                $elem.find(".user_name").text((data[i].appNickname == null || data[i].appNickname == '')?"":data[i].appNickname);
                                 $elem.find(".handle_text").text("解绑");
                                 $elem.find(".handle_text").attr("onClick", "bindUserAuths(" + $elem.attr("data-type") + " ,'unbund', '" + data[i].appUserId + "')");
+                                break;
                             }else {
                                 $elem.find(".handle_text").removeClass("remove_text");
+                                $elem.find(".user_name").text("");
                                 $elem.find(".handle_text").text("绑定");
                                 $elem.find(".handle_text").attr("onClick", "bindUserAuths(" + $elem.attr("data-type") + " ,'bind', '')");
                             }
                         }
                     }else {
                         $elem.find(".handle_text").removeClass("remove_text");
+                        $elem.find(".user_name").text("");
                         $elem.find(".handle_text").text("绑定");
                         $elem.find(".handle_text").attr("onClick", "bindUserAuths(" + $elem.attr("data-type") + " ,'bind', '')");
                     }
@@ -1158,7 +1302,7 @@ function bindUserAuths(loginType, bindType, openId) {
             $.ajax({
                 url: basePath + 'user/unbundUserAuths?openId=' + openId,
                 type: "POST",
-                asyns: false,
+                async: false,
                 success: function (resultData) {
                     if(resultData.code == 0) {
                         queryUserAuthsInfoByYhnm();
@@ -1178,9 +1322,29 @@ function bindUserAuths(loginType, bindType, openId) {
         if(loginType == '1') {
             window.open('/api/qq/bindQQ', 'QQ登录', 'left=0,top=0,width=' + (screen.availWidth - 10) + ',height=' + (screen.availHeight - 55) + ',toolbar=no, menubar=yes, scrollbars=yes, resizable=yes,location=yes, status=yes');
         }else if(loginType == '2') {
-            cocoMessage.warning("敬请期待。。。");
+            window.open('/api/weibo/bindWeibo', '微博登录', 'left=0,top=0,width=' + (screen.availWidth - 10) + ',height=' + (screen.availHeight - 55) + ',toolbar=no, menubar=yes, scrollbars=yes, resizable=yes,location=yes, status=yes');
         }
     }
+}
+
+/**
+ * 是否已绑定邮箱
+ * @param is
+ */
+function isbindingEmail() {
+    var falg = true;
+    $.ajax({
+        url: basePath + 'user/isbindingEmail',
+        type: "POST",
+        async: false,
+        success: function (resultData) {
+            if(resultData == 0) {
+                falg = false;
+                cocoMessage.error("您还没有绑定邮箱，请先绑定邮箱", 3000);
+            }
+        }
+    });
+    return falg;
 }
 
 /**

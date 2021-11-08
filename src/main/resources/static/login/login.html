@@ -46,6 +46,22 @@
                             <div class="ui basic red pointing prompt label transition">密码不能为空</div>
                         </div>
                     </div>
+                    <label class="verCode-label">
+                            <span class="label">
+                                <span class="tip">*</span>验证码：
+                            </span>
+                    </label>
+                    <div class="verCodeLabel">
+                        <div class="field">
+                            <div class="ui right labeled input" style="width: 100%">
+                                <input type="text" class="code required" id="verCode" placeholder="请输入邮箱验证码">
+                                <img id="vImg" onclick="changeCodeImg()" style="border: 1px solid rgba(34,36,38,.15);cursor: url('/img/cur/link.cur'), pointer;width: 90px;">
+                            </div>
+                        </div>
+                        <div id="verCodeError" class="error">
+                            <div class="ui basic red pointing prompt label transition">验证码不能为空</div>
+                        </div>
+                    </div>
                 </form>
                 <div class="btn-box">
                     <button type="button" class="ui primary button" style="width: 100%" id="login">登录</button>
@@ -61,11 +77,9 @@
                     <li title="QQ登录" class="list-item">
                         <a onclick="thirdPartyLogin('QQ')"><i class="qq icon"></i></a>
                     </li>
-                    <!--<li class="list-item" title="微博登录">
-                        <a href="/api/user/oauth/signin/qq?redirect_uri=https://www.duanliang920.com/" target="_blank">
-                            <i class="wechat icon"></i>
-                        </a>
-                    </li>-->
+                    <li title="微博登录" class="list-item">
+                        <a onclick="thirdPartyLogin('weibo')"><i class="weibo icon"></i></a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -154,11 +168,9 @@
                     <li title="QQ登录" class="list-item">
                         <a onclick="thirdPartyLogin('QQ')"><i class="qq icon"></i></a>
                     </li>
-                    <!--<li class="list-item" title="微博登录">
-                        <a href="/api/user/oauth/signin/qq?redirect_uri=https://www.duanliang920.com/" target="_blank">
-                            <i class="wechat icon"></i>
-                        </a>
-                    </li>-->
+                    <li title="微博登录" class="list-item">
+                        <a onclick="thirdPartyLogin('weibo')"><i class="weibo icon"></i></a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -224,11 +236,9 @@
                     <li title="QQ登录" class="list-item">
                         <a onclick="thirdPartyLogin('QQ')"><i class="qq icon"></i></a>
                     </li>
-                    <!--<li class="list-item" title="微博登录">
-                        <a href="/api/user/oauth/signin/qq?redirect_uri=https://www.duanliang920.com/" target="_blank">
-                            <i class="wechat icon"></i>
-                        </a>
-                    </li>-->
+                    <li title="微博登录" class="list-item">
+                        <a onclick="thirdPartyLogin('weibo')"><i class="weibo icon"></i></a>
+                    </li>
                 </ul>
             </div>
         </div>
